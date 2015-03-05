@@ -1,0 +1,189 @@
+
+        
+<div class="cl-mcont aside" data-ng-init="initialize()">
+   <div class="page-aside">      
+        <div class="content">     
+            <h2>Tables</h2> 
+            <div>
+                  <button type="button" ng-click="initiateTableSettings()" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Add New Table" tooltip><i class="fa fa-plus"></i></button>
+
+                  <button type="button" ng-show="showSaveBtn" ng-click="saveTables()" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Save Tables" tooltip><i class="fa fa-save"></i></button>
+
+                   <button type="button" ng-show="!showSaveBtn" class="btn btn-default"><i class="fa-circle-o-notch fa-spin"></i></button>
+            </div>
+            <div>
+                <div data-ng-show="tableErrorForEdit" class="alert alert-danger smallPadding" role="alert">
+                    <i class="fa fa-exclamation-triangle"></i> &nbsp; {{tableErrorForEdit}}
+                </div>
+            </div>   
+            <div class="row" ng-repeat="t in currentProject.tables">
+              <div class="col-md-12">    
+                <ul class="nav nav-list treeview">
+                    <li   ng-click="selectTable(t)" ng-class="{active: (selectedTable === t)}">
+                        <div class="tableListItem">
+                            
+                            <i class="fa fa-{{t.type.icon}} fa-lg pull-left"></i>
+                            
+                            <input  id="{{t.id}}name" ng-keyup="checkErrorsForEdit(t.name,t,currentProject.tables,'table')"  ng-blur="tableRenamed(t,tableErrorForEdit)" ng-model="t.name" placeholder="New name" disabled class="pull-left" style="width:130px;"/>
+
+                            <div class="pull-left">
+                                <button  type="button" class="tablebtn" ng-hide="!t.type.isRenamable"  ng-click="renameTable(t)" title="Rename table" ><i class="fa fa-edit tableList"></i></button>
+                                <button type="button" class="tablebtn" ng-hide="!t.type.isDeletable"  title="Delete table" ng-click="deleteTable(t)"><i class="fa fa-times tabletList"></i></button>
+                            </div>
+
+                        </div>
+                    </li>
+                </ul> 
+               </div>      
+            </div>            
+                            
+        </div>      
+    </div>   
+    
+    <div class="content">
+      <div class="row">
+        <div class="col-md-12">
+
+          <div data-ng-show="columnErrorForEdit" ng-show="currentProject.tables.length>0">
+             <div class=" text-center alert alert-danger smallPadding" role="alert">
+                    <i class="fa fa-exclamation-triangle"></i> &nbsp; {{columnErrorForEdit}}
+              </div>
+         </div>
+
+         <div data-ng-show="!columnErrorForEdit" style="padding-left:20px;" ng-show="currentProject.tables.length>0">
+             <h2 >{{selectedTable.name}}</h2>
+         </div>
+
+         <div  style="padding-left:20px;" ng-show="currentProject.tables.length==0">
+             <h2><i class="fa fa-mail-reply"></i>&nbsp;No tables, Add tables to start your journey</h2>
+         </div>
+
+        </div>  
+      </div>      
+       <div class="row" ng-show="currentProject.tables.length>0">
+        <div class="col-md-12">
+          <div class="block-flat">            
+            <div class="content">
+              <div class="table-responsive">
+                <table class="table no-border">
+                  <thead class="no-border">
+                    <tr>
+                      <th style="width:2%;"><i class="fa fa-arrows"></th>
+                      <th style="width:22%;"><strong>Column Name</strong></th>
+                      <th style="width:17%;"><strong>Type</strong></th>
+                      <th style="width:17%;"><strong>Required</strong></th>
+                      <th style="width:17%;"><strong>Unique</strong></th>
+                      <th style="width:15%;" class="text-center"><strong>Action</strong></th>
+                    </tr>
+                  </thead>
+                  <tbody class="no-border-y">
+                    <tr ng-repeat="col in selectedTable.columns">
+                      <td style="width:2%;"></td>
+                      <td style="width:22%;">
+                         <input type="text" id="{{col.id}}column"  ng-keyup="checkErrorsForEdit(col.name,col,selectedTable.columns,'column')" ng-click="renameCol(col)" value="{{col.name}}" ng-disabled="!col.isEditable" placeholder="New Column name" ng-model="col.name" ng-blur="colRenamed(col,columnErrorForEdit)"></input>
+                      </td>
+                      <td  style="width:17%;">
+                             <div ng-click="canChangeDatatype(col)">
+                                <select ng-model="col.dataType" ng-disabled="!col.isEditable || col.saved">
+                                    <option ng-repeat="dTypes in colDataTypes" ng-show="dTypes.visible" ng-selected="col.dataType==dTypes.name" value="{{dTypes.name}}">{{dTypes.text}}</option>
+                                </select>
+                            
+
+                            <br>
+
+                            <!--if dataType is List-->
+                            <select  ng-if="col.dataType=='List'"  data-ng-model="col.relatedTo">
+                                <option ng-repeat="eachTable in currentProject.tables" ng-selected="eachTable.type==col.relatedTo" value="{{eachTable.name}}">{{eachTable.name}}</option>
+                            
+                                <option ng-repeat="dTypes in colDataTypes" ng-selected="dTypes.name==col.relatedTo" ng-show="dTypes.visible"  value="{{dTypes.name}}">{{dTypes.text}}</option>
+                                 
+                            </select>  
+
+                            <!--if dataType is Relation-->
+                            <select  ng-if="col.dataType=='Relation'" data-ng-model="col.relatedTo">
+                                <option ng-repeat="eachTable in currentProject.tables" ng-selected="eachTable.type==col.relatedTo" value="{{eachTable.name}}">{{eachTable.name}}
+                                </option>
+                            </select> 
+
+                         </div>  
+                      </td>
+                      <td style="width:17%;" ng-click="canChangeRequired(col)">
+                        <input type="checkbox" ng-model="col.required" ng-disabled="!col.isEditable || (col.saved && !col.required)" />
+                       </td>
+                    
+                      <td style="width:17%;" ng-click="canChangeUnique(col)">
+                          <input ng-hide="col.dataType === 'List'" type="checkbox" ng-model="col.unique" ng-disabled="!col.isEditable || (col.saved && !col.unique)" />
+                      </td>
+                       <td style="width:15%;">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default btn-sm" ng-click="renameCol(col)" title="Rename Column" ng-disabled="!col.isRenamable"><i class="fa fa-pencil"></i>
+                                </button>
+                                <button type="button" class="btn btn-default btn-sm btn-danger" style="color:white" ng-click="deleteCol(col)" title="Delete Column" ng-disabled="!col.isDeletable"><i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                         </td>
+                    </tr>
+                   
+                  </tbody>
+              </table>  
+              <center data-ng-hide="columnErrorForEdit">
+                   <button class="btn btn-default" ng-hide="!selectedTable.type.isEditable" ng-click="addColumn()"><i class="fa fa-plus"></i>Add new Column</button>
+              </center>
+              </div>
+            </div>
+          </div>        
+        </div>
+      </div>
+    </div>
+
+</div>
+
+ <!--Add new table modal-->
+    <div class="modal fade bs-modal-add-table" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <center>
+                        <h3 class="mySmallModalLabel">Add a new table</h3>
+                    </center>
+                </div>
+                <div class="modal-body ">
+                    <div class="form-group modalContainer">
+                        <row class="text-center">
+                        <div data-ng-show="tableErrorForCreate" class="alert alert-danger smallPadding" role="alert">
+                            <i class="fa fa-exclamation-triangle"></i> &nbsp; {{tableErrorForCreate}}
+                        </div>
+                            <div class="col-md-6 bottom30">
+                                <select class="form-control"  ng-model="newTableType" ng-change="selectType(newTableType)">
+                                    <option  ng-repeat="tableType in tableTypes | filter:checkMaxCount"   value="{{tableType.type}}" ng-selected="tableType.type=='custom'">{{tableType.name}}</option>
+                                </select>                             
+
+                            </div>
+                            <div class="col-md-6 bottom30">
+                                <input type="text" class="form-control" ng-disabled="!selectedTableType.isRenamable" ng-keyup="checkErrorsForCreate(newTableName,currentProject.tables,'table')" ng-model="newTableName" placeholder="Name of the new table" required />
+                            </div>
+                        </row>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="col-sm-offset-10 col-sm-2">
+                        <button type="submit" class="btn btn-primary" ng-disabled="tableErrorForCreate" ng-click="addNewTable()" data-dismiss="modal">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end of modal-->
+
+
+
+
+  
+
+
+   
+  
+  
