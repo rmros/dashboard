@@ -25,6 +25,12 @@ app.config([
         controller: 'dataBrowserController'
     });
 
+    $stateProvider.state('pricing', {
+        url: '/:appId/pricing',
+        templateUrl: 'app/views/pricing.html',
+        controller: 'pricingController'
+    });
+
    //For to enable cross-origin resource sharing
   $httpProvider.defaults.withCredentials = true;
   $httpProvider.defaults.useXDomain = true;

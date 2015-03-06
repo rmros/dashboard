@@ -1,24 +1,19 @@
 
         
 <div class="cl-mcont aside" data-ng-init="initialize()">
-   <div class="page-aside">      
-        <div class="content">     
-            <h2>Tables</h2>             
-           
-            <div class="row" ng-repeat="t in currentProject.currentTables">
-              <div class="col-md-12">    
-                <ul class="nav nav-list treeview">
-                    <li   ng-click="selectTable(t)" ng-class="{active: (selectedTable === t)}">
-                        <div class="tableListItem">                            
-                            <i class="fa fa-{{t.type.icon}} fa-lg pull-left"></i>                            
-                            <input  id="{{t.id}}name"  ng-model="t.name"  disabled class="pull-left"/>
-                        </div>
-                    </li>
-                </ul>              
-               </div>      
-            </div>            
-                            
-        </div>      
+   <div class="page-aside"> 
+        <div class="block-flat">
+            <div class="header">              
+              <h3>Tables</h3>
+            </div>
+            <div class="content">
+              <div class="row">
+                  <ul class="nav nav-pills nav-stacked margin-bottom">
+                  <li ng-repeat="t in currentProject.currentTables" ng-click="selectTable(t)" ng-class="{active: (selectedTable === t)}"><a><i class="fa fa-{{t.type.icon}} fa-lg"></i>&nbsp; {{t.name}}</a></li>
+                  </ul>
+              </div>
+            </div>
+        </div>       
     </div>   
     
     <div class="content">

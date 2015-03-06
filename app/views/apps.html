@@ -3,10 +3,10 @@
     <div class="cl-mcont" ng-init="init()">
       <div class="row">   
 
-        <div class="col-sm-4 col-md-4">
-          <div class="block-flat appBx">
-            <div class="header">              
-              <h3>New App</h3>
+        <div class="col-sm-12 col-md-6 col-lg-3" style="height:330px">
+          <div class="block block-color info">
+            <div class="header">      
+              <h3><i class="fa fa-plus-circle"></i>&nbsp;create an app</h3>
             </div>
             <div class="content">
               <form role="form" name="projectForm" ng-submit="createProject(projectForm.$valid)"> 
@@ -15,56 +15,67 @@
                    <input type=""  class="form-control" placeholder="Enter Project Name" required ng-model="name">
                 </div>
                 <div class="form-group"> 
-                  <label>App Id</label> 
+                  <label>App ID</label> 
                   <input type="text" class="form-control" placeholder="Enter App ID" required ng-model="appId">
                 </div>                                  
                   <center>
-                    <button data-ng-show="showSaveBtn" type="submit" class="btn btn-default">
-                      <i class="fa fa-save buttonIcon"></i>Save</button>
-                      <i data-ng-hide="showSaveBtn" class="fa fa-spinner fa-spin fa-2x"></i>
-                  </center>
+                  <button data-ng-show="showSaveBtn" type="submit" class="btn btn-info btn-rad btn-trans">
+                    <i class="fa fa-plus buttonIcon"></i>&nbsp;Create new app
+                    <i data-ng-hide="showSaveBtn" class="fa fa-spinner fa-spin fa-2x"></i>
+                  </button>
               </form>
             </div>
-          </div>      
+          </div>
         </div>
 
       <!--App List --> 
-        <div class="col-sm-4 col-md-4" ng-repeat="list in projectListObj">
-          <div class="block-flat appBx" ng-show="!showProject">
-            <div class="header">  
-              <div class="actions">                
-                <a ng-click="showProject=!showProject" style="color:#bec0c6;" class="close-down"><i class="fa fa-pencil"></i></a>
-              </div>
-              <h3>{{list.name}}</h3>
+       <div class="col-sm-12 col-md-6 col-lg-3" ng-repeat="list in projectListObj" style="height:330px">
+
+
+          <!-- Details --> 
+          <div class="block block-color" data-ng-class="{success : list.status.status === 'online', danger : list.status.status === 'offline' }" ng-show="!showProject">
+            <div class="header">
+             <div class="actions">
+                <a ng-click="showProject=!showProject"><i class="fa fa-pencil" style="font-size:1.3em"></i></a>
+              </div>     
+              <h3><i class="fa fa-cloud "></i>&nbsp;&nbsp;{{list.name}}</h3>
             </div>
-            <div class="content">             
-              
-                <div class="form-group">
-                  <label><strong>Status</strong></label>
-                  <p data-ng-show="list.status.status === 'online'"><i class="fa fa-check-circle fa-lg fg-green"></i>&nbsp;Online</p>
-                  <p data-ng-show="list.status.status === 'offline'"><i class="fa fa-exclamation-circle fa-lg fg-green"></i>&nbsp;offline</p>
-                </div>
-                <div class="form-group"> 
-                  <label><strong>App Id</strong></label>
-                  <p>{{list.appId}}</p>
-                </div> 
+            <div class="content">
+               <div class="alert alert-success alert-white rounded">
+                <div class="icon"><i class="fa fa-check"></i></div>
+                Your app is <strong>Online</strong>
+               </div>
 
-                  <center>
-                    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Table Designer" tooltip ng-click="goToTableDesigner(list)"><i class="fa fa-cloud"></i>Data</button>
-                  <button type="button" class="btn btn-default" ng-click="viewKeys(list)" data-toggle="tooltip" data-placement="top" title="App Keys" tooltip><i class="fa fa-lock"></i>App Keys</button>
-                  </center>
-              
-            </div>              
-          </div> 
+               <div data-ng-show="list.status.status === 'offline'" class="alert alert-danger alert-white rounded">
+                <div class="icon"><i class="fa fa-times-circle"></i></div>
+                Your app is <strong>Offline</strong>
+               </div>
 
-          <!--edit form starts-->
-          <div class="block-flat appBx" ng-show="showProject">
-                  <div class="header">                    
-                    <h3>Edit App</h3>
-                  </div>
-                  <div class="content">             
-                    
-                      <form role="form" class="projectForm" name="editProjectForm" ng-submit="editProject(editProjectForm.$valid,$index,list.appId,editProjectName,editProjectUrl)">
+               <div class="input-group">
+                  <span class="input-group-addon">App ID</span>
+                  <span class="form-control"><b>{{list.appId}}</b></span>
+               </div>
+
+               <br/><br/>
+
+                <center>
+                  <button type="button" class="btn btn-default" data-placement="top" ng-click="goToTableDesigner(list)"><i class="fa fa-database"></i> &nbsp; Data</button>
+                <button type="button" class="btn btn-default" ng-click="viewKeys(list)"><i class="fa fa-lock"></i> &nbsp; App Keys</button>
+                </center>
+
+            </div>
+          </div>
+
+
+
+          <!-- Edit -->
+          <div class="block block-color fadedPrimary" ng-show="showProject">
+            <div class="header">
+              <h3><i class="fa fa-pencil "></i>&nbsp;&nbsp;edit project</h3>
+            </div>
+
+            <div class="content">
+              <form role="form" class="projectForm" name="editProjectForm" ng-submit="editProject(editProjectForm.$valid,$index,list.appId,editProjectName,editProjectUrl)">
                           
                             <div class="form-group formControlGroup">
                               <label class="formLabel">New App Name</label>
@@ -72,9 +83,8 @@
                             </div>                           
                             <center data-ng-show="!isLoading[$index]">
                                 <button type="submit" class="btn btn-default"><i class="fa fa-save"></i>Save</button>
-                               <button type="button" class="btn btn-default" ng-click="showProject=!showProject"><i class="fa fa-times"></i>Cancel</button>    
+                               <button type="button" class="btn btn-default" ng-click="showProject=!showProject"><i class="fa fa-times"></i>Cancel</button>
                             </center>
-
                             <div class="row">
                               <div class="col-md-12">
                                 <center data-ng-if="isLoading[$index]">
@@ -83,20 +93,14 @@
                                 <center data-ng-if="!isLoading[$index]">
                                     <button type="button" ng-click="deleteProject(list, $index)" class="btn btn-danger"><i class="fa fa-trash-o"></i>&nbsp;Delete App</button>
                                 <center>
-
                              </div>
                           </div>
-
                       </form>
-                    
-                  </div>              
-                </div>
-              <!--/edit form ends-->        
+            </div>
           </div>
-          <!--/App List ends--> 
+        </div>
     </div>
   </div>
-
 
 <!--View Keys Modal-->
 <div class="modal fade" id="keysModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
