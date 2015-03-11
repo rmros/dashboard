@@ -9,7 +9,7 @@
 	<meta name="author" content="">
 	<link rel="shortcut icon" href="assets/images/icon.png">
 
-	<title>CloudBoost : </title>
+	<title>CloudBoost Dashboard</title>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700,800' rel='stylesheet' type='text/css'>
 
 	<!-- Bootstrap core CSS -->
@@ -25,7 +25,7 @@
   <link href="bower_components/messenger/build/css/messenger.css" rel="stylesheet" />
   <link href="bower_components/messenger/build/css/messenger-theme-flat.css" rel="stylesheet" />
   <link href="bower_components/ng-scrollable/assets/ng-scrollable.css" rel="stylesheet" />   
-  <link href="bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css" rel="stylesheet" />
+  <link href="assets/js/bootstrap.switch/bootstrap-switch.css" rel="stylesheet" />
   <link href="assets/css/contextMenu.css" rel="stylesheet" />
   <link href="bower_components/animate-css/animate.css" rel="stylesheet" /> 
   <link href="bower_components/sweetalert/lib/sweet-alert.css" rel="stylesheet" />
@@ -74,7 +74,7 @@
               </ul>
             </li>
 
-            <li ng-show="currentProject"><a  href="#pricing"><i class="fa fa-credit-card"></i><span>Billing</span></a>
+            <li ng-show="currentProject"><a  href="#/{{currentProject.appId}}/pricing"><i class="fa fa-credit-card"></i><span>Billing</span></a>
             </li>
 
           </ul>
@@ -141,9 +141,8 @@
 	<script type="text/javascript" src="assets/js/behaviour/core.js"></script>
 
   <script src="assets/js/kendo.all.min.js"></script>
-  <script src="assets/js/smart-table.js"></script> 
-  <script type="text/javascript" src="bower_components/angular-datatables/dist/plugins/bootstrap/angular-datatables.bootstrap.js"></script>
-  <script src="bower_components/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
+
+  <script src="assets/js/bootstrap.switch/bootstrap-switch.js"></script>
   
   <script src="bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch.min.js"></script>
   <script src="bower_components/angular-dragdrop/src/angular-dragdrop.js"></script>
