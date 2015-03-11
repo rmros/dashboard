@@ -14,6 +14,7 @@
 
 	<!-- Bootstrap core CSS -->
 	<link href="assets/js/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+   <link href="bower_components/angular-datatables/dist/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet"/>
 	<link rel="stylesheet" type="text/css" href="assets/js/jquery.gritter/css/jquery.gritter.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
 	<link rel="stylesheet" type="text/css" href="assets/js/jquery.nanoscroller/nanoscroller.css" />
@@ -38,7 +39,13 @@
   <link href="assets/css/kendo.common.min.css" rel="stylesheet">    
   <link href="assets/css/kendo.default.min.css" rel="stylesheet">
   <link href="node_modules/ng-prettyjson/dist/ng-prettyjson.min.css" rel="stylesheet"/>
-     
+  
+  <link href="assets/js/jquery.x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+  <link href="assets/css/scrollbar.css" rel="stylesheet"/>
+  <link href="assets/js/DataTables/extensions/Scroller/css/dataTables.scroller.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="http://ui-grid.info/release/ui-grid-unstable.css" type="text/css">  
+  <link href="bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css" rel="stylesheet"/>
+
 	<link href="assets/css/style.css" rel="stylesheet"/>  
     
 </head>
@@ -104,18 +111,24 @@
         </div><!--/.nav-collapse animate-collapse -->
     </div>
   </div>
-  <!-- /TOP NAVBAR --> 
-   
+  <!-- /TOP NAVBAR -->   
   <ui-view></ui-view>   
 	
 </div>
   
 	<script src="assets/js/jquery.js"></script>
   <script type="text/javascript" src="assets/js/jquery.ui/jquery-ui.js" ></script>
-  <script src="assets/js/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="bower_components/angular/angular.js"></script> 
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-cookies.js"></script> 
+  <script type="text/javascript" src="bower_components/datatables/media/js/jquery.dataTables.js" ></script>
+  <script type="text/javascript" src="assets/js/DataTables/extensions/Scroller/js/dataTables.scroller.js" ></script>
+  <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+
+  <script type="text/javascript" src="bower_components/angular-datatables/dist/angular-datatables.js"></script>
+  <script type="text/javascript" src="bower_components/angular-datatables/dist/plugins/scroller/angular-datatables.scroller.js"></script>
+
+  <script src="assets/js/bootstrap/dist/js/bootstrap.min.js"></script> 
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-cookies.js"></script> 
+  <script src="bower_components/angular-resource/angular-resource.js"></script>  
   <script src="bower_components/underscore/underscore.js"></script>
   <script src="bower_components/angular-underscore/angular-underscore.js"></script>
 
@@ -128,7 +141,8 @@
 	<script type="text/javascript" src="assets/js/behaviour/core.js"></script>
 
   <script src="assets/js/kendo.all.min.js"></script>
-  <script src="assets/js/smart-table.js"></script>
+  <script src="assets/js/smart-table.js"></script> 
+  <script type="text/javascript" src="bower_components/angular-datatables/dist/plugins/bootstrap/angular-datatables.bootstrap.js"></script>
   <script src="bower_components/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
   
   <script src="bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch.min.js"></script>
@@ -161,11 +175,30 @@
 <script src="bower_components/messenger/build/js/messenger-theme-flat.js"></script>
 <script src="assets/js/bootbox.js"></script>
 <script src="bower_components/ng-scrollable/src/ng-scrollable.js"></script>
+<script src="assets/js/enscroll/js/mylibs/enscroll.js"></script>
+<script src="bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js"></script>
+<script type="text/javascript" src="bower_components/ng-clip/src/ngClip.js"></script>
+<script type="text/javascript" src="bower_components/zeroclipboard/dist/zeroclipboard.js"></script>
+
+<!--table edit-->
+</script> <script type="text/javascript" src="assets/js/jquery.x-editable/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+<script src="assets/js/jquery.x-editable/src/inputs/combodate/lib/moment.min.js"></script>
+<script src="assets/js/jquery.x-editable/src/inputs-ext/typeaheadjs/lib/typeahead.js"></script>
+<script src="assets/js/jquery.x-editable/src/inputs-ext/typeaheadjs/typeaheadjs.js"></script>
+<!--/table edit-->
+
+<!--UI Grid-->
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-touch.js"></script>
+<script src="http://ui-grid.info/release/ui-grid-unstable.js"></script>
+<!--/UI Grid-->
+
 
 <script type="text/javascript" src="assets/js/jquery.flot/jquery.flot.js"></script>
 <script type="text/javascript" src="assets/js/jquery.flot/jquery.flot.pie.js"></script>
 <script type="text/javascript" src="assets/js/jquery.flot/jquery.flot.resize.js"></script>
 <script type="text/javascript" src="assets/js/jquery.flot/jquery.flot.labels.js"></script>
+
 
 <!-- Load the CloudBoost SDK --> 
 <!-- Todo change the url in production. -->
@@ -193,7 +226,9 @@
 
 <!--Directives-->
 <script type="text/javascript" src="app/directives/tooltip/tooltip.js"></script>
+<script type="text/javascript" src="app/directives/scrollbar/scrollbar.js"></script>
+<script type="text/javascript" src="app/directives/scrollbar/malihu-scrollbar.js"></script>
+<script type="text/javascript" src="app/directives/table-xeditable/table-xeditable.js"></script>
 </body>
-    
-<!-- Mirrored from condorthemes.com/flatdream/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 27 Feb 2015 04:25:55 GMT -->
+
 </html>

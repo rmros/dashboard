@@ -1,0 +1,119 @@
+#scrollbox1 {
+    overflow: auto;
+    width:1020px;
+    height: 420px;
+    padding: 5px 5px;
+    border: 1px solid #b7b7b7;
+}
+
+.scroll-up1,
+.scroll-down1 {
+    width: 17px;
+    height: 17px;
+}
+
+.scroll-up1 {
+    background: url(http://enscrollplugin.com/images/xp-vert-btns.png) no-repeat;
+}
+.scroll-up1:hover {
+    background-position: -17px 0;
+}
+
+.scroll-down1 {
+    background: url(http://enscrollplugin.com/images/xp-vert-btns.png) no-repeat 0 -17px;
+}
+.scroll-down1:hover {
+    background-position: -17px -17px;
+}
+
+.track1 {
+    width: 16px;
+    background-color: #f7f7f3;
+    border-left: 1px solid #f2f0ea;
+}
+
+.corner2 {
+    width: 17px;
+    height: 17px;
+    background: #e4e6e3;
+    border: 1px solid #dfdfdd; 
+}
+
+.handle1 {
+    width: 17px;
+    margin-left: -1px;
+    background: url(http://enscrollplugin.com/images/xp-vert-handle.png) no-repeat 0 center;
+}
+.handle1:hover {
+    background-position: -17px center;
+}
+
+.handle1 .top,
+.handle1 .bottom {
+    position: absolute;
+    left: 0;
+    width: 17px;
+    height: 10px;
+    background: url(http://enscrollplugin.com/images/xp-vert-handle.png) no-repeat;
+}
+
+.handle1 .top {
+    top: 0;
+}
+.handle1:hover .top {
+    background-position: -17px 0;
+}
+
+.handle1 .bottom {
+    bottom: 0;
+    width: 17px;
+    height: 10px;
+    background-position: 0 bottom;
+}
+.handle1:hover .bottom {
+    background-position: -17px bottom;
+}
+
+
+/*Horizontal*/
+.scroll-left1,
+.scroll-right1 {
+    width: 17px;
+    height: 17px;
+}
+
+.scroll-left1 {
+    background: url(../js/enscroll/images/xp-hori-btns.png) no-repeat 0 -17px;
+    position: absolute;
+    bottom:0;
+    left:-1px;
+   
+}
+.scroll-left1:hover {
+    background-position:left bottom;
+}
+
+.scroll-right1 {
+    background: url(../js/enscroll/images/xp-hori-btns.png) no-repeat -17px 0;
+    position: absolute;
+    bottom:0;
+    right:-17px;    
+}
+.scroll-right1:hover {
+    background-position:right bottom;
+}
+
+.horizontal-track2{
+	width: 100%;
+    height: 17px;
+    background: #e4e6e3;
+    border: 1px solid #dfdfdd;
+    margin-left: 17px;
+}
+.horizontal-handle2 {
+    width: 17px;
+    height: 17px;
+    background: url(../js/enscroll/images/xp-hori-handle.png) no-repeat;
+}
+
+

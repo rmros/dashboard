@@ -6,13 +6,14 @@ app.controller('appsController',['$scope',
   '$rootScope',
   '$cookies',
   '$intercom',
-   
+  '$timeout',   
   function ($scope,
   projectService,
   $http,
   $rootScope,
   $cookies,
-  $intercom) {
+  $intercom,
+  $timeout) {
 
         $scope.init=function(){
               //Hiding the Menu
@@ -20,6 +21,11 @@ app.controller('appsController',['$scope',
               $rootScope.showMenu=false;
               $rootScope.currentProject=null;
               $scope.showSaveBtn = true;
+              $scope.appKeysText={
+                appId:"Copy",
+                masterKey:"Copy",
+                javascriptKey:"Copy"
+              };
 
                $http.post(serverURL+'/auth/signin', {email:"hotcomputerworks@hot.xyz",password:"sample"}).
                success(function(data, status, headers, config) { 
@@ -44,21 +50,23 @@ app.controller('appsController',['$scope',
 
                      },
                      function(error){
-                        Messenger().post({
-                          message: 'Cannot connect to server. Please try again.',
-                          type: 'error',
-                          showCloseButton: true
+                        $.gritter.add({
+                          position: 'top-right',
+                          title: 'Error',
+                          text: 'Cannot connect to server. Please try again.',
+                          class_name: 'danger'
                         });
                      }
                    );
                    //listing ends
                }).
-               error(function(data, status, headers, config) {
-                     Messenger().post({
-                        message: 'Cannot connect to server. Please try again.',
-                        type: 'error',
-                        showCloseButton: true
-                      });
+               error(function(data, status, headers, config) {                     
+                    $.gritter.add({
+                        position: 'top-right',
+                        title: 'Error',
+                        text: 'Cannot connect to server. Please try again.',
+                        class_name: 'danger'
+                    });
                });
                //end of http call
         };
@@ -67,12 +75,13 @@ app.controller('appsController',['$scope',
 
           //first confirm.
           bootbox.prompt("To delete, type in the app name.", function(result) {                
-            if (result === null) {                                             
-                      Messenger().post({
-                        message: 'App name you entered was empty.',
-                        type: 'error',
-                        showCloseButton: true
-                      });              
+            if (result === null) { 
+              $.gritter.add({
+                  position: 'top-right',
+                  title: 'Error',
+                  text: 'App name you entered was empty.',
+                  class_name: 'danger'
+              });             
             } else {
               if(result === project.name){
 
@@ -84,30 +93,32 @@ app.controller('appsController',['$scope',
                         $scope.isLoading[index] = false;
                         //project is deleted.
                         $scope.projectListObj.splice($scope.projectListObj.indexOf(project),1);
-
-                        Messenger().post({
-                            message: 'The project is successfully deleted.',
-                            type: 'success',
-                            showCloseButton: true
+                        $.gritter.add({
+                          position: 'top-right',
+                          title: 'Success',
+                          text: 'The project is successfully deleted.',
+                          class_name: 'success'
                         });
 
                       },
                       function(error){
-                         $scope.isLoading[index] = false;
-                         Messenger().post({
-                            message: 'Cannot delete this project at this point in time. Please try again later.',
-                            type: 'error',
-                            showCloseButton: true
-                          });
+                        $scope.isLoading[index] = false;                        
+                        $.gritter.add({
+                          position: 'top-right',
+                          title: 'Error',
+                          text: 'Cannot delete this project at this point in time. Please try again later.',
+                          class_name: 'danger'
+                        });
                          
                       });
 
-              } else{
-                Messenger().post({
-                        message: 'Project name doesnot match. ',
-                        type: 'error',
-                        showCloseButton: true
-                      });   
+              } else{               
+                $.gritter.add({
+                    position: 'top-right',
+                    title: 'Error',
+                    text: 'Project name doesnot match.',
+                    class_name: 'danger'
+                });         
               }                      
             }
           });
@@ -130,32 +141,36 @@ app.controller('appsController',['$scope',
                       $scope.projectListObj=[];
                       $scope.projectListObj.push(data);
                     }
-                      
-                      Messenger().post({
-                        message: 'The project is successfully created.',
-                        type: 'success',
-                        showCloseButton: true
+                    
+                       $.gritter.add({
+                          position: 'top-right',
+                          title: 'Success',
+                          text: 'The project is successfully created.',
+                          class_name: 'success'
                       });
+
                       $scope.name="";
                       $scope.appId = "";
 
                   },
                   function(error){
                     $scope.showSaveBtn = true;
-                    if(error === 400){
-                     Messenger().post({
-                        message:'App ID already exists. Please choose a different App ID',
-                        type: 'error',
-                        showCloseButton: true
+                    if(error === 400){                   
+                      $.gritter.add({
+                        position: 'top-right',
+                          title: 'Error',
+                          text: 'App ID already exists. Please choose a different App ID.',
+                          class_name: 'danger'
                       });
                     }
 
-                    if(error === 500){
-                       Messenger().post({
-                        message: 'Cannot connect to server. Please try again.',
-                        type: 'error',
-                        showCloseButton: true
-                      });
+                    if(error === 500){                     
+                        $.gritter.add({
+                          position: 'top-right',
+                          title: 'Error',
+                          text: 'Cannot connect to server. Please try again.',
+                          class_name: 'danger'
+                        });
                     }
                      
                   }
@@ -174,12 +189,13 @@ app.controller('appsController',['$scope',
                   editProjectPromise.then(
                     function(data){
                        $scope.isLoading[index] = false;
-                        $scope.projectListObj[index]=data;
-                         Messenger().post({
-                          message: 'The project is successfully modified.',
-                          type: 'success',
-                          showCloseButton: true
-                      });
+                        $scope.projectListObj[index]=data;                      
+                        $.gritter.add({
+                          position: 'top-right',
+                          title: 'Success',
+                          text: 'The project is successfully modified.',
+                          class_name: 'success'
+                        });
                     },
                     function(error){
                         $scope.isLoading[index] = false;
@@ -217,6 +233,26 @@ app.controller('appsController',['$scope',
           $('#keysModal').modal('show');
         };
 
+        $scope.copyKeys=function(keyName){
+            if(keyName=="appId"){
+              $scope.appKeysText.appId="Copied!";
+            }
+            if(keyName=="masterKey"){
+              $scope.appKeysText.masterKey="Copied!";
+            }
+            if(keyName=="javascriptKey"){
+              $scope.appKeysText.javascriptKey="Copied!";
+            }
+          
+           $timeout(function(){ 
+              $scope.appKeysText={
+                appId:"Copy",
+                masterKey:"Copy",
+                javascriptKey:"Copy"
+              };
+            }, 5000);         
+            
+        };      
 
         function integrateIntercom(){
           var user = {

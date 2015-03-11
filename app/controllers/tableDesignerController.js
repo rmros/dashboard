@@ -21,7 +21,7 @@ app.controller('tableDesignerController',
             $scope.showSaveBtn=true;                        
             $scope.colDataTypes=columnDataTypeService.getcolumnDataTypes();
             $scope.id = $stateParams.appId;
-            id = $scope.id;
+            id = $scope.id;            
 
             if($rootScope.currentProject && $rootScope.currentProject.appId === id){
               //if the same project is already in the rootScope, then dont load it. 
@@ -368,7 +368,8 @@ app.controller('tableDesignerController',
           }
 
         };
-
+        
+            
         /* PRIVATE FUNCTIONS */
 
         function loadProject(id){
@@ -411,5 +412,7 @@ app.controller('tableDesignerController',
                             showCloseButton: true
                           });
                      });
-        }
-    });
+        }     
+
+
+});

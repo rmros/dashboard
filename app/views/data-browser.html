@@ -6,13 +6,24 @@
             <div class="header">              
               <h3>Tables</h3>
             </div>
-            <div class="content">
-              <div class="row">
-                  <ul class="nav nav-pills nav-stacked margin-bottom">
-                  <li ng-repeat="t in currentProject.currentTables" ng-click="selectTable(t)" ng-class="{active: (selectedTable === t)}"><a><i class="fa fa-{{t.type.icon}} fa-lg"></i>&nbsp; {{t.name}}</a></li>
+            
+              <div class="row">                 
+                  <ul class="nav nav-pills nav-stacked tableUl margin-bottom">
+                      <li class="tableList flex-li" ng-repeat="t in currentProject.currentTables" ng-click="selectTable(t)" ng-class="{liActive: (selectedTable === t)}">
+                          <div class="flex-wrapper">
+
+                            <div class="flex-items tableIcon">
+                              <i class="fa fa-{{t.type.icon}} fa-lg"></i>
+                            </div> 
+
+                            <div class="flex-items tableName">
+                              <p>{{t.name}}</p>
+                            </div>
+                          </div>  
+                      </li>
                   </ul>
               </div>
-            </div>
+            
         </div>       
     </div>   
     
@@ -24,10 +35,10 @@
              <h2>{{selectedTable.name}}</h2>
          </div>
 
-          <div  style="padding-left:20px;" ng-show="currentProject.currentTables.length==0">
+          <div  style="padding-left:24px;" ng-show="currentProject.currentTables.length==0">
              <h2><i class="fa fa-exclamation"></i>&nbsp;No tables, Add tables in your <a href="#/{{currentProject.appId}}/data/designer/table/tableId">&nbsp;Table Designer</a></h2>
          </div>
-         <div style="padding-left:20px;">  
+         <div style="padding-left:24px;">  
 
             <button ng-click="addRow()" type="submit" class="btn btn-default cbBtn"><i class="fa fa-plus-square fa-lg"></i>&nbsp;Row</button>               
 
@@ -38,174 +49,46 @@
         </div>
 
         </div>  
-      </div>  
-      
-
-       <div class="row" ng-show="currentProject.currentTables.length>0">
-        <div class="col-md-12">
-          <div class="block-flat">            
-            <div class="content">
-              <div class="table table-responsive" ng-scrollable="{scrollX:'bottom',scrollY:'right',updateOnResize:true}" style="width:950px; height: 400px;">
-                    <!--table-->
-                    <table ng-if="selectedTable" width="{{300*selectedTable.columns.length}}" class="table table-hover" st-pipe="callServer" st-table="displayed">
-
-                    <thead>
-                        <tr>
-                            <th> <input type="checkbox" data-ng-click="selectAllEntities()"/> <br/> <span class="smallText text-center"> Select</span> </th>
-                            <th> Actions <br/> <span class="smallText"> Edit / Delete</span></th>
-                            <th ng-repeat="col in selectedTable.columns" st-sort="{{col.name}}">{{col.name}} <br/> <span class="smallText"> Type : {{col.dataType}}</span></th>
-
-                        </tr>
-                    </thead>
-
-                    <!-- This is data content. --> 
-                    <tbody ng-hide="isLoading" >
-                    
-                        <tr ng-repeat="eachObj in displayed ">
-                        <!-- eachObj is an instace of CLoudObject -->
-
-                            <td> 
-                                <input type="checkbox" ng-checked="selectedEntities[$index]"/>
-                            </td>
-
-                            <td> 
-
-                                <a class="btn btn-sm btn-default" data-ng-click="switchEditMode($index)" >
-                                    <i ng-show="!entityEditMode[$index]" class="fa fa-pencil"></i>
-                                    <i ng-show="entityEditMode[$index] && !entityEditLoadingMode[$index]" class="fa fa-save"></i>
-                                    <i ng-show="entityEditLoadingMode[$index]" class="fa fa-spinner fa-spin"></i>
-                                </a>
-
-                                <a class="btn btn-sm btn-danger" data-ng-click="switchDeleteMode($index)"> 
-                                    <i ng-show="!entityDeleteMode[$index] && !entityDeleteLoadingMode[$index]" class="fa fa-trash"></i>
-                                    <i ng-show="entityDeleteLoadingMode[$index]" class="fa fa-spinner fa-spin"></i>
-                                </a>
-
-                            </td>
-
-                            <td ng-repeat="col in selectedTable.columns">
-                            <!-- col is an instace of CLoudObject -->
-                                
-                                <span ng-if="col.dataType==='Id'"> {{eachObj.document._id}} </span>
-
-                                <span ng-show="!entityEditMode[$parent.$parent.$index]" ng-if="col.dataType==='Number'"> {{eachObj.document[col.name]}} </span>
-
-                                <span ng-show="!entityEditMode[$parent.$parent.$index]" ng-if="col.dataType==='Text'"> {{eachObj.document[col.name]}} </span>
-
-                                <span ng-show="!entityEditMode[$parent.$parent.$index]" ng-if="col.name === 'isSearchable'"> {{eachObj.document._isSearchable}} </span>
-
-                                <span ng-show="!entityEditMode[$parent.$parent.$index]" ng-if="col.dataType==='Boolean' && col.name !== 'isSearchable'"> {{eachObj.document[col.name]}} </span>
-
-                               <span  ng-show="!entityEditMode[$parent.$parent.$index]" ng-if="col.dataType==='Email' && eachObj.document[col.name]">
-                                   <a class="btn btn-sm btn-default" ng-href="mailto:{{eachObj.document[col.name]}}">
-                                        <i class="fa fa-envelope-o"></i>
-                                   </a> &nbsp;
-                                {{eachObj.document[col.name]}}
-                                </span>
-
-                                <span  ng-show="!entityEditMode[$parent.$parent.$index]" ng-if="col.dataType==='URL' && eachObj.document[col.name]">
-                                   <a class="btn btn-sm btn-default" ng-href="{{eachObj.document[col.name]}}">
-                                        <i class="fa fa-external-link "></i>
-                                   </a> &nbsp;
-                                {{eachObj.document[col.name]}}
-                                </span>
-
-                                <span ng-show="!entityEditMode[$parent.$parent.$index]" ng-if="col.dataType==='Password'" class="smallText"> hidden </span>
-
-                                <span ng-show="!entityEditMode[$parent.$parent.$index]" ng-if="!eachObj.document[col.name] && col.dataType!=='Id' && col.name!=='isSearchable'"  class="smallText"> Null </span>
-
-                                <!-- Searchable null --> 
-
-                                <span ng-show="col.name === 'isSearcbale' && eachObject[col.name] === undefined" class="smallText"> Null </span>
-
-                                <span ng-show="!entityEditMode[$parent.$parent.$index]" ng-if="col.dataType=='DateTime' && eachObj.document[col.name]"> {{eachObj.document[col.name] | convertIsoToDate | date : 'medium'}} </span>
-
-                                
-                                <!-- ACL -->
-
-                                <a class="btn btn-sm btn-default" ng-click="editJSON(eachObj, col.name)" ng-if="col.dataType=='ACL'"> 
-                                    <i class="fa fa-ellipsis-h"></i>
-                                </a>
-
-                                <!-- Object -->
-                                 <a class="btn btn-sm btn-default" ng-click="editJSON(eachObj, col.name)" ng-if="col.dataType=='Object' && eachObj.document[col.name]"> 
-                                    <i class="fa fa-ellipsis-h"></i>
-                                 </a>
-     
-
-                                <!-- List --> 
-                                 <a class="btn btn-sm btn-default" ng-if="col.dataType=='List'" ng-show="eachObj.document[col.name]" data-ng-click="viewList(eachObj, col)"> 
-                                    <i class="fa fa-bars"></i> List
-                                 </a>
-
-                                  <!-- Relation --> 
-                                 <a class="btn btn-sm btn-default" data-ng-click="viewRelation(eachObj, col.name)" ng-if="col.dataType=='Relation'" ng-show="eachObj.document[col.name]"> 
-                                    <i class="fa fa-chevron-circle-right"></i> Relation
-                                 </a>
-
-                                <!-- This area is for edit mode.  --> 
-
-
-                                <!--inputBox for text -->             
-                                <input class="form-control" ng-show="entityEditMode[$parent.$parent.$index]"  type="text" ng-model="eachObj.document[col.name]" ng-if="col.dataType==='Text'"/>
-
-                                <!--inputBox for URL -->
-                                <input class="form-control" ng-show="entityEditMode[$parent.$parent.$index]" type="url" ng-model="eachObj.document[col.name]" ng-if="col.dataType==='URL'"/>
-                                
-                                <!--inputBox DateTime--> 
-                                <input kendo-date-time-picker ng-show="entityEditMode[$parent.$parent.$index]" placeholder="yyyy-MM-dd"  ng-model="eachObj.document[col.name]" ng-if="col.dataType=='DateTime'"/>
-                                
-                                <!--inputBox Boolean-->
-                                <input class="form-control"  ng-show="entityEditMode[$parent.$parent.$index]" type="checkbox" ng-if="col.dataType=='Boolean'" ng-model="eachObj.document[col.name]"/>
-
-                                <!--inputBox Email-->
-                                <input class="form-control" ng-show="entityEditMode[$parent.$parent.$index]" type="email" ng-if="col.dataType=='Email'" ng-model="eachObj.document[col.name]"  />
-
-                                <!--inputBox Number-->
-                                <input class="form-control" ng-show="entityEditMode[$parent.$parent.$index]" type="number" ng-if="col.dataType=='Number'" ng-model="eachObj.document[col.name]"  />
-
-                                <!--inputBox Password-->
-                                <input class="form-control" ng-show="entityEditMode[$parent.$parent.$index]" type="password" ng-if="col.dataType=='Password'" ng-model="eachObj.document[col.name]" />
-
-                                <!-- Object -->
-                                 <a class="btn btn-sm btn-default" ng-click="editJSON(eachObj, col.name)" ng-show="col.dataType=='Object' && entityEditMode[$parent.$parent.$index]"> 
-                                    <i class="fa fa-ellipsis-h"></i>
-                                 </a>
-
-                                 <!-- List -->
-                                  <a class="btn btn-sm btn-default" ng-if="col.dataType=='List'" ng-show="entityEditMode[$parent.$parent.$index]" data-ng-click="viewList(eachObj, col)"> 
-                                    <i class="fa fa-bars"></i> List
-                                 </a> 
-
-                            </td>
-                        </tr>
-
-                    </tbody>
-
-                    <!-- This is loading content --> 
-                    <tbody ng-show="isLoading">
-                        <tr>
-                            <td colspan="12" class="text-center"><i class="fa fa-spinner fa-spin fa-2x"></i></td>
-                        </tr>
-                    </tbody>
-
-                    <!-- This is table footer -->
-                    <tfoot>
-                        <tr>
-                            <td class="text-center" st-pagination="" st-items-by-page="10" colspan="12">
-                            </td>
-                        </tr>
-                    </tfoot>
-
-                </table>           
-                <!--/table-->
-              </div>
-            </div>
-          </div>        
-        </div>
       </div>
-    </div>
 
+      
+      <!--table row starts-->
+      <div class="row">
+          <div class="col-md-12">
+            <div style="padding-left:24px;">
+              <div  ng-show="currentProject.currentTables.length>0">
+                <!--table-->
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="block-flat">                       
+                        <div class="content grid-parent" >
+                          <div class="table-responsive grid" ui-grid-edit ui-grid-pagination ui-grid-resize-column ui-grid-selection external-scopes="clickHandler" ui-grid="{data:displayed,enableSorting:true,columnDefs:colNames,paginationPageSizes:paginationSizes,paginationPageSize:paginationSize,enableRowSelection:true,enableSelectAll:true,multiSelect: true,onRegisterApi:onRegisterApi,selectedItems:selectedItems}">
+                                <!--<table class="table table-striped table-bordered">
+                                  <thead>
+                                    <tr>                                        
+                                        <th ng-repeat="col in selectedTable.columns">{{col.name}}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="eachObj in displayed">
+                                        <td ng-repeat="col in selectedTable.columns">{{eachObj.document[col.name]}}</td>                            
+                                    </tr>                                  
+
+                                    </tbody>
+                                    
+                                </table>-->       
+                          </div>
+                        </div>
+                      </div>        
+                    </div>
+                  </div>
+                  <!--/table-->
+              </div>    
+            </div>    
+          </div>
+       </div>
+
+    </div>
 </div>
 
 <!-- EditJSON Modal -->

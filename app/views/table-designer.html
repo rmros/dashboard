@@ -10,19 +10,14 @@
                   <button type="button" ng-show="showSaveBtn" ng-click="saveTables()" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Save Tables" tooltip><i class="fa fa-save"></i></button>
 
                    <button type="button" ng-show="!showSaveBtn" class="btn btn-default"><i class="fa-circle-o-notch fa-spin"></i></button>
-            </div>
-            <div>
-                <div data-ng-show="tableErrorForEdit" class="alert alert-danger smallPadding" role="alert">
-                    <i class="fa fa-exclamation-triangle"></i> &nbsp; {{tableErrorForEdit}}
-                </div>
-            </div>   
-            <div class="row" ng-repeat="t in currentProject.tables">
-              <div class="col-md-12">    
-                <ul class="nav nav-list treeview">
-                    <li   ng-click="selectTable(t)" ng-class="{active: (selectedTable === t)}">
-                        <div class="tableListItem">
+            </div>             
+
+            <div class="row">                 
+                 <!--<ul class="nav nav-pills nav-stacked margin-bottom">
+                    <li ng-repeat="t in currentProject.tables"  ng-click="selectTable(t)" ng-class="{active: (selectedTable === t)}">
+                         <div class="tableListItem">
                             
-                            <i class="fa fa-{{t.type.icon}} fa-lg pull-left"></i>
+                            <i class="fa fa-{{t.type.icon}} fa-lg pull-left"></i>{{t.name}}
                             
                             <input  id="{{t.id}}name" ng-keyup="checkErrorsForEdit(t.name,t,currentProject.tables,'table')"  ng-blur="tableRenamed(t,tableErrorForEdit)" ng-model="t.name" placeholder="New name" disabled class="pull-left" style="width:130px;"/>
 
@@ -32,10 +27,45 @@
                             </div>
 
                         </div>
+                        <a>
+                          <i class="fa fa-{{t.type.icon}} fa-lg pull-left"></i>{{t.name}}
+                          <i class="fa fa-times pull-right"></i>
+                          <i class="fa fa-edit pull-right"></i>                          
+                        </a>  
+                       
                     </li>
-                </ul> 
-               </div>      
-            </div>            
+                </ul> -->            
+
+              <ul class="nav nav-pills nav-stacked tableUl">
+                <li class="tableList flex-li" ng-repeat="t in currentProject.tables" ng-click="selectTable(t)" ng-class="{liActive: (selectedTable === t)}">
+                    <div class="flex-wrapper">
+
+                      <div class="flex-items tableIcon">
+                        <i class="fa fa-{{t.type.icon}} fa-lg"></i>
+                      </div> 
+
+                      <div class="flex-items tableName">
+                        <p>{{t.name}}</p>
+                      </div>
+
+                      <div class="flex-items tableEdit">
+                         <a  id="{{t.id}}"  ng-hide="!t.type.isRenamable" data-type="text" data-title="Enter new table name" ng-model="t" xeditable>
+
+                            <i class="fa fa-pencil"></i>
+
+                         </a>
+                      </div>
+
+                      <div class="flex-items tableDelete">
+                         <i class="fa fa-times" ng-hide="!t.type.isDeletable" ng-click="deleteTable(t)"></i>
+                      </div> 
+
+                    </div>  
+                </li>
+              </ul>               
+                
+            </div> 
+                   
                             
         </div>      
     </div>   
@@ -176,7 +206,7 @@
             </div>
         </div>
     </div>
-    <!--end of modal-->
+  <!--end of modal-->
 
 
 

@@ -19,10 +19,11 @@
                   <input type="text" class="form-control" placeholder="Enter App ID" required ng-model="appId">
                 </div>                                  
                   <center>
-                  <button data-ng-show="showSaveBtn" type="submit" class="btn btn-info btn-rad btn-trans">
-                    <i class="fa fa-plus buttonIcon"></i>&nbsp;Create new app
-                    <i data-ng-hide="showSaveBtn" class="fa fa-spinner fa-spin fa-2x"></i>
-                  </button>
+                    <button data-ng-show="showSaveBtn" type="submit" class="btn btn-info btn-rad btn-trans">
+                      <i class="fa fa-plus buttonIcon"></i>&nbsp;Create new app
+                      <i data-ng-hide="showSaveBtn" class="fa fa-spinner fa-spin fa-2x"></i>
+                    </button>
+                  </center>
               </form>
             </div>
           </div>
@@ -102,54 +103,55 @@
     </div>
   </div>
 
-<!--View Keys Modal-->
-<div class="modal fade" id="keysModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- Keys Modal -->
+<div class="modal fade colored-header" id="keysModal" tabindex="-1" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-lock buttonIcon"></i> App Keys</h4>
+
+        <h3>App Keys</h3>
+        <button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
-      <div class="modal-body container" style="width:100%;">
-        
-          <div class="row">
-            <div class="col-md-12">
-              <div>
-                <h5><b>App ID</b></h5>
-              </div>
-              <div>
-                <h5>{{selectedProject.appId}}</h5>
-              </div>
-            </div>
-          </div> 
-
-          <div class="row">
-            <div class="col-md-12">
-              <div>
-                <h5><b>Master Key</b></h5>
-              </div>
-              <div id="keyValue">
-                <h5>{{selectedProject.keys.master}}</h5>
-              </div>
-            </div>
+      <div class="modal-body form">
+       
+        <div class="form-group">
+          <label>App ID</label>        
+          <div class="input-group">
+                <input type="text" class="form-control" ng-model="selectedProject.appId">
+                <span class="input-group-btn">
+                <button class="btn btn-prusia" type="button" clip-copy="selectedProject.appId" ng-click="copyKeys('appId')">{{appKeysText.appId}}</button>
+                </span>
           </div>
+        </div>
 
-          <div class="row">
-            <div class="col-md-12">
-              <div>
-                <h5><b>Javascript Key</b></h5>
-              </div>
-              <div id="keyValue">
-                <h5>{{selectedProject.keys.js}}</h5>
-              </div>
-            </div>
-          </div>          
-          
-      </div>     
-    </div>
-  </div>
-</div>
-<!--End of View Keys Modal-->
+        <div class="form-group">
+          <label>Master key</label>         
+          <div class="input-group">
+                <input type="text" class="form-control" ng-model="selectedProject.keys.master">
+                <span class="input-group-btn">
+                <button class="btn btn-prusia" type="button" clip-copy="selectedProject.keys.master" ng-click="copyKeys('masterKey')">{{appKeysText.masterKey}}</button>
+                </span>
+          </div>
+        </div>        
+
+        <div class="form-group">
+          <label>Javascript key</label>          
+          <div class="input-group">
+                <input type="text" class="form-control" ng-model="selectedProject.keys.js">
+                <span class="input-group-btn">
+                <button class="btn btn-prusia" type="button" clip-copy="selectedProject.keys.js" ng-click="copyKeys('javascriptKey')">{{appKeysText.javascriptKey}}</button>
+                </span>
+          </div>
+        </div>      
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Close</button>  
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.Keys Modal -->
 
    
   

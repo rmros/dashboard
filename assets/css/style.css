@@ -4783,7 +4783,7 @@ a.list-group-item:hover + a.list-group-item {
 }
 .colored-header .modal-header {
   padding: 20px;
-  border-bottom: 5px solid #634d93 !important;
+  border-bottom: 5px solid #54ADE9 !important;
   background-color: #549afc;
   color: #fff;
 }
@@ -7865,6 +7865,126 @@ ul.timeline li > .date {
 .appBx{
   min-height:305px;  
 }
+
+.flex-wrapper{
+   /* Flex rules */
+    display: flex;
+    display:-webkit-flex;
+    display:-moz-flex;
+    
+    
+    flex-flow:row wrap;
+    justify-content:flex-start;
+    align-items:flex-start;
+    
+    
+    -moz-flex-flow:row wrap;
+    -moz-justify-content: flex-start;
+    
+    -webkit-flex-flow:row wrap;
+    -webkit-justify-content: flex-start;
+    -webkit-align-items:flex-start;
+    margin-top:8px;
+    cursor: pointer;
+}
+.flex-li{
+  /* Flex rules */
+    display: flex;
+    display:-webkit-flex;
+    display:-moz-flex;
+
+    justify-content:flex-start;
+    align-items:center;
+    
+    -moz-justify-content: flex-start; 
+    -moz-align-items:center;   
+    
+    -webkit-justify-content: flex-start;
+    -webkit-align-items:center;
+    border-radius: 5px;
+    padding-top:1.5px; 
+    padding-left:10px;
+    padding-bottom:1.5px;
+    padding-right:3px;     
+
+  }
+.flex-items{
+  flex:1;
+  -moz-flex:1;
+  -webkit-flex:1;
+}
+.tableName{
+  flex:7;
+  -moz-flex:7;
+  -webkit-flex:7;
+}
+.flex-li .tableName p,.tableIcon i{
+  visibility: visible;
+  color:black;
+}
+
+.flex-li .tableEdit i{
+  visibility: hidden;
+}
+.flex-li .tableDelete i{
+  visibility: hidden;
+}
+.flex-li:hover{
+  background-color: #F0F0F0;
+}
+
+.flex-li:hover .tableName p{
+  color:black;
+}
+.flex-li:hover .tableIcon i{
+  color:black;
+}
+.flex-li:hover .tableEdit i{
+  visibility: visible;
+  color:black;
+}
+.flex-li:hover .tableDelete i{
+  visibility: visible;
+  color:black;
+}
+
+/*on li active*/
+.liActive,.liActive:hover {
+  background-color:#54ADE9;
+}
+.liActive .tableName p,.liActive .tableIcon i,.liActive:hover .tableName p,.liActive:hover .tableIcon i{
+  color:white;
+}
+
+.liActive .tableEdit i,.liActive:hover .tableEdit i{
+  visibility: visible;
+  color:white;
+}
+
+.liActive .tableDelete i,.liActive:hover .tableDelete i{
+  visibility: visible;
+  color:white;
+}
+/*end of li active*/
+.scrollerContainer{
+  width:94.5%; 
+  height:400px;
+}
+
+.grid-parent{
+  width:99.99%;   
+}
+
+.grid{
+  width:100%;
+  height:450px;
+}
+
+
+
+
+
+
 
  
 

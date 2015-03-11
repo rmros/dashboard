@@ -11,7 +11,12 @@ app.controller('dataBrowserController',
       columnDataTypeService,
       tableErrorService,
       projectService,
-      tableService) {
+      tableService,
+      DTOptionsBuilder,
+      DTColumnBuilder,
+      DTColumnDefBuilder,
+      $resource,
+      $timeout) {
        
       var id;
       var isAppLoaded = false;
@@ -19,12 +24,28 @@ app.controller('dataBrowserController',
 
       $scope.displayed = []; //this is an array of objects which are showed on the table.
 
+      //Table
+      var vm = $scope;
+      vm.dtOptions = DTOptionsBuilder.newOptions()
+      .withPaginationType('full_numbers')
+      .withDisplayLength(10)
+      .withBootstrap()     
+      .withOption('scrollY', '300px')
+      .withOption('sScrollX', '100%')
+      .withOption('scrollCollapse', true)
+      .withOption('paging', true);
+
+
+      vm.dtColumnDefs = [
+        DTColumnDefBuilder.newColumnDef(0)       
+      ];        
+      //End of Table
+
       $scope.initialize = function() {
           $scope.dataBrowserCss="activeMenu";
           $scope.id = $stateParams.appId;
           id = $scope.id;      
-          loadProject(id);
-          
+          loadProject(id);          
       };
 
       $scope.selectAllEntities = function(){
@@ -201,21 +222,69 @@ app.controller('dataBrowserController',
         $scope.selectedTable = t; 
         $scope.isLoading = true;
 
+
         if(!obj){
             //load the list for the first time. 
             query = new CB.CloudQuery($scope.selectedTable.name);
             query.setSkip(0);
             query.setLimit(10);
             query.orderByDesc('createdAt');
-            query.find({success : function(list){
-              //this is a list of CLoudObjects.
-              $scope.displayed = list;
+            query.find({success : function(list){         
+        
+              //grid column names              
+              $scope.colNames=[];
+              for(var i=0;i<$scope.selectedTable.columns.length;++i){
+                var colDataType=$scope.selectedTable.columns[i].dataType;
+                var colName=$scope.selectedTable.columns[i].name; 
+
+                var colWidth='30%';
+                var colVisibility=true;
+                var cellEdit=true;
+                var cellTemplate=null;
+
+                if(colName=="id"){
+                   colVisibility=false;
+                }
+                if(colName=="createdAt" || colName=="updatedAt"){
+                   colWidth='40%';
+                }
+
+                if(colDataType=="ACL" || colDataType=="Object"){
+                  colWidth='15%';
+                  cellTemplate="<div><button class='btn-info btn-rad' ng-click='grid.appScope.editJSON(row.entity,col.field)'>Permissions</button></div>";
+                }
+
+                var colDefObj={                
+                  field:colName,
+                  name:colName,
+                  visible:colVisibility,                  
+                  width:colWidth,
+                  maxWidth:200,
+                  minWidth:40,
+                  enableCellEdit:cellEdit, 
+                  cellTemplate:cellTemplate
+                };
+                $scope.colNames.push(colDefObj);
+              }                
+
+              //this is a list of CLoudObjects.          
+              //grid actual data
+              $scope.displayed=[];
+              for(var i=0;i<list.length;++i){
+                $scope.displayed.push(list[i].document);
+              }   
+
+              //grid paginations
+              $scope.paginationSizes=[10,20, 30];
+              $scope.paginationSize=4;
+              $scope.selectedItems=[];            
+
               $scope.isLoading = false;
               $scope.$digest();
 
             }, error : function(error){
                 Messenger().post({
-                  message: 'We cannot load your data at this point in time. Please try again later.',
+                  message:'We cannot load your data at this point in time. Please try again later.',
                   type: 'error',
                   showCloseButton: true
                 });
@@ -271,21 +340,22 @@ app.controller('dataBrowserController',
         var obj = new CB.CloudObject($scope.selectedTable.name);
         obj.set('createdAt', new Date());
         obj.set('updatedAt', new Date());
-        $scope.displayed.push(obj);
-
+        $scope.displayed.push(obj.document);
         //make it editable. 
+        /*
         $scope.selectedEntities[$scope.displayed.length-1] = null;
         $scope.switchEditMode($scope.displayed.length-1);
 
         //window.scrollBy(0,900);
         //Updating Scrollbar
-        $scope.$emit('content.changed');
+        $scope.$emit('content.changed');*/
       }; 
 
       $scope.deleteRow=function(){
         
         //delete first. 
-        var temp = angular.copy($scope.displayed);
+        console.log($scope.selectedItems);
+        /*var temp = angular.copy($scope.displayed);
         $scope.displayed = [];
 
         for(var i=0;i<temp.length;i++){          
@@ -294,7 +364,7 @@ app.controller('dataBrowserController',
           }else{
             $scope.displayed.push(temp[i]);
           }            
-        }
+        }*/
 
 
       };
@@ -327,7 +397,7 @@ app.controller('dataBrowserController',
 
         $scope.editableObject = obj;
         $scope.jsonObjColumnName = colName;
-        $scope.jsonObj=obj.get(colName);
+        $scope.jsonObj=obj[colName];
         $('#jsonModal').modal('show');
 
       };
@@ -406,6 +476,17 @@ app.controller('dataBrowserController',
         $scope.predicate=columnName;
         $scope.reverse=status;        
       }; 
+
+      /*$scope.onRegisterApi=function(gridApi){
+           //set gridApi on scope
+            $scope.gridApi = gridApi;
+            gridApi.selection.on.rowSelectionChanged($scope,function(row){
+              var msg = 'row selected ' + row.isSelected;
+              $log.log(msg);
+            });
+       
+            
+      };*/
 
 });
  
