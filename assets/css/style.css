@@ -7972,7 +7972,8 @@ ul.timeline li > .date {
 }
 
 .grid-parent{
-  width:99.99%;   
+  width:98.99%; 
+  background-color: white;  
 }
 
 .grid{

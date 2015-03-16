@@ -14,7 +14,7 @@
 
 	<!-- Bootstrap core CSS -->
 	<link href="assets/js/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
-   <link href="bower_components/angular-datatables/dist/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet"/>
+  <link href="bower_components/angular-datatables/dist/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet"/>
 	<link rel="stylesheet" type="text/css" href="assets/js/jquery.gritter/css/jquery.gritter.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
 	<link rel="stylesheet" type="text/css" href="assets/js/jquery.nanoscroller/nanoscroller.css" />
@@ -25,7 +25,7 @@
   <link href="bower_components/messenger/build/css/messenger.css" rel="stylesheet" />
   <link href="bower_components/messenger/build/css/messenger-theme-flat.css" rel="stylesheet" />
   <link href="bower_components/ng-scrollable/assets/ng-scrollable.css" rel="stylesheet" />   
-  <link href="assets/js/bootstrap.switch/bootstrap-switch.css" rel="stylesheet" />
+  <link href="assets/js/bootstrap.switch/bootstrap-switch.min.css" rel="stylesheet" />
   <link href="assets/css/contextMenu.css" rel="stylesheet" />
   <link href="bower_components/animate-css/animate.css" rel="stylesheet" /> 
   <link href="bower_components/sweetalert/lib/sweet-alert.css" rel="stylesheet" />
@@ -43,9 +43,9 @@
   <link href="assets/js/jquery.x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
   <link href="assets/css/scrollbar.css" rel="stylesheet"/>
   <link href="assets/js/DataTables/extensions/Scroller/css/dataTables.scroller.css" rel="stylesheet"/>
-  <link rel="stylesheet" href="http://ui-grid.info/release/ui-grid-unstable.css" type="text/css">  
+  <link rel="stylesheet" href="assets/js/ui-grid/ui-grid-unstable.css" type="text/css">  
   <link href="bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css" rel="stylesheet"/>
-
+  <link href="bower_components/angular-ui-switch/angular-ui-switch.css" rel="stylesheet"/>
 	<link href="assets/css/style.css" rel="stylesheet"/>  
     
 </head>
@@ -64,18 +64,17 @@
           </div>
           
           <ul class="cl-vnavigation">
-            <li class="active"><a href="#/"><i class="fa fa-th-large "></i><span>Apps</span></a>              
+            <li class="active"><a href="#/"><i class="fa fa-th-large "></i><span>Apps</span></a>             
             </li>
 
-            <li ng-show="currentProject"><a><i class="fa fa-database"></i><span>Data</span></a>
-              <ul class="sub-menu">
-                <li><a href="#/{{currentProject.appId}}/data/browser/table/tableId" ng-click="toggleSideMenu()"><span></span>Data Browser</a></li>
-                <li><a href="#/{{currentProject.appId}}/data/designer/table/tableId" ng-click="toggleSideMenu()"><span></span>Table Designer</a></li>
-              </ul>
+            <li ng-show="currentProject"><a href="#/{{currentProject.appId}}/data/browser/table/tableId" ng-click="toggleSideMenu()"><i class="fa fa-database "></i><span>Data Browser</span></a>   
             </li>
 
-            <li ng-show="currentProject"><a  href="#/{{currentProject.appId}}/pricing"><i class="fa fa-credit-card"></i><span>Billing</span></a>
+            <li ng-show="currentProject"><a href="#/{{currentProject.appId}}/data/designer/table/tableId"  ng-click="toggleSideMenu()"><i class="fa fa-cogs"></i><span>Table Designer</span></a>   
             </li>
+
+            <!--<li ng-show="currentProject"><a  href="#/{{currentProject.appId}}/pricing"><i class="fa fa-credit-card"></i><span>Billing</span></a>
+            </li>-->
 
           </ul>
 
@@ -111,7 +110,8 @@
         </div><!--/.nav-collapse animate-collapse -->
     </div>
   </div>
-  <!-- /TOP NAVBAR -->   
+  <!-- /TOP NAVBAR --> 
+   
   <ui-view></ui-view>   
 	
 </div>
@@ -143,6 +143,7 @@
   <script src="assets/js/kendo.all.min.js"></script>
 
   <script src="assets/js/bootstrap.switch/bootstrap-switch.js"></script>
+  <script src="bower_components/angular-ui-switch/angular-ui-switch.js"></script>  
   
   <script src="bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch.min.js"></script>
   <script src="bower_components/angular-dragdrop/src/angular-dragdrop.js"></script>
@@ -189,7 +190,7 @@
 
 <!--UI Grid-->
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-touch.js"></script>
-<script src="http://ui-grid.info/release/ui-grid-unstable.js"></script>
+<script src="assets/js/ui-grid/ui-grid-unstable.js"></script>
 <!--/UI Grid-->
 
 
@@ -227,6 +228,7 @@
 <script type="text/javascript" src="app/directives/tooltip/tooltip.js"></script>
 <script type="text/javascript" src="app/directives/scrollbar/scrollbar.js"></script>
 <script type="text/javascript" src="app/directives/scrollbar/malihu-scrollbar.js"></script>
+<script type="text/javascript" src="app/directives/switch/bootstrap-switch.js"></script>
 <script type="text/javascript" src="app/directives/table-xeditable/table-xeditable.js"></script>
 </body>
 

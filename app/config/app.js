@@ -7,12 +7,10 @@ var app=angular.module('CloudBoostDashboard',
     'ui.router',
     'kendo.directives',
     'ngPrettyJson',
-    'smart-table',
     'ngCookies',
     'angular-intercom',
     'ngClipboard',
     'datatables',
-    'datatables.bootstrap',
     'datatables.scroller',
     'ngResource',
     'ui.grid',
@@ -20,7 +18,10 @@ var app=angular.module('CloudBoostDashboard',
     'ui.grid.pagination',
     'ui.grid.resizeColumns',
     'ui.grid.edit',
-    'ui.grid.selection'  
+    'ui.grid.selection',
+    'ui.grid.autoResize',
+    'ui.grid.resizeColumns',    
+    'uiSwitch'  
 	]);
 
 var serverURL="http://localhost:3000";
