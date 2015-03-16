@@ -47,6 +47,12 @@ app.factory('columnDataTypeService', function () {
               visible: true
             },
             {
+              name : 'File',
+              text : 'File',
+              type: 'static',
+              visible: true
+            },
+            {
               name : 'Id',
               text : 'ID',
               type: 'static',
