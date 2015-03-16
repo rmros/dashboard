@@ -27,66 +27,38 @@
         </div>       
     </div>   
     
-    <div class="content">
+    <div class="content" style="background-color:white">
       <div class="row">
-        <div class="col-md-12">        
-
-         <div data-ng-show="!columnErrorForEdit" ng-show="currentProject.currentTables.length>0" style="padding-left:20px;">
-             <h2>{{selectedTable.name}}</h2>
-         </div>
-
-          <div  style="padding-left:24px;" ng-show="currentProject.currentTables.length==0">
+        <div class="col-md-12">
+          <!--No tables-->    
+          <div  ng-show="currentProject.currentTables.length==0">
              <h2><i class="fa fa-exclamation"></i>&nbsp;No tables, Add tables in your <a href="#/{{currentProject.appId}}/data/designer/table/tableId">&nbsp;Table Designer</a></h2>
          </div>
-         <div style="padding-left:24px;">  
 
-            <button ng-click="addRow()" type="submit" class="btn btn-default cbBtn"><i class="fa fa-plus-square fa-lg"></i>&nbsp;Row</button>               
+         <!--tables tools-->
+         <div ng-show="currentProject.currentTables.length>0">
+            <button ng-click="addRow()" type="submit" class="btn btn-info btn-rad btn-trans"><i class="fa fa-plus-square fa-lg"></i>&nbsp;Row</button>               
 
-            <button ng-click="deleteRow()" type="submit" class="btn btn-default cbBtn"><i class="fa fa-minus-square fa-lg"></i>&nbsp;Row</button>
+            <button ng-click="deleteRow()" type="submit" class="btn btn-info btn-rad btn-trans"><i class="fa fa-minus-square fa-lg"></i>&nbsp;Row</button>
 
-            <button ng-click="refresh()" type="submit" class="btn btn-default cbBtn"><i class="fa fa-refresh fa-lg"></i>&nbsp;Refresh</button>
-      
+            <button ng-click="refresh()" type="submit" class="btn btn-info btn-rad btn-trans"><i class="fa fa-refresh fa-lg"></i>&nbsp;Refresh</button>      
         </div>
 
         </div>  
       </div>
 
-      
-      <!--table row starts-->
-      <div class="row">
-          <div class="col-md-12">
-            <div style="padding-left:24px;">
-              <div  ng-show="currentProject.currentTables.length>0">
-                <!--table-->
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="block-flat">                       
-                        <div class="content grid-parent" >
-                          <div class="table-responsive grid" ui-grid-edit ui-grid-pagination ui-grid-resize-column ui-grid-selection external-scopes="clickHandler" ui-grid="{data:displayed,enableSorting:true,columnDefs:colNames,paginationPageSizes:paginationSizes,paginationPageSize:paginationSize,enableRowSelection:true,enableSelectAll:true,multiSelect: true,onRegisterApi:onRegisterApi,selectedItems:selectedItems}">
-                                <!--<table class="table table-striped table-bordered">
-                                  <thead>
-                                    <tr>                                        
-                                        <th ng-repeat="col in selectedTable.columns">{{col.name}}</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="eachObj in displayed">
-                                        <td ng-repeat="col in selectedTable.columns">{{eachObj.document[col.name]}}</td>                            
-                                    </tr>                                  
-
-                                    </tbody>
-                                    
-                                </table>-->       
-                          </div>
-                        </div>
-                      </div>        
-                    </div>
+      <!--grid row starts-->
+      <div class="row" style="margin-top:3px;" ng-show="currentProject.currentTables.length>0">
+          <div class="col-md-12">                                                  
+                <div class="content grid-parent">
+                  <!--grid-->
+                  <div class="table-responsive grid" ui-grid-edit ui-grid-pagination ui-grid-resize-column ui-grid-selection  ui-grid-auto-resize ui-grid-resize-columns external-scopes="clickHandler" ui-grid="gridOptions">                   
                   </div>
-                  <!--/table-->
-              </div>    
-            </div>    
+                  <!--/grid--> 
+                </div>                     
           </div>
-       </div>
+      </div>
+      <!--grid row ends-->
 
     </div>
 </div>
