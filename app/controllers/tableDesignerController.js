@@ -11,12 +11,12 @@ app.controller('tableDesignerController',
        columnDataTypeService,
        tableErrorService,
        projectService,
-       tableService) {
+       tableService,
+       $timeout) {
       
         var id;
         
-        $scope.initialize = function() {
-
+        $scope.initialize = function() {         
             $scope.tableDesignerCss="activeMenu";
             $scope.showSaveBtn=true;                        
             $scope.colDataTypes=columnDataTypeService.getcolumnDataTypes();
@@ -28,89 +28,82 @@ app.controller('tableDesignerController',
               getProjectTables();
             }else{
               loadProject(id);
-            }
+            }            
 
         };
 
         $scope.selectTable = function(t) {
-            $scope.selectedTable = t;
-        };
-
-        $scope.renameTable = function(t) {
-            var elem = document.getElementById(t.id + "name");
-            elem.removeAttribute("disabled");
-            $scope.initialTableName = t.name;
-            elem.value = "";
-            elem.focus();
-        };
+            $scope.selectedTable = t;          
+        };      
 
         $scope.canChangeDatatype = function(col){
             if(!col.isEditable){
-                Messenger().post({
-                  message: 'This column is not editable. You cannot change the datatype.',
-                  type: 'error',
-                  showCloseButton: true
+                $.gritter.add({
+                    position: 'top-right',
+                    title: 'Error',
+                    text: 'This column is not editable. You cannot change the datatype.',
+                    class_name: 'danger'
                 });
             }
 
-            if(col.saved){
-                 Messenger().post({
-                  message: 'You cant change the datatype of a column which is already saved',
-                  type: 'error',
-                  showCloseButton: true
-                });
+            if(col.saved){ 
+
+                $.gritter.add({
+                    position: 'top-right',
+                    title: 'Error',
+                    text: 'You cant change the datatype of a column which is already saved',
+                    class_name: 'danger'
+                }); 
             }
         };
 
         $scope.canChangeRequired = function(col){
-            if(!col.isEditable){
-                Messenger().post({
-                  message: 'This column is not editable.',
-                  type: 'error',
-                  showCloseButton: true
+            if(!col.isEditable){               
+                $.gritter.add({
+                    position: 'top-right',
+                    title: 'Error',
+                    text: 'This column is not editable.',
+                    class_name: 'danger'
                 });
             }
 
             if(col.saved && !col.required){
-                 Messenger().post({
-                  message: 'You cant change the required after column is saved.',
-                  type: 'error',
-                  showCloseButton: true
-                });
+                
+                 $.gritter.add({
+                    position: 'top-right',
+                    title: 'Error',
+                    text: 'You cant change the required after column is saved.',
+                    class_name: 'danger'
+                }); 
             }
         };
 
         $scope.canChangeUnique = function(col){
             if(!col.isEditable){
-                Messenger().post({
-                  message: 'This column is not editable.',
-                  type: 'error',
-                  showCloseButton: true
+                $.gritter.add({
+                    position: 'top-right',
+                    title: 'Error',
+                    text: 'This column is not editable.',
+                    class_name: 'danger'
                 });
             }
 
             if(col.saved && !col.unique){
-                 Messenger().post({
-                  message: 'You cant change the required of a column after it is saved.',
-                  type: 'error',
-                  showCloseButton: true
-                });
+                
+                $.gritter.add({
+                    position: 'top-right',
+                    title: 'Error',
+                    text: 'You cant change the required of a column after it is saved.',
+                    class_name: 'danger'
+                }); 
             }
         };
+        
 
-        $scope.tableRenamed = function(t,isError) {
-          var elem = document.getElementById(t.id + "name");
-          if(isError){
-            elem.value = $scope.initialTableName;
-            t.name= $scope.initialTableName;
-            $scope.tableErrorForEdit=null;
-          }else{
-            if (elem.value == '')
-                elem.value = $scope.initialTableName;
-                elem.setAttribute("disabled", true);
-          }
-
-        };
+        $scope.deleteTableModal=function(t){
+          $scope.selectedTable == t;
+          $('#md-deleteTable').modal('show');
+        }
 
         $scope.deleteTable = function(t) {
             if ($scope.selectedTable == t)
@@ -122,6 +115,10 @@ app.controller('tableDesignerController',
               $rootScope.currentProject.deletedTables = [];
 
             $rootScope.currentProject.deletedTables.push(t);
+
+            $('#md-deleteTable').modal('hide');
+            $scope.saveTables();
+            
         };
 
 
@@ -223,28 +220,7 @@ app.controller('tableDesignerController',
               }
             //End of creating table  
             
-        } 
-
-        $scope.renameCol = function(col) {
-            var elem = document.getElementById(col.id + "column");
-            $scope.initialColName = col.name;
-            elem.value = "";
-            elem.focus();
-        };
-
-        $scope.colRenamed = function(col,isError) {
-          var elem = document.getElementById(col.id + "column");
-          if(isError){
-              elem.value = $scope.initialColName;
-              col.name=$scope.initialColName;
-              $scope.columnErrorForEdit=null;
-          }
-          else{
-            if (elem.value == '')
-                elem.value = $scope.initialColName;
-          }
-
-        };
+        }       
 
         $scope.deleteCol = function(col) {
             var i = $scope.selectedTable.columns.indexOf(col);
@@ -279,6 +255,7 @@ app.controller('tableDesignerController',
                 };
 
                 var i = $scope.selectedTable.columns.push(newcol);
+                $scope.saveTables();
 
 
         };
@@ -317,6 +294,7 @@ app.controller('tableDesignerController',
             }
 
         };
+
          $scope.saveTables=function(){
 
           $scope.showSaveBtn=false;
@@ -333,34 +311,26 @@ app.controller('tableDesignerController',
 
           if($rootScope.currentProject.tables.length===0 && (!$rootScope.currentProject.deletedTables || !$rootScope.currentProject.deletedTables.length)){
             $scope.showSaveBtn=true;
-
-             Messenger().post({
-                          message: 'Please add tables before you Save.',
-                          type: 'error',
-                          showCloseButton: true
+             
+              $.gritter.add({
+                  position: 'top-right',
+                  title: 'Error',
+                  text: 'Please add tables before you Save.',
+                  class_name: 'danger'
               });
 
           }else{
 
             $q.all(promises).then(
                      function(){
-
-                          $scope.showSaveBtn=true;
-
-                          Messenger().post({
-                            message: 'We have saved your tables.',
-                            type: 'success',
-                            showCloseButton: true
-                          });
+                        //tables got saved
                      },
                      function(error){
-
-                        $scope.showSaveBtn=true;
-
-                        Messenger().post({
-                          message:"We're sorry, We cant save your tables at this point in time. Please try again later.",
-                          type: 'error',
-                          showCloseButton: true
+                        $.gritter.add({
+                            position: 'top-right',
+                            title: 'Error',
+                            text: "We're sorry, We cant save your tables at this point in time. Please try again later.",
+                            class_name: 'danger'
                         });
 
                      }
@@ -382,11 +352,13 @@ app.controller('tableDesignerController',
                           }                              
                      },
                      function(error){
-                          Messenger().post({
-                            message: 'We cannot load your project at this point in time. Please try again later.',
-                            type: 'error',
-                            showCloseButton: true
-                          });
+                         
+                        $.gritter.add({
+                            position: 'top-right',
+                            title: 'Error',
+                            text: "We cannot load your project at this point in time. Please try again later.",
+                            class_name: 'danger'
+                        });
                      }
                    );
         }
@@ -394,24 +366,25 @@ app.controller('tableDesignerController',
         function getProjectTables(){
 
            tableService.getProjectTables($rootScope.currentProject).then(
-                     function(data){
-                          if(!data){
-                             $rootScope.currentProject.tables=[];
-                          }     
-                          else if(data){
-                              $rootScope.currentProject.tables=data;
-                              $scope.selectTable($rootScope.currentProject.tables[0]);
-                          }else{                                              
-                             $rootScope.currentProject.tables=[];
-                          }          
-                         
-                     }, function(error){
-                          Messenger().post({
-                            message: 'We cannot load your tables at this point in time. Please try again later.',
-                            type: 'error',
-                            showCloseButton: true
-                          });
-                     });
+               function(data){
+                    if(!data){
+                       $rootScope.currentProject.tables=[];
+                    }     
+                    else if(data){
+                        $rootScope.currentProject.tables=data;
+                        $scope.selectTable($rootScope.currentProject.tables[0]);
+                    }else{                                              
+                       $rootScope.currentProject.tables=[];
+                    }          
+                   
+               }, function(error){                          
+                    $.gritter.add({
+                      position: 'top-right',
+                      title: 'Error',
+                      text: "We cannot load your tables at this point in time. Please try again later.",
+                      class_name: 'danger'
+                  });
+               });
         }     
 
 

@@ -3,13 +3,13 @@
 * http://github.com/vitalets/x-editable
 * Copyright (c) 2013 Vitaliy Potapov; Licensed MIT */
 .editableform {
-    margin-bottom: 0; /* overwrites bootstrap margin */       
+    margin-bottom: 0; /* overwrites bootstrap margin */  
 }
 
 .editableform .control-group {
     margin-bottom: 0; /* overwrites bootstrap margin */
     white-space: nowrap; /* prevent wrapping buttons on new line */
-    line-height: 20px; /* overwriting bootstrap line-height. See #133 */
+    line-height: 20px; /* overwriting bootstrap line-height. See #133 */    
 }
 
 /* 
@@ -17,8 +17,8 @@
   See: https://github.com/vitalets/x-editable/issues/393
 */
 .editableform .form-control {
-    width: auto;
-  }
+    width: auto;   
+}
 
 .editable-buttons {
    display: inline-block; /* should be inline to take effect of parent's white-space: nowrap */
@@ -63,7 +63,7 @@
 }
 
 .editable-inline .editableform-loading {
-    background-position: left 5px;      
+    background-position: left 5px; 
 }
 
  .editable-error-block {
@@ -147,7 +147,7 @@
    white-space: pre-wrap;
 }
 .editable-container.editable-popup {
-    max-width: none !important; /* without this rule poshytip/tooltip does not stretch */
+    max-width: none !important; /* without this rule poshytip/tooltip does not stretch */   
 }  
 
 .editable-container.popover {
