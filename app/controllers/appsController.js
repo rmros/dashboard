@@ -15,9 +15,11 @@ app.controller('appsController',['$scope',
   $intercom,
   $timeout) {
 
+
         $scope.init=function(){
               //Hiding the Menu
               $scope.isLoading = [];
+              $scope.appListLoading=true;
               $rootScope.showMenu=false;
               $rootScope.currentProject=null;
               $scope.showSaveBtn = true;
@@ -25,74 +27,60 @@ app.controller('appsController',['$scope',
                 appId:"Copy",
                 masterKey:"Copy",
                 javascriptKey:"Copy"
-              };
+              }; 
 
-               $http.post(serverURL+'/auth/signin', {email:"hotcomputerworks@hot.xyz",password:"sample"}).
-               success(function(data, status, headers, config) { 
-
-              $cookies.userId = data._id;
-              $cookies.userFullname = data.name; 
-              $cookies.email = data.email;
-              $cookies.createdAt = data.createdAt;
-
-                // Intercom integration   
-                integrateIntercom();
-
-                  //listing start
-                  var listPromise=projectService.projectList();
-                   listPromise.then(
-                     function(data){
-                         $scope.projectListObj=data;
-                         //temporary
-                         $scope.appKey="xYmasZjSykaDXwpPk5QBknHsEdnXcXImVtGfle6P";
-                         $scope.masterKey="60tyPl8GMRJQlHKbKw4YSQK8038L7L646fmuVzeY";
-                         $scope.clientKey="eApH5K6gq1uUg0fLzpejZIomwv6OhSHWYl3IKvJm";
-
-                     },
-                     function(error){
-                        $.gritter.add({
-                          position: 'top-right',
-                          title: 'Error',
-                          text: 'Cannot connect to server. Please try again.',
-                          class_name: 'danger'
-                        });
-                     }
-                   );
-                   //listing ends
-               }).
-               error(function(data, status, headers, config) {                     
+               // Intercom integration   
+              integrateIntercom();
+              //listing start
+              var listPromise=projectService.projectList();
+               listPromise.then(
+                 function(data){
+                     $scope.appListLoading=false; 
+                     $scope.projectListObj=data;                    
+                 },
+                 function(error){
+                    $scope.appListLoading=false; 
                     $.gritter.add({
-                        position: 'top-right',
-                        title: 'Error',
-                        text: 'Cannot connect to server. Please try again.',
-                        class_name: 'danger'
+                      position: 'top-right',
+                      title: 'Error',
+                      text: 'Cannot connect to server. Please try again.',
+                      class_name: 'danger'
                     });
-               });
-               //end of http call
+                 }
+               );
+               //listing ends       
         };
 
-        $scope.deleteProject = function(project, index){
+        $scope.deleteAppModal=function(project, index){
+            $scope.projectToBeDeleted=project;
+            $scope.projectToBeDeletedIndex=index;
+            $scope.confirmAppName=null;
+            $('#deleteappmodal').modal();
+        };
 
-          //first confirm.
-          bootbox.prompt("To delete, type in the app name.", function(result) {                
-            if (result === null) { 
+        $scope.deleteProject = function(){               
+            if ($scope.confirmAppName === null) { 
+              $('#deleteappmodal').modal("hide"); 
               $.gritter.add({
                   position: 'top-right',
-                  title: 'Error',
+                  title: 'Warning',
                   text: 'App name you entered was empty.',
-                  class_name: 'danger'
-              });             
+                  class_name: 'prusia'
+              }); 
+              $scope.confirmAppName=null;          
             } else {
-              if(result === project.name){
+              if($scope.confirmAppName === $scope.projectToBeDeleted.name){
 
-                $scope.isLoading[index] = true;
+                $scope.isLoading[$scope.projectToBeDeletedIndex] = true;
 
-                 var promise=projectService.deleteProject(project.appId);
+                 var promise=projectService.deleteProject($scope.projectToBeDeleted.appId);
                     promise.then(
                       function(){
-                        $scope.isLoading[index] = false;
+                        $scope.isLoading[$scope.projectToBeDeletedIndex] = false;
+                        $scope.confirmAppName=null;
+                        $('#deleteappmodal').modal("hide");  
                         //project is deleted.
-                        $scope.projectListObj.splice($scope.projectListObj.indexOf(project),1);
+                        $scope.projectListObj.splice($scope.projectListObj.indexOf($scope.projectToBeDeleted),1);
                         $.gritter.add({
                           position: 'top-right',
                           title: 'Success',
@@ -102,7 +90,9 @@ app.controller('appsController',['$scope',
 
                       },
                       function(error){
-                        $scope.isLoading[index] = false;                        
+                        $scope.confirmAppName=null;
+                        $('#deleteappmodal').modal("hide");  
+                        $scope.isLoading[$scope.projectToBeDeletedIndex] = false;                        
                         $.gritter.add({
                           position: 'top-right',
                           title: 'Error',
@@ -112,18 +102,17 @@ app.controller('appsController',['$scope',
                          
                       });
 
-              } else{               
+              } else{  
+                $scope.confirmAppName=null;
+                $('#deleteappmodal').modal("hide");               
                 $.gritter.add({
                     position: 'top-right',
-                    title: 'Error',
-                    text: 'Project name doesnot match.',
-                    class_name: 'danger'
+                    title: 'Warning',
+                    text: 'App name doesnot match.',
+                    class_name: 'prusia'
                 });         
               }                      
-            }
-          });
-
-         
+            }        
         };
 
         $scope.createProject=function(isValid){
@@ -210,22 +199,13 @@ app.controller('appsController',['$scope',
         $scope.goToTableDesigner=function(projectObj){
           //Setting Current Project
            $rootScope.currentProject=projectObj;
+
+           /*Collapse sidebar*/           
+            toggleSideBar();
+
            //Redirect to Table designer
            window.location.href="/#/"+projectObj.appId+"/data/designer/table/";
-           //Toggle side menu
-            var b = $("#sidebar-collapse")[0];
-            var w = $("#cl-wrapper");
-            var s = $(".cl-sidebar");
-            
-            if(w.hasClass("sb-collapsed")){
-              $(".fa",b).addClass("fa-angle-left").removeClass("fa-angle-right");
-              w.removeClass("sb-collapsed");
-              $.cookie('FLATDREAM_sidebar','open',{expires:365, path:'/'});
-            }else{
-              $(".fa",b).removeClass("fa-angle-left").addClass("fa-angle-right");
-              w.addClass("sb-collapsed");
-              $.cookie('FLATDREAM_sidebar','closed',{expires:365, path:'/'});
-            }
+           
         };
 
         $scope.viewKeys=function(list){
@@ -264,6 +244,17 @@ app.controller('appsController',['$scope',
 
           $intercom.boot(user);
 
+        }
+
+        function toggleSideBar(_this){
+          var b = $("#sidebar-collapse")[0];
+          var w = $("#cl-wrapper");
+          var s = $(".cl-sidebar");
+         
+          $(".fa",b).removeClass("fa-angle-left").addClass("fa-angle-right");
+          w.addClass("sb-collapsed");
+          $.cookie('FLATDREAM_sidebar','closed',{expires:365, path:'/'});         
+          //updateHeight();
         }
 
 }]);
