@@ -21,6 +21,7 @@ app.controller('dataBrowserController',
       uiGridConstants) {
        
       var id;
+      var tableId;
       var isAppLoaded = false;
       $scope.isLoading = false;
 
@@ -39,8 +40,9 @@ app.controller('dataBrowserController',
 
       $scope.initialize = function() {
           $scope.dataBrowserCss="activeMenu";
-          $scope.id = $stateParams.appId;
-          id = $scope.id;      
+          id = $stateParams.appId;
+          tableId= $stateParams.tableId;
+            
           loadProject(id);          
       };    
       
@@ -411,10 +413,19 @@ app.controller('dataBrowserController',
                           $rootScope.currentProject.currentTables=data;
 
                           if($rootScope.currentProject.currentTables.length>0){
-                            $scope.selectTable($rootScope.currentProject.currentTables[0]); 
-                          }
 
-                          $scope.rowChecked=[];
+                             if(tableId){
+                              var tableObj=_.first(_.where($rootScope.currentProject.currentTables, {name:tableId}));
+                              if(tableObj){
+                                $scope.selectTable(tableObj);
+                              }else{
+                                $scope.selectTable($rootScope.currentProject.currentTables[0]); 
+                              }                          
+                            }else{
+                              $scope.selectTable($rootScope.currentProject.currentTables[0]); 
+                            } 
+                            
+                          }                    
                       }else{                                              
                          $rootScope.currentProject.currentTables=[];
                       } 

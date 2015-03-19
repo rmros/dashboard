@@ -143,7 +143,7 @@ app.factory('tableTypeService', function (utilityService) {
                   dataType: 'List',
                   relatedTo: null, 
                   id : utilityService.makeId(),
-                  relatedToType : 'role',                 
+                  relatedToType :'Role',                 
                   relationType: 'table', 
                   required: false,
                   unique: false,
@@ -209,7 +209,7 @@ app.factory('tableTypeService', function (utilityService) {
               icon : "shield",
               name:"Role",
               isRenamable: false,
-              isEditable: false,
+              isEditable: true,
               isDeletable: true,
               maxCount: 1,
               columns:[{

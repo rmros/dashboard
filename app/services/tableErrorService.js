@@ -161,28 +161,30 @@ app.factory('tableErrorService', function () {
     }
 
     function isCommonName(name,arry){
-        var isThere=_.first(_.where(arry, {name:name}));
-        if(isThere){
-            return true;
-        }
-            return false;
+        var isThere=false;    
+        for(var i=0;i<arry.length;++i){
+            if(arry[i].name.toLowerCase()==name.toLowerCase()){
+                isThere=true;
+                break;
+            }
+        } 
+
+        return isThere;  
     }
 
-    function isCommonNameExceptThisObj(name,thisObj,arry){
+    function isCommonNameExceptThisObj(name,thisObj,arry){     
 
-      var isThere = _.find(arry, function(eachTable){
-                        if(eachTable.id!=thisObj.id){
-                                if(eachTable.name==name){
-                                    return true;
-                                }
-                                return false;
-                          }
-                      });
+        var isThere=false;
 
-        if(isThere){
-            return true;
+        for(var i=0;i<arry.length;++i){
+            if(arry[i].id!=thisObj.id){
+                if(arry[i].name.toLowerCase()==name.toLowerCase()){
+                    isThere=true;
+                    break;
+                }
+            }
         }
-            return false;
+        return isThere;
     }
 
 

@@ -67,10 +67,10 @@
             <li class="active"><a href="#/"><i class="fa fa-th-large "></i><span>Apps</span></a>             
             </li>
 
-            <li ng-show="currentProject"><a href="#/{{currentProject.appId}}/data/browser/table/tableId" ng-click="toggleSideMenu()"><i class="fa fa-database "></i><span>Data Browser</span></a>   
+            <li ng-show="currentProject"><a href="#/{{currentProject.appId}}/data/browser/table/" ng-click="toggleSideMenu()"><i class="fa fa-table"></i><span>Data Browser</span></a>   
             </li>
 
-            <li ng-show="currentProject"><a href="#/{{currentProject.appId}}/data/designer/table/tableId"  ng-click="toggleSideMenu()"><i class="fa fa-cogs"></i><span>Table Designer</span></a>   
+            <li ng-show="currentProject"><a href="#/{{currentProject.appId}}/data/designer/table/"  ng-click="toggleSideMenu()"><i class="fa fa-database"></i><span>Table Designer</span></a>   
             </li>
 
             <!--<li ng-show="currentProject"><a  href="#/{{currentProject.appId}}/pricing"><i class="fa fa-credit-card"></i><span>Billing</span></a>
@@ -94,7 +94,7 @@
       <div class="navbar-collapse">
         <ul class="nav navbar-nav navbar-right user-nav">
           <li class="dropdown profile_menu">
-            <a class="dropdown-toggle" data-toggle="dropdown"><img alt="Avatar" src="assets/images/icon.png"><span>{{userFullname}}</span> <b class="caret"></b></a>
+            <a class="dropdown-toggle" data-toggle="dropdown"><img alt="Avatar" src="assets/images/anonymous.jpg"><span>{{userFullname}}</span> <b class="caret"></b></a>
             <ul class="dropdown-menu">          
               <li><a ng-click="logOut()">Sign Out</a></li>
             </ul>
@@ -102,7 +102,7 @@
         </ul>	
         <ul class="nav navbar-nav not-nav">
           <li class="button">
-            <h2>{{currentProject.name}}</h2>
+            <h2>{{currentProject.name || "Your Apps"}}</h2>
           </li>
           </ul>
         </div><!--/.nav-collapse animate-collapse -->

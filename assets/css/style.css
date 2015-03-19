@@ -2796,7 +2796,7 @@ table.information > tbody > tr > td {
 .btn-primary:active,
 .btn-primary.active,
 .open .dropdown-toggle.btn-primary {
-  background-color: #816bb1;
+  background-color: #549afc;
   border-color: transparent;
 }
 .btn-primary:active {
@@ -7866,6 +7866,31 @@ ul.timeline li > .date {
   min-height:305px;  
 }
 
+
+.flex-add-Bx{
+   /* Flex rules */
+    display: flex;
+    display:-webkit-flex;
+    display:-moz-flex;
+
+    flex-flow:row wrap;
+    justify-content:space-between;
+    align-items:flex-start;
+    
+    
+    -moz-flex-flow:row wrap;
+    -moz-justify-content: space-between;
+    
+    -webkit-flex-flow:row wrap;
+    -webkit-justify-content: space-between;
+    -webkit-align-items:flex-start;    
+}
+.add-Bx{
+  flex:1;
+  -moz-flex:1;
+  -webkit-flex:1;
+}
+
 .flex-wrapper{
    /* Flex rules */
     display: flex;
@@ -7960,12 +7985,17 @@ ul.timeline li > .date {
   visibility: visible;
   color:white;
 }
+.liActive .tableEdit .editable-cancel i,.liActive:hover .tableEdit .editable-cancel i{
+  visibility: visible;
+  color:black;
+}
 
 .liActive .tableDelete i,.liActive:hover .tableDelete i{
   visibility: visible;
   color:white;
 }
 /*end of li active*/
+
 .scrollerContainer{
   width:94.5%; 
   height:400px;
@@ -7983,6 +8013,17 @@ ul.timeline li > .date {
 
 .fg-dangerRed{
   color:#F46B5D;
+}
+.fg-infoBlue{
+  color:#54ADE9;
+}
+.bg-infoBlueBtn{
+  background-color:#54ADE9;
+  color:white;
+}
+.bg-infoBlueBtn:hover{
+  background-color:#54ADE9;
+  color:white;
 }
 .deleteCol{
   color:gray;
