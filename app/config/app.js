@@ -21,7 +21,8 @@ var app=angular.module('CloudBoostDashboard',
     'ui.grid.selection',
     'ui.grid.autoResize',
     'ui.grid.resizeColumns',    
-    'uiSwitch'  
+    'uiSwitch',
+    'ui.checkbox'
 	]);
 
 var serverURL="http://localhost:3000";

@@ -18,12 +18,13 @@ app.directive('xeditable',['$timeout','tableErrorService','$rootScope',function(
                     validate: function(value) {                  
                         var result=tableErrorService.checkErrorsForEdit(value,tableObj,$rootScope.currentProject.tables,'table');
                         if(result){                              
-                             return result;                              
+                            return result;                              
                         }                        
                     },                
                     url: function(params) {
                          var i = $rootScope.currentProject.tables.indexOf(tableObj);
                          $rootScope.currentProject.tables[i].name=params.value;
+                         scope.saveTables();
                          scope.$apply();                       
                     } 
 

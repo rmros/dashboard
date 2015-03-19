@@ -94,17 +94,15 @@
       <div class="navbar-collapse">
         <ul class="nav navbar-nav navbar-right user-nav">
           <li class="dropdown profile_menu">
-            <a class="dropdown-toggle" data-toggle="dropdown"><img alt="Avatar" src="assets/images/avatar6-2.jpg"><span>Jane Smith</span> <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="#">Profile</a></li>
-              <li class="divider"></li>
-              <li><a href="#">Sign Out</a></li>
+            <a class="dropdown-toggle" data-toggle="dropdown"><img alt="Avatar" src="assets/images/icon.png"><span>{{userFullname}}</span> <b class="caret"></b></a>
+            <ul class="dropdown-menu">          
+              <li><a ng-click="logOut()">Sign Out</a></li>
             </ul>
           </li>
         </ul>	
         <ul class="nav navbar-nav not-nav">
           <li class="button">
-            <h2>App Name</h2>
+            <h2>{{currentProject.name}}</h2>
           </li>
           </ul>
         </div><!--/.nav-collapse animate-collapse -->
@@ -143,7 +141,8 @@
   <script src="assets/js/kendo.all.min.js"></script>
 
   <script src="assets/js/bootstrap.switch/bootstrap-switch.js"></script>
-  <script src="bower_components/angular-ui-switch/angular-ui-switch.js"></script>  
+  <script src="bower_components/angular-ui-switch/angular-ui-switch.js"></script> 
+  <script src="bower_components/angular-bootstrap-checkbox/angular-bootstrap-checkbox.js"></script>   
   
   <script src="bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch.min.js"></script>
   <script src="bower_components/angular-dragdrop/src/angular-dragdrop.js"></script>
@@ -216,6 +215,7 @@
 <script src="app/services/columnDataTypeService.js"></script>  
 <script src="app/services/tableErrorService.js"></script>  
 <script src="app/services/tableService.js"></script>  
+<script src="app/services/userService.js"></script> 
 
 <!--Controllers-->
 <script type="text/javascript" src="app/controllers/indexController.js"></script>
@@ -229,7 +229,8 @@
 <script type="text/javascript" src="app/directives/scrollbar/scrollbar.js"></script>
 <script type="text/javascript" src="app/directives/scrollbar/malihu-scrollbar.js"></script>
 <script type="text/javascript" src="app/directives/switch/bootstrap-switch.js"></script>
-<script type="text/javascript" src="app/directives/table-xeditable/table-xeditable.js"></script>
+<script type="text/javascript" src="app/directives/xeditable/table-xeditable.js"></script>
+<script type="text/javascript" src="app/directives/xeditable/column-xeditable.js"></script>
 </body>
 
 </html>

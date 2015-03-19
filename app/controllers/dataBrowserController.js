@@ -22,16 +22,20 @@ app.controller('dataBrowserController',
        
       var id;
       var isAppLoaded = false;
+      $scope.isLoading = false;
+
       var query = null;
-      var paginationOptions = {
-        pageNumber:0,
-        pageSize:10,
-        sort: null,
-        pageSizes:[10,25,50,75]
+      var paginationOptions = {       
+        pageNumber:1,
+        pageSize:20,  
+        totalItems:50,
+        pageSizes:[20,30,50,70],
+        sort: null
       };
 
       $scope.displayed = []; //this is an array of objects which are showed on the table.
       $scope.gridOptions ={};
+  
 
       $scope.initialize = function() {
           $scope.dataBrowserCss="activeMenu";
@@ -40,9 +44,9 @@ app.controller('dataBrowserController',
           loadProject(id);          
       };    
       
-      $scope.viewList = function(obj, col){
+      $scope.viewList = function(obj, colName){
 
-        var columnName = col.name;
+        var columnName = colName;
 
         var isStaticType = false;
 
@@ -58,7 +62,7 @@ app.controller('dataBrowserController',
         }
 
        if(isStaticType){
-            $scope.editJSON(obj,col.name);
+            $scope.editJSON(obj,columnName);
        }
 
       };
@@ -77,7 +81,7 @@ app.controller('dataBrowserController',
             var obj={};
 
             //index
-            if(saveIndex>=0){
+            if((typeof saveIndex=="number") && (saveIndex>=0)){
               index=saveIndex;
               obj=$scope.displayed[index];
             }
@@ -103,6 +107,9 @@ app.controller('dataBrowserController',
               delete obj.document.$$hashKey;
             }
 
+            obj.document.createdAt=new Date(obj.document.createdAt).toISOString(); 
+            obj.document.updatedAt=new Date(obj.document.updatedAt).toISOString(); 
+
             //save the object.
             obj.save().then(function(newObj){
                console.log(newObj);              
@@ -110,12 +117,13 @@ app.controller('dataBrowserController',
                $scope.displayDocument[index]=newObj.document;
                $scope.$digest();
 
-            }, function(error){
-               Messenger().post({
-                message: 'Cannot save this object at this point in time. Please try again later.',
-                type: 'error',
-                showCloseButton: true
-              });               
+            }, function(error){               
+               $.gritter.add({
+                  position: 'top-right',
+                  title: 'Error',
+                  text: 'Cannot save this object at this point in time. Please try again later.',
+                  class_name: 'danger'
+                });              
                $scope.$digest();
             });
 
@@ -128,7 +136,7 @@ app.controller('dataBrowserController',
             var obj={};
 
             //index
-            if(deleteIndex>=0){
+            if((typeof deleteIndex=="number") && (deleteIndex>=0)){
               index=deleteIndex;
               obj=$scope.displayed[index];
             }
@@ -160,12 +168,13 @@ app.controller('dataBrowserController',
                q.resolve(index);
                $scope.$digest();
 
-            }, function(error){               
-               Messenger().post({
-                message: 'Cannot delete this object at this point in time. Please try again later.',
-                type: 'error',
-                showCloseButton: true
-              });
+            }, function(error){              
+              $.gritter.add({
+                  position: 'top-right',
+                  title: 'Error',
+                  text: 'Cannot delete this object at this point in time. Please try again later.',
+                  class_name: 'danger'
+                }); 
               q.reject(error);
 
               $scope.$digest();
@@ -192,18 +201,19 @@ app.controller('dataBrowserController',
         if(!obj){
             //load the list for the first time.
             query = new CB.CloudQuery($scope.selectedTable.name);
-            query.setSkip(paginationOptions.pageNumber);
+            query.setSkip(paginationOptions.pageNumber-1);
             query.setLimit(paginationOptions.pageSize);
             query.orderByDesc('createdAt');
             query.find({success : function(list){         
                     loadGrid(list);         
                     $scope.$digest();                             
 
-            }, error : function(error){
-                Messenger().post({
-                  message:'We cannot load your data at this point in time. Please try again later.',
-                  type: 'error',
-                  showCloseButton: true
+            }, error : function(error){                
+                $.gritter.add({
+                  position: 'top-right',
+                  title: 'Error',
+                  text: 'We cannot load your data at this point in time. Please try again later.',
+                  class_name: 'danger'
                 });
             }});       
           }
@@ -218,11 +228,12 @@ app.controller('dataBrowserController',
               loadGrid($scope.displayed);            
               $scope.$digest();
 
-            }, error : function(error){
-                Messenger().post({
-                  message: 'We cannot load your data at this point in time. Please try again later.',
-                  type: 'error',
-                  showCloseButton: true
+            }, error : function(error){               
+                $.gritter.add({
+                  position: 'top-right',
+                  title: 'Error',
+                  text: 'We cannot load your data at this point in time. Please try again later.',
+                  class_name: 'danger'
                 });
             }});       
           }
@@ -239,12 +250,13 @@ app.controller('dataBrowserController',
             $q.all(promises).then(function(list){               
                loadGrid(list);     
                $scope.$digest();
-            }, function(){
-                Messenger().post({
-                  message: 'We cannot load your data at this point in time. Please try again later.',
-                  type: 'error',
-                  showCloseButton: true
-                });
+            }, function(){                
+                $.gritter.add({
+                  position: 'top-right',
+                  title: 'Error',
+                  text: 'We cannot load your data at this point in time. Please try again later.',
+                  class_name: 'danger'
+                }); 
             });  
           }
           
@@ -257,64 +269,57 @@ app.controller('dataBrowserController',
         obj.set('updatedAt', new Date());
         $scope.displayed.push(obj);
         $scope.displayDocument.push(obj.document);
-        //Disable Selection of new row                              
+
+        paginationOptions.totalItems=paginationOptions.totalItems+1;
+        $scope.gridApi.grid.options.totalItems=paginationOptions.totalItems;                              
       }; 
 
       $scope.deleteRow=function(){                        
         //delete first. 
         var selectedRows=$scope.gridApi.selection.getSelectedRows();
-        var row=unSavedRow(selectedRows);
-        if(row){
-            Messenger().post({
-                  message: 'You cannot delete a unsaved row',
-                  type: 'error',
-                  showCloseButton: true
-                });
-        }else{
+        deleteUnsavedRows(selectedRows);
 
-            var promiseArray=[];
-            for(var i=0;i<$scope.displayDocument.length;++i){ 
+        var promiseArray=[];
+        for(var i=0;i<$scope.displayDocument.length;++i){ 
 
-                var findRow= _.find(selectedRows,function(val){ 
-                      if(val._id==$scope.displayDocument[i]._id){                                     
-                        return val;
-                      }
-                });  
-
-                if(findRow){                 
-                  //delete row in cloudObject
-                  promiseArray.push($scope.deleteCloudObject(i,null,null));
-                }                                    
-            } 
-
-            if(promiseArray.length>0){
-
-              $q.all(promiseArray).then(function(deletedIndexes){                
-
-                  for(var i=0;i<deletedIndexes.length;++i){                     
-
-                     $scope.displayed.splice(deletedIndexes[i],1);
-                     $scope.displayDocument.splice(deletedIndexes[i],1);                       
+            var findRow= _.find(selectedRows,function(val){ 
+                  if(val._id==$scope.displayDocument[i]._id){                                     
+                    return val;
                   }
-                  $scope.$digest();
+            });  
 
-              }, function(err){
+            if(findRow){                 
+              //delete row in cloudObject
+              promiseArray.push($scope.deleteCloudObject(i,null,null));
+            }                                    
+        } 
 
-                  Messenger().post({
-                    message: 'Cannot delete this object at this point in time. Please try again later.',
-                    type: 'error',
-                    showCloseButton: true
-                  });
+        if(promiseArray.length>0){
 
-              });
+          $q.all(promiseArray).then(function(deletedIndexes){                
 
-            }//End of if  
+              for(var i=0;i<deletedIndexes.length;++i){                     
 
-        }//End of main else             
+                 $scope.displayed.splice(deletedIndexes[i],1);
+                 $scope.displayDocument.splice(deletedIndexes[i],1);                       
+              }
+              $scope.$digest();
+
+          }, function(err){
+              $.gritter.add({
+                  position: 'top-right',
+                  title: 'Error',
+                  text: 'Cannot delete this object at this point in time. Please try again later.',
+                  class_name: 'danger'
+              }); 
+          });
+
+        }//End of if                 
 
       };
 
       $scope.refresh = function(){
+         $scope.isLoading = true;
         $scope.selectTable($scope.selectedTable);
       }; 
 
@@ -342,36 +347,33 @@ app.controller('dataBrowserController',
 
 
         /*GRID API*/
-
       $scope.gridOptions.onRegisterApi = function(gridApi){
             //set gridApi on scope
             $scope.gridApi = gridApi;
 
            //After cell edit 
-           $scope.gridApi.edit.on.afterCellEdit($scope,function(rowEntity,colDef, newValue, oldValue){
-              // find real row                  
-              var rowIndex=$scope.gridOptions.data.indexOf(rowEntity);      
-              //Save CloudObject
+           $scope.gridApi.edit.on.afterCellEdit($scope,function(rowEntity,colDef, newValue, oldValue){                          
+              var rowIndex=$scope.gridOptions.data.indexOf(rowEntity);             
               $scope.saveCloudObject(rowIndex,null,null);
               $scope.$apply();
            }); 
 
            //sorting
-           $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
+          $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
               if (sortColumns.length == 0) {
                 paginationOptions.sort = null;
               } else {
                 paginationOptions.sort = sortColumns[0].sort.direction;
               }   
               getPage();           
-            }); 
+          }); 
 
-           //Pagination
-           $scope.gridApi.pagination.on.paginationChanged($scope,function(newPage,pageSize){
+          //Pagination
+          $scope.gridApi.pagination.on.paginationChanged($scope,function(newPage,pageSize){
               paginationOptions.pageNumber = newPage;
               paginationOptions.pageSize = pageSize;
               getPage();             
-           });                       
+          });                      
                  
       };
 
@@ -380,48 +382,50 @@ app.controller('dataBrowserController',
         function loadProject(id){
 
             projectService.getProject(id).then(
-                     function(currentProject){
-                          if(currentProject){
-                            $rootScope.currentProject=currentProject;
-                            getProjectTables();
-                            initCbApp();
-                          }                              
-                     },
-                     function(error){
-                          Messenger().post({
-                            message: 'We cannot load your project at this point in time. Please try again later.',
-                            type: 'error',
-                            showCloseButton: true
-                          });
-                     }
-                   );
+               function(currentProject){
+                    if(currentProject){
+                      $rootScope.currentProject=currentProject;
+                      getProjectTables();
+                      initCbApp();
+                    }                              
+               },
+               function(error){                         
+                   $.gritter.add({
+                        position: 'top-right',
+                        title: 'Error',
+                        text: 'We cannot load your project at this point in time. Please try again later.',
+                        class_name: 'danger'
+                    });  
+               }
+             );
         }
 
         function getProjectTables(){
 
            tableService.getProjectTables($rootScope.currentProject).then(
-                     function(data){
-                            if(!data){
-                               $rootScope.currentProject.currentTables=[];
-                            }     
-                          else if(data){
-                                $rootScope.currentProject.currentTables=data;
+               function(data){
+                      if(!data){
+                         $rootScope.currentProject.currentTables=[];
+                      }     
+                    else if(data){
+                          $rootScope.currentProject.currentTables=data;
 
-                                if($rootScope.currentProject.currentTables.length>0){
-                                  $scope.selectTable($rootScope.currentProject.currentTables[0]); 
-                                }
+                          if($rootScope.currentProject.currentTables.length>0){
+                            $scope.selectTable($rootScope.currentProject.currentTables[0]); 
+                          }
 
-                                $scope.rowChecked=[];
-                            }else{                                              
-                               $rootScope.currentProject.currentTables=[];
-                            } 
-                     }, function(error){
-                          Messenger().post({
-                            message: 'We cannot load your tables at this point in time. Please try again later.',
-                            type: 'error',
-                            showCloseButton: true
-                          });
-                     });
+                          $scope.rowChecked=[];
+                      }else{                                              
+                         $rootScope.currentProject.currentTables=[];
+                      } 
+               }, function(error){                         
+                   $.gritter.add({
+                        position: 'top-right',
+                        title: 'Error',
+                        text: 'We cannot load your tables at this point in time. Please try again later.',
+                        class_name: 'danger'
+                    }); 
+               });
         } 
 
         function initCbApp(){
@@ -436,9 +440,10 @@ app.controller('dataBrowserController',
         }       
 
         function getPage(){
+          var firstRow = (paginationOptions.pageNumber - 1) * paginationOptions.pageSize;
           //do a cloudQuery.
           query = new CB.CloudQuery($scope.selectedTable.name);          
-          query.setSkip(paginationOptions.pageNumber);
+          query.setSkip(firstRow);
           query.setLimit(paginationOptions.pageSize);
 
           switch(paginationOptions.sort) {
@@ -456,7 +461,7 @@ app.controller('dataBrowserController',
           }            
         
           query.find({success : function(list){
-            //this is a list of CLoudObjects.           
+            //this is a list of CLoudObjects.          
             $scope.displayed=list;
             $scope.displayDocument=[];
 
@@ -474,14 +479,16 @@ app.controller('dataBrowserController',
               $scope.displayDocument.push(list[i].document);
             }  
 
+            $scope.gridOptions.data=[];
             $scope.gridOptions.data=$scope.displayDocument;
             $scope.$digest();
 
-          }, error : function(error){
-              Messenger().post({
-                message: 'We cannot load your data at this point in time. Please try again later.',
-                type: 'error',
-                showCloseButton: true
+          }, error : function(error){             
+              $.gritter.add({
+                  position: 'top-right',
+                  title: 'Error',
+                  text: 'We cannot load your data at this point in time. Please try again later.',
+                  class_name: 'danger'
               });
           }});
       }
@@ -490,7 +497,9 @@ app.controller('dataBrowserController',
             //count no objects
             query = new CB.CloudQuery($scope.selectedTable.name);          
             query.count({ success: function(count){
-                //grid column names              
+                paginationOptions.totalItems = count;
+
+                //grid column definition             
                 $scope.colNames=[];
                 for(var i=0;i<$scope.selectedTable.columns.length;++i){
                   var colDataType=$scope.selectedTable.columns[i].dataType;
@@ -504,7 +513,8 @@ app.controller('dataBrowserController',
                   var enableCellEditOnFocus=true;
                   var editableCellTemplate=null;
                   var enableSorting= true; 
-                  var enableColumnResizing=true;          
+                  var enableColumnResizing=true; 
+                  var cellFilter=null;         
 
                   //Id
                   if(colName=="id"){
@@ -516,6 +526,7 @@ app.controller('dataBrowserController',
 
                   //Boolean
                   if(colDataType=="Boolean"){
+                    cellEdit=false;
                     enableSorting=false;
                     colWidth='100';
                     cellTemplate='<div><switch id="enabled" name="enabled" ng-change="grid.appScope.saveCloudObject(null,row,null)" style="margin-top:3px;margin-left:3px;" class="blue"  ng-model="row.entity[col.field]"></switch></div>';
@@ -530,14 +541,18 @@ app.controller('dataBrowserController',
 
                   //Date
                   if(colDataType=="Date"){
-                     colWidth='220';
-                     editableCellTemplate="<div><input kendo-date-picker style='width:100%' placeholder='yyyy-MM-dd'/></div>";                   
+                    cellEdit=false;
+                    colWidth='220';
+                    cellFilter="convertIsoToDate | date : 'longDate'";
+                    cellTemplate="<div><input kendo-date-picker ng-change='grid.appScope.saveCloudObject(null,row,null)' style='width:100%' placeholder='yyyy-MM-dd' ng-model='row.entity[col.field]'/></div>";                   
                   }
 
                   //DateTime
                   if(colDataType=="DateTime"){
-                     colWidth='220';
-                    editableCellTemplate='<div><input  kendo-date-time-picker style="width:100%" placeholder="yyyy-MM-dd"  ui-grid-editor ng-class="\'colt\' + col.index"  ng-input="COL_FIELD"  ng-model="MODEL_COL_FIELD"/></div>'; 
+                    cellEdit=false;
+                    colWidth='220';
+                    cellFilter="convertIsoToDate | date : 'medium'";
+                    cellTemplate='<div><input  kendo-date-time-picker style="width:100%" ng-change="grid.appScope.saveCloudObject(null,row,null)" placeholder="yyyy-MM-dd"  ng-model="row.entity[col.field]"/></div>'; 
                   }
 
                   //ACL & Object
@@ -552,7 +567,7 @@ app.controller('dataBrowserController',
                   if(colDataType=="List"){
                     enableSorting=false;
                     colWidth='100';
-                    cellTemplate="<div><a class='btn btn-sm btn-default' ng-click='grid.appScope.viewList(row.entity,col)'><i class='fa fa-bars'></i></a></div>";
+                    cellTemplate="<div><a class='btn btn-sm btn-default' ng-click='grid.appScope.viewList(row.entity,col.field)'><i class='fa fa-bars'></i></a></div>";
                     cellEdit=false;                  
                   }
 
@@ -569,6 +584,7 @@ app.controller('dataBrowserController',
                     field:colFieldName,
                     name:colName,
                     type:colDataType,
+                    cellFilter:cellFilter,
                     visible:colVisibility,                  
                     width:colWidth,
                     maxWidth:300,
@@ -587,19 +603,12 @@ app.controller('dataBrowserController',
                 //grid actual data             
                 $scope.displayed=list;
                 $scope.displayDocument=[];
-                for(var i=0;i<list.length;++i){   
-
-                 var createdDateFormated=formatDate(list[i].document.createdAt);
-                  list[i].document.createdAt=createdDateFormated;
-
-                  var updatedDateFormated=formatDate(list[i].document.updatedAt);
-                  list[i].document.updatedAt=updatedDateFormated;
-
-                  if(!list[i].document._isSearchable){
-                      list[i].document._isSearchable=false;
+                for(var i=0;i<$scope.displayed.length;++i){  
+                  if(!$scope.displayed[i].document._isSearchable){
+                      $scope.displayed[i].document._isSearchable=false;
                   }   
 
-                  $scope.displayDocument.push(list[i].document);
+                  $scope.displayDocument.push($scope.displayed[i].document);
                 }   
 
                 //Making grid
@@ -612,30 +621,29 @@ app.controller('dataBrowserController',
                   enableSelectAll:true,
                   multiSelect: true,
                   enablePagination:true,
-                  enablePaginationControls:true,                 
-                  paginationPageSizes:paginationOptions.pageSizes,          
-                  paginationPageSize:paginationOptions.pageSize,                
-                  useExternalPagination: true,
-                  totalItems:count,
-                  useExternalSorting: true                                                        
+                  enablePaginationControls:true                                                                
                 } 
-                 $scope.$digest();
+
+                $scope.gridApi.grid.options.useExternalPagination=true;            
+                $scope.gridApi.grid.options.paginationPageSize=paginationOptions.pageSize;
+                $scope.gridApi.grid.options.paginationPageSizes=paginationOptions.pageSizes;
+                $scope.gridApi.grid.options.totalItems=paginationOptions.totalItems;
+
+                $scope.isLoading = false;
+                $scope.$digest();
            },error: function(err) {
            //Error in retrieving the data.
           } });
       }
 
-      function unSavedRow(selectedRows){                   
-            var noIdObject= _.find(selectedRows,function(val){ 
-                            if(!val._id){
-                              return val;
-                            }
-                        }); 
-
-            if(noIdObject){
-              return noIdObject;
-            }
-            return null;
+      function deleteUnsavedRows(selectedRows){  
+            for(var i=0;i<selectedRows.length;++i){
+                if(!selectedRows[i]._id){
+                    var index=$scope.gridOptions.data.indexOf(selectedRows[i]);
+                    $scope.displayed.splice(index,1);
+                    $scope.displayDocument.splice(index,1); 
+                }
+            }      
       }      
 });
  

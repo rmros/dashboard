@@ -7978,10 +7978,29 @@ ul.timeline li > .date {
 
 .grid{
   width:100%;
-  height:450px;
+  height:498px;
 }
 
-
+.fg-dangerRed{
+  color:#F46B5D;
+}
+.deleteCol{
+  color:gray;
+  text-align: center;
+  font-size: 14px;
+  font-weight: normal;
+  cursor:pointer;
+}
+.deleteCol:hover{
+  color:#F46B5D;
+  text-align: center;
+  font-size: 14px;
+  font-weight: normal;
+  cursor:pointer;
+}
+.disable{
+  background-color: gray !important;
+}
 
 
 

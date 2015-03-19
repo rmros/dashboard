@@ -41,7 +41,7 @@
 
             <button ng-click="deleteRow()" type="submit" class="btn btn-info btn-rad btn-trans"><i class="fa fa-minus-square fa-lg"></i>&nbsp;Row</button>
 
-            <button ng-click="refresh()" type="submit" class="btn btn-info btn-rad btn-trans"><i class="fa fa-refresh fa-lg"></i>&nbsp;Refresh</button>      
+            <button ng-click="refresh()" type="submit" class="btn btn-info btn-rad btn-trans"><i class="fa fa-refresh fa-lg" ng-class="{'fa-spin':isLoading}"></i>&nbsp;Refresh</button>      
         </div>
 
         </div>  
