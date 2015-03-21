@@ -7,7 +7,7 @@ app.controller('indexController',
      },
       function(newPath,oldPath) {
         if(!$cookies.userId || $cookies.userId=="null" || $cookies.userId=="undefined"){
-          window.location.href=landingURL;
+          //window.location.href=landingURL;
         }else{
            $scope.userFullname=$cookies.userFullname; 
         }            
