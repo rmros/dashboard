@@ -1,3 +1,5 @@
+var __isDevelopment = false;
+
 var app=angular.module('CloudBoostDashboard',
 	['ngScrollable',
     'ngDragDrop',
@@ -25,7 +27,14 @@ var app=angular.module('CloudBoostDashboard',
     'ui.checkbox'
 	]);
 
-var serverURL="http://localhost:3000";
+var serverURL = null; 
+
+if(__isDevelopment){
+    serverURL="http://localhost:3000";
+}else{
+    serverURL = "https://service.cloudboost.io";
+}
+
 //messenger settings.
 Messenger.options = {
     extraClasses: 'messenger-fixed messenger-on-bottom messenger-on-right',
