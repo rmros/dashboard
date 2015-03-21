@@ -7,7 +7,7 @@ app.controller('indexController',
      },
       function(newPath,oldPath) {
         if(!$cookies.userId || $cookies.userId=="null" || $cookies.userId=="undefined"){
-          window.location.href="http://localhost:1444";
+          window.location.href=landingURL;
         }else{
            $scope.userFullname=$cookies.userFullname; 
         }            
@@ -22,7 +22,7 @@ app.controller('indexController',
               $cookies.userFullname = null; 
               $cookies.email = null;
               $cookies.createdAt = null;
-              window.location.href="http://localhost:1444";
+              window.location.href=landingURL;
          },
          function(error){
            console.log(error);

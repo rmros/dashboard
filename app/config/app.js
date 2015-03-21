@@ -28,12 +28,16 @@ var app=angular.module('CloudBoostDashboard',
 	]);
 
 var serverURL = null; 
+var landingURL = null;
 
 if(__isDevelopment){
     serverURL="http://localhost:3000";
+    landingURL = "http://localhost:1444";
 }else{
     serverURL = "https://service.cloudboost.io";
+    landingURL = "https://www.cloudboost.io";
 }
+
 
 //messenger settings.
 Messenger.options = {
