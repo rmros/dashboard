@@ -1,4 +1,4 @@
-
+ 
         
 <div class="cl-mcont aside" data-ng-init="initialize()">
    <div class="page-aside">      
@@ -49,13 +49,12 @@
          </div>
 
         </div>  
-      </div>
-
+      </div>      
+      
        <div class="row" ng-show="currentProject.tables.length>0">
         <div class="col-md-12">
-          <div class="block-flat">            
-            <div class="content">
-              <div class="table-responsive">
+          <h2 style="color:#549afc">&nbsp;{{selectedTable.name}}</h2>               
+              <div class="table-responsive" style="margin:4px;">
                 <table class="table no-border">
                   <thead class="no-border">
                     <tr>
@@ -84,20 +83,20 @@
                                 </select>                            
 
                             <br>
-
-                            <!--if dataType is List-->
-                            <select  ng-if="col.dataType=='List'" style="width:150px; margin-top:4px;" data-ng-model="col.relatedTo" ng-change="saveTables()">
-                                <option ng-repeat="eachTable in currentProject.tables" ng-selected="eachTable.type==col.relatedTo" value="{{eachTable.name}}">{{eachTable.name}}</option>
-                            
-                                <option ng-repeat="dTypes in colDataTypes" ng-selected="dTypes.name==col.relatedTo" ng-show="dTypes.visible"  value="{{dTypes.name}}">{{dTypes.text}}</option>
-                                 
-                            </select>  
-
-                            <!--if dataType is Relation-->
-                            <select   style="width:150px; margin-top:4px;" ng-if="col.dataType=='Relation'" data-ng-model="col.relatedTo" ng-change="saveTables()">
-                                <option ng-repeat="eachTable in currentProject.tables" ng-selected="eachTable.type==col.relatedTo" value="{{eachTable.name}}">{{eachTable.name}}
-                                </option>
-                            </select> 
+                                                          
+                                <!--if dataType is List-->
+                                <select  ng-if="col.dataType=='List'" style="width:150px; margin-top:4px;" data-ng-model="col.relatedTo" ng-change="saveTables()" ng-disabled="!col.isEditable || col.saved">
+                                    <option ng-repeat="eachTable in currentProject.tables" ng-selected="eachTable.type.type==col.relatedToType" value="{{eachTable.name}}">{{eachTable.name}}</option>
+                                
+                                    <option ng-repeat="dTypes in colDataTypes | filter:filterDataType" ng-selected="dTypes.name==col.relatedTo" ng-show="dTypes.visible"  value="{{dTypes.name}}">{{dTypes.text}}</option>
+                                     
+                                </select>
+                              
+                                <!--if dataType is Relation-->
+                                <select   style="width:150px; margin-top:4px;" ng-if="col.dataType=='Relation'" data-ng-model="col.relatedTo" ng-change="saveTables()" ng-disabled="!col.isEditable || col.saved">
+                                    <option ng-repeat="eachTable in currentProject.tables" ng-selected="eachTable.name==col.relatedTo" value="{{eachTable.name}}">{{eachTable.name}}
+                                    </option>
+                                </select> 
 
                          </div>  
                       </td>
@@ -123,8 +122,7 @@
                    <button class="btn btn-primary btn-trans" ng-hide="!selectedTable.type.isEditable" ng-click="addColumn()"><i class="fa fa-plus"></i>Add new Column</button>
               </center>
               </div>
-            </div>
-          </div>        
+                   
         </div>
       </div>
     </div>

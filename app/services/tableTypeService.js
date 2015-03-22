@@ -141,9 +141,9 @@ app.factory('tableTypeService', function (utilityService) {
               {
                   name: 'roles',
                   dataType: 'List',
-                  relatedTo: null, 
+                  relatedTo:null, 
                   id : utilityService.makeId(),
-                  relatedToType :'Role',                 
+                  relatedToType :'role',                 
                   relationType: 'table', 
                   required: false,
                   unique: false,
