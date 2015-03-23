@@ -1,0 +1,55 @@
+
+  
+<div class="cl-mcont" ng-init="init()">
+  <div class="row">
+    <div  class="col-md-3 col-lg-3">
+    </div>  
+    <div class="col-sm-12 col-md-6 col-lg-6" style="background-color:white;padding:30px;"> 
+              <h1>App Settings</h1>         
+              <!--form-->
+              <form role="form" class="form-horizontal" style="margin-top:10px !important; margin-left:-15px !important;" name="settingsForm" ng-submit="saveSettings(settingsForm.$valid)">
+                  
+                  <div class="form-group settings-form">
+                    <label class="col-sm-4 control-label" for="nick">App Production Name</label>
+                    <div class="col-sm-8 fg-black">
+                      <input type="text" placeholder="Name" id="nick" class="form-control fg-black" ng-model="projectSettings.appProductionName" required>
+                    </div>
+                  </div>
+                  <div class="form-group settings-form">
+                    <label class="col-sm-4 control-label" for="name">Released in production</label>
+                    <div class="col-sm-8">
+                      <switch  id="enabled" name="enabled" ng-model="projectSettings.isReleasedInProduction" class="blue" style="margin-top:7px;" required></switch>
+                    </div>
+                  </div>
+                  <div class="form-group settings-form">
+                    <label class="col-sm-4 control-label" for="inputEmail3">App Description</label>
+                    <div class="col-sm-8 fg-black">
+                      <textarea rows="4" cols="50" placeholder="Description" id="inputEmail3" ng-model="projectSettings.appDescription" class="form-control fg-black" required></textarea>
+                    </div>
+                  </div> 
+
+                  <div class="form-group settings-form">
+                    <label class="col-sm-4 control-label" for="inputEmail3">URL</label>
+                    <div class="col-sm-8 fg-black">
+                      <input type="url" placeholder="URL" ng-model="projectSettings.url" id="inputEmail3" class="form-control fg-black" required>
+                    </div>
+                  </div>
+
+                  <div class="form-group settings-form">
+                    <div class="col-sm-offset-4 col-sm-8">
+                      <button class="btn btn-primary" type="submit">Save</button>                      
+                    </div>
+                  </div>
+              </form>              
+              <!--/form-->         
+    </div>
+    <div  class="col-md-3 col-lg-3">
+    </div>
+
+  </div>
+</div>
+
+
+   
+  
+  

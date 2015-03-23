@@ -8058,8 +8058,13 @@ ul.timeline li > .date {
   background-color: black !important;
 }
 
+.settings-form{
+  margin-top:20px !important;
+}
 
-
+.fg-black{
+  color:black !important;
+}
 
 
  

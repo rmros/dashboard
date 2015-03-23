@@ -79,7 +79,10 @@
             </li>
 
             <li ng-class="{active:page=='dataBrowser','menu-active':page=='dataBrowser'}" ng-show="currentProject"><a href="#/{{currentProject.appId}}/data/browser/table/" ng-click="toggleSideMenu()"><i class="fa fa-table"></i><span>Data Browser</span></a>   
-            </li>           
+            </li>
+
+            <li ng-class="{active:page=='appSettings','menu-active':page=='appSettings'}" ng-show="currentProject"><a href="#/{{currentProject.appId}}/settings" ng-click="toggleSideMenu()"><i class="fa fa-cogs"></i><span>Settings</span></a>   
+            </li>          
 
             <!--<li ng-show="currentProject"><a  href="#/{{currentProject.appId}}/pricing"><i class="fa fa-credit-card"></i><span>Billing</span></a>
             </li>-->
@@ -224,13 +227,15 @@
 <script src="app/services/columnDataTypeService.js"></script>  
 <script src="app/services/tableErrorService.js"></script>  
 <script src="app/services/tableService.js"></script>  
-<script src="app/services/userService.js"></script> 
+<script src="app/services/userService.js"></script>
+<script src="app/services/projectDetailsService.js"></script>  
 
 <!--Controllers-->
 <script type="text/javascript" src="app/controllers/indexController.js"></script>
 <script type="text/javascript" src="app/controllers/appsController.js"></script>
 <script type="text/javascript" src="app/controllers/tableDesignerController.js"></script>
 <script type="text/javascript" src="app/controllers/dataBrowserController.js"></script>
+<script type="text/javascript" src="app/controllers/appSettingsController.js"></script>
 <script type="text/javascript" src="app/controllers/pricingController.js"></script>
 
 <!--Directives-->
