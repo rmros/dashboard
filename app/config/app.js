@@ -1,4 +1,8 @@
-var __isDevelopment = true;
+var __isDevelopment = false;
+
+if(window.location.host.indexOf('localhost') > -1){
+    __isDevelopment = true;
+}
 
 var app=angular.module('CloudBoostDashboard',
 	['ngScrollable',
