@@ -18,18 +18,18 @@ app.controller('tableDesignerController',
         var id;
         var tableId;
         
-        $scope.initialize = function() {         
-            $scope.tableDesignerCss="activeMenu";
-            $scope.showSaveBtn=true;                        
+        $scope.initialize = function() {
+            $rootScope.page='tableDesigner';
+            $rootScope.dataLoading=true;                                 
             $scope.colDataTypes=columnDataTypeService.getcolumnDataTypes();       
             id = $stateParams.appId;
             tableId= $stateParams.tableId;               
 
             if($rootScope.currentProject && $rootScope.currentProject.appId === id){
               //if the same project is already in the rootScope, then dont load it. 
-              getProjectTables();
+              getProjectTables();              
             }else{
-              loadProject(id);
+              loadProject(id);              
             }            
 
         };
@@ -195,9 +195,9 @@ app.controller('tableDesignerController',
       $scope.addNewTable = function() {
           var tableTypeObj=_.first(_.where($scope.tableTypes, {type:$scope.newTableType}));
           getRelatedTables(tableTypeObj); 
-          $scope.saveTables();       
-
+          $scope.saveTables();
       };
+
       $scope.dummy=function(){
           $('#keysModal').modal();
       }
@@ -227,7 +227,7 @@ app.controller('tableDesignerController',
                       if(table.columns[i].relatedToType){
                         var getTable=_.first(_.where($scope.tableTypes, {type:table.columns[i].relatedToType})); 
                         var relTable=_.first(_.where($rootScope.currentProject.tables, {name:getTable.name})); 
-                        table.columns[i].relatedTo=relTable.id;                       
+                        table.columns[i].relatedTo=relTable.name;                       
                       }      
                   }
                   
@@ -245,7 +245,7 @@ app.controller('tableDesignerController',
                     $scope.newTableName = '';  
                            
               }
-            //End of creating table  
+          //End of creating table  
             
         }       
 
@@ -253,6 +253,7 @@ app.controller('tableDesignerController',
             if(col.isDeletable){
               var i = $scope.selectedTable.columns.indexOf(col);
               $scope.selectedTable.columns.splice(i, 1);
+              $scope.saveTables();
             }else{
                $.gritter.add({
                     position: 'top-right',
@@ -374,6 +375,13 @@ app.controller('tableDesignerController',
           }
 
         };
+
+
+        $scope.filterDataType=function(dataTypeObj){
+          if(dataTypeObj.type!="List"){
+            return dataTypeObj;
+          }
+        };
         
             
         /* PRIVATE FUNCTIONS */
@@ -404,9 +412,11 @@ app.controller('tableDesignerController',
            tableService.getProjectTables($rootScope.currentProject).then(
                function(data){
                     if(!data){
-                       $rootScope.currentProject.tables=[];
+                      $rootScope.dataLoading=false;
+                      $rootScope.currentProject.tables=[];                       
                     }     
                     else if(data){
+                        $rootScope.dataLoading=false;
                         $rootScope.currentProject.tables=data;
                         
                         if(tableId){
@@ -420,11 +430,13 @@ app.controller('tableDesignerController',
                           $scope.selectTable($rootScope.currentProject.tables[0]); 
                         }                          
 
-                    }else{                                              
+                    }else{ 
+                       $rootScope.dataLoading=false;                                             
                        $rootScope.currentProject.tables=[];
                     }          
                    
-               }, function(error){                          
+               }, function(error){ 
+                    $rootScope.dataLoading=false;                         
                     $.gritter.add({
                       position: 'top-right',
                       title: 'Error',

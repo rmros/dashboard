@@ -23,7 +23,7 @@ app.controller('dataBrowserController',
       var id;
       var tableId;
       var isAppLoaded = false;
-      $scope.isLoading = false;
+      $scope.isRefreshed = false;
 
       var query = null;
       var paginationOptions = {       
@@ -39,16 +39,21 @@ app.controller('dataBrowserController',
   
 
       $scope.initialize = function() {
-          $scope.dataBrowserCss="activeMenu";
+          $rootScope.page='dataBrowser';
+          $rootScope.dataLoading=true; 
           id = $stateParams.appId;
           tableId= $stateParams.tableId;
             
           loadProject(id);          
       };    
       
-      $scope.viewList = function(obj, colName){
+      $scope.viewList = function(row, gridColName){
 
-        var columnName = colName;
+        var columnName = gridColName;
+        var col=_.first(_.where($scope.selectedTable.columns, {name:columnName}));
+
+        var index=$scope.gridOptions.data.indexOf(row.entity);
+        var obj = $scope.displayed[index];
 
         var isStaticType = false;
 
@@ -64,12 +69,14 @@ app.controller('dataBrowserController',
         }
 
        if(isStaticType){
-            $scope.editJSON(obj,columnName);
+          $scope.editJSON(row,columnName);
        }
 
       };
 
-      $scope.viewRelation = function(obj, columnName){
+      $scope.viewRelation = function(row, columnName){
+        var index=$scope.gridOptions.data.indexOf(row.entity);
+        var obj = $scope.displayed[index];
         var obj = obj.get(columnName);
         if(obj){
           var tableName = obj.document._tableName; 
@@ -117,6 +124,7 @@ app.controller('dataBrowserController',
                console.log(newObj);              
                $scope.displayed[index]=newObj;
                $scope.displayDocument[index]=newObj.document;
+               $scope.gridOptions.data[index]=newObj.document;
                $scope.$digest();
 
             }, function(error){               
@@ -321,7 +329,7 @@ app.controller('dataBrowserController',
       };
 
       $scope.refresh = function(){
-         $scope.isLoading = true;
+        $scope.isRefreshed = true;
         $scope.selectTable($scope.selectedTable);
       }; 
 
@@ -517,7 +525,7 @@ app.controller('dataBrowserController',
                   var colName=$scope.selectedTable.columns[i].name; 
 
                   var colFieldName=colName;
-                  var colWidth='170';
+                  var colWidth='190';
                   var colVisibility=true;
                   var cellEdit=true;
                   var cellTemplate=null;
@@ -547,7 +555,7 @@ app.controller('dataBrowserController',
                   //Search
                   if(colName=="isSearchable"){
                     colFieldName="_isSearchable";
-                    colWidth='140'; 
+                    colWidth='190'; 
                   }
 
                   //Date
@@ -578,7 +586,7 @@ app.controller('dataBrowserController',
                   if(colDataType=="List"){
                     enableSorting=false;
                     colWidth='100';
-                    cellTemplate="<div><a class='btn btn-sm btn-default' ng-click='grid.appScope.viewList(row.entity,col.field)'><i class='fa fa-bars'></i></a></div>";
+                    cellTemplate="<div><a class='btn btn-sm btn-default' ng-click='grid.appScope.viewList(row,col.field)'><i class='fa fa-bars'></i></a></div>";
                     cellEdit=false;                  
                   }
 
@@ -586,9 +594,11 @@ app.controller('dataBrowserController',
                   if(colDataType=="Relation"){
                     enableSorting=false;
                     colWidth='100';
-                    cellTemplate="<div><a class='btn btn-sm btn-default' ng-click='grid.appScope.viewRelation(row.entity,col.field)'><i class='fa fa-chevron-circle-right'></i></a></div>";
+                    cellTemplate="<div><a class='btn btn-sm btn-default' ng-click='grid.appScope.viewRelation(row,col.field)'><i class='fa fa-chevron-circle-right'></i></a></div>";
                     cellEdit=false;                  
                   }
+
+                  colName=colName+"("+colDataType+")";
 
                   var colDefObj={ 
                     displayName:colName,               
@@ -640,7 +650,8 @@ app.controller('dataBrowserController',
                 $scope.gridApi.grid.options.paginationPageSizes=paginationOptions.pageSizes;
                 $scope.gridApi.grid.options.totalItems=paginationOptions.totalItems;
 
-                $scope.isLoading = false;
+                $scope.isRefreshed = false;
+                $rootScope.dataLoading=false;
                 $scope.$digest();
            },error: function(err) {
            //Error in retrieving the data.

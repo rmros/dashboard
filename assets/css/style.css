@@ -934,6 +934,13 @@ input::-webkit-input-speech-button {
   display: block;
   height: 64px;
 }
+.sidebar-spinner{
+  background-color:#549afc;
+  padding: 15px 20px;
+  display: block;
+  height: 64px;
+  color:white;
+}
 .sidebar-logo .logo a {
   font-size: 24px;
   color: #fff;
@@ -8008,7 +8015,7 @@ ul.timeline li > .date {
 
 .grid{
   width:100%;
-  height:498px;
+  height:504px;
 }
 
 .fg-dangerRed{
@@ -8041,6 +8048,14 @@ ul.timeline li > .date {
 }
 .disable{
   background-color: gray !important;
+}
+
+.menu-active{ 
+  background-color: black !important;
+}
+.menu-active a{
+  color:white !important;
+  background-color: black !important;
 }
 
 

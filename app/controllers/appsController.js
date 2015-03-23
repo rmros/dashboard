@@ -12,8 +12,9 @@ app.controller('appsController',['$scope', 'projectService', '$http', '$rootScop
 
         $scope.init=function(){
               //Hiding the Menu
+              $rootScope.page='apps';
               $scope.isLoading = [];
-              $scope.appListLoading=true;
+              $rootScope.dataLoading=true;
               $rootScope.showMenu=false;
               $rootScope.currentProject=null;
               $scope.showSaveBtn = true;
@@ -29,11 +30,11 @@ app.controller('appsController',['$scope', 'projectService', '$http', '$rootScop
               var listPromise=projectService.projectList();
                listPromise.then(
                  function(data){
-                     $scope.appListLoading=false; 
+                     $rootScope.dataLoading=false; 
                      $scope.projectListObj=data;                    
                  },
                  function(error){
-                    $scope.appListLoading=false; 
+                    $rootScope.dataLoading=false; 
                     $.gritter.add({
                       position: 'top-right',
                       title: 'Error',
