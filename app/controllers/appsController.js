@@ -1,12 +1,6 @@
 'use strict';
 
-app.controller('appsController',['$scope',
-  'projectService',
-  '$http',
-  '$rootScope',
-  '$cookies',
-  '$intercom',
-  '$timeout',   
+app.controller('appsController',['$scope', 'projectService', '$http', '$rootScope', '$cookies', '$intercom','$timeout',
   function ($scope,
   projectService,
   $http,

@@ -1,3 +1,9 @@
+var __isDevelopment = false;
+
+if(window.location.host.indexOf('localhost') > -1){
+    __isDevelopment = true;
+}
+
 var app=angular.module('CloudBoostDashboard',
 	['ngScrollable',
     'ngDragDrop',
@@ -25,7 +31,22 @@ var app=angular.module('CloudBoostDashboard',
     'ui.checkbox'
 	]);
 
-var serverURL="http://localhost:3000";
+var serverURL = null; 
+var landingURL = null;
+var sdk = document.createElement('script');
+
+if(__isDevelopment){
+    serverURL="http://localhost:3000";
+    landingURL = "http://localhost:1444";
+    sdk.setAttribute('src','http://localhost:4730/sdk/js/1.0.0');
+}else{
+    serverURL = "https://service.cloudboost.io";
+    landingURL = "https://www.cloudboost.io";
+    sdk.setAttribute('src','https://api.cloudboost.io/sdk/js/1.0.0');
+}
+
+document.head.appendChild(sdk);
+
 //messenger settings.
 Messenger.options = {
     extraClasses: 'messenger-fixed messenger-on-bottom messenger-on-right',
