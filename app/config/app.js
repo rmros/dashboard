@@ -1,4 +1,4 @@
-var __isDevelopment = false;
+var __isDevelopment = true;
 
 var app=angular.module('CloudBoostDashboard',
 	['ngScrollable',
@@ -29,15 +29,19 @@ var app=angular.module('CloudBoostDashboard',
 
 var serverURL = null; 
 var landingURL = null;
+var sdk = document.createElement('script');
 
 if(__isDevelopment){
     serverURL="http://localhost:3000";
     landingURL = "http://localhost:1444";
+    sdk.setAttribute('src','http://localhost:4730/sdk/js/1.0.0');
 }else{
     serverURL = "https://service.cloudboost.io";
     landingURL = "https://www.cloudboost.io";
+    sdk.setAttribute('src','https://api.cloudboost.io/sdk/js/1.0.0');
 }
 
+document.head.appendChild(sdk);
 
 //messenger settings.
 Messenger.options = {
