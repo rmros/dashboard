@@ -67,7 +67,7 @@
 
           <!--SideBar Spinner-->
           <div class="sidebar-spinner" ng-show="dataLoading">
-            <div><i class="fa fa-spinner fa-spin fa-3x"></i></div>
+            <div><i class="fa fa-spinner fa-spin fa-2x"></i></div>
           </div>
           <!--/SideBar Spinner-->
 
@@ -81,7 +81,7 @@
             <li ng-class="{active:page=='dataBrowser','menu-active':page=='dataBrowser'}" ng-show="currentProject"><a href="#/{{currentProject.appId}}/data/browser/table/" ng-click="toggleSideMenu()"><i class="fa fa-table"></i><span>Data Browser</span></a>   
             </li>
 
-            <li ng-class="{active:page=='appSettings','menu-active':page=='appSettings'}" ng-show="currentProject"><a href="#/{{currentProject.appId}}/settings" ng-click="toggleSideMenu()"><i class="fa fa-cogs"></i><span>Settings</span></a>   
+            <li ng-class="{active:page=='appSettings','menu-active':page=='appSettings'}" ng-show="currentProject"><a href="#/{{currentProject.appId}}/settings" ng-click="toggleSideMenu()"><i class="fa fa-cog"></i><span>Settings</span></a>   
             </li>          
 
             <li ng-class="{active:page=='pricing','menu-active':page=='pricing'}" ng-show="currentProject"><a  href="#/{{currentProject.appId}}/pricing"><i class="fa fa-credit-card"></i><span>Billing</span></a>
