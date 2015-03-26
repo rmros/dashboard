@@ -53,7 +53,7 @@
       
        <div class="row" ng-show="currentProject.tables.length>0">
         <div class="col-md-12">
-          <h2 style="color:#549afc">&nbsp;{{selectedTable.name}}</h2>               
+          <h2 style="color:#55555A">&nbsp;&nbsp;{{selectedTable.name}}</h2>               
               <div class="table-responsive" style="margin:4px;">
                 <table class="table no-border">
                   <thead class="no-border">
@@ -118,7 +118,7 @@
                    
                   </tbody>
               </table>  
-              <center data-ng-hide="columnErrorForEdit">
+              <center data-ng-hide="columnErrorForEdit" style="margin-top:20px;margin-bottom:20px">
                    <button class="btn btn-primary btn-trans" ng-hide="!selectedTable.type.isEditable" ng-click="addColumn()"><i class="fa fa-plus"></i>Add new Column</button>
               </center>
               </div>
