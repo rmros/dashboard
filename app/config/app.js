@@ -28,7 +28,8 @@ var app=angular.module('CloudBoostDashboard',
     'ui.grid.autoResize',
     'ui.grid.resizeColumns',    
     'uiSwitch',
-    'ui.checkbox'
+    'ui.checkbox',
+    'stripe'
 	]);
 
 var serverURL = null; 
@@ -55,5 +56,10 @@ Messenger.options = {
 app.config(['ngClipProvider', function(ngClipProvider) {
     ngClipProvider.setPath("bower_components/zeroclipboard/dist/ZeroClipboard.swf");
 }]);
+
+app.config(function() {
+  Stripe.setPublishableKey('pk_test_ZLrh0BYVlddBmEPKUGalN8uQ');
+});
+
 
 

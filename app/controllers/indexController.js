@@ -44,6 +44,6 @@ app.controller('indexController',
           w.addClass("sb-collapsed");
           $.cookie('FLATDREAM_sidebar','closed',{expires:365, path:'/'});         
           //updateHeight();
-    } 				
+    }    				
 		
 	}]);

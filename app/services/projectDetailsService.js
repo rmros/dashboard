@@ -2,10 +2,10 @@ app.factory('projectDetailsService', ['$q','$http',function ($q,$http) {
 
     var global = {};
 
-     global.getProjectSettings = function(appName){
+     global.getProjectSettings = function(appId){
          var q=$q.defer();
 
-         $http.get(serverURL+'/projectdetails/get/'+appName).
+         $http.get(serverURL+'/projectdetails/get/'+appId).
            success(function(data, status, headers, config) {
                  q.resolve(data);
            }).
