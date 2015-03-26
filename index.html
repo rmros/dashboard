@@ -84,8 +84,8 @@
             <li ng-class="{active:page=='appSettings','menu-active':page=='appSettings'}" ng-show="currentProject"><a href="#/{{currentProject.appId}}/settings" ng-click="toggleSideMenu()"><i class="fa fa-cogs"></i><span>Settings</span></a>   
             </li>          
 
-            <!--<li ng-show="currentProject"><a  href="#/{{currentProject.appId}}/pricing"><i class="fa fa-credit-card"></i><span>Billing</span></a>
-            </li>-->
+            <li ng-class="{active:page=='pricing','menu-active':page=='pricing'}" ng-show="currentProject"><a  href="#/{{currentProject.appId}}/pricing"><i class="fa fa-credit-card"></i><span>Billing</span></a>
+            </li>
 
           </ul>
 
@@ -122,6 +122,7 @@
     </div>
   </div>
   <!-- /TOP NAVBAR -->
+
   <ui-view></ui-view>   
 	
 </div>
@@ -191,6 +192,7 @@
 <script src="bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js"></script>
 <script type="text/javascript" src="bower_components/ng-clip/src/ngClip.js"></script>
 <script type="text/javascript" src="bower_components/zeroclipboard/dist/zeroclipboard.js"></script>
+<script type="text/javascript" src="assets/js/jQuery-Collapse/src/jquery.collapse.js"></script>
 
 <!--table edit-->
 </script> <script type="text/javascript" src="assets/js/jquery.x-editable/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
@@ -204,7 +206,13 @@
 <script src="assets/js/ui-grid/ui-grid-unstable.js"></script>
 <!--/UI Grid-->
 
+<!--Stripe-->
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<script type="text/javascript" src="bower_components/stripe-angular/stripe-angular.js"></script>
+<!--/Stripe-->
 
+<script src="assets/js/Chart.js/Chart.js"></script>
 <script type="text/javascript" src="assets/js/jquery.flot/jquery.flot.js"></script>
 <script type="text/javascript" src="assets/js/jquery.flot/jquery.flot.pie.js"></script>
 <script type="text/javascript" src="assets/js/jquery.flot/jquery.flot.resize.js"></script>
@@ -225,6 +233,7 @@
 <script src="app/services/tableService.js"></script>  
 <script src="app/services/userService.js"></script>
 <script src="app/services/projectDetailsService.js"></script>  
+<script src="app/services/paymentService.js"></script>  
 
 <!--Controllers-->
 <script type="text/javascript" src="app/controllers/indexController.js"></script>
@@ -241,6 +250,7 @@
 <script type="text/javascript" src="app/directives/switch/bootstrap-switch.js"></script>
 <script type="text/javascript" src="app/directives/xeditable/table-xeditable.js"></script>
 <script type="text/javascript" src="app/directives/xeditable/column-xeditable.js"></script>
+<script type="text/javascript" src="app/directives/expand/expand-directive.js"></script>
 </body>
 
 </html>

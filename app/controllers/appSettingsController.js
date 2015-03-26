@@ -10,7 +10,7 @@ app.controller('appSettingsController',
 
        if($rootScope.currentProject && $rootScope.currentProject.appId === id){
           //if the same project is already in the rootScope, then dont load it. 
-          getProjectSettings($rootScope.currentProject.name);             
+          getProjectSettings($rootScope.currentProject.appId);             
         }else{
           loadProject(id);              
         }           
@@ -21,7 +21,7 @@ app.controller('appSettingsController',
       if(isValid){
 
         var data={    
-          appId:$rootScope.currentProject.name,      
+          appId:$rootScope.currentProject.appId,      
           appProductionName: $scope.projectSettings.appProductionName,
           isReleasedInProduction:  $scope.projectSettings.isReleasedInProduction,
           appDescription :  $scope.projectSettings.appDescription,
@@ -61,7 +61,7 @@ app.controller('appSettingsController',
                      function(currentProject){
                           if(currentProject){
                             $rootScope.currentProject=currentProject; 
-                            getProjectSettings($rootScope.currentProject.name);                          
+                            getProjectSettings($rootScope.currentProject.appId);                          
                           }                              
                      },
                      function(error){
@@ -76,8 +76,8 @@ app.controller('appSettingsController',
                    );
         } 
 
-        function getProjectSettings(appName){
-            projectDetailsService.getProjectSettings(appName).then(
+        function getProjectSettings(appId){
+            projectDetailsService.getProjectSettings(appId).then(
                      function(projectSettings){
                           if(projectSettings){                             
                              $scope.projectSettings=projectSettings;                        
