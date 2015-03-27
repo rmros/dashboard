@@ -44,7 +44,7 @@ app.controller('pricingController',
 		id = $stateParams.appId;
       	if($rootScope.currentProject && $rootScope.currentProject.appId === id){
          //if the same project is already in the rootScope, then dont load it. 
-          getCrediCardInfo($rootScope.currentProject.name);             
+          getCrediCardInfo();             
         }else{
           loadProject(id);              
         }
@@ -57,7 +57,10 @@ app.controller('pricingController',
 
 	$scope.addOrEditCreditCard=function(){
 		$("#credit-card").modal("hide");
-		paymentService.addOrEditCreditCard($rootScope.currentProject.name,$scope.creditcardInfo).then(
+		
+		if(!isNaN($scope.creditcardInfo.number) && $scope.creditcardInfo.number.length==16){
+
+			paymentService.addOrEditCreditCard($scope.creditcardInfo).then(
                  function(data){
                  	if(data){
                  		var number="************"+data.stripeCardObject.last4;
@@ -94,6 +97,15 @@ app.controller('pricingController',
                     });
                 });
 
+		}else{
+			$.gritter.add({
+              position: 'top-right',
+              title: 'Error',
+              text: 'Please Enter the proper Card number.',
+              class_name: 'danger'
+            });
+		}
+
 	};
 
 	/* PRIVATE FUNCTIONS */
@@ -104,7 +116,7 @@ app.controller('pricingController',
              function(currentProject){
                   if(currentProject){
                     $rootScope.currentProject=currentProject; 
-                    getCrediCardInfo($rootScope.currentProject.name);                           
+                    getCrediCardInfo();                           
                   }                              
              },
              function(error){
@@ -120,9 +132,9 @@ app.controller('pricingController',
         } 	
 
 
-        function getCrediCardInfo(appName){
+        function getCrediCardInfo(){
 
-           paymentService.getCrediCardInfo(appName).then(
+           paymentService.getCrediCardInfo().then(
                function(data){
                 if(data){
                   	console.log(data);
