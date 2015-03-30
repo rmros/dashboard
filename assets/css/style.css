@@ -2803,7 +2803,7 @@ table.information > tbody > tr > td {
 .btn-primary:active,
 .btn-primary.active,
 .open .dropdown-toggle.btn-primary {
-  background-color: #549afc;
+  background-color: #549afc !important;
   border-color: transparent;
 }
 .btn-primary:active {
@@ -8099,7 +8099,7 @@ ul.timeline li > .date {
 .color-indication{
   height:41px;
   width:7px;
-  background-color: #F7464A;
+  background-color: #00CC00;
 }
 .credit-left{
   margin-left: 4px;
@@ -8128,12 +8128,12 @@ ul.timeline li > .date {
 
 .billing-txt1{
   margin-top: 10px !important;
-  color:black;
+  color:gray;
   font-size: 16px;
 }
 .billing-txt2{
   margin-top: 25px !important;
-  color:black;
+  color:gray;
   font-size: 16px;
 }
 .currency-txt{  
@@ -8184,25 +8184,62 @@ ul.timeline li > .date {
   font-size: 16px;
 } 
 
+
+/* Flex rules */
 .bill-usage-bar{
-  width:100%;
-  height:30px;
-  background-color:gray;
-  padding-top: 3.5px;
-  padding-left: 20px;
-  padding-right: 20px;  
+    display: flex;
+    display:-webkit-flex;
+    display:-moz-flex;
+
+    flex-flow:row wrap;
+    justify-content:space-between;
+    align-items:flex-start;
+    
+    
+    -moz-flex-flow:row wrap;
+    -moz-justify-content: space-between;
+    
+    -webkit-flex-flow:row wrap;
+    -webkit-justify-content: space-between;
+    -webkit-align-items:flex-start; 
+    background-color:gray;
+    padding-top: 5px;
+    padding-left: 20px;
+       
+}
+
+.bar{
+  flex:1;
+  -moz-flex:1;
+  -webkit-flex:1;  
+}
+.charge{
+ margin-left: 150px !important;
 }
 
 .usage,.price{
   font-size: 16px;
   color:white;
   font-weight: normal;
+  margin-top: 3px;
 }
-
-.bill-usage-txt span{
-  margin-left: -80px !important;
+.price{
+  min-width:40px;  
+  float:right;
+}
+.bill-usage-txt{  
   padding: 0 !important;
+  margin: 0 !important;
+  display: inline;
+}
+.bill-usage-txt span{  
+  padding: 0 !important;
+  margin: 0 !important;
   font-size: 14px;
+  text-indent:0 !important;
+  text-align: left !important;
+  display: inline;
+
 }
 .total-bx{
   margin-top: 25px;
