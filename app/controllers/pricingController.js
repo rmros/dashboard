@@ -22,7 +22,7 @@ app.controller('pricingController',
 
 	$scope.validCardShowSpinner=false;
 	$scope.spendingLimitSpinner=false;
-	$scope.cardAddEditText="Securely Add CreditCard";
+	$scope.cardAddEditText="Add Credit Card";
 	$scope.cardAddEditBtn="Add Credit Card";	
 	$scope.spendingLimitBtn="Add Spending Limit";
 	$scope.autoScale=false;
@@ -78,7 +78,7 @@ app.controller('pricingController',
 
 	             		$.gritter.add({
 	                      position: 'top-right',
-	                      title: 'Success',
+	                      title: 'Spending Limit Saved.',
 	                      text: 'Your Spending Limit is successfully saved.',
 	                      class_name: 'success'
 	                    });  
@@ -94,7 +94,7 @@ app.controller('pricingController',
 	                $.gritter.add({
 	                  position: 'top-right',
 	                  title: 'Error',
-	                  text: 'Cannot add/Remove Spending Limit at this point of time.',
+	                  text: 'Cannot add / remove spending limit at this point of time.',
 	                  class_name: 'danger'
 	                });
 	            });
@@ -105,8 +105,8 @@ app.controller('pricingController',
 
 				$.gritter.add({
 	              position: 'top-right',
-	              title: 'Warning',
-	              text: 'Please Add CrediCard to add Spending Limit.',
+	              title: 'Add Credit Card.',
+	              text: 'Please add credit card to add spending limit.',
 	              class_name: 'prusia'
 	            });
 			}		
@@ -161,8 +161,8 @@ app.controller('pricingController',
 
 		                 		$.gritter.add({
 			                      position: 'top-right',
-			                      title: 'Success',
-			                      text: 'Your Credit information is successfully saved and safe with us.',
+			                      title: 'Credit Card Added',
+			                      text: 'Credit card added successfully. ',
 			                      class_name: 'success'
 			                    });  
 		                 	}                                      
@@ -195,8 +195,8 @@ app.controller('pricingController',
 			if(!$scope.isCardAdded){
 				$.gritter.add({
 	              position: 'top-right',
-	              title: 'Warning',
-	              text: 'Please Add CrediCard before you make Autoscale ON.',
+	              title: 'Add Credit Card.',
+	              text: 'Please add your credit card before you turn auto-scale on',
 	              class_name: 'prusia'
 	            });
 	            $scope.autoScale=false;
@@ -204,8 +204,8 @@ app.controller('pricingController',
 			}else if($scope.invoiceSettings.spendingLimit>0){
 				$.gritter.add({
 	              position: 'top-right',
-	              title: 'Warning',
-	              text: 'Remove Spending Limit to make AutoScale ON.',
+	              title: 'Remove Spending Limit.',
+	              text: 'Remove spending limit to turn on the auto-scale feature.',
 	              class_name: 'prusia'
 	            });
 
@@ -215,8 +215,8 @@ app.controller('pricingController',
 			if($scope.invoiceSettings.spendingLimit==0){
 				$.gritter.add({
 	              position: 'top-right',
-	              title: 'Warning',
-	              text: 'Please Add Spending Limit before you make Autoscale OFF.',
+	              title: 'Add Spending Limit.',
+	              text: 'Before yoru turn off the auto-scale, Please add spending limit.',
 	              class_name: 'prusia'
 	            });
 	            $scope.autoScale=true;
@@ -298,7 +298,7 @@ app.controller('pricingController',
                     $.gritter.add({
                       position: 'top-right',
                       title: 'Error',
-                      text: "We cannot load your Credit Card Info at this point in time. Please try again later.",
+                      text: "We cannot load your credit card at this point in time. Please try again later.",
                       class_name: 'danger'
                   });
                });
@@ -327,7 +327,7 @@ app.controller('pricingController',
                     $.gritter.add({
                       position: 'top-right',
                       title: 'Error',
-                      text: 'Cannot get Invoice Settings at this point of time.',
+                      text: 'We cannot get your payment info at this point in time. Please try again later.',
                       class_name: 'danger'
                   });
                });
@@ -349,7 +349,7 @@ app.controller('pricingController',
                     $.gritter.add({
                       position: 'top-right',
                       title: 'Error',
-                      text:'Cannot Show Invoice at this point of time.',
+                      text: 'We cannot get your payment info at this point in time. Please try again later.',
                       class_name: 'danger'
                   });
                });
@@ -368,7 +368,7 @@ app.controller('pricingController',
 				$("#credit-card").modal("hide");
 
 				validation.isValid=false;
-				validation.message='Please Enter the proper Card number with No Letters and Spaces.';
+				validation.message='Please enter card number with no letters, spaces and special characters.';
 
 				return validation;
 			}
@@ -377,7 +377,7 @@ app.controller('pricingController',
 				$("#credit-card").modal("hide");
 
 				validation.isValid=false;
-				validation.message='Please Enter the proper Expiry Month and Year.';
+				validation.message='Please enter the correct month and year of expiry';
 				
 				return validation;
 			} 
@@ -387,7 +387,7 @@ app.controller('pricingController',
 				$("#credit-card").modal("hide");
 
 				validation.isValid=false;
-				validation.message='Please Enter the valid CVC.';
+				validation.message='Please enter the valid CVC.';
 				
 				return validation;				
 			}
@@ -396,7 +396,7 @@ app.controller('pricingController',
 				$("#credit-card").modal("hide");
 
 				validation.isValid=false;
-				validation.message='The Entered card type is Unknown, we accept Visa, MasterCard, American Express, Discover, Diners Club, and JCB';
+				validation.message='The card is unknown. We accept Visa, MasterCard, American Express, Discover, Diners Club, and JCB';
 				
 				return validation;				
 			}

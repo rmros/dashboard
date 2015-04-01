@@ -11,6 +11,8 @@
       </div>
       <!--/No spending Limit-->
 
+
+
       <!--if spending Limit-->		
       <div class="col-md-5" ng-show="invoiceSettings.spendingLimit>0">
       	<div class="donut-circle-Bx cf">
@@ -34,7 +36,7 @@
 
       <div class="col-md-4">
       	<div class="billing-Bx">
-	      	<p class="billing-amt">{{nextBillingCycle}} DAYS</p>   	
+	      	<p class="billing-amt">{{nextBillingCycle}} Days</p>   	
 	      	<p class="billing-txt2">NEXT BILLING CYCLE</p>
         </div> 
       </div>
@@ -60,10 +62,10 @@
     <div class="row">
     	<div class="col-md-12">
     		<div class="billing-details-Bx">
-    				<p class="billing-det-head">Bill Details</p>
+    				<p class="billing-det-head">Your usage details</p>
     				<!--bill-category-->
     				<div class="bill-category-bx cf" ng-repeat="eachInvoiceDet in invoice.invoiceDetails">
-    					<h2 class="bill-category-name">{{eachInvoiceDet.category | uppercase}}</h2>
+    					<b><h3 class="bill-category-name">{{eachInvoiceDet.category | uppercase}}</h3></b>
               <!--usage metrics-->
     					<div class="bill-usage-bx cf" ng-repeat="eachUsageMetric in eachInvoiceDet.usageMetrics">
     						
@@ -100,13 +102,13 @@
 
     <form role="form" name="cardForm" ng-submit="addOrEditCreditCard(cardForm.$valid)"> 
       <div class="modal-header">
-        <h3>Add/Edit Credit Card</h3>
+        <h3>Add Credit Card </h3>
         <button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
       <div class="modal-body form">
         <div class="form-group">
           <label>Full Name on Card</label> 
-          <input type="text" ng-model="creditcardInfo.name" class="form-control" placeholder="John" required>
+          <input type="text" ng-model="creditcardInfo.name" class="form-control" placeholder="John Smith" required>
         </div>
         <div class="form-group">
           <label>Card Number</label> 
@@ -212,8 +214,14 @@
       </div>
       <div class="modal-body form">
         <div class="form-group">
-          <label>Spending Limit</label> 
-          <input type="text" ng-model="invoiceSettings.spendingLimit" class="form-control" placeholder="Limit" required>
+        <div class="input-group input-group-lg">
+          <span class="input-group-addon">$</span>
+          <input ng-model="invoiceSettings.spendingLimit" type="text" class="form-control" placeholder="Spending Limit" required>
+        </div>
+          
+          <a ng-show="!showSpendingMore" style="cursor:pointer" data-ng-click="showSpendingMore = true"> What's this? </a>
+          <br/>
+          <label style="#808080" ng-show="showSpendingMore">Spending limit is the hard cap on your card every single month. API will not respond to your app requests after your hit the spending limit. We do email you after you reach 90% of your spending limit. So, you have enough time to edit or remove it. </label> 
         </div>
 
       </div>
@@ -221,13 +229,13 @@
         <button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
         
         <!--before validation-->
-        <button type="submit" ng-show="!spendingLimitSpinner" class="btn btn-primary btn-flat md-close">add/Update Limit</button> 
+        <button type="submit" ng-show="!spendingLimitSpinner" class="btn btn-primary btn-flat md-close">Add Limit</button> 
 
         <!--before validation-->
         <button ng-click="removeSpendingLimit()" ng-if="invoiceSettings.spendingLimit>0" ng-show="!spendingLimitSpinner" class="btn btn-primary btn-flat md-close">Remove Limit</button>       
 
         <!--validating-->
-        <button type="button" ng-show="spendingLimitSpinner" class="btn btn-primary btn-flat md-close"><i class="fa fa-spinner fa-spin"></i>Processing...</button>
+        <button type="button" ng-show="spendingLimitSpinner" class="btn btn-primary btn-flat md-close"><i class="fa fa-spinner fa-spin"></i>Saving...</button>
 
       </div>
 
