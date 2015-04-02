@@ -10,7 +10,7 @@
 	<link rel="shortcut icon" href="assets/images/icon.png">
 
 	<title>CloudBoost Dashboard</title>
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700,800' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700,800' rel='stylesheet' type='text/css'>
 
 	<!-- Bootstrap core CSS -->
 	<link href="assets/js/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
@@ -86,11 +86,16 @@ mixpanel.init("59f8c851677a01bdbfa6cffb2865c682");</script>
             <li ng-class="{active:page=='dataBrowser','menu-active':page=='dataBrowser'}" ng-show="currentProject"><a href="#/{{currentProject.appId}}/data/browser/table/" ng-click="toggleSideMenu()"><i class="fa fa-table"></i><span>Data Browser</span></a>   
             </li>
 
-            <li ng-class="{active:page=='appSettings','menu-active':page=='appSettings'}" ng-show="currentProject"><a href="#/{{currentProject.appId}}/settings" ng-click="toggleSideMenu()"><i class="fa fa-cog"></i><span>Settings</span></a>   
-            </li>          
+            <li><a href="https://docs.cloudboost.io" target="blank"><i class="fa fa-book" ></i><span>Docs</span></a>   
+            </li>
 
             <li ng-class="{active:page=='pricing','menu-active':page=='pricing'}" ng-show="currentProject"><a  href="#/{{currentProject.appId}}/pricing"><i class="fa fa-credit-card"></i><span>Billing</span></a>
             </li>
+
+            <li ng-class="{active:page=='appSettings','menu-active':page=='appSettings'}" ng-show="currentProject"><a href="#/{{currentProject.appId}}/settings" ng-click="toggleSideMenu()"><i class="fa fa-cog"></i><span>Settings</span></a>   
+            </li>          
+
+            
 
           </ul>
 
