@@ -22,6 +22,12 @@ app.factory('projectDetailsService', ['$q','$http',function ($q,$http) {
        $http.post(serverURL+'/projectdetails/save',data).
          success(function(data, status, headers, config) {
                q.resolve(data);
+
+              /****Tracking*********/            
+               mixpanel.track('Project Settings', {"appId": data.appId,
+                "isReleasedInProduction": data.isReleasedInProduction
+              });
+              /****End of Tracking*****/
          }).
          error(function(data, status, headers, config) {
                q.reject(status);

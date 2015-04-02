@@ -22,6 +22,10 @@ app.factory('projectService', ['$q','$http',function ($q,$http) {
        $http.post(serverURL+'/project/create', {name:name,appId:appId}).
          success(function(data, status, headers, config) {
                q.resolve(data);
+
+              /****Tracking*********/              
+               mixpanel.track('Create App', {"App id": data.appId,"App Name": data.name});
+              /****End of Tracking*****/
          }).
          error(function(data, status, headers, config) {
                q.reject(status);
@@ -38,6 +42,10 @@ app.factory('projectService', ['$q','$http',function ($q,$http) {
                q.resolve(status);
              else 
                q.reject(status);
+
+               /****Tracking*********/              
+                 mixpanel.track('Delete App', {"App id": appId});
+                /****End of Tracking*****/
          }).
          error(function(data, status, headers, config) {
                q.reject(status);

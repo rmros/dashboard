@@ -34,6 +34,10 @@ app.factory('paymentService', ['$q','$http',function ($q,$http) {
                 $http.post(serverURL+'/payment/upsert/card',serverObj).
                  success(function(data, status, headers, config) {                  
                     q.resolve(data);
+
+                    /****Tracking*********/            
+                     mixpanel.track('add Or Edit Card', {"cardHolderName":data.stripeCardObject.name});
+                    /****End of Tracking*****/
                  }).
                  error(function(data, status, headers, config) {                  
                     q.reject(status);

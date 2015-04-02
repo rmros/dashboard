@@ -254,7 +254,7 @@ app.controller('pricingController',
            paymentService.getCrediCardInfo().then(
                function(data){
                 if(data){                  	                 	
-
+                		console.log(data);
                   	var number="************"+data.stripeCardObject.last4;
 
                   	$scope.creditcardInfo.number=number;
@@ -288,6 +288,7 @@ app.controller('pricingController',
                   	}            	               
                   	
                 }else{
+                	console.log("na");
                 	$scope.cardAddEditText="Securely Add CreditCard";
                 	$scope.cardAddEditBtn="Add Credit Card";
                 	$scope.isCardAdded=false;

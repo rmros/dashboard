@@ -46,6 +46,10 @@ app.factory('tableService', ['$q','$http', 'utilityService', 'tableTypeService',
         $http.put(serverURL+'/table/delete/'+appId,{name : table.name}).
           success(function(data, status, headers, config) {
                 q.resolve(data);
+
+                /****Tracking*********/            
+                 mixpanel.track('Delete Table', { "Table name": table.name,"appId": appId});
+                /****End of Tracking*****/
           }).
           error(function(data, status, headers, config) {
                 q.reject(status);
@@ -69,6 +73,10 @@ app.factory('tableService', ['$q','$http', 'utilityService', 'tableTypeService',
         $http.put(serverURL+'/table/create/'+appId,obj).
           success(function(data, status, headers, config) {
                 q.resolve(data);
+
+                /****Tracking*********/            
+                 mixpanel.track('Save Table', { "Table name": table.name,"appId": appId});
+                /****End of Tracking*****/
           }).
           error(function(data, status, headers, config) {
                 q.reject(status);
@@ -76,7 +84,7 @@ app.factory('tableService', ['$q','$http', 'utilityService', 'tableTypeService',
           return  q.promise;
      };
      
-     global.getProjectTables = function(currentProject){
+    global.getProjectTables = function(currentProject){
         var q=$q.defer();
       
         $http.get(serverURL+'/table/get/'+currentProject.appId).
@@ -103,7 +111,7 @@ app.factory('tableService', ['$q','$http', 'utilityService', 'tableTypeService',
           });
 
           return  q.promise;
-     };
+      };
 
     return global;
 
