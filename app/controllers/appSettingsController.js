@@ -3,10 +3,11 @@ app.controller('appSettingsController',
 	function($scope,$rootScope,$stateParams,$cookies,projectService,projectDetailsService){	
     var id;
     $scope.projectSettings={};
-
+    $scope.saveSettingsSpinner=false;
 		$scope.init=function(){
       $rootScope.page='appSettings';
        id = $stateParams.appId;
+       $rootScope.dataLoading=true;
 
        if($rootScope.currentProject && $rootScope.currentProject.appId === id){
           //if the same project is already in the rootScope, then dont load it. 
@@ -18,6 +19,7 @@ app.controller('appSettingsController',
     };
 
     $scope.saveSettings=function(isValid){
+      $scope.saveSettingsSpinner=true;
       if(isValid){
 
         var data={    
@@ -32,6 +34,7 @@ app.controller('appSettingsController',
 
         saveSettingsPromise.then(
          function(data){
+              $scope.saveSettingsSpinner=false;
              $scope.projectSettings=data;
               $.gritter.add({
               position: 'top-right',
@@ -40,7 +43,8 @@ app.controller('appSettingsController',
               class_name: 'success'
             });                  
          },
-         function(error){           
+         function(error){    
+            $scope.saveSettingsSpinner=false;       
             $.gritter.add({
               position: 'top-right',
               title: 'Error',
@@ -81,10 +85,11 @@ app.controller('appSettingsController',
                      function(projectSettings){
                           if(projectSettings){                             
                              $scope.projectSettings=projectSettings;                        
-                          }                              
+                          } 
+                          $rootScope.dataLoading=false;                             
                      },
                      function(error){
-                         
+                        $rootScope.dataLoading=false;
                         $.gritter.add({
                             position: 'top-right',
                             title: 'Error',

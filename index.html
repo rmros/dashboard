@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-ng-app="CloudBoostDashboard">
 
-<!-- Mirrored from condorthemes.com/flatdream/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 27 Feb 2015 04:25:14 GMT -->
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,6 +45,7 @@
   <link rel="stylesheet" href="assets/js/ui-grid/ui-grid-unstable.css" type="text/css">  
   <link href="bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css" rel="stylesheet"/>
   <link href="bower_components/angular-ui-switch/angular-ui-switch.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.css">
 	<link href="assets/css/style.css" rel="stylesheet"/> 
   <!-- start Mixpanel -->
   <script type="text/javascript">(function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
@@ -77,22 +77,22 @@ mixpanel.init("59f8c851677a01bdbfa6cffb2865c682");</script>
           <!--/SideBar Spinner-->
 
           <ul class="cl-vnavigation">
-            <li  ng-class="{active:page=='apps','menu-active':page=='apps'}"><a href="#/"><i class="fa fa-th-large "></i><span>Apps</span></a>             
+            <li  ng-class="{active:page=='apps','menu-active':page=='apps'}" data-toggle="tooltip" data-placement="right" title="Apps" tooltip><a href="#/"><i class="fa fa-th-large "></i><span>Apps</span></a>             
             </li>
 
-             <li ng-class="{active:page=='tableDesigner','menu-active':page=='tableDesigner'}" ng-show="currentProject"><a href="#/{{currentProject.appId}}/data/designer/table/"  ng-click="toggleSideMenu()"><i class="fa fa-database"></i><span>Table Designer</span></a>   
+             <li ng-class="{active:page=='tableDesigner','menu-active':page=='tableDesigner'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Table Designer" tooltip><a href="#/{{currentProject.appId}}/data/designer/table/"  ng-click="toggleSideMenu()"><i class="fa fa-database"></i><span>Table Designer</span></a>   
             </li>
 
-            <li ng-class="{active:page=='dataBrowser','menu-active':page=='dataBrowser'}" ng-show="currentProject"><a href="#/{{currentProject.appId}}/data/browser/table/" ng-click="toggleSideMenu()"><i class="fa fa-table"></i><span>Data Browser</span></a>   
+            <li ng-class="{active:page=='dataBrowser','menu-active':page=='dataBrowser'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Data Browser" tooltip><a href="#/{{currentProject.appId}}/data/browser/table/" ng-click="toggleSideMenu()"><i class="fa fa-table"></i><span>Data Browser</span></a>   
             </li>
 
-            <li><a href="https://docs.cloudboost.io" target="blank"><i class="fa fa-book" ></i><span>Docs</span></a>   
+            <li data-toggle="tooltip" data-placement="right" title="Documentation" tooltip><a href="https://docs.cloudboost.io" target="blank"><i class="fa fa-book" ></i><span>Docs</span></a>   
             </li>
 
-            <li ng-class="{active:page=='pricing','menu-active':page=='pricing'}" ng-show="currentProject"><a  href="#/{{currentProject.appId}}/pricing"><i class="fa fa-credit-card"></i><span>Billing</span></a>
+            <li ng-class="{active:page=='pricing','menu-active':page=='pricing'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Billing" tooltip><a  href="#/{{currentProject.appId}}/pricing"><i class="fa fa-credit-card"></i><span>Billing</span></a>
             </li>
 
-            <li ng-class="{active:page=='appSettings','menu-active':page=='appSettings'}" ng-show="currentProject"><a href="#/{{currentProject.appId}}/settings" ng-click="toggleSideMenu()"><i class="fa fa-cog"></i><span>Settings</span></a>   
+            <li ng-class="{active:page=='appSettings','menu-active':page=='appSettings'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Settings" tooltip><a href="#/{{currentProject.appId}}/settings" ng-click="toggleSideMenu()"><i class="fa fa-cog"></i><span>Settings</span></a>   
             </li>          
 
             
@@ -223,6 +223,7 @@ mixpanel.init("59f8c851677a01bdbfa6cffb2865c682");</script>
 <!--/Stripe-->
 
 <script src="assets/js/Chart.js/Chart.js"></script>
+<script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
 <script type="text/javascript" src="assets/js/jquery.flot/jquery.flot.js"></script>
 <script type="text/javascript" src="assets/js/jquery.flot/jquery.flot.pie.js"></script>
 <script type="text/javascript" src="assets/js/jquery.flot/jquery.flot.resize.js"></script>

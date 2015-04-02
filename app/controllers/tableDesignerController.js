@@ -196,11 +196,7 @@ app.controller('tableDesignerController',
           var tableTypeObj=_.first(_.where($scope.tableTypes, {type:$scope.newTableType}));
           getRelatedTables(tableTypeObj); 
           $scope.saveTables();
-      };
-
-      $scope.dummy=function(){
-          $('#keysModal').modal();
-      }
+      };    
 
        function getRelatedTables(table){  
 
@@ -220,7 +216,7 @@ app.controller('tableDesignerController',
                   alreadyExist=_.first(_.where($rootScope.currentProject.tables, {name:table.name}));
             } 
             
-            //creating table             
+             //creating table             
               if(!alreadyExist){
 
                   for(var i=0;i<table.columns.length;++i){
@@ -242,7 +238,16 @@ app.controller('tableDesignerController',
                   
                     $rootScope.currentProject.tables.push(t);
                     $scope.selectTable(t);
-                    $scope.newTableName = '';  
+                    $scope.newTableName = ''; 
+
+                    if($rootScope.currentProject.tables.length==1){
+                        $.gritter.add({
+                          position: 'top-right',
+                          title: 'Great!',
+                          text: 'Your first table is created. See our docs to build apps.',
+                          class_name: 'success'
+                      });
+                    }
                            
               }
           //End of creating table  
@@ -359,19 +364,19 @@ app.controller('tableDesignerController',
           }else{
 
             $q.all(promises).then(
-                     function(){
-                        //tables got saved
-                     },
-                     function(error){
-                        $.gritter.add({
-                            position: 'top-right',
-                            title: 'Error',
-                            text: "We're sorry, We cant save your tables at this point in time. Please try again later.",
-                            class_name: 'danger'
-                        });
+               function(){
+                  //tables got saved               
+               },
+               function(error){
+                  $.gritter.add({
+                      position: 'top-right',
+                      title: 'Error',
+                      text: "We're sorry, We cant save your tables at this point in time. Please try again later.",
+                      class_name: 'danger'
+                  });
 
-                     }
-                   );
+               }
+             );
           }
 
         };

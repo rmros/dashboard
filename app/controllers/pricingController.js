@@ -1,8 +1,8 @@
 app.controller('pricingController',
-	['$scope','$rootScope','$stateParams','projectService','paymentService','invoiceService',
-	function($scope,$rootScope,$stateParams,projectService,paymentService,invoiceService){
+	['$scope','$rootScope','$stateParams','projectService','paymentService','invoiceService','$timeout',
+	function($scope,$rootScope,$stateParams,projectService,paymentService,invoiceService,$timeout){
 		
-	var id;	
+	var id;
 
 	//credit card info
 	$scope.creditcardInfo={	 
@@ -32,6 +32,7 @@ app.controller('pricingController',
 	$scope.init = function(){
 		$rootScope.page='pricing';
 		id = $stateParams.appId;
+
       	if($rootScope.currentProject && $rootScope.currentProject.appId === id){
          //if the same project is already in the rootScope, then dont load it.            
           getinvoiceSettings();                                      
@@ -47,8 +48,13 @@ app.controller('pricingController',
 	};
 
 	$scope.spendingLimitModal=function(){
+		$("#remove-spendinglimit-alert").modal("hide");
+		$scope.tempInvoiceSettings=angular.copy($scope.invoiceSettings);
 		$("#spending-limit").modal();
-		$scope.tempInvoiceSettings=angular.copy($scope.invoiceSettings);			
+					
+	};
+	$scope.cancelSpendingLimitModal=function(){
+		$scope.invoiceSettings=$scope.tempInvoiceSettings;		
 	};
 
 	$scope.addOrRemoveSpendingLimit=function(valid){
@@ -62,6 +68,7 @@ app.controller('pricingController',
 
 	             	if(data){                		
 	             		$scope.invoiceSettings=data;
+	             		$scope.tempSpendingLimit=angular.copy(data.spendingLimit);
 
 	             		if(data.spendingLimit>0){
 	                  		$scope.autoScale=false;
@@ -90,6 +97,7 @@ app.controller('pricingController',
 	             	$("#spending-limit").modal("hide");
 	             	$scope.spendingLimitSpinner=false; 
 	             	$scope.invoiceSettings=$scope.tempInvoiceSettings;
+					$scope.tempSpendingLimit=angular.copy($scope.invoiceSettings.spendingLimit);
 	             	                
 	                $.gritter.add({
 	                  position: 'top-right',
@@ -101,7 +109,8 @@ app.controller('pricingController',
 			}else{
 				$("#spending-limit").modal("hide");
 				$scope.spendingLimitSpinner=false; 				
-				$scope.invoiceSettings=$scope.tempInvoiceSettings;				
+				$scope.invoiceSettings=$scope.tempInvoiceSettings;
+				$scope.tempSpendingLimit=angular.copy($scope.invoiceSettings.spendingLimit);				
 
 				$.gritter.add({
 	              position: 'top-right',
@@ -208,8 +217,13 @@ app.controller('pricingController',
 	              text: 'Remove spending limit to turn on the auto-scale feature.',
 	              class_name: 'prusia'
 	            });
-
 	            $scope.autoScale=false;
+
+	            //Open Remove Spending Limit Alert
+	            $timeout(function(){ 
+        			$("#remove-spendinglimit-alert").modal();
+           		},2000);
+	            
 			}
 		}else{ // to be false confidtions 
 			if($scope.invoiceSettings.spendingLimit==0){
@@ -253,8 +267,8 @@ app.controller('pricingController',
 
            paymentService.getCrediCardInfo().then(
                function(data){
-                if(data){                  	                 	
-                		console.log(data);
+                if(data){               	
+                		
                   	var number="************"+data.stripeCardObject.last4;
 
                   	$scope.creditcardInfo.number=number;
@@ -310,6 +324,8 @@ app.controller('pricingController',
                function(data){
                 if(data){
                   	$scope.invoiceSettings=data;
+                  	$scope.tempSpendingLimit=angular.copy(data.spendingLimit);
+
                   	if(data.spendingLimit>0){
                   		$scope.autoScale=false;
                   		$scope.spendingLimitBtn="Manage Spending Limit";                  		                  		
@@ -320,9 +336,10 @@ app.controller('pricingController',
                   		}else{
                   			$scope.autoScale=false;
                   		}
-                  	}                   	               	
-                  	                } 
-                getinvoice();//Get Invoice 
+                  	}  
+                  	getinvoice();//Get Invoice 	                 	               	
+                } 
+                
 
                }, function(error){                                             
                     $.gritter.add({
@@ -437,30 +454,21 @@ app.controller('pricingController',
         }
 
         function spendingLimitCircle(){
-        	
+        
         	if($scope.invoiceSettings && $scope.invoiceSettings.spendingLimit>=$scope.invoice.currentInvoice){
         		var left=$scope.invoiceSettings.spendingLimit-$scope.invoice.currentInvoice;        		
         		var used=$scope.invoice.currentInvoice;
-        		$scope.creditLeft=left;
-        	}
+        		$scope.creditLeft=left;      			  			
+        		$scope.labels= ["LEFT","USED"];
+  				$scope.data = [left, used];
+  				$scope.colours=["#00CC00","#B3B3BC"];
 
-	        var data = [
-	        	{
-			        value: used,
-			        color: "#B3B3BC",
-			        highlight:"#B3B3BC",
-			        label: "USED"
-			    },
-			    {
-			        value: left,
-			        color:"#00CC00",
-			        highlight: "#00CC00",
-			        label: "LEFT"
-			    }			    
-			];
-			// For a pie chart
-			var ctx = $("#circle-donut").get(0).getContext("2d");
-			window.myDoughnut = new Chart(ctx).Doughnut(data, {responsive : true});	
+	  			$scope.$on('create', function (chart) {		  					  
+				});
+
+	  			$scope.$broadcast("$reload", {});
+        	}
+	        
 		}
 
 		

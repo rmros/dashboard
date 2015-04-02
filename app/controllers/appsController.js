@@ -1,6 +1,7 @@
 'use strict';
 
-app.controller('appsController',['$scope', 'projectService', '$http', '$rootScope', '$cookies', '$intercom','$timeout',
+app.controller('appsController',
+  ['$scope', 'projectService', '$http', '$rootScope', '$cookies', '$intercom','$timeout',
   function ($scope,
   projectService,
   $http,
@@ -24,7 +25,7 @@ app.controller('appsController',['$scope', 'projectService', '$http', '$rootScop
                 javascriptKey:"Copy"
               }; 
 
-               // Intercom integration   
+              // Intercom integration   
               integrateIntercom();
               //listing start
               var listPromise=projectService.projectList();
@@ -37,7 +38,7 @@ app.controller('appsController',['$scope', 'projectService', '$http', '$rootScop
                     $rootScope.dataLoading=false; 
                     $.gritter.add({
                       position: 'top-right',
-                      title: 'Error',
+                      title: 'Something went wrong',
                       text: 'Cannot connect to server. Please try again.',
                       class_name: 'danger'
                     });
@@ -78,7 +79,7 @@ app.controller('appsController',['$scope', 'projectService', '$http', '$rootScop
                         $scope.projectListObj.splice($scope.projectListObj.indexOf($scope.projectToBeDeleted),1);
                         $.gritter.add({
                           position: 'top-right',
-                          title: 'Success',
+                          title: 'Successfull',
                           text: 'The project is successfully deleted.',
                           class_name: 'success'
                         });
@@ -90,7 +91,7 @@ app.controller('appsController',['$scope', 'projectService', '$http', '$rootScop
                         $scope.isLoading[$scope.projectToBeDeletedIndex] = false;                        
                         $.gritter.add({
                           position: 'top-right',
-                          title: 'Error',
+                          title: 'oops! something went wrong',
                           text: 'Cannot delete this project at this point in time. Please try again later.',
                           class_name: 'danger'
                         });
@@ -126,9 +127,9 @@ app.controller('appsController',['$scope', 'projectService', '$http', '$rootScop
                       $scope.projectListObj.push(data);
                     }
                     
-                       $.gritter.add({
+                      $.gritter.add({
                           position: 'top-right',
-                          title: 'Success',
+                          title: 'Successefull',
                           text: 'The project is successfully created.',
                           class_name: 'success'
                       });
@@ -136,13 +137,19 @@ app.controller('appsController',['$scope', 'projectService', '$http', '$rootScop
                       $scope.name="";
                       $scope.appId = "";
 
+                      $.gritter.add({
+                        title: 'Great',
+                        text: "Let's go to the table designer for the first time.",
+                        class_name: 'info'
+                      });
+                      $scope.goToTableDesigner(data);                      
                   },
                   function(error){
                     $scope.showSaveBtn = true;
                     if(error === 400){                   
                       $.gritter.add({
                         position: 'top-right',
-                          title: 'Error',
+                          title: '',
                           text: 'App ID already exists. Please choose a different App ID.',
                           class_name: 'danger'
                       });

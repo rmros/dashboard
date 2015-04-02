@@ -29,7 +29,8 @@ var app=angular.module('CloudBoostDashboard',
     'ui.grid.resizeColumns',    
     'uiSwitch',
     'ui.checkbox',
-    'stripe'
+    'stripe',
+    'chart.js'
 	]);
 
 var serverURL = null; 

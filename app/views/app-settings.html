@@ -38,7 +38,13 @@
 
                   <div class="form-group settings-form">
                     <div class="col-sm-offset-4 col-sm-8">
-                      <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>&nbsp;Save Changes</button>                      
+                      <!--before Save-->
+                      <button class="btn btn-primary" type="submit" ng-show="!saveSettingsSpinner"><i class="fa fa-save"></i>&nbsp;Save Changes</button>
+                      <!--/before Save-->
+
+                      <!--While Saving--> 
+                      <button class="btn btn-primary" ng-show="saveSettingsSpinner"><i class="fa fa-spinner fa-spin"></i>&nbsp;Saving Changes..</button> 
+                      <!--/While Saving-->                      
                     </div>
                   </div>
               </form>              
