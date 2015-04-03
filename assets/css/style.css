@@ -8007,15 +8007,62 @@ ul.timeline li > .date {
   width:94.5%; 
   height:400px;
 }
-
-.grid-parent{
-  width:98.99%; 
+.grid-parent{   
+  height:504px;
   background-color: white;  
 }
+.grid{   
+  height:491px !important;  
+}
+@media (min-width:1201px) and (max-width:1350px)
+{
+  .grid-parent{
+    width:990px;    
+  }
 
-.grid{
-  width:100%;
-  height:504px;
+  .grid{
+    width:990px;    
+  }
+
+}
+@media (min-width:1027px) and (max-width:1200px)
+{
+  .grid-parent{
+    width:835px; 
+    background-color: white;   
+  }
+
+  .grid{
+    width:835px;
+    height:504px;
+  }
+
+}
+@media (min-width:400px) and (max-width:1027px)
+{
+  .grid-parent{
+    width:659px; 
+    background-color: white;     
+  }
+
+  .grid{
+    width:659px;
+    height:504px;
+  }
+
+}
+@media (min-width:300px) and (max-width:399px)
+{
+  .grid-parent{
+    width:384px; 
+    background-color: white;    
+  }
+
+  .grid{
+    width:384px;
+    height:504px;
+  }
+
 }
 
 .fg-dangerRed{

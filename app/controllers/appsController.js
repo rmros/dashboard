@@ -138,7 +138,7 @@ app.controller('appsController',
                       $scope.appId = "";
 
                       $.gritter.add({
-                        title: 'Great',
+                        title: 'Great!',
                         text: "Let's go to the table designer for the first time.",
                         class_name: 'info'
                       });
@@ -149,7 +149,7 @@ app.controller('appsController',
                     if(error === 400){                   
                       $.gritter.add({
                         position: 'top-right',
-                          title: '',
+                          title: 'Sorry!',
                           text: 'App ID already exists. Please choose a different App ID.',
                           class_name: 'danger'
                       });
@@ -183,7 +183,7 @@ app.controller('appsController',
                         $scope.projectListObj[index]=data;                      
                         $.gritter.add({
                           position: 'top-right',
-                          title: 'Success',
+                          title: 'Successfull',
                           text: 'The project is successfully modified.',
                           class_name: 'success'
                         });

@@ -370,7 +370,7 @@ app.controller('tableDesignerController',
                function(error){
                   $.gritter.add({
                       position: 'top-right',
-                      title: 'Error',
+                      title: 'Opps! something went wrong',
                       text: "We're sorry, We cant save your tables at this point in time. Please try again later.",
                       class_name: 'danger'
                   });
@@ -404,7 +404,7 @@ app.controller('tableDesignerController',
                          
                         $.gritter.add({
                             position: 'top-right',
-                            title: 'Error',
+                            title: 'Opps! something went wrong',
                             text: "We cannot load your project at this point in time. Please try again later.",
                             class_name: 'danger'
                         });
@@ -444,10 +444,10 @@ app.controller('tableDesignerController',
                     $rootScope.dataLoading=false;                         
                     $.gritter.add({
                       position: 'top-right',
-                      title: 'Error',
+                      title: 'Opps! something went wrong',
                       text: "We cannot load your tables at this point in time. Please try again later.",
                       class_name: 'danger'
-                  });
+                    });
                });
         }     
 

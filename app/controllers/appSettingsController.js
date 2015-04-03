@@ -38,7 +38,7 @@ app.controller('appSettingsController',
              $scope.projectSettings=data;
               $.gritter.add({
               position: 'top-right',
-              title: 'Success',
+              title: 'Saved',
               text: 'We successfully saved your app settings.',
               class_name: 'success'
             });                  
@@ -47,7 +47,7 @@ app.controller('appSettingsController',
             $scope.saveSettingsSpinner=false;       
             $.gritter.add({
               position: 'top-right',
-              title: 'Error',
+              title: 'Opps! Something went wrong',
               text: 'Cannot connect to server. Please try again.',
               class_name: 'danger'
             });
@@ -72,7 +72,7 @@ app.controller('appSettingsController',
                          
                         $.gritter.add({
                             position: 'top-right',
-                            title: 'Error',
+                            title: 'Sorry!',
                             text: "We cannot load your project at this point in time. Please try again later.",
                             class_name: 'danger'
                         });
@@ -92,7 +92,7 @@ app.controller('appSettingsController',
                         $rootScope.dataLoading=false;
                         $.gritter.add({
                             position: 'top-right',
-                            title: 'Error',
+                            title: 'Sorry!',
                             text: "We cannot load your project Settings at this point in time. Please try again later.",
                             class_name: 'danger'
                         });

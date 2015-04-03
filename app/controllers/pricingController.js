@@ -101,7 +101,7 @@ app.controller('pricingController',
 	             	                
 	                $.gritter.add({
 	                  position: 'top-right',
-	                  title: 'Error',
+	                  title: 'Opps! something went wrong',
 	                  text: 'Cannot add / remove spending limit at this point of time.',
 	                  class_name: 'danger'
 	                });
@@ -179,7 +179,7 @@ app.controller('pricingController',
 		                 function(error){                    
 		                    $.gritter.add({
 		                      position: 'top-right',
-		                      title: 'Error',
+		                      title: 'Sorry!',
 		                      text: error,
 		                      class_name: 'danger'
 		                    });
@@ -189,7 +189,7 @@ app.controller('pricingController',
 
 					$.gritter.add({
 		              position: 'top-right',
-		              title: 'Error',
+		              title: 'Incorrect Input',
 		              text: validation.message,
 		              class_name: 'danger'
 		            });
@@ -254,7 +254,7 @@ app.controller('pricingController',
                  
                 $.gritter.add({
                     position: 'top-right',
-                    title: 'Error',
+                    title: 'Opps! something went wrong',
                     text: "We cannot load your project at this point in time. Please try again later.",
                     class_name: 'danger'
                 });
@@ -312,7 +312,7 @@ app.controller('pricingController',
                }, function(error){                                             
                     $.gritter.add({
                       position: 'top-right',
-                      title: 'Error',
+                      title: 'Opps! something went wrong',
                       text: "We cannot load your credit card at this point in time. Please try again later.",
                       class_name: 'danger'
                   });
@@ -344,7 +344,7 @@ app.controller('pricingController',
                }, function(error){                                             
                     $.gritter.add({
                       position: 'top-right',
-                      title: 'Error',
+                      title: 'Opps! something went wrong',
                       text: 'We cannot get your payment info at this point in time. Please try again later.',
                       class_name: 'danger'
                   });
@@ -366,7 +366,7 @@ app.controller('pricingController',
                }, function(error){                                             
                     $.gritter.add({
                       position: 'top-right',
-                      title: 'Error',
+                      title: 'Opps! something went wrong',
                       text: 'We cannot get your payment info at this point in time. Please try again later.',
                       class_name: 'danger'
                   });

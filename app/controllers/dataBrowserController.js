@@ -115,9 +115,9 @@ app.controller('dataBrowserController',
             if(obj.document.$$hashKey){
               delete obj.document.$$hashKey;
             }
-
-            obj.document.createdAt=new Date(obj.document.createdAt).toISOString(); 
-            obj.document.updatedAt=new Date(obj.document.updatedAt).toISOString(); 
+            
+            obj.document.createdAt=new Date(obj.document.createdAt); 
+            obj.document.updatedAt=new Date(obj.document.updatedAt);
 
             //save the object.
             obj.save().then(function(newObj){
@@ -130,7 +130,7 @@ app.controller('dataBrowserController',
             }, function(error){               
                $.gritter.add({
                   position: 'top-right',
-                  title: 'Error',
+                  title: 'Opps! something went wrong',
                   text: 'Cannot save this object at this point in time. Please try again later.',
                   class_name: 'danger'
                 });              
@@ -181,7 +181,7 @@ app.controller('dataBrowserController',
             }, function(error){              
               $.gritter.add({
                   position: 'top-right',
-                  title: 'Error',
+                  title: 'Opps! something went wrong',
                   text: 'Cannot delete this object at this point in time. Please try again later.',
                   class_name: 'danger'
                 }); 
@@ -221,7 +221,7 @@ app.controller('dataBrowserController',
             }, error : function(error){                
                 $.gritter.add({
                   position: 'top-right',
-                  title: 'Error',
+                  title: 'Opps! something went wrong',
                   text: 'We cannot load your data at this point in time. Please try again later.',
                   class_name: 'danger'
                 });
@@ -241,7 +241,7 @@ app.controller('dataBrowserController',
             }, error : function(error){               
                 $.gritter.add({
                   position: 'top-right',
-                  title: 'Error',
+                  title: 'Opps! something went wrong',
                   text: 'We cannot load your data at this point in time. Please try again later.',
                   class_name: 'danger'
                 });
@@ -263,7 +263,7 @@ app.controller('dataBrowserController',
             }, function(){                
                 $.gritter.add({
                   position: 'top-right',
-                  title: 'Error',
+                  title: 'Opps! something went wrong',
                   text: 'We cannot load your data at this point in time. Please try again later.',
                   class_name: 'danger'
                 }); 
@@ -318,7 +318,7 @@ app.controller('dataBrowserController',
           }, function(err){
               $.gritter.add({
                   position: 'top-right',
-                  title: 'Error',
+                  title: 'Opps! something went wrong',
                   text: 'Cannot delete this object at this point in time. Please try again later.',
                   class_name: 'danger'
               }); 
@@ -402,7 +402,7 @@ app.controller('dataBrowserController',
                function(error){                         
                    $.gritter.add({
                         position: 'top-right',
-                        title: 'Error',
+                        title: 'Opps! something went wrong',
                         text: 'We cannot load your project at this point in time. Please try again later.',
                         class_name: 'danger'
                     });  
@@ -440,7 +440,7 @@ app.controller('dataBrowserController',
                }, function(error){                         
                    $.gritter.add({
                         position: 'top-right',
-                        title: 'Error',
+                        title: 'Opps! something went wrong',
                         text: 'We cannot load your tables at this point in time. Please try again later.',
                         class_name: 'danger'
                     }); 
@@ -505,7 +505,7 @@ app.controller('dataBrowserController',
           }, error : function(error){             
               $.gritter.add({
                   position: 'top-right',
-                  title: 'Error',
+                  title: 'Opps! something went wrong',
                   text: 'We cannot load your data at this point in time. Please try again later.',
                   class_name: 'danger'
               });
@@ -562,7 +562,7 @@ app.controller('dataBrowserController',
                   if(colDataType=="Date"){
                     cellEdit=false;
                     colWidth='220';
-                    cellFilter="convertIsoToDate | date : 'longDate'";
+                    cellFilter="date : 'longDate'";
                     cellTemplate="<div><input kendo-date-picker ng-change='grid.appScope.saveCloudObject(null,row,null)' style='width:100%' placeholder='yyyy-MM-dd' ng-model='row.entity[col.field]'/></div>";                   
                   }
 
@@ -570,30 +570,28 @@ app.controller('dataBrowserController',
                   if(colDataType=="DateTime"){
                     cellEdit=false;
                     colWidth='220';
-                    cellFilter="convertIsoToDate | date : 'medium'";
+                    cellFilter="date : 'medium'";
                     cellTemplate='<div><input  kendo-date-time-picker style="width:100%" ng-change="grid.appScope.saveCloudObject(null,row,null)" placeholder="yyyy-MM-dd"  ng-model="row.entity[col.field]"/></div>'; 
                   }
 
                   //ACL & Object
                   if(colDataType=="ACL" || colDataType=="Object"){
                     enableSorting=false;
-                    colWidth='100';
+                    colWidth='115';
                     cellTemplate="<div><a class='btn btn-sm btn-default' ng-click='grid.appScope.editJSON(row,col.field)'><i class='fa fa-ellipsis-h'></i></a></div>";
                     cellEdit=false;                  
                   }
 
                   //List
                   if(colDataType=="List"){
-                    enableSorting=false;
-                    colWidth='100';
+                    enableSorting=false;                   
                     cellTemplate="<div><a class='btn btn-sm btn-default' ng-click='grid.appScope.viewList(row,col.field)'><i class='fa fa-bars'></i></a></div>";
                     cellEdit=false;                  
                   }
 
                   //Relation
                   if(colDataType=="Relation"){
-                    enableSorting=false;
-                    colWidth='100';
+                    enableSorting=false;                   
                     cellTemplate="<div><a class='btn btn-sm btn-default' ng-click='grid.appScope.viewRelation(row,col.field)'><i class='fa fa-chevron-circle-right'></i></a></div>";
                     cellEdit=false;                  
                   }
