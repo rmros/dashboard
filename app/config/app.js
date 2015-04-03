@@ -58,7 +58,12 @@ app.config(['ngClipProvider', function(ngClipProvider) {
 }]);
 
 app.config(function() {
-  Stripe.setPublishableKey('pk_test_ZLrh0BYVlddBmEPKUGalN8uQ');
+    if(__isDevelopment){
+        Stripe.setPublishableKey('pk_test_ZLrh0BYVlddBmEPKUGalN8uQ');
+    }else{
+        Stripe.setPublishableKey('pk_live_Ti8jTq0L19lku7o7LN6ZkNPB');
+    }
+  
 });
 
 
