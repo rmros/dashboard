@@ -1,9 +1,6 @@
 {
   "name": "CbNewtheme2",
   "version": "0.0.0",
-  "authors": [
-    "RTBathula <battu.network@gmail.com>"
-  ],
   "moduleType": [
     "amd"
   ],
