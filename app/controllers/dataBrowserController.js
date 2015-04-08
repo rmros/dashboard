@@ -21,6 +21,7 @@ app.controller('dataBrowserController',
       var tableId;
       var isAppLoaded = false;
       $scope.isRefreshed = false;
+      $scope.cellEditing=true;
 
       var query = null;
       var paginationOptions = {       
@@ -65,22 +66,29 @@ app.controller('dataBrowserController',
             $scope.selectTable(table, list);
         }
 
-       if(isStaticType){
+        if(isStaticType){
           $scope.editJSON(row,columnName);
-       }
+        }
 
       };
 
-      $scope.viewRelation = function(row, columnName){
-        var index=$scope.gridOptions.data.indexOf(row.entity);
-        var obj = $scope.displayed[index];
-        var obj = obj.get(columnName);
-        if(obj){
-          var tableName = obj.document._tableName; 
-          var table =  _.first(_.where($rootScope.currentProject.currentTables, {name : tableName}));
-          $scope.selectTable(table, obj);
-        }
-      };      
+      $scope.viewRelation = function(row, columnName){        
+
+        $timeout(function () {
+            if($scope.cellEditing) {
+              var index=$scope.gridOptions.data.indexOf(row.entity);
+              var obj = $scope.displayed[index];
+              var obj = obj.get(columnName);
+              if(obj){
+                var tableName = obj.document._tableName; 
+                var table =  _.first(_.where($rootScope.currentProject.currentTables, {name : tableName}));
+                $scope.selectTable(table, obj);
+              }  
+            }                         
+           
+        }, 500);     
+                
+      };     
 
       $scope.saveCloudObject = function(saveIndex,gridRow,cloudObject){
             var index=-1;
@@ -113,27 +121,28 @@ app.controller('dataBrowserController',
               delete obj.document.$$hashKey;
             }
             
+            obj=checkAndSetRelation(obj);//set relations if there         
+
             obj.document.createdAt=new Date(obj.document.createdAt); 
             obj.document.updatedAt=new Date(obj.document.updatedAt);
 
             //save the object.
             obj.save().then(function(newObj){
-               console.log(newObj);              
-               $scope.displayed[index]=newObj;
-               $scope.displayDocument[index]=newObj.document;
-               $scope.gridOptions.data[index]=newObj.document;
-               $scope.$digest();
+               console.log(newObj);               
+              $scope.displayed[index]=configureCloudData(newObj); 
+              $scope.displayDocument[index]=$scope.displayed[index].document;
+              $scope.gridOptions.data[index]=$scope.displayed[index].document;
+              $scope.$digest();
 
-            }, function(error){               
+            },function(error){               
                $.gritter.add({
                   position: 'top-right',
                   title: 'Opps! something went wrong',
                   text: 'Cannot save this object at this point in time. Please try again later.',
                   class_name: 'danger'
                 });              
-               $scope.$digest();
-            });
-
+               //$scope.$digest();
+            });        
       }; 
 
       $scope.deleteCloudObject = function(deleteIndex,gridRow,cloudObject){
@@ -191,13 +200,13 @@ app.controller('dataBrowserController',
             return  q.promise;
       };     
 
-       $scope.getType = function(x) {
+      $scope.getType = function(x) {
             return typeof x;
-       };
+      };
 
-       $scope.isDate = function(x) {
+      $scope.isDate = function(x) {
             return x instanceof Date;
-       };    
+      };    
 
       $scope.selectTable = function(t, obj) {
 
@@ -268,8 +277,6 @@ app.controller('dataBrowserController',
           }
           
       };
-
-
       $scope.addRow=function(){
         var obj = new CB.CloudObject($scope.selectedTable.name);
         obj.set('createdAt', new Date());
@@ -358,8 +365,13 @@ app.controller('dataBrowserController',
             //set gridApi on scope
             $scope.gridApi = gridApi;
 
+            $scope.gridApi.edit.on.beginCellEdit($scope,function(rowEntity, colDef){
+              $scope.cellEditing=false;
+            });
+
            //After cell edit 
-           $scope.gridApi.edit.on.afterCellEdit($scope,function(rowEntity,colDef, newValue, oldValue){                          
+           $scope.gridApi.edit.on.afterCellEdit($scope,function(rowEntity,colDef, newValue, oldValue){
+              $scope.cellEditing=true;                          
               var rowIndex=$scope.gridOptions.data.indexOf(rowEntity);             
               $scope.saveCloudObject(rowIndex,null,null);
               $scope.$apply();
@@ -453,7 +465,40 @@ app.controller('dataBrowserController',
           var dateObj=new Date(dateString);
           var formatedDate=$filter('date')($filter('convertIsoToDate')(dateObj),"'M/d/yyyy h:mm a");                
           return formatedDate;
-        }       
+        }  
+
+        function checkAndSetRelation(obj){         
+         
+          for(var j=0;j<$scope.selectedTable.columns.length;++j){
+
+              if($scope.selectedTable.columns[j].dataType=="Relation"){
+                 
+                var isKey=_.find(_.keys(obj.document), function(key){
+                    return key==$scope.selectedTable.columns[j].name;                   
+                });
+
+                if(isKey && obj.document[isKey]){ 
+
+                  if(typeof obj.document[isKey]=="object"){
+                    var id=obj.document[isKey].id;
+                    var reatedObj=getObjectInRelatedTable($scope.selectedTable.columns[j].relatedTo,id);                                  
+                    obj.set(isKey,reatedObj);
+                  }else if(typeof obj.document[isKey]=="string"){
+                    var reatedObj=getObjectInRelatedTable($scope.selectedTable.columns[j].relatedTo,obj.document[isKey]);                                  
+                    obj.set(isKey,reatedObj);
+                  }                
+                                                                            
+              }                        
+            }
+          }
+          return  obj;
+        } 
+
+        function getObjectInRelatedTable(tableName,id){ 
+          var obj=new CB.CloudObject(tableName);
+          obj.id=id;
+          return obj;
+        }    
 
         function getPage(){
           var firstRow = (paginationOptions.pageNumber - 1) * paginationOptions.pageSize;
@@ -518,112 +563,15 @@ app.controller('dataBrowserController',
                 //grid column definition             
                 $scope.colNames=[];
                 for(var i=0;i<$scope.selectedTable.columns.length;++i){
-                  var colDataType=$scope.selectedTable.columns[i].dataType;
-                  var colName=$scope.selectedTable.columns[i].name; 
-
-                  var colFieldName=colName;
-                  var colWidth='190';
-                  var colVisibility=true;
-                  var cellEdit=true;
-                  var cellTemplate=null;
-                  var enableCellEditOnFocus=true;
-                  var editableCellTemplate=null;
-                  var enableSorting= true; 
-                  var enableColumnResizing=true; 
-                  var cellFilter=null;         
-
-                  //Id
-                  if(colName=="id"){
-                    colWidth='200';                   
-                    cellEdit=false;                  
-                    enableSorting=false;
-                    colFieldName="_id";  
-                  }              
-
-                  //Boolean
-                  if(colDataType=="Boolean"){
-                    cellEdit=false;
-                    enableSorting=false;
-                    colWidth='100';
-                    cellTemplate='<div><switch id="enabled" name="enabled" ng-change="grid.appScope.saveCloudObject(null,row,null)" style="margin-top:3px;margin-left:3px;" class="blue"  ng-model="row.entity[col.field]"></switch></div>';
-                    
-                  }
-
-                  //Search
-                  if(colName=="isSearchable"){
-                    colFieldName="_isSearchable";
-                    colWidth='190'; 
-                  }
-
-                  //Date
-                  if(colDataType=="Date"){
-                    cellEdit=false;
-                    colWidth='220';
-                    cellFilter="date : 'longDate'";
-                    cellTemplate="<div><input kendo-date-picker ng-change='grid.appScope.saveCloudObject(null,row,null)' style='width:100%' placeholder='yyyy-MM-dd' ng-model='row.entity[col.field]'/></div>";                   
-                  }
-
-                  //DateTime
-                  if(colDataType=="DateTime"){
-                    cellEdit=false;
-                    colWidth='220';
-                    cellFilter="date : 'medium'";
-                    cellTemplate='<div><input  kendo-date-time-picker style="width:100%" ng-change="grid.appScope.saveCloudObject(null,row,null)" placeholder="yyyy-MM-dd"  ng-model="row.entity[col.field]"/></div>'; 
-                  }
-
-                  //ACL & Object
-                  if(colDataType=="ACL" || colDataType=="Object"){
-                    enableSorting=false;
-                    colWidth='115';
-                    cellTemplate="<div><a class='btn btn-sm btn-default' ng-click='grid.appScope.editJSON(row,col.field)'><i class='fa fa-ellipsis-h'></i></a></div>";
-                    cellEdit=false;                  
-                  }
-
-                  //List
-                  if(colDataType=="List"){
-                    enableSorting=false;                   
-                    cellTemplate="<div><a class='btn btn-sm btn-default' ng-click='grid.appScope.viewList(row,col.field)'><i class='fa fa-bars'></i></a></div>";
-                    cellEdit=false;                  
-                  }
-
-                  //Relation
-                  if(colDataType=="Relation"){
-                    enableSorting=false;                   
-                    cellTemplate="<div><a class='btn btn-sm btn-default' ng-click='grid.appScope.viewRelation(row,col.field)'><i class='fa fa-chevron-circle-right'></i></a></div>";
-                    cellEdit=false;                  
-                  }
-
-                  colName=colName+"("+colDataType+")";
-
-                  var colDefObj={ 
-                    displayName:colName,               
-                    field:colFieldName,
-                    name:colName,
-                    type:colDataType,
-                    cellFilter:cellFilter,
-                    visible:colVisibility,                  
-                    width:colWidth,
-                    maxWidth:300,
-                    minWidth:60,
-                    enableCellEdit:cellEdit,
-                    enableCellEditOnFocus:enableCellEditOnFocus,
-                    enableSorting:enableSorting, 
-                    cellTemplate:cellTemplate,
-                    editableCellTemplate:editableCellTemplate,
-                    enableColumnResizing:enableColumnResizing
-                  };
-                  $scope.colNames.push(colDefObj);
+                  $scope.colNames.push(configureColumn($scope.selectedTable.columns[i]));
                 }                
 
                 //this is a list of CLoudObjects.          
                 //grid actual data             
                 $scope.displayed=list;
                 $scope.displayDocument=[];
-                for(var i=0;i<$scope.displayed.length;++i){  
-                  if(!$scope.displayed[i].document._isSearchable){
-                      $scope.displayed[i].document._isSearchable=false;
-                  }   
-
+                for(var i=0;i<$scope.displayed.length;++i){
+                  $scope.displayed[i]=configureCloudData($scope.displayed[i]);                 
                   $scope.displayDocument.push($scope.displayed[i].document);
                 }   
 
@@ -632,7 +580,7 @@ app.controller('dataBrowserController',
                   data:$scope.displayDocument,
                   enableSorting:true,
                   columnDefs:$scope.colNames,               
-                  enableCellEditOnFocus:enableCellEditOnFocus,
+                  enableCellEditOnFocus:true,
                   enableRowSelection:true,
                   enableSelectAll:true,
                   multiSelect: true,
@@ -652,6 +600,129 @@ app.controller('dataBrowserController',
            //Error in retrieving the data.
           } });
       }
+
+      function configureColumn(columnObj){
+
+          var colDataType=columnObj.dataType;
+          var colName=columnObj.name; 
+
+          var colFieldName=colName;
+          var colWidth='190';
+          var colVisibility=true;
+          var cellEdit=true;
+          var cellTemplate=null;
+          var enableCellEditOnFocus=true;
+          var editableCellTemplate=null;
+          var enableSorting= true; 
+          var enableColumnResizing=true; 
+          var cellFilter=null;         
+
+          //Id
+          if(colName=="id"){
+            colWidth='200';                   
+            cellEdit=false;                  
+            enableSorting=false;
+            colFieldName="_id";  
+          }              
+
+          //Boolean
+          if(colDataType=="Boolean"){
+            cellEdit=false;
+            enableSorting=false;
+            colWidth='100';
+            cellTemplate='<div><switch id="enabled" name="enabled" ng-change="grid.appScope.saveCloudObject(null,row,null)" style="margin-top:3px;margin-left:3px;" class="blue"  ng-model="row.entity[col.field]"></switch></div>';
+            
+          }
+
+          //Search
+          if(colName=="isSearchable"){
+            colFieldName="_isSearchable";
+            colWidth='190'; 
+          }
+
+          //Date
+          if(colDataType=="Date"){
+            cellEdit=false;
+            colWidth='220';
+            cellFilter="date : 'longDate'";
+            cellTemplate="<div><input kendo-date-picker ng-change='grid.appScope.saveCloudObject(null,row,null)' style='width:100%' placeholder='yyyy-MM-dd' ng-model='row.entity[col.field]'/></div>";                   
+          }
+
+          //DateTime
+          if(colDataType=="DateTime"){
+            cellEdit=false;
+            colWidth='220';
+            cellFilter="date : 'medium'";
+            cellTemplate='<div><input  kendo-date-time-picker style="width:100%" ng-change="grid.appScope.saveCloudObject(null,row,null)" placeholder="yyyy-MM-dd"  ng-model="row.entity[col.field]"/></div>'; 
+          }
+
+          //ACL & Object
+          if(colDataType=="ACL" || colDataType=="Object"){
+            enableSorting=false;
+            colWidth='115';
+            cellTemplate="<div><a class='btn btn-sm btn-default' ng-click='grid.appScope.editJSON(row,col.field)'><i class='fa fa-ellipsis-h'></i></a></div>";
+            cellEdit=false;                  
+          }
+
+          //List
+          if(colDataType=="List"){
+            enableSorting=false;                   
+            cellTemplate="<div><a class='btn btn-sm btn-default' ng-click='grid.appScope.viewList(row,col.field)'><i class='fa fa-bars'></i></a></div>";
+            cellEdit=false;                  
+          }
+
+          //Relation
+          if(colDataType=="Relation"){
+            enableSorting=false;                               
+            cellTemplate="<div><a class='btn btn-sm btn-default' ng-click='grid.appScope.viewRelation(row,col.field)'><i class='fa fa-chevron-circle-right'></i>{{row.entity[col.field].id}}</div>";
+            cellEdit=true;
+            editableCellTemplate='<input ng-class="\'colt\' + col.index" ng-input="COL_FIELD.id" ui-grid-editor ng-model="MODEL_COL_FIELD.id" />';                  
+          }
+
+          colName=colName+"("+colDataType+")";
+
+          var colDefObj={ 
+            displayName:colName,               
+            field:colFieldName,
+            name:colName,
+            type:colDataType,
+            cellFilter:cellFilter,
+            visible:colVisibility,                  
+            width:colWidth,
+            maxWidth:300,
+            minWidth:60,
+            enableCellEdit:cellEdit,
+            enableCellEditOnFocus:enableCellEditOnFocus,
+            enableSorting:enableSorting, 
+            cellTemplate:cellTemplate,
+            editableCellTemplate:editableCellTemplate,
+            enableColumnResizing:enableColumnResizing
+          }; 
+
+
+          return colDefObj;         
+
+      }  
+
+      function configureCloudData(data){
+        //for Searchable
+        if(!data._isSearchable){
+            data._isSearchable=false;
+        }   
+
+        //for Relation
+        for(var j=0;j<$scope.colNames.length;++j){
+
+          if($scope.colNames[j].type=="Relation"){    
+            $scope.colNames[j].cellTemplate="<div><a ng-show='row.entity[col.field].id' class='btn btn-sm btn-default' ng-click='grid.appScope.viewRelation(row,col.field)'><i class='fa fa-chevron-circle-right' style='margin-right:3px;'></i>{{row.entity[col.field].id}}</a><p ng-show='!row.entity[col.field].id' style='margin-left:5px;'>null</p></div>";             
+            $scope.$digest();                                
+          }                  
+
+        }
+
+        return data;
+
+      } 
 
       function deleteUnsavedRows(selectedRows){  
             for(var i=0;i<selectedRows.length;++i){
