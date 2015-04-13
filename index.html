@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="assets/js/ui-grid/ui-grid-unstable.css" type="text/css">  
   <link href="bower_components/angular-ui-switch/angular-ui-switch.css" rel="stylesheet"/>
   <link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.css">
+  <link href="assets/js/uploadfy/jquery.uploadify.css"/>
 	<link href="assets/css/style.css" rel="stylesheet"/> 
   <!-- start Mixpanel -->
   <script type="text/javascript">(function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
@@ -110,8 +111,7 @@ mixpanel.init("59f8c851677a01bdbfa6cffb2865c682");</script>
         </div><!--/.nav-collapse animate-collapse -->
     </div>
   </div>
-  <!-- /TOP NAVBAR -->
-
+  <!-- /TOP NAVBAR -->  
   <ui-view></ui-view>   
 	
 </div>
@@ -171,6 +171,10 @@ mixpanel.init("59f8c851677a01bdbfa6cffb2865c682");</script>
 <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
 <!--Chart-->
 
+<!--Files-->
+<script src="assets/js/uploadfy/jquery.uploadify.js"></script>
+<!--/Files-->
+
 <!--Angular Main-->
 <script type="text/javascript" src="app/config/app.js"></script>
 <script type="text/javascript" src="app/config/route.js"></script>  
@@ -186,7 +190,8 @@ mixpanel.init("59f8c851677a01bdbfa6cffb2865c682");</script>
 <script src="app/services/userService.js"></script>
 <script src="app/services/projectDetailsService.js"></script>  
 <script src="app/services/paymentService.js"></script>
-<script src="app/services/invoiceService.js"></script>    
+<script src="app/services/invoiceService.js"></script>
+<script src="app/services/cloudObjectService.js"></script>     
 
 <!--Controllers-->
 <script type="text/javascript" src="app/controllers/indexController.js"></script>
@@ -200,6 +205,7 @@ mixpanel.init("59f8c851677a01bdbfa6cffb2865c682");</script>
 <script type="text/javascript" src="app/directives/tooltip/tooltip.js"></script>
 <script type="text/javascript" src="app/directives/xeditable/table-xeditable.js"></script>
 <script type="text/javascript" src="app/directives/xeditable/column-xeditable.js"></script>
+<script type="text/javascript" src="app/directives/uploadify/uploadify.js"></script>
 
 </body>
 

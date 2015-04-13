@@ -41,7 +41,9 @@
 
             <button ng-click="deleteRow()" type="submit" class="btn btn-info btn-rad btn-trans"><i class="fa fa-minus-square fa-lg"></i>&nbsp;Row</button>
 
-            <button ng-click="refresh()" type="submit" class="btn btn-info btn-rad btn-trans"><i class="fa fa-refresh fa-lg" ng-class="{'fa-spin':isRefreshed}"></i>&nbsp;Refresh</button>      
+            <button ng-click="refresh()" type="submit" class="btn btn-info btn-rad btn-trans"><i class="fa fa-refresh fa-lg" ng-class="{'fa-spin':isRefreshed}"></i>&nbsp;Refresh</button>
+
+            <button ng-show="selectedTable.isColumn" ng-click="removeRelation()" type="submit" class="btn btn-info btn-rad btn-trans"><i class="fa fa-scissors fa-lg"></i>&nbsp;Remove Relation</button>      
         </div>
 
         </div>  
@@ -79,6 +81,69 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" data-ng-click="saveObjectChanges()" data-dismiss="modal">Save changes</button>
       </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<!-- Relation List Modal -->
+<div class="modal fade colored-header" id="relation-list" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+      <h3>List</h3>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    </div>
+    <div class="modal-body">
+
+        <div class="add-field-btn">         
+            <button ng-click="addStaticTypeField()" class="btn btn-info btn-rad btn-trans">
+            <i class="fa fa-plus-square fa-lg"></i>&nbsp;Add field</button>          
+        </div> 
+
+        <div class="row" ng-repeat="eachField in staticTypeListFields">
+
+          <!--field-->
+          <div class="form-group col-md-12 no-margin">
+            <div class="pull-left">
+              <div class="form-group"> 
+                <!--Text-->
+                <input ng-if="relationDataType=='Text'" type="text" ng-model="eachField.value" class="form-control" placeholder="Text">
+
+                <!--Email-->
+                <input ng-if="relationDataType=='Email'" type="email" ng-model="eachField" class="form-control" placeholder="Email">
+
+                <!--URL-->
+                <input ng-if="relationDataType=='URL'" type="url" ng-model="eachField" class="form-control" placeholder="URL">
+
+                <!--Number-->
+                <input ng-if="relationDataType=='Number'" type="number" ng-model="eachField" class="form-control" placeholder="Number">
+
+                <!--Boolean-->
+                <switch ng-if="relationDataType=='Boolean'" id="enabled" name="enabled"  style="margin-top:3px;margin-left:3px;" class="blue"  ng-model="eachField"></switch>
+
+                <!--DateTime-->
+                <input  ng-if="relationDataType=='DateTime'" kendo-date-time-picker style="width:100%"  placeholder="yyyy-MM-dd"  ng-model="eachField"/>
+
+              </div>
+            </div>
+             <div class="pull-left list-tools">
+                <a class="label label-danger" ng-click="deleteStaticTypeField($index)">
+                    <i class="fa fa-times"></i>
+                </a>                     
+            </div>
+          </div>
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Cancel</button>
+      <button type="button" ng-show="!saveStaticTypeSpinner" class="btn btn-primary btn-flat" ng-click="saveStaticTypeField()">Save</button>
+
+      <button type="button" ng-show="saveStaticTypeSpinner" class="btn btn-primary btn-flat">
+        <i class="fa fa-spinner fa-spin"></i>Saving..</button>
+    </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

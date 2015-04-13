@@ -8306,3 +8306,12 @@ ul.timeline li > .date {
   color:gray;
   font-weight: bold;
 }
+
+.colName{
+  font-weight:normal;
+  font-size:12px;
+}
+.list-tools{
+  padding-top:17px;
+  padding-left:3px;
+}

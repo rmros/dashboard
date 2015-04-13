@@ -383,7 +383,7 @@ app.controller('tableDesignerController',
 
 
         $scope.filterDataType=function(dataTypeObj){
-          if(dataTypeObj.type!="List"){
+          if(dataTypeObj.type!="List" && dataTypeObj.type!="Relation"){
             return dataTypeObj;
           }
         };

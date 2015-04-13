@@ -73,7 +73,7 @@ app.factory('columnDataTypeService', function () {
             {
               name : 'Relation',
               text : 'Relation',
-              type: 'Realtion',
+              type: 'Relation',
               visible: true
             },
             {
