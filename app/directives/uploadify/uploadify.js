@@ -16,7 +16,7 @@ app.directive('uploadify', function(uiGridEditConstants,cloudObjectService){
                     }
                 },
                 'onSelect' : function(file) {           
-
+                    
                     if (!file.name) {
                         
                         scope.$emit(uiGridEditConstants.events.CANCEL_CELL_EDIT);

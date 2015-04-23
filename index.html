@@ -12,11 +12,11 @@
 	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700,800' rel='stylesheet' type='text/css'>
 
 	<!-- Bootstrap core CSS -->
-	<link href="assets/js/bootstrap/dist/css/bootstrap.css" rel="stylesheet"> 
-	<link rel="stylesheet" type="text/css" href="assets/js/jquery.gritter/css/jquery.gritter.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.gritter/1.7.4/css/jquery.gritter.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
   
-  <link href="bower_components/animate-css/animate.css" rel="stylesheet" />  
+  <link href="bower_components/animate-css/animate.min.css" rel="stylesheet" />  
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/css/bootstrap-select.min.css" />
   <link href="assets/css/kendo.common.min.css" rel="stylesheet">    
   <link href="assets/css/kendo.default.min.css" rel="stylesheet">
@@ -24,13 +24,13 @@
   <link href="assets/js/jquery.x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/> 
   <link rel="stylesheet" href="assets/js/ui-grid/ui-grid-unstable.css" type="text/css">  
   <link href="bower_components/angular-ui-switch/angular-ui-switch.css" rel="stylesheet"/>
-  <link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.css">
+  <link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-css.chart">
   <link href="assets/js/uploadfy/jquery.uploadify.css"/>
 	<link href="assets/css/style.css" rel="stylesheet"/> 
   <!-- start Mixpanel -->
   <script type="text/javascript">(function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
 for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);
-mixpanel.init("59f8c851677a01bdbfa6cffb2865c682");</script>
+mixpanel.init("be05a4d590e8bc9d5f2cd6b3b3ffb78b");</script>
 <!-- end Mixpanel --> 
     
 </head>
@@ -116,40 +116,41 @@ mixpanel.init("59f8c851677a01bdbfa6cffb2865c682");</script>
 	
 </div>
   
-<script src="assets/js/jquery.js"></script>
-<script type="text/javascript" src="assets/js/jquery.ui/jquery-ui.js" ></script>
-<script src="assets/js/jquery.cookie/jquery.cookie.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
-<script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script> 
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script> 
 
-<script src="assets/js/bootstrap/dist/js/bootstrap.min.js"></script> 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-cookies.js"></script> 
-<script src="bower_components/angular-resource/angular-resource.js"></script>  
-<script src="bower_components/underscore/underscore.js"></script>
-<script src="bower_components/angular-underscore/angular-underscore.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-resource.js"></script>  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<script src="bower_components/angular-underscore/angular-underscore.min.js"></script>
 
-<script src="assets/js/intercom.js"></script>	
+<script src="assets/js/intercom.js/intercom.min.js"></script>
+<script src="https://cdn.rawgit.com/gdi2290/angular-intercom/master/angular-intercom.min.js"></script> 	
 <script src="assets/js/jquery.pushmenu/js/jPushMenu.js"></script>
-<script type="text/javascript" src="assets/js/jquery.nanoscroller/jquery.nanoscroller.js"></script>	  
-<script type="text/javascript" src="assets/js/jquery.gritter/js/jquery.gritter.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nanoscroller/0.8.6/javascripts/jquery.nanoscroller.min.js"></script>	  
+<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.gritter/1.7.4/js/jquery.gritter.min.js"></script>
 <script type="text/javascript" src="assets/js/behaviour/core.js"></script>
 <script src="assets/js/kendo.all.min.js"></script>
 
-<script src="bower_components/angular-ui-switch/angular-ui-switch.js"></script> 
+<script src="bower_components/angular-ui-switch/angular-ui-switch.min.js"></script> 
 <script src="bower_components/angular-bootstrap-checkbox/angular-bootstrap-checkbox.js"></script>
-<script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap.min.js"></script>
 
 <script src="node_modules/ng-prettyjson/dist/ng-prettyjson.min.js"></script>   
 <script src="node_modules/ng-prettyjson/src/ace.js"></script> 
 <script src="node_modules/ng-prettyjson/src/mode-json.js"></script>
 <script src="assets/js/behaviour/dashboard.js"></script>
-<script type="text/javascript" src="bower_components/ng-clip/src/ngClip.js"></script>
-<script type="text/javascript" src="bower_components/zeroclipboard/dist/zeroclipboard.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ng-clip/0.2.6/ng-clip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.2.0/ZeroClipboard.min.js"></script>
 
 
 <!--table edit-->
-</script> <script type="text/javascript" src="assets/js/jquery.x-editable/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 <script src="assets/js/jquery.x-editable/src/inputs/combodate/lib/moment.min.js"></script>
 <script src="assets/js/jquery.x-editable/src/inputs-ext/typeaheadjs/lib/typeahead.js"></script>
 <script src="assets/js/jquery.x-editable/src/inputs-ext/typeaheadjs/typeaheadjs.js"></script>
@@ -172,7 +173,7 @@ mixpanel.init("59f8c851677a01bdbfa6cffb2865c682");</script>
 <!--Chart-->
 
 <!--Files-->
-<script src="assets/js/uploadfy/jquery.uploadify.js"></script>
+<script src="assets/js/uploadfy/jquery.uploadify.min.js"></script>
 <!--/Files-->
 
 <!--Angular Main-->

@@ -75,12 +75,13 @@ app.controller('dataBrowserController',
             relatedTable.name=columnName;
             relatedTable.isColumn=true;
             relatedTable.type.icon="share";
+            
+            $scope.isList=true;
 
             if(list && list.length>0){                    
               $scope.selectTable(relatedTable, list);
             }else{
-              var list=[];
-              $scope.isList=true;
+              var list=[];              
               $scope.selectTable(relatedTable,list);      
             }
         }        
@@ -262,12 +263,14 @@ app.controller('dataBrowserController',
       $scope.selectTable = function(t, obj) {
 
         //Removing all temporary table like columns
-        for(var i=0;i<$rootScope.currentProject.currentTables.length;++i){
-          if($rootScope.currentProject.currentTables[i].isColumn==true){
-            $rootScope.currentProject.currentTables.splice(i,1);
-            $scope.originaleTableName=null;            
+        if(!$scope.isList){
+          for(var i=0;i<$rootScope.currentProject.currentTables.length;++i){
+            if($rootScope.currentProject.currentTables[i].isColumn==true){
+              $rootScope.currentProject.currentTables.splice(i,1);
+              $scope.originaleTableName=null;            
+            }
           }
-        }
+        }        
 
         $scope.displayed = []; //empty the list
         $scope.selectedTable = t; 
@@ -280,8 +283,7 @@ app.controller('dataBrowserController',
             query.setLimit(paginationOptions.pageSize);
             query.orderByDesc('createdAt');
             query.find({success : function(list){ 
-                   //count no objects
-             // query = new CB.CloudQuery($scope.selectedTable.name);          
+              //count no objects                    
               query.count({ success: function(count){        
                     loadGrid(list,count);         
                     $scope.$digest(); 
@@ -685,11 +687,11 @@ app.controller('dataBrowserController',
             return  q.promise;
         }
 
-        function fileSet(file){
+        function fileSet(fileObj){
 
           var q=$q.defer();
 
-          var file = new CB.CloudFile(file);
+          var file = new CB.CloudFile(fileObj);
           file.save({
           success: function(newFile) {
             //got the file object successfully with the url to the file
@@ -1044,11 +1046,11 @@ app.controller('dataBrowserController',
 
           if($scope.colNames[j].type=="Relation"){    
             $scope.colNames[j].cellTemplate="<div><a ng-show='row.entity[col.field].id' class='btn btn-sm btn-default' ng-click='grid.appScope.viewRelation(row,col.field)'><i class='fa fa-chevron-circle-right' style='margin-right:4px;'></i>{{row.entity[col.field].id}}</a><p ng-show='!row.entity[col.field].id' style='margin-left:7px;'>null</p></div>";             
-            $scope.$digest();                                
+                                        
           }
           if($scope.colNames[j].type=="File"){    
             $scope.colNames[j].cellTemplate="<div><a  ng-show='row.entity[col.field]'  class='btn btn-sm btn-default' ng-click='grid.appScope.fileUpload(row,col.field)'><i class='fa fa-file' style='margin-right:4px;'></i>{{row.entity[col.field].id}}</a><p ng-show='!row.entity[col.field]' style='margin-left:7px;'>null</p></div>";             
-            $scope.$digest();                                
+                                            
           }                  
 
         }

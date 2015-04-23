@@ -78,11 +78,15 @@
                           <!--Column Type-->  
 
                              <div ng-click="canChangeDatatype(col)">
-                                <select ng-model="col.dataType" style="width:150px" ng-disabled="!col.isEditable || col.saved" ng-change="saveTables()">
-                                    <option ng-repeat="dTypes in colDataTypes" ng-show="dTypes.visible" ng-selected="col.dataType==dTypes.name" value="{{dTypes.name}}">{{dTypes.text}}</option>
-                                </select>                            
+                                <!--if dataType is Not Editable-->
+                                <p ng-show="!col.isEditable">{{col.dataType}}</p>
 
-                            <br>
+                                <!--if dataType is Editable-->
+                                <select ng-model="col.dataType" style="width:150px" ng-show="col.isEditable || col.saved" ng-change="saveTables()">
+                                    <option ng-repeat="dTypes in colDataTypes" ng-show="dTypes.visible" ng-selected="col.dataType==dTypes.name" value="{{dTypes.name}}">{{dTypes.text}}</option>
+                                </select> 
+
+                                <br>
                                                           
                                 <!--if dataType is List-->
                                 <select  ng-if="col.dataType=='List'" style="width:150px; margin-top:4px;" data-ng-model="col.relatedTo" ng-change="saveTables()" ng-disabled="!col.isEditable || col.saved">
