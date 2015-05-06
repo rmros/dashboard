@@ -105,27 +105,29 @@
 
           <!--field-->
           <div class="form-group col-md-12 no-margin">
-            <div class="pull-left">
-              <div class="form-group"> 
+            <div class="pull-left" style="margin-top:3px;!important;">
+              
                 <!--Text-->
-                <input ng-if="relationDataType=='Text'" type="text" ng-model="eachField.value" class="form-control" placeholder="Text">
+                <input ng-if="relationDataType=='Text'" type="text" ng-model="eachField.value"  placeholder="Text">
 
                 <!--Email-->
-                <input ng-if="relationDataType=='Email'" type="email" ng-model="eachField" class="form-control" placeholder="Email">
+                <input ng-if="relationDataType=='Email'" type="email" ng-model="eachField.value" class="form-control" placeholder="Email">
 
                 <!--URL-->
-                <input ng-if="relationDataType=='URL'" type="url" ng-model="eachField" class="form-control" placeholder="URL">
+                <input ng-if="relationDataType=='URL'" type="url" ng-model="eachField.value" class="form-control" placeholder="URL">
 
                 <!--Number-->
-                <input ng-if="relationDataType=='Number'" type="number" ng-model="eachField" class="form-control" placeholder="Number">
+                <input ng-if="relationDataType=='Number'" type="number" ng-model="eachField.value" class="form-control" placeholder="Number">
 
                 <!--Boolean-->
-                <switch ng-if="relationDataType=='Boolean'" id="enabled" name="enabled"  style="margin-top:3px;margin-left:3px;" class="blue"  ng-model="eachField"></switch>
+                <switch ng-if="relationDataType=='Boolean'" id="enabled" name="enabled"  style=" margin-left:3px; margin-right:5px;" class="blue"  ng-model="eachField.value"></switch>
 
                 <!--DateTime-->
-                <input  ng-if="relationDataType=='DateTime'" kendo-date-time-picker style="width:100%"  placeholder="yyyy-MM-dd"  ng-model="eachField"/>
+                <input  ng-if="relationDataType=='DateTime'" kendo-date-time-picker style="width:100%"  ng-model="eachField.value"/>
 
-              </div>
+                <!--File-->
+                <input  ng-if="relationDataType=='File'" fileupload-modal type="file" style="width:100%"  ng-model="eachField.value.url"/>                
+              
             </div>
              <div class="pull-left list-tools">
                 <a class="label label-danger" ng-click="deleteStaticTypeField($index)">

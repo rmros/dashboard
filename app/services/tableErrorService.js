@@ -147,10 +147,7 @@ app.factory('tableErrorService', function () {
         if(name[0].match(/^[a-z]/)){
             return true;
         }
-
-          return false;
-
-
+        return false;
     }
     function isContainsSpecialChars(name){
       var pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/);

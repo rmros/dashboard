@@ -6,8 +6,8 @@ app.controller('indexController',
      return $location.path()
      },
       function(newPath,oldPath) {
-        if(!$cookies.userId || $cookies.userId=="null" || $cookies.userId=="undefined"){
-          //window.location.href=landingURL;
+        if(!$cookies.userId || $cookies.userId=="null" || $cookies.userId=="undefined"){          
+          //window.location.href="/accounts";
         }else{
            $scope.userFullname=$cookies.userFullname; 
         }            
@@ -22,7 +22,7 @@ app.controller('indexController',
               $cookies.userFullname = null; 
               $cookies.email = null;
               $cookies.createdAt = null;
-              window.location.href=landingURL;
+              window.location.href="/accounts";
          },
          function(error){
            console.log(error);

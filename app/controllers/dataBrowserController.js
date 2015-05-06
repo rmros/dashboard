@@ -24,7 +24,7 @@ app.controller('dataBrowserController',
       var isAppLoaded = false;
       $scope.isRefreshed = false;
       $scope.cellEditing=true;
-      $scope.saveStaticTypeSpinner=false;
+      $scope.saveStaticTypeSpinner=false;       
 
       var query = null;
       var paginationOptions = {       
@@ -99,7 +99,8 @@ app.controller('dataBrowserController',
             if(col.relatedTo=="Object"){
               $scope.editJSON(row,columnName);
             }else{  
-              $scope.staticTypeListFields=[];            
+              $scope.staticTypeListFields=[]; 
+              $scope.staticTypeListFieldsCopy=[];           
               if(list.length>0){
 
                 for(var i=0;i<list.length;++i){
@@ -107,6 +108,7 @@ app.controller('dataBrowserController',
                     value:list[i]
                   };
                   $scope.staticTypeListFields.push(tempStaticTypeJSON);
+                  $scope.staticTypeListFieldsCopy=angular.copy($scope.staticTypeListFields);
                 }
               }
               
@@ -160,17 +162,16 @@ app.controller('dataBrowserController',
 
             if(obj.document.$$hashKey){
               delete obj.document.$$hashKey;
-            }          
-                   
+            }     
 
-            obj.document.createdAt=new Date(obj.document.createdAt); 
-            obj.document.updatedAt=new Date(obj.document.updatedAt);
+            obj.set("createdAt",new Date(obj.createdAt));
+            //obj.set("updatedAt",new Date(obj.updatedAt));
 
             obj=checkAndSetRelation(obj);//set relations if there 
             checkAndSetFiles(obj)//Set files if there
             .then(function(obj){             
                
-                  //save the object.
+              //save the object.
               obj.save({ success: function(newObj){        
                 console.log(newObj);
                 $scope.displayed[index]=configureCloudData(newObj); 
@@ -184,9 +185,9 @@ app.controller('dataBrowserController',
 
                  q.resolve(newObj);  
                 },error: function(err) {
-                    q.reject(err);
+                  q.reject(err);
 
-                    $.gritter.add({
+                  $.gritter.add({
                     position: 'top-right',
                     title: 'Opps! something went wrong',
                     text: 'Cannot save this object at this point in time. Please try again later.',
@@ -258,7 +259,7 @@ app.controller('dataBrowserController',
 
       $scope.isDate = function(x) {
             return x instanceof Date;
-      };    
+      };       
 
       $scope.selectTable = function(t, obj) {
 
@@ -306,9 +307,14 @@ app.controller('dataBrowserController',
             //load the list for the first time. 
             query = new CB.CloudQuery($scope.selectedTable.name);
             query.get(obj.id,{success : function(cloudObject){
-              //this is a list of CLoudObjects.
-              $scope.displayed.push(cloudObject);
-              loadGrid($scope.displayed,1);            
+              //this is a list of CLoudObjects.              
+              if(cloudObject){
+                $scope.displayed.push(cloudObject);
+                loadGrid($scope.displayed,1); 
+              }else{
+                $scope.displayed=null;
+                loadGrid($scope.displayed,0);
+              }                        
               $scope.$digest();
 
             }, error : function(error){               
@@ -334,7 +340,11 @@ app.controller('dataBrowserController',
                 $q.all(promises).then(function(list){ 
                    $scope.isList=false;             
                    $rootScope.currentProject.currentTables.push($scope.selectedTable);
-                   loadGrid(list,list.length);              
+                   if(list){
+                    loadGrid(list,list.length);
+                   }else{
+                    loadGrid(null,0);
+                   }                                 
                 }, function(){                
                     $.gritter.add({
                       position: 'top-right',
@@ -352,8 +362,8 @@ app.controller('dataBrowserController',
           }           
           
       };
-      $scope.addRow=function(){
 
+      $scope.addRow=function(){
         if($scope.selectedTable.isColumn){
           var obj = new CB.CloudObject($scope.originaleTableName);
           obj.set('createdAt', new Date());
@@ -364,6 +374,9 @@ app.controller('dataBrowserController',
           obj.set('updatedAt', new Date());
         }      
 
+        if(!$scope.displayed){
+          $scope.displayed=[];
+        }          
         $scope.displayed.push(configureCloudData(obj)); 
         $scope.displayDocument.push(obj.document);      
 
@@ -427,12 +440,51 @@ app.controller('dataBrowserController',
         $scope.staticTypeListFields.splice(index,1);
       };
 
-      $scope.saveStaticTypeField=function(){
-        $scope.saveStaticTypeSpinner=true;  
+      $scope.saveStaticTypeField=function(){         
         var list=[];
-        for(var i=0;i<$scope.staticTypeListFields.length;++i){
-            list.push($scope.staticTypeListFields[i].value);
-        }  
+        if($scope.relationDataType!='File'){
+            for(var i=0;i<$scope.staticTypeListFields.length;++i){
+              if($scope.relationDataType=='DateTime'){
+                $scope.staticTypeListFields[i].value=new Date($scope.staticTypeListFields[i].value);
+              }
+              list.push($scope.staticTypeListFields[i].value);
+            }
+            setAndSaveList(list);
+        }   
+
+        if($scope.relationDataType=='File'){ 
+            var promiseArray=[];           
+            for(var i=0;i<cloudObjectService.files.length;++i){
+              promiseArray.push(fileSet(cloudObjectService.files[i]));
+            }
+
+            if(promiseArray.length>0){
+
+              $q.all(promiseArray).then(function(fileObjectArray){
+                  for(var i=0;i<fileObjectArray.length;++i){                     
+                      $scope.staticTypeListFieldsCopy.push(fileObjectArray[i]);                  
+                  }                            
+                  setAndSaveList($scope.staticTypeListFieldsCopy);
+              }, function(err){
+                  $scope.saveStaticTypeSpinner=false;
+                  $('#relation-list').modal('hide');
+                  $.gritter.add({
+                      position: 'top-right',
+                      title: 'Opps! something went wrong',
+                      text: 'Failed to save File',
+                      class_name: 'danger'
+                  }); 
+              });
+
+            }//End of if
+            
+        }//End of if file
+
+      };
+
+      function setAndSaveList(list){
+        $scope.saveStaticTypeSpinner=true; 
+
         $scope.relationObject.set($scope.relationColumnName,list);
         $scope.saveCloudObject(null,null,$scope.relationObject)
         .then(function(newObj){
@@ -449,8 +501,7 @@ app.controller('dataBrowserController',
                 class_name: 'danger'
             });  
         });
-
-      };
+      }
 
       $scope.removeRelation=function(){
         var selectedRows=$scope.gridApi.selection.getSelectedRows();
@@ -509,7 +560,12 @@ app.controller('dataBrowserController',
 
         $scope.editableObject = obj;
         $scope.jsonObjColumnName = colName;
-        $scope.jsonObj=obj.get(colName);        
+        var jsonSchema=obj.get(colName);
+        $scope.jsonObj=jsonSchema;
+        if(!jsonSchema){
+           $scope.jsonObj=null;
+        } 
+
         $('#jsonModal').modal('show');
       };
 
@@ -536,20 +592,21 @@ app.controller('dataBrowserController',
               
             });
 
-           //After cell edit 
-           $scope.gridApi.edit.on.afterCellEdit($scope,function(rowEntity,colDef, newValue, oldValue){
-              
-              $scope.cellEditing=true;                          
+            //After cell edit 
+            $scope.gridApi.edit.on.afterCellEdit($scope,function(rowEntity,colDef, newValue, oldValue){
+              $scope.columnType=colDef.type;//type of column
+              $scope.cellEditing=true;    
+
               var rowIndex=$scope.gridOptions.data.indexOf(rowEntity);
               
-              //If column type==file
-              if((typeof rowIndex=="number") && (rowIndex>=0) && (colDef.type=="File")){          
+              //If column type==file              
+              if((typeof rowIndex=="number")  && ($scope.columnType=="File")){          
                 $scope.displayed[rowIndex].set(colDef.field,cloudObjectService.file);
               } 
 
               $scope.saveCloudObject(rowIndex,null,null);
               $scope.$apply();
-           }); 
+            }); 
 
            //sorting
           $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
@@ -566,8 +623,8 @@ app.controller('dataBrowserController',
               paginationOptions.pageNumber = newPage;
               paginationOptions.pageSize = pageSize;
               getPage();             
-          });                      
-                 
+          });       
+               
       };
 
        /* PRIVATE FUNCTIONS */
@@ -644,45 +701,48 @@ app.controller('dataBrowserController',
         function checkAndSetFiles(obj){ 
             var q=$q.defer();
 
-            var promises=[];
-            var keysArray=[];
-            for(var j=0;j<$scope.selectedTable.columns.length;++j){
+            if($scope.columnType=="File"){
+                var promises=[];
+                var keysArray=[];
+                for(var j=0;j<$scope.selectedTable.columns.length;++j){
 
-              if($scope.selectedTable.columns[j].dataType=="File"){
-                 
-                var isKey=_.find(_.keys(obj.document), function(key){
-                    return key==$scope.selectedTable.columns[j].name;                   
-                });
+                  if($scope.selectedTable.columns[j].dataType=="File"){
+                     
+                    var isKey=_.find(_.keys(obj.document), function(key){
+                        return key==$scope.selectedTable.columns[j].name;                   
+                    });
 
-                if(isKey && obj.document[isKey]){                                  
-                  promises.push(fileSet(obj.document[isKey]));
-                  keysArray.push(isKey);                                                        
-                }                        
-              }
-            }
-            
-            if(promises.length>0){
-              $q.all(promises).then(function(fileList){
-                if(fileList.length>0){
-                  for(var i=0;i<fileList.length;++i){
-                    obj.set(keysArray[i],fileList[i]);
+                    if(isKey && obj.document[isKey]){                                  
+                      promises.push(fileSet(obj.document[isKey]));
+                      keysArray.push(isKey);                                                        
+                    }                        
                   }
+                }
+                
+                if(promises.length>0){
+                  $q.all(promises).then(function(fileList){
+                    if(fileList.length>0){
+                      for(var i=0;i<fileList.length;++i){
+                        obj.set(keysArray[i],fileList[i]);
+                      }
+                      q.resolve(obj);
+                    } 
+                                   
+                  }, function(err){ 
+                      q.reject(err);                
+                      $.gritter.add({
+                        position: 'top-right',
+                        title: 'Opps! something went wrong',
+                        text: 'We cannot load your data at this point in time. Please try again later.',
+                        class_name: 'danger'
+                      }); 
+                  });
+                }else{
                   q.resolve(obj);
-                } 
-                               
-              }, function(err){ 
-                  q.reject(err);                
-                  $.gritter.add({
-                    position: 'top-right',
-                    title: 'Opps! something went wrong',
-                    text: 'We cannot load your data at this point in time. Please try again later.',
-                    class_name: 'danger'
-                  }); 
-              });
+                }
             }else{
               q.resolve(obj);
             }
-            
 
             return  q.promise;
         }
@@ -707,29 +767,31 @@ app.controller('dataBrowserController',
         }
 
         function checkAndSetRelation(obj){         
-         
-          for(var j=0;j<$scope.selectedTable.columns.length;++j){
+          if($scope.columnType=="Relation"){
+              for(var j=0;j<$scope.selectedTable.columns.length;++j){
 
-              if($scope.selectedTable.columns[j].dataType=="Relation"){
-                 
-                var isKey=_.find(_.keys(obj.document), function(key){
-                    return key==$scope.selectedTable.columns[j].name;                   
-                });
+                  if($scope.selectedTable.columns[j].dataType=="Relation"){
+                     
+                    var isKey=_.find(_.keys(obj.document), function(key){
+                        return key==$scope.selectedTable.columns[j].name;                   
+                    });
 
-                if(isKey && obj.document[isKey]){ 
+                    if(isKey && obj.document[isKey]){ 
 
-                  if(typeof obj.document[isKey]=="object"){
-                    var id=obj.document[isKey].id;
-                    var reatedObj=getObjectInRelatedTable($scope.selectedTable.columns[j].relatedTo,id);                                  
-                    obj.set(isKey,reatedObj);
-                  }else if(typeof obj.document[isKey]=="string"){
-                    var reatedObj=getObjectInRelatedTable($scope.selectedTable.columns[j].relatedTo,obj.document[isKey]);                                  
-                    obj.set(isKey,reatedObj);
-                  }                
-                                                                            
-                }                        
+                      if(typeof obj.document[isKey]=="object"){
+                        var id=obj.document[isKey].id;
+                        var reatedObj=getObjectInRelatedTable($scope.selectedTable.columns[j].relatedTo,id);                                  
+                        obj.set(isKey,reatedObj);
+                      }else if(typeof obj.document[isKey]=="string"){
+                        var reatedObj=getObjectInRelatedTable($scope.selectedTable.columns[j].relatedTo,obj.document[isKey]);                                  
+                        obj.set(isKey,reatedObj);
+                      }                
+                                                                                
+                    }                        
+                  }
               }
           }
+        
           return  obj;
         } 
 
@@ -889,15 +951,18 @@ app.controller('dataBrowserController',
                 //this is a list of CLoudObjects.          
                 //grid actual data             
                 $scope.displayed=list;
-                $scope.displayDocument=[];
+                $scope.displayDocument=[];                
                 if($scope.displayed){
                   for(var i=0;i<$scope.displayed.length;++i){
-                    $scope.displayed[i]=configureCloudData($scope.displayed[i]);                 
-                    $scope.displayDocument.push($scope.displayed[i].document);
-                  }              
-                
+                    if($scope.displayed[i]){
+                      $scope.displayed[i]=configureCloudData($scope.displayed[i]);                  
+                      $scope.displayDocument.push($scope.displayed[i].document);
+                    }else{                      
+                      $scope.displayed.splice(i,1);
+                    }              
+                  }               
                 }
-                  //Making grid
+                //Making grid
                 $scope.gridOptions ={
                   data:$scope.displayDocument,
                   enableSorting:true,
@@ -905,7 +970,7 @@ app.controller('dataBrowserController',
                   enableCellEditOnFocus:true,
                   enableRowSelection:true,
                   enableSelectAll:true,
-                  multiSelect: true,
+                  multiSelect:true,
                   enablePagination:true,
                   enablePaginationControls:true                                                                
                 } 
@@ -964,36 +1029,48 @@ app.controller('dataBrowserController',
             cellEdit=false;
             colWidth='220';
             cellFilter="date : 'longDate'";
-            cellTemplate="<div><input kendo-date-picker ng-change='grid.appScope.saveCloudObject(null,row,null)' style='width:100%' placeholder='yyyy-MM-dd' ng-model='row.entity[col.field]'/></div>";                   
+            cellTemplate="<div><input kendo-date-picker  ng-change='grid.appScope.saveCloudObject(null,row,null)' style='width:100%' placeholder='yyyy-MM-dd' ng-model='row.entity[col.field]'/></div>";                   
           }
 
           //DateTime
-          if(colDataType=="DateTime"){
-            cellEdit=false;
+          if(colDataType=="DateTime"){         
             colWidth='220';
-            cellFilter="date : 'medium'";
-            cellTemplate='<div><input  kendo-date-time-picker style="width:100%" ng-change="grid.appScope.saveCloudObject(null,row,null)" placeholder="yyyy-MM-dd"  ng-model="row.entity[col.field]"/></div>'; 
+            cellEdit=true;            
+            cellFilter="date : 'MM/dd/yyyy h:mma'";
+            cellTemplate="<div><span style='margin-left:4px;'>{{row.entity[col.field] | date:'MM/dd/yyyy h:mma'}}</span></div>"
+            if(colName=="updatedAt"){
+              cellEdit=false;
+            }            
+            editableCellTemplate='<div><input  kendo-date-time-picker  style="width:100%"  datetime-directive ng-class="\'colt\' + col.index" ng-input="COL_FIELD"  ng-model="MODEL_COL_FIELD"/></div>'; 
           }
 
-          //ACL & Object
-          if(colDataType=="ACL" || colDataType=="Object"){
+          //ACL 
+          if(colDataType=="ACL"){
             enableSorting=false;
             colWidth='115';
             cellTemplate="<div><a class='btn btn-sm btn-default' ng-click='grid.appScope.editJSON(row,col.field)'><i class='fa fa-shield' style='margin-right:4px;'></i>Permissions</a></div>";
             cellEdit=false;                  
           }
 
+          //Object
+          if(colDataType=="Object"){
+            enableSorting=false;
+            colWidth='115';
+            cellTemplate="<div><a class='btn btn-sm btn-default' ng-click='grid.appScope.editJSON(row,col.field)'><i class='fa fa-adjust' style='margin-right:4px;'></i>View Object</a></div>";
+            cellEdit=false;                  
+          }
+
           //List
           if(colDataType=="List"){
             enableSorting=false;                   
-            cellTemplate="<div><a class='btn btn-sm btn-default' ng-click='grid.appScope.viewList(row,col.field)'><i class='fa fa-bars' style='margin-right:4px;'></i>View List</a></div>";
+            cellTemplate="<div><a class='btn btn-sm btn-default' ng-show='row.entity._id' ng-click='grid.appScope.viewList(row,col.field)'><i class='fa fa-bars' style='margin-right:4px;'></i>View List</a><p ng-show='!row.entity._id' style='margin-left:7px;'>null</p></div>";
             cellEdit=false;                  
           }
 
           //Relation
           if(colDataType=="Relation"){
             enableSorting=false;                               
-            cellTemplate="<div><a class='btn btn-sm btn-default' ng-click='grid.appScope.viewRelation(row,col.field)'><i class='fa fa-chevron-circle-right' style='margin-right:4px;'></i>{{row.entity[col.field].id}}</div>";
+            cellTemplate="<div><a ng-show='row.entity[col.field].id' class='btn btn-sm btn-default' ng-click='grid.appScope.viewRelation(row,col.field)'><i class='fa fa-chevron-circle-right' style='margin-right:4px;'></i>{{row.entity[col.field].id}}</a><p ng-show='!row.entity[col.field].id' style='margin-left:7px;'>null</p></div>";
             cellEdit=true;
             editableCellTemplate='<input ng-class="\'colt\' + col.index" ng-input="COL_FIELD.id" ui-grid-editor ng-model="MODEL_COL_FIELD.id" />';                  
           }
@@ -1001,9 +1078,9 @@ app.controller('dataBrowserController',
           //File
           if(colDataType=="File"){
             enableSorting=false;                               
-            cellTemplate="<div><a  ng-show='row.entity[col.field]'  class='btn btn-sm btn-default' ng-click='grid.appScope.fileUpload(row,col.field)'><i class='fa fa-file' style='margin-right:4px;'></i>{{row.entity[col.field].id}}</a><p ng-show='!row.entity[col.field]' style='margin-left:7px;'>null</p></div>";
+            cellTemplate="<div><a  ng-show='row.entity[col.field]'  class='btn btn-sm btn-default'  ng-click='grid.appScope.fileDownload(row,col.field)'><i class='fa fa-file' style='margin-right:4px;'></i>{{row.entity[col.field].name}}</a><p ng-show='!row.entity[col.field]' style='margin-left:7px;'>null</p></div>";
             cellEdit=true;
-            editableCellTemplate='<input type="file"  id="file_upload" uploadify  ng-class="\'colt\' + col.index" ng-input="COL_FIELD" ng-model="MODEL_COL_FIELD">'; 
+            editableCellTemplate='<input type="file"  id="file_upload" fileupload  ng-class="\'colt\' + col.index" ng-input="COL_FIELD" ng-model="MODEL_COL_FIELD">'; 
           }
 
           colName=colName+"("+colDataType+")"; 
@@ -1030,30 +1107,43 @@ app.controller('dataBrowserController',
           return colDefObj;         
 
       }  
-      $scope.fileUpload=function(row,gridColumnName){
-        console.log("hello");
+
+      $scope.fileDownload=function(row,gridColumnName){
+        $timeout(function () {
+            if($scope.cellEditing) {
+              window.location=row.entity[gridColumnName].url;              
+            }       
+        }, 500);
+                
       };  
             
 
       function configureCloudData(data){
-        //for Searchable
-        if(!data._isSearchable){
-            data._isSearchable=false;
-        }   
+        if(data){
+            //for Searchable
+          if(!data._isSearchable){
+              data._isSearchable=false;
+          }   
 
-        //for Relation
-        for(var j=0;j<$scope.colNames.length;++j){
+          //for Relation
+          for(var j=0;j<$scope.colNames.length;++j){
 
-          if($scope.colNames[j].type=="Relation"){    
-            $scope.colNames[j].cellTemplate="<div><a ng-show='row.entity[col.field].id' class='btn btn-sm btn-default' ng-click='grid.appScope.viewRelation(row,col.field)'><i class='fa fa-chevron-circle-right' style='margin-right:4px;'></i>{{row.entity[col.field].id}}</a><p ng-show='!row.entity[col.field].id' style='margin-left:7px;'>null</p></div>";             
-                                        
+            if($scope.colNames[j].type=="Relation"){    
+              $scope.colNames[j].cellTemplate="<div><a ng-show='row.entity[col.field].id' class='btn btn-sm btn-default' ng-click='grid.appScope.viewRelation(row,col.field)'><i class='fa fa-chevron-circle-right' style='margin-right:4px;'></i>{{row.entity[col.field].id}}</a><p ng-show='!row.entity[col.field].id' style='margin-left:7px;'>null</p></div>";             
+                                          
+            }
+
+            if($scope.colNames[j].type=="List"){
+              $scope.colNames[j].cellTemplate="<div><a class='btn btn-sm btn-default' ng-show='row.entity._id' ng-click='grid.appScope.viewList(row,col.field)'><i class='fa fa-bars' style='margin-right:4px;'></i>View List</a><p ng-show='!row.entity.style' _id='margin-left:7px;'>null</p></div>";
+            }
+
+            if($scope.colNames[j].type=="File"){    
+              $scope.colNames[j].cellTemplate="<div><a  ng-show='row.entity[col.field]'  class='btn btn-sm btn-default' ng-click='grid.appScope.fileDownload(row,col.field)'><i class='fa fa-file' style='margin-right:4px;'></i>{{row.entity[col.field].name}}</a><p ng-show='!row.entity[col.field]' style='margin-left:7px;'>null</p></div>";             
+                                              
+            }       
+
           }
-          if($scope.colNames[j].type=="File"){    
-            $scope.colNames[j].cellTemplate="<div><a  ng-show='row.entity[col.field]'  class='btn btn-sm btn-default' ng-click='grid.appScope.fileUpload(row,col.field)'><i class='fa fa-file' style='margin-right:4px;'></i>{{row.entity[col.field].id}}</a><p ng-show='!row.entity[col.field]' style='margin-left:7px;'>null</p></div>";             
-                                            
-          }                  
-
-        }
+        }    
 
         return data;
 

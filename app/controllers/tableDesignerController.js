@@ -120,15 +120,16 @@ app.controller('tableDesignerController',
                         
             } else if($scope.confirmTableName === t.name){
 
-              if ($scope.selectedTable == t)
+              if($scope.selectedTable == t)
               $scope.selectedTable = undefined;
-              var i = $rootScope.currentProject.tables.indexOf(t);
+            
+              var i = $rootScope.currentProject.tables.indexOf(table);
               $rootScope.currentProject.tables.splice(i, 1);
 
               if(!$rootScope.currentProject.deletedTables)
-                $rootScope.currentProject.deletedTables = [];
+                  $rootScope.currentProject.deletedTables = [];
 
-              $rootScope.currentProject.deletedTables.push(t);
+              $rootScope.currentProject.deletedTables.push(table);            
 
               $('#md-deleteTable').modal("hide");
               $scope.saveTables();
@@ -145,6 +146,23 @@ app.controller('tableDesignerController',
             }        
                         
         };
+
+        /*function deleteRelatedTableFirst(table){
+            for(var i=0;i<$rootScope.currentProject.tables.length;++i){              
+                var isThere=_.first(_.where($rootScope.currentProject.tables[i].columns, {relatedTo:table.name}));                          
+                if(isThere){
+                  deleteRelatedTableFirst($rootScope.currentProject.tables[i]);
+                }
+            }
+
+            var i = $rootScope.currentProject.tables.indexOf(table);
+            $rootScope.currentProject.tables.splice(i, 1);
+
+            if(!$rootScope.currentProject.deletedTables)
+                $rootScope.currentProject.deletedTables = [];
+
+            $rootScope.currentProject.deletedTables.push(table);
+        }*/
 
 
         $scope.checkMaxCount=function(tableType){
@@ -252,7 +270,10 @@ app.controller('tableDesignerController',
               }
           //End of creating table  
             
-        }       
+        } 
+
+
+            
 
         $scope.deleteCol = function(col) {
             if(col.isDeletable){
@@ -449,7 +470,8 @@ app.controller('tableDesignerController',
                       class_name: 'danger'
                     });
                });
-        }     
+        }   
+  
 
 
 });

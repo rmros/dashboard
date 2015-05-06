@@ -36,6 +36,7 @@ app.config([
         templateUrl: 'app/views/pricing.html',
         controller: 'pricingController'
     });
+  
 
    //For to enable cross-origin resource sharing
   $httpProvider.defaults.withCredentials = true;

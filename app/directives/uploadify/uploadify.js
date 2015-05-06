@@ -5,7 +5,8 @@ app.directive('uploadify', function(uiGridEditConstants,cloudObjectService){
 
             angular.element(elm).uploadify({
                 'auto'     : false,
-                'swf'      : 'assets/js/uploadfy/uploadify.swf',
+                'swf'      : 'assets/js/uploadfy/uploadify.swf',                
+                'removeCompleted' : true,
                 'onCancel' : function(file) {
                     if (!file.name) {
                         

@@ -8312,6 +8312,12 @@ ul.timeline li > .date {
   font-size:14px;
 }
 .list-tools{
-  padding-top:17px;
+  padding-top:5px;
   padding-left:3px;
 }
+
+.account-logo{
+  width:200px;
+  height:50px;   
+}
+

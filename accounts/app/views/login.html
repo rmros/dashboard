@@ -1,0 +1,52 @@
+<div id="cl-wrapper" class="login-container">
+<div class="middle-login">
+		<div class="block-flat">
+			<div class="header">							
+				<h3 class="text-center">
+					<img class="account-logo" src="../../../assets/images/cbfull.png" alt="logo"/>
+				</h3>
+			</div>
+			<div>
+				<form style="margin-bottom: 0px !important;" class="form-horizontal" name="userForm" ng-submit="logIn(userForm.$valid)">
+					<div class="content">
+
+						<h4 class="title">Login Access</h4>
+						<p ng-hide="showSpinner" class="text-center" style="color:red;">{{err}}</p>
+
+						 <div class="text-center" ng-show="showSpinner" style="padding-bottom:30px;">
+						 	<i class="fa fa-spin fa-4x fa-spinner"></i>
+						 </div>
+
+						<div ng-show="!showSpinner">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="input-group">
+										<span class="input-group-addon"><i class="fa fa-user"></i></span>
+										<input type="email" placeholder="Email" id="username" class="form-control"  required  ng-model="email">
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="input-group">
+										<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+										<input type="password" placeholder="Password" id="password" class="form-control" required  ng-model="password">
+									</div>
+								</div>
+							</div>
+							 <p class="forgot-password">
+							 	<a href="#/forgotpassword">Forgot password?</a>
+							 </p>
+						</div>	
+							
+					</div>
+					<div class="foot" ng-show="!showSpinner">
+						<a class="btn btn-default" href="#/signup">Signup</a>
+						<button class="btn btn-primary"  type="submit">Log me in</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="text-center out-links"><a href="www.cloudboost.io">&copy; 2014 cloudboost</a></div>
+	</div> 
+</div>	

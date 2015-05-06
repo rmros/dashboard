@@ -112,9 +112,9 @@ app.controller('appsController',
         };
 
         $scope.createProject=function(isValid){
-
-              if(isValid){
-                $scope.showSaveBtn = false;
+              $scope.appValidationError=null;
+              if(isValid && appIdValidation($scope.appId)){
+                $scope.showSaveBtn = false;               
                 
                 var createProjectPromise=projectService.createProject($scope.name, $scope.appId);
                 createProjectPromise.then(
@@ -257,6 +257,25 @@ app.controller('appsController',
           w.addClass("sb-collapsed");
           $.cookie('FLATDREAM_sidebar','closed',{expires:365, path:'/'});         
           //updateHeight();
+        }
+
+        function appIdValidation(appId){
+            var response=true;
+            //LowerCase
+            if(appId!= appId.toLowerCase())
+            {
+               response=false;
+               $scope.appIdValidationError="App Id must be in lowercase.";               
+            }
+
+            //No Special characters
+            var pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/);
+            if(pattern.test(appId)){
+               response=false;
+               $scope.appIdValidationError="App Id shoudn't contain special characters";
+            }
+
+            return response;
         }
 
 }]);
