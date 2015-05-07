@@ -28,19 +28,20 @@ var app=angular.module('CloudBoostDashboard',
 
 var serverURL = null; 
 var landingURL = null;
-var sdk = document.createElement('script');
+//var sdk = document.createElement('script');
 
 if(__isDevelopment){
     serverURL="http://localhost:3000";
     landingURL = "http://localhost:1444";
-    sdk.setAttribute('src','http://localhost:4730/sdk/js/1.0.0');
+    CB.serverUrl ='http://localhost:4730';
+    CB.apiUrl = CB.serverUrl+'/api';
 }else{
     serverURL = "https://service.cloudboost.io";
     landingURL = "https://www.cloudboost.io";
-    sdk.setAttribute('src','https://api.cloudboost.io/sdk/js/1.0.0');
+    //sdk.setAttribute('src','https://cdn.rawgit.com/CloudBoost/JavaScriptSDK/Test_Sdk/dist/1.0.0.js');
 }
 
-document.head.appendChild(sdk);
+//document.head.appendChild(sdk);
 
 app.config(['ngClipProvider', function(ngClipProvider) {
     ngClipProvider.setPath("bower_components/zeroclipboard/dist/ZeroClipboard.swf");

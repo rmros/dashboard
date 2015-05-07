@@ -5,7 +5,7 @@ app.directive('fileupload', function(uiGridEditConstants,cloudObjectService){
 
             angular.element(elm).fileupload({                          
                 change: function (e, data) {
-                    if(data.files.length>0){
+                    if(data.files.length>0){                                               
                         cloudObjectService.setFileObject(data.files[0]);
                         scope.$emit(uiGridEditConstants.events.END_CELL_EDIT);
                     }else{

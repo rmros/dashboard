@@ -1,4 +1,4 @@
-app.directive('fileuploadModal', function(uiGridEditConstants,cloudObjectService){
+app.directive('fileuploadModal', function(uiGridEditConstants){
     return {
         restrict: 'A',
         link: function(scope, elm, attrs){          
@@ -6,7 +6,8 @@ app.directive('fileuploadModal', function(uiGridEditConstants,cloudObjectService
             angular.element(elm).fileupload({          
                 change: function (e, data) {
                     if(data.files.length>0){
-                        cloudObjectService.setFileArrayObject(data.files[0]);                       
+                        var index=angular.element(elm).data("index");                       
+                        scope.fileChange(data.files[0],index);                        
                     }
                 }    
             });           

@@ -104,6 +104,9 @@ app.controller('dataBrowserController',
               if(list.length>0){
 
                 for(var i=0;i<list.length;++i){
+                  if(col.relatedTo=="DateTime"){
+                    list[i]=new Date(list[i]);
+                  }
                   var tempStaticTypeJSON={
                     value:list[i]
                   };
@@ -430,17 +433,73 @@ app.controller('dataBrowserController',
 
       };
 
+      $scope.fileChange=function(file,index){
+          fileSet(file)
+          .then(function(cloudBoostFile){
+              $scope.staticTypeListFields[index].value=cloudBoostFile;
+
+              if($scope.temporaryFileIndex==index){
+                $scope.temporaryFile=null;
+                $scope.temporaryFileIndex=null;
+              } 
+
+          }, function(err){
+            $.gritter.add({
+                position: 'top-right',
+                title: 'Opps! something went wrong',
+                text: 'Error with Uploading File. '+err,
+                class_name: 'danger'
+            });     
+
+          });
+      }; 
+
+      $scope.swipeToFileInput=function(index){
+        if($scope.temporaryFile){
+          $scope.staticTypeListFields[$scope.temporaryFileIndex].value=angular.copy($scope.temporaryFile);
+        } 
+
+        $scope.temporaryFile=angular.copy($scope.staticTypeListFields[index].value);
+        $scope.temporaryFileIndex=index;
+        $scope.staticTypeListFields[index].value=null;        
+      };
+
+      $scope.assignFileBack=function(index){
+         $scope.staticTypeListFields[index].value=angular.copy($scope.temporaryFile);
+         $scope.temporaryFile=null;
+         $scope.temporaryFileIndex=null;
+      };
+
       $scope.addStaticTypeField=function(){
         var tempStaticTypeJSON={
                     value:null
                   };
         $scope.staticTypeListFields.push(tempStaticTypeJSON);
-      };
-      $scope.deleteStaticTypeField=function(index){
-        $scope.staticTypeListFields.splice(index,1);
+
+        if($scope.temporaryFile){
+          $scope.staticTypeListFields[$scope.temporaryFileIndex].value=angular.copy($scope.temporaryFile);
+          $scope.temporaryFile=null;
+          $scope.temporaryFileIndex=null;
+        }
       };
 
-      $scope.saveStaticTypeField=function(){         
+      $scope.deleteStaticTypeField=function(index){
+        if($scope.temporaryFile){
+          $scope.staticTypeListFields[$scope.temporaryFileIndex].value=angular.copy($scope.temporaryFile);
+          $scope.temporaryFile=null;
+          $scope.temporaryFileIndex=null;
+        }
+
+        $scope.staticTypeListFields.splice(index,1);      
+      };
+
+      $scope.saveStaticTypeField=function(){ 
+        if($scope.temporaryFile){
+          $scope.staticTypeListFields[$scope.temporaryFileIndex].value=angular.copy($scope.temporaryFile);
+          $scope.temporaryFile=null;
+          $scope.temporaryFileIndex=null;
+        }
+
         var list=[];
         if($scope.relationDataType!='File'){
             for(var i=0;i<$scope.staticTypeListFields.length;++i){
@@ -453,30 +512,11 @@ app.controller('dataBrowserController',
         }   
 
         if($scope.relationDataType=='File'){ 
-            var promiseArray=[];           
-            for(var i=0;i<cloudObjectService.files.length;++i){
-              promiseArray.push(fileSet(cloudObjectService.files[i]));
+          
+            for(var i=0;i<$scope.staticTypeListFields.length;++i){             
+              list.push($scope.staticTypeListFields[i].value);
             }
-
-            if(promiseArray.length>0){
-
-              $q.all(promiseArray).then(function(fileObjectArray){
-                  for(var i=0;i<fileObjectArray.length;++i){                     
-                      $scope.staticTypeListFieldsCopy.push(fileObjectArray[i]);                  
-                  }                            
-                  setAndSaveList($scope.staticTypeListFieldsCopy);
-              }, function(err){
-                  $scope.saveStaticTypeSpinner=false;
-                  $('#relation-list').modal('hide');
-                  $.gritter.add({
-                      position: 'top-right',
-                      title: 'Opps! something went wrong',
-                      text: 'Failed to save File',
-                      class_name: 'danger'
-                  }); 
-              });
-
-            }//End of if
+            setAndSaveList(list);    
             
         }//End of if file
 
