@@ -36,6 +36,7 @@ They all use mostly the same API:
 - `colours`: data colours (will use default colours if not specified)
 - `getColour`: function that returns a colour in case there are not enough (will use random colours if not specified)
 - `click`: onclick event handler
+- `hover`: onmousemove event handler
 - `legend`: (default: `false`): show legend below the chart
 
 There is another directive `chart-base` that takes an extra attribute `chart-type` to define the type
@@ -66,7 +67,20 @@ You will also need [shims](https://github.com/es-shims/es5-shim) for ES5 functio
 ## Javascript
 
 ```javascript
-angular.module("app", ["chart.js"]).controller("LineCtrl", ['$scope', '$timeout', function ($scope, $timeout) {
+angular.module("app", ["chart.js"])
+  // Optional configuration
+  .config(['ChartJsProvider', function (ChartJsProvider) {
+    // Configure all charts
+    ChartJsProvider.setOptions({
+      colours: ['#FF5252', '#FF8A80'],
+      responsive: false
+    });
+    // Configure all line charts
+    ChartJsProvider.setOptions('Line', {
+      datasetFill: false
+    });
+  }])
+  .controller("LineCtrl", ['$scope', '$timeout', function ($scope, $timeout) {
 
   $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
   $scope.series = ['Series A', 'Series B'];
@@ -142,11 +156,13 @@ Pull requests welcome!
 
 Thank you!
 
-* @ManuelRauber
-* @vad710
-* @JAAulde
-* @offsky
-* @jonathansampson
+* [@jantimon](https://twitter.com/jantimon)
+* [@ManuelRauber](https://twitter.com/ManuelRauber)
+* [@vad710](https://twitter.com/vad710)
+* [@JAAulde](https://twitter.com/JAAulde)
+* [@offsky](https://twitter.com/offsky)
+* [@jonathansampson](https://twitter.com/jonathansampson)
+* [@idangozlan](https://twitter.com/idangozlan)
 
 # Author
 
@@ -154,5 +170,5 @@ Jerome Touffe-Blin, [@jtblin](https://twitter.com/jtblin), [About me](http://abo
 
 # License
 
-angular-chart.js is copyright 2014 Jerome Touffe-Blin and contributors. 
+angular-chart.js is copyright 2015 Jerome Touffe-Blin and contributors. 
 It is licensed under the BSD license. See the include LICENSE file for details.

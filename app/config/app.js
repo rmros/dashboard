@@ -28,7 +28,6 @@ var app=angular.module('CloudBoostDashboard',
 
 var serverURL = null; 
 var landingURL = null;
-//var sdk = document.createElement('script');
 
 if(__isDevelopment){
     serverURL="http://localhost:3000";
@@ -38,10 +37,7 @@ if(__isDevelopment){
 }else{
     serverURL = "https://service.cloudboost.io";
     landingURL = "https://www.cloudboost.io";
-    //sdk.setAttribute('src','https://cdn.rawgit.com/CloudBoost/JavaScriptSDK/Test_Sdk/dist/1.0.0.js');
 }
-
-//document.head.appendChild(sdk);
 
 app.config(['ngClipProvider', function(ngClipProvider) {
     ngClipProvider.setPath("bower_components/zeroclipboard/dist/ZeroClipboard.swf");
