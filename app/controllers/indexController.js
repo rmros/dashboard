@@ -6,10 +6,10 @@ app.controller('indexController',
      return $location.path()
      },
       function(newPath,oldPath) {
-        if(!$cookies.userId || $cookies.userId=="null" || $cookies.userId=="undefined"){          
-          //window.location.href="/accounts";
+        if(!$.cookie('userId') || $.cookie('userId')=="null" || $.cookie('userId')=="undefined"){          
+          window.location.href="/accounts";
         }else{
-           $scope.userFullname=$cookies.userFullname; 
+           $scope.userFullname=$.cookie('userFullname'); 
         }            
       }
     );  
