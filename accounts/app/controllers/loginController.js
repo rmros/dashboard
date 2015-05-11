@@ -14,11 +14,12 @@ app.controller('loginController',
           var logInPromise=userService.logIn($scope.email,$scope.password);
 
           logInPromise.then(
-              function(data){
-                  $cookies.userId = data._id;
-                  $cookies.userFullname = data.name; 
-                  $cookies.email = data.email;
-                  $cookies.createdAt = data.createdAt;
+              function(data){               
+
+                  $.cookie('userId', data._id, { path: '/' });
+                  $.cookie('userFullname', data.name, { path: '/' });
+                  $.cookie('email', data.email, { path: '/' });
+                  $.cookie('createdAt', data.createdAt, { path: '/' });
                   
                   window.location.href=dashboardURL;
                   //$scope.showSpinner=false;

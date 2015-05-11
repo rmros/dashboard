@@ -17,11 +17,13 @@ app.controller('indexController',
     $scope.logOut=function(){
       var logOutPromise=userService.logOut();
       logOutPromise.then(
-         function(data){
-              $cookies.userId = null;
-              $cookies.userFullname = null; 
-              $cookies.email = null;
-              $cookies.createdAt = null;
+         function(data){           
+
+              $.removeCookie('userId', { path: '/' });
+              $.removeCookie('userFullname', { path: '/' });
+              $.removeCookie('email', { path: '/' });
+              $.removeCookie('createdAt', { path: '/' });
+
               window.location.href="/accounts";
          },
          function(error){
