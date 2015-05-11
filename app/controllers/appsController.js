@@ -238,10 +238,10 @@ app.controller('appsController',
 
         function integrateIntercom(){
           var user = {
-              name: $cookies.userFullname,
-              email: $cookies.email,
-              created_at: Date.parse($cookies.createdAt),
-              user_id : $cookies.userId
+              name: $.cookie('userFullname'),
+              email: $.cookie('email'),
+              created_at: Date.parse($.cookie('createdAt')),
+              user_id : $.cookie('userId')
             };
 
           $intercom.boot(user);
