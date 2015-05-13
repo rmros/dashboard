@@ -123,13 +123,13 @@ app.controller('tableDesignerController',
               if($scope.selectedTable == t)
               $scope.selectedTable = undefined;
             
-              var i = $rootScope.currentProject.tables.indexOf(table);
+              var i = $rootScope.currentProject.tables.indexOf(t);
               $rootScope.currentProject.tables.splice(i, 1);
 
               if(!$rootScope.currentProject.deletedTables)
                   $rootScope.currentProject.deletedTables = [];
 
-              $rootScope.currentProject.deletedTables.push(table);            
+              $rootScope.currentProject.deletedTables.push(t);            
 
               $('#md-deleteTable').modal("hide");
               $scope.saveTables();
