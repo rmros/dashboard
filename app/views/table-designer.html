@@ -79,6 +79,18 @@
 
                               <!--if dataType is Not Editable-->
                               <p ng-if="!col.isEditable">{{col.dataType}}</p>
+                              <br>
+
+                              <div  ng-if="!col.isEditable && col.dataType=='List'" ng-repeat="eachTable in currentProject.tables">
+                                <p ng-if="eachTable.name==col.relatedTo">{{eachTable.name}}</p>
+                              </div> 
+                              <div  ng-if="!col.isEditable && col.dataType=='List'" ng-repeat="dTypes in colDataTypes | filter:filterDataType">
+                                <p ng-if="dTypes.name==col.relatedTo">{{dTypes.text}}</p>
+                              </div>
+
+                              <div  ng-if="!col.isEditable && col.dataType=='Relation'" ng-repeat="eachTable in currentProject.tables">
+                                <p ng-if="eachTable.name==col.relatedTo">{{eachTable.name}}</p>
+                              </div>                             
 
                               <div ng-click="canChangeDatatype(col)" ng-if="col.isEditable || col.saved">                               
 

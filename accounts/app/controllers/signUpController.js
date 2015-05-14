@@ -16,8 +16,14 @@ app.controller('signupController',
               var signUpPromise=userService.signUp($scope.name,$scope.email,$scope.password);
               signUpPromise.then(
                   function(data){
-                     $scope.showSpinner=false;
-                     window.location.href=dashboardURL;
+                     //$scope.showSpinner=false;
+                     
+                    $.cookie('userId', data._id, { path: '/' });
+                    $.cookie('userFullname', data.name, { path: '/' });
+                    $.cookie('email', data.email, { path: '/' });
+                    $.cookie('createdAt', data.createdAt, { path: '/' });
+
+                    window.location.href=dashboardURL;
                   },
                   function(error){
                         $scope.showSpinner=false;
