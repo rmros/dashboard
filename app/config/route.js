@@ -39,9 +39,9 @@ app.config([
   
 
    //For to enable cross-origin resource sharing
-  $httpProvider.defaults.withCredentials = true;
-  $httpProvider.defaults.useXDomain = true;
-  delete $httpProvider.defaults.headers.common['X-Requested-With'];
+ // $httpProvider.defaults.withCredentials = true;
+//  $httpProvider.defaults.useXDomain = true;
+  //delete $httpProvider.defaults.headers.common['X-Requested-With'];
   //End
 
 }]);
