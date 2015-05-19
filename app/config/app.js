@@ -1,5 +1,5 @@
 var __isDevelopment = false;
-var __isVM = true;
+var __isVM = false;
 
 if(window.location.host.indexOf('localhost') > -1){
     __isDevelopment = true;
@@ -50,13 +50,11 @@ app.config(['ngClipProvider', function(ngClipProvider) {
 }]);
 
 app.config(function() {
-	if(__isVM){
-		Stripe.setPublishableKey('pk_live_Ti8jTq0L19lku7o7LN6ZkNPB');
-	}else{
-    		if(__isDevelopment){
+	
+    	if(__isDevelopment){
 	        	Stripe.setPublishableKey('pk_test_ZLrh0BYVlddBmEPKUGalN8uQ');
 		}else{
 	        	Stripe.setPublishableKey('pk_live_Ti8jTq0L19lku7o7LN6ZkNPB');
-    		}
-	}
+    	}
+	
 });
