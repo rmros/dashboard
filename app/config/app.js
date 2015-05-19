@@ -32,9 +32,9 @@ var app=angular.module('CloudBoostDashboard',
 var serverURL = null; 
 var landingURL = null;
 if(__isVM){
-	serverURL = "http://cloudboostvm.cloudapp.net:3000";
+	serverURL = window.location.host + ":3000";
 	landingURL = "https://www.cloudboost.io";
-	CB.serverUrl = "http://cloudboostvm.cloudapp.net:4730";
+	CB.serverUrl = window.location.host + ":4730";
 	CB.apiUrl = CB.serverUrl+'/api';
 }else{
 	if(__isDevelopment){
