@@ -1,5 +1,7 @@
 var __isDevelopment = false;
-var __isVM = false;
+
+//this is an isVM switch.
+var __isVM = false; 
 
 if(window.location.host.indexOf('localhost') > -1){
     __isDevelopment = true;
