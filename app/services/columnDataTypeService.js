@@ -47,6 +47,12 @@ app.factory('columnDataTypeService', function () {
               visible: true
             },
             {
+              name : 'GeoPoint',
+              text : 'Geo Point',
+              type: 'static',
+              visible: true
+            },
+            {
               name : 'File',
               text : 'File',
               type: 'static',
