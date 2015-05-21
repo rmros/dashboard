@@ -137,12 +137,7 @@ app.controller('appsController',
                       $scope.name="";
                       $scope.appId = "";
 
-                      $.gritter.add({
-                        title: 'Great!',
-                        text: "Let's go to the table designer for the first time.",
-                        class_name: 'info'
-                      });
-                      $scope.goToTableDesigner(data);                      
+                                 
                   },
                   function(error){
                     $scope.showSaveBtn = true;
