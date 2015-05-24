@@ -1,6 +1,6 @@
 
 var __isDevelopment = false;
-var __isVM = true;
+var __isVM = false;
 
 if(window.location.host.indexOf('localhost') > -1){
 	__isDevelopment = true;
