@@ -7897,6 +7897,11 @@ ul.timeline li > .date {
   -moz-flex:1;
   -webkit-flex:1;
 }
+.flex-inputs{
+  flex:2;
+  -moz-flex:2;
+  -webkit-flex:2;
+}
 
 .flex-wrapper{
    /* Flex rules */
@@ -8321,3 +8326,7 @@ ul.timeline li > .date {
   height:50px;   
 }
 
+.col-label-names{
+  font-size: 14px;
+  font-weight: normal;
+}

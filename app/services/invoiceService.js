@@ -1,4 +1,4 @@
-app.factory('invoiceService', ['$q','$http',function ($q,$http) {
+app.factory('invoiceService', ['$q','$http','$rootScope',function ($q,$http,$rootScope) {
 
     var global = {};
 
@@ -11,6 +11,9 @@ app.factory('invoiceService', ['$q','$http',function ($q,$http) {
            }).
            error(function(data, status, headers, config) {
                  q.reject(data);
+                 if(status===401){
+                  $rootScope.logOut();
+                } 
            });
 
            return  q.promise;
@@ -26,6 +29,9 @@ app.factory('invoiceService', ['$q','$http',function ($q,$http) {
            }).
            error(function(data, status, headers, config) {
                  q.reject(data);
+                 if(status===401){
+                  $rootScope.logOut();
+                }
            });
 
            return  q.promise;
@@ -41,6 +47,9 @@ app.factory('invoiceService', ['$q','$http',function ($q,$http) {
            }).
            error(function(data, status, headers, config) {
                  q.reject(data);
+                 if(status===401){
+                  $rootScope.logOut();
+                }
            });
 
            return  q.promise;

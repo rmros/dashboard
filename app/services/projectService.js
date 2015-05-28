@@ -1,23 +1,26 @@
-app.factory('projectService', ['$q','$http',function ($q,$http) {
+app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$rootScope) {
 
     var global = {};
 
-     global.projectList = function(){
+    global.projectList = function(){
          var q=$q.defer();
 
          $http.get(serverURL+'/project/list').
            success(function(data, status, headers, config) {
-                 q.resolve(data);
+              q.resolve(data);
            }).
            error(function(data, status, headers, config) {
-                 q.reject(data);
+              q.reject(data);
+              if(status===401){
+                $rootScope.logOut();
+              }              
            });
 
            return  q.promise;
 
-      };
+    };
 
-   global.createProject = function(name,appId){
+    global.createProject = function(name,appId){
        var q=$q.defer();
        $http.post(serverURL+'/project/create', {name:name,appId:appId}).
          success(function(data, status, headers, config) {
@@ -29,6 +32,9 @@ app.factory('projectService', ['$q','$http',function ($q,$http) {
          }).
          error(function(data, status, headers, config) {
                q.reject(status);
+               if(status===401){
+                $rootScope.logOut();
+              }
          });
 
          return  q.promise;
@@ -49,6 +55,9 @@ app.factory('projectService', ['$q','$http',function ($q,$http) {
          }).
          error(function(data, status, headers, config) {
                q.reject(status);
+               if(status===401){
+                $rootScope.logOut();
+              }
          });
 
          return  q.promise;
@@ -63,6 +72,9 @@ app.factory('projectService', ['$q','$http',function ($q,$http) {
           }).
           error(function(data, status, headers, config) {
                 q.reject(status);
+                if(status===401){
+                  $rootScope.logOut();
+                }
           });
 
           return  q.promise;
@@ -76,6 +88,9 @@ app.factory('projectService', ['$q','$http',function ($q,$http) {
           }).
           error(function(data, status, headers, config) {
                 q.reject(status);
+                if(status===401){
+                  $rootScope.logOut();
+                }
           });
 
           return  q.promise;

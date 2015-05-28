@@ -81,11 +81,30 @@ app.factory('tableErrorService', function () {
     }
 
     function columnErrorsForCreate(name,arry){
+        var isNull=isEmpty(name);
+        if(isNull){
+          return "Column name shouldn't be empty";
+        }
+
         var isCommon=isCommonName(name,arry);
         if(isCommon){
             return true;
+        }   
+        
+        var isStartNumber=isStartWithNumber(name);
+        if(isStartNumber){
+            return "Column name shouldn't start with number";
         }
-        return false;
+        var isSpecialChar=isContainsSpecialChars(name);
+        if(isSpecialChar){
+            return "Column name shouldn't contain any special characters.";
+        }
+        var spaces=areSpaces(name);
+        if(spaces){
+            return "Spaces are not allowed.";
+        }
+
+        return null;
     }
 
     function columnErrorsForEdit(name,thisObj,arry){

@@ -14,7 +14,9 @@
 	<!-- Bootstrap core CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="https://cdn.lukej.me/jquery.gritter/1.7.4/css/jquery.gritter.css" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+	<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">-->
+
+  <link rel="stylesheet" href="assets/fonts/font-awesome-4/css/font-awesome.min.css">
   
   <link href="bower_components/animate-css/animate.min.css" rel="stylesheet" />  
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/css/bootstrap-select.min.css" />
@@ -64,7 +66,7 @@ mixpanel.init("be05a4d590e8bc9d5f2cd6b3b3ffb78b");</script>
             <li  ng-class="{active:page=='apps','menu-active':page=='apps'}" data-toggle="tooltip" data-placement="right" title="Apps" tooltip><a href="#/"><i class="fa fa-th-large "></i><span>Apps</span></a>             
             </li>
 
-             <li ng-class="{active:page=='tableDesigner','menu-active':page=='tableDesigner'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Table Designer" tooltip><a href="#/{{currentProject.appId}}/data/designer/table/"  ng-click="toggleSideMenu()"><i class="fa fa-database"></i><span>Table Designer</span></a>   
+             <li ng-class="{active:page=='tableDesigner','menu-active':page=='tableDesigner'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Table Designer" tooltip><a href="#/{{currentProject.appId}}/data/designer/table/"  ng-click="toggleSideMenu()"><i class="fa fa-pencil-square"></i><span>Table Designer</span></a>   
             </li>
 
             <li ng-class="{active:page=='dataBrowser','menu-active':page=='dataBrowser'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Data Browser" tooltip><a href="#/{{currentProject.appId}}/data/browser/table/" ng-click="toggleSideMenu()"><i class="fa fa-table"></i><span>Data Browser</span></a>   
@@ -153,10 +155,10 @@ mixpanel.init("be05a4d590e8bc9d5f2cd6b3b3ffb78b");</script>
 
 
 <!--table edit-->
- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+ <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 <script src="assets/js/jquery.x-editable/src/inputs/combodate/lib/moment.min.js"></script>
 <script src="assets/js/jquery.x-editable/src/inputs-ext/typeaheadjs/lib/typeahead.js"></script>
-<script src="assets/js/jquery.x-editable/src/inputs-ext/typeaheadjs/typeaheadjs.js"></script>
+<script src="assets/js/jquery.x-editable/src/inputs-ext/typeaheadjs/typeaheadjs.js"></script>-->
 <!--/table edit-->
 
 <!--UI Grid-->
@@ -170,10 +172,10 @@ mixpanel.init("be05a4d590e8bc9d5f2cd6b3b3ffb78b");</script>
 <script type="text/javascript" src="bower_components/stripe-angular/stripe-angular.js"></script>
 <!--/Stripe-->
 
-<script src="bower_components/Chart.js/Chart.js"></script>
-
-<script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
 <!--Chart-->
+<script src="bower_components/Chart.js/Chart.js"></script>
+<script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
+<!--/Chart-->
 
 <!--Files-->
 <script src="assets/js/uploadfy/jquery.uploadify.min.js"></script>
@@ -210,8 +212,9 @@ mixpanel.init("be05a4d590e8bc9d5f2cd6b3b3ffb78b");</script>
 
 <!--Directives-->
 <script type="text/javascript" src="app/directives/tooltip/tooltip.js"></script>
+<!--
 <script type="text/javascript" src="app/directives/xeditable/table-xeditable.js"></script>
-<script type="text/javascript" src="app/directives/xeditable/column-xeditable.js"></script>
+<script type="text/javascript" src="app/directives/xeditable/column-xeditable.js"></script>-->
 <script type="text/javascript" src="app/directives/uploadify/uploadify.js"></script>
 <script type="text/javascript" src="app/directives/uploadify/fileupload.js"></script>
 <script type="text/javascript" src="app/directives/uploadify/fileuploadModal.js"></script>

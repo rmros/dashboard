@@ -14,7 +14,7 @@ app.controller('indexController',
       }
     );  
 
-    $scope.logOut=function(){
+    $rootScope.logOut=function(){
       var logOutPromise=userService.logOut();
       logOutPromise.then(
          function(data){           

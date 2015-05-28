@@ -27,7 +27,8 @@
     "angular-ui-switch": "~0.0.7",
     "angular-bootstrap-checkbox": "~0.3.1",
     "stripe-angular": "~1.0.2",
-    "angular-chart.js": "~0.5.3"
+    "fontawesome": "~4.3.0",
+    "angular-chart.js": "~0.7.1"
   },
   "devDependencies": {}
 }

@@ -1,4 +1,4 @@
-app.factory('projectDetailsService', ['$q','$http',function ($q,$http) {
+app.factory('projectDetailsService', ['$q','$http','$rootScope',function ($q,$http,$rootScope) {
 
     var global = {};
 
@@ -10,7 +10,10 @@ app.factory('projectDetailsService', ['$q','$http',function ($q,$http) {
                  q.resolve(data);
            }).
            error(function(data, status, headers, config) {
-                 q.reject(data);
+                  q.reject(data);
+                  if(status===401){
+                    $rootScope.logOut();
+                  }
            });
 
            return  q.promise;
@@ -31,6 +34,9 @@ app.factory('projectDetailsService', ['$q','$http',function ($q,$http) {
          }).
          error(function(data, status, headers, config) {
                q.reject(status);
+               if(status===401){
+                  $rootScope.logOut();
+                }
          });
 
          return  q.promise;

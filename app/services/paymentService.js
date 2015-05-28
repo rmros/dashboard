@@ -1,4 +1,4 @@
-app.factory('paymentService', ['$q','$http',function ($q,$http) {
+app.factory('paymentService', ['$q','$http','$rootScope',function ($q,$http,$rootScope) {
 
     var global = {};
        global.getCrediCardInfo = function(){
@@ -9,7 +9,10 @@ app.factory('paymentService', ['$q','$http',function ($q,$http) {
                  q.resolve(data);
            }).
            error(function(data, status, headers, config) {
-                 q.reject(data);
+                  q.reject(data);
+                  if(status===401){
+                    $rootScope.logOut();
+                  }
            });
 
            return  q.promise;
@@ -35,13 +38,16 @@ app.factory('paymentService', ['$q','$http',function ($q,$http) {
                  success(function(data, status, headers, config) {                  
                     q.resolve(data);
 
-                    /****Tracking*********/            
+                    /****Tracking************/            
                      mixpanel.track('add Or Edit Card', {"cardHolderName":data.stripeCardObject.name});
                     /****End of Tracking*****/
                  }).
                  error(function(data, status, headers, config) {                  
                     q.reject(status);
-                 });
+                    if(status===401){
+                      $rootScope.logOut();
+                    }
+                });
                 //End of Hit Server          
             }
           });             

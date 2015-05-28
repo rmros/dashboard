@@ -1,4 +1,6 @@
-app.factory('tableService', ['$q','$http', 'utilityService', 'tableTypeService',function ($q,$http, utilityService, tableTypeService) {
+app.factory('tableService',
+ ['$q','$http', 'utilityService', 'tableTypeService','$rootScope',
+ function ($q,$http, utilityService, tableTypeService,$rootScope) {
 
     var global = {}; 
 
@@ -53,6 +55,9 @@ app.factory('tableService', ['$q','$http', 'utilityService', 'tableTypeService',
           }).
           error(function(data, status, headers, config) {
                 q.reject(status);
+                if(status===401){
+                  $rootScope.logOut();
+                } 
           });
           return  q.promise;
         
@@ -80,6 +85,9 @@ app.factory('tableService', ['$q','$http', 'utilityService', 'tableTypeService',
           }).
           error(function(data, status, headers, config) {
                 q.reject(status);
+                if(status===401){
+                  $rootScope.logOut();
+                }
           });
           return  q.promise;
      };
@@ -108,6 +116,9 @@ app.factory('tableService', ['$q','$http', 'utilityService', 'tableTypeService',
           }).
           error(function(data, status, headers, config) {
                 q.reject(status);
+                if(status===401){
+                  $rootScope.logOut();
+                }
           });
 
           return  q.promise;

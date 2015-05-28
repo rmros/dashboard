@@ -17,6 +17,7 @@ app.controller('tableDesignerController',
       
         var id;
         var tableId;
+        $scope.newtables=[]
         
         $scope.initialize = function() {
             $rootScope.page='tableDesigner';
@@ -36,70 +37,7 @@ app.controller('tableDesignerController',
 
         $scope.selectTable = function(t) {
             $scope.selectedTable = t;          
-        };      
-
-        $scope.canChangeDatatype = function(col){
-            if(!col.isEditable){
-                $.gritter.add({
-                    position: 'top-right',
-                    title: 'Warning',
-                    text: 'This column is not editable. You cannot change the datatype.',
-                    class_name: 'prusia'
-                });
-            }
-
-            if(col.saved){ 
-                $.gritter.add({
-                    position: 'top-right',
-                    title: 'Warning',
-                    text: 'You cant change the datatype of a column which is already saved',
-                    class_name: 'prusia'
-                }); 
-            }
-        };
-
-        $scope.canChangeRequired = function(col){
-            if(!col.isEditable){               
-                $.gritter.add({
-                    position: 'top-right',
-                    title: 'Warning',
-                    text: 'This column is not editable.',
-                    class_name: 'prusia'
-                });
-            }
-
-            if(col.saved && !col.required){
-                
-                 $.gritter.add({
-                    position: 'top-right',
-                    title: 'Warning',
-                    text: 'You cant change the required after column is saved.',
-                    class_name: 'prusia'
-                }); 
-            }
-        };
-
-        $scope.canChangeUnique = function(col){
-            if(!col.isEditable){
-                $.gritter.add({
-                    position: 'top-right',
-                    title: 'Warning',
-                    text: 'This column is not editable.',
-                    class_name: 'prusia'
-                });
-            }
-
-            if(col.saved && !col.unique){
-                
-                $.gritter.add({
-                    position: 'top-right',
-                    title: 'Warning',
-                    text: 'You cant change the required of a column after it is saved.',
-                    class_name: 'prusia'
-                }); 
-            }
-        };
-        
+        };        
 
         $scope.deleteTableModal=function(t){
           $scope.selectedTable == t;
@@ -109,6 +47,7 @@ app.controller('tableDesignerController',
 
         $scope.deleteTable = function(t) {
            if ($scope.confirmTableName === null) {
+
               $scope.confirmTableName=null; 
               $('#md-deleteTable').modal("hide");
               $.gritter.add({
@@ -118,22 +57,28 @@ app.controller('tableDesignerController',
                   class_name: 'prusia'
               }); 
                         
-            } else if($scope.confirmTableName === t.name){
+            } else if($scope.confirmTableName === t.name){            
 
-              if($scope.selectedTable == t)
-              $scope.selectedTable = undefined;
-            
-              var i = $rootScope.currentProject.tables.indexOf(t);
-              $rootScope.currentProject.tables.splice(i, 1);
+              tableService.deleteTable($rootScope.currentProject.appId, t)             
+              .then(function(tables){        
+                  if($scope.selectedTable == t)
+                  $scope.selectedTable = undefined;
+                  
+                  var i = $rootScope.currentProject.tables.indexOf(t);
+                  $rootScope.currentProject.tables.splice(i, 1);                             
 
-              if(!$rootScope.currentProject.deletedTables)
-                  $rootScope.currentProject.deletedTables = [];
+                  $('#md-deleteTable').modal("hide");               
+                  $scope.confirmTableName=null;                                
+              },
+              function(error){ 
+                   $.gritter.add({
+                      position: 'top-right',
+                      title: 'Oops!',
+                      text: 'We cannot delete table right now',
+                      class_name: 'danger'
+                  });              
+              });              
 
-              $rootScope.currentProject.deletedTables.push(t);            
-
-              $('#md-deleteTable').modal("hide");
-              $scope.saveTables();
-              $scope.confirmTableName=null;
             }else{  
                 $scope.confirmTableName=null;
                 $('#md-deleteTable').modal("hide");               
@@ -200,30 +145,37 @@ app.controller('tableDesignerController',
             })(0);
             $scope.newTableName = tableName;
             $('.bs-modal-add-table').modal();
-
         };
 
 
       $scope.selectType=function(newTableType){
-          $scope.selectedTableType=_.first(_.where($scope.tableTypes, {type:newTableType}));
-          $scope.newTableName = angular.copy($scope.selectedTableType.name);
-
+        $scope.selectedTableType=_.first(_.where($scope.tableTypes, {type:newTableType}));
+        $scope.newTableName = angular.copy($scope.selectedTableType.name);
       };
 
       $scope.addNewTable = function() {
-          var tableTypeObj=_.first(_.where($scope.tableTypes, {type:$scope.newTableType}));
-          getRelatedTables(tableTypeObj); 
-          $scope.saveTables();
+        var tableTypeObj=_.first(_.where($scope.tableTypes, {type:$scope.newTableType}));
+        getRelatedTables(tableTypeObj);
+
+        $scope.saveTables($scope.newtables)
+        .then(function(tables){        
+            $scope.newtables=null;
+            $scope.newTableName = '';   
+                           
+        },
+        function(error){               
+        });               
       };    
 
        function getRelatedTables(table){  
 
             for(var i=0;i<table.columns.length;++i){
-                if(table.columns[i].relatedToType){
-                  var relatedToTypeObj=_.first(_.where($scope.tableTypes, {type:table.columns[i].relatedToType})); 
-                  getRelatedTables(relatedToTypeObj);
-                }      
+              if(table.columns[i].relatedToType){
+                var relatedToTypeObj=_.first(_.where($scope.tableTypes, {type:table.columns[i].relatedToType})); 
+                getRelatedTables(relatedToTypeObj);
+              }      
             }
+
             var tableName;
             var alreadyExist;
             if(table.isRenamable){
@@ -252,11 +204,11 @@ app.controller('tableDesignerController',
                         name: tableName,
                         type: table,
                      columns: columnArray
-                    };
-                  
+                    };                  
+
+                    $scope.newtables.push(t);
                     $rootScope.currentProject.tables.push(t);
-                    $scope.selectTable(t);
-                    $scope.newTableName = ''; 
+                    $scope.selectTable($scope.newtables[0]); 
 
                     if($rootScope.currentProject.tables.length==1){
                         $.gritter.add({
@@ -264,24 +216,35 @@ app.controller('tableDesignerController',
                           title: 'Great!',
                           text: 'Your first table is created. See our docs to build apps.',
                           class_name: 'success'
-                      });
-                    }
+                        });
+                    }                                            
                            
               }
           //End of creating table  
             
-        } 
-
-
-            
+        }             
 
         $scope.deleteCol = function(col) {
             if(col.isDeletable){
               var i = $scope.selectedTable.columns.indexOf(col);
               $scope.selectedTable.columns.splice(i, 1);
-              $scope.saveTables();
+
+              tableService.saveTable($rootScope.currentProject.appId, $scope.selectedTable)
+              .then(function(table){        
+                                             
+              },
+              function(error){ 
+                $.gritter.add({
+                    position: 'top-right',
+                    title: 'Oops!',
+                    text: 'We cannot delete this column right now.',
+                    class_name: 'danger'
+                });
+
+              });
+              
             }else{
-               $.gritter.add({
+                $.gritter.add({
                     position: 'top-right',
                     title: 'Warning',
                     text: 'This column is not deletable. You cannot delete.',
@@ -290,7 +253,9 @@ app.controller('tableDesignerController',
             }            
         };
 
-        $scope.addColumn = function() {
+
+        
+        $scope.initiateColumnSettings = function() {
           var newColName="newColumn";
           var incrementor=0;
           (function iterator(i) {
@@ -300,27 +265,40 @@ app.controller('tableDesignerController',
                       newColName="newColumn"+incrementor;
                       iterator(i+1);
                   }
-          })(0);
+          })(0);          
 
-                var uniqueId=utilityService.makeId();
-                
-                var newcol = {
-                    id:uniqueId,
-                    name: newColName,
-                    dataType: 'Text',
-                    relatedTo: null,
-                    relationType: null,
-                    required: false,
-                    unique: false,
-                    isRenamable: true,
-                    isEditable: true,
-                    isDeletable: true,
-                };
+          var uniqueId=utilityService.makeId(); 
 
-                var i = $scope.selectedTable.columns.push(newcol);
-                $scope.saveTables();
+          var newcol = {
+              id:uniqueId,
+              name: newColName,
+              dataType: 'Text',
+              relatedTo: null,
+              relationType: null,
+              required: false,
+              unique: false,
+              isRenamable: true,
+              isEditable: true,
+              isDeletable: true,
+          }; 
 
+          $scope.newColumnObj=newcol;
 
+          $('.bs-modal-add-column').modal();
+        };
+        
+        $scope.addColumn = function(valid) {
+          if(valid){
+            $scope.selectedTable.columns.push($scope.newColumnObj);
+
+            tableService.saveTable($rootScope.currentProject.appId, $scope.selectedTable)
+            .then(function(table){        
+              $scope.newColumnObj=null;
+              $('.bs-modal-add-column').modal("hide");                               
+            },
+            function(error){               
+            });                        
+          }            
         };
 
         //Table Errors
@@ -357,92 +335,74 @@ app.controller('tableDesignerController',
             }
 
         };
-
-         $scope.saveTables=function(){
+      
+        //Saving Array of Tables
+        $scope.saveTables=function(tables){
+          var q=$q.defer();
 
           $scope.showSaveBtn=false;
 
           var promises = [];
 
-          if($rootScope.currentProject.tables.length>0){
-              promises.push(tableService.saveTables($rootScope.currentProject.appId, $rootScope.currentProject.tables));
-          }
+          if(tables.length>0){
+              promises.push(tableService.saveTables($rootScope.currentProject.appId, tables));
+          }        
 
-          if($rootScope.currentProject.deletedTables && $rootScope.currentProject.deletedTables.length>0){
-            promises.push(tableService.deleteTables($rootScope.currentProject.appId, $rootScope.currentProject.deletedTables));
-          }
-
-          if($rootScope.currentProject.tables.length===0 && (!$rootScope.currentProject.deletedTables || !$rootScope.currentProject.deletedTables.length)){
-            $scope.showSaveBtn=true;
-             
+          $q.all(promises)
+          .then(function(tables){
+              q.resolve(tables);              
+           },
+           function(error){
               $.gritter.add({
                   position: 'top-right',
-                  title: 'Warning',
-                  text: 'Please add tables before you Save.',
-                  class_name: 'prusia'
+                  title: 'Opps! something went wrong',
+                  text: "We're sorry, We cant save your tables at this point in time. Please try again later.",
+                  class_name: 'danger'
               });
+              q.reject(error);
+           });
 
-          }else{
-
-            $q.all(promises).then(
-               function(){
-                  //tables got saved               
-               },
-               function(error){
-                  $.gritter.add({
-                      position: 'top-right',
-                      title: 'Opps! something went wrong',
-                      text: "We're sorry, We cant save your tables at this point in time. Please try again later.",
-                      class_name: 'danger'
-                  });
-
-               }
-             );
-          }
-
+           return  q.promise;
         };
-
-
+        
         $scope.filterDataType=function(dataTypeObj){
           if(dataTypeObj.type!="List" && dataTypeObj.type!="Relation"){
             return dataTypeObj;
           }
-        };
-        
+        };        
             
         /* PRIVATE FUNCTIONS */
 
         function loadProject(id){
 
             projectService.getProject(id).then(
-                     function(currentProject){
-                          if(currentProject){
-                            $rootScope.currentProject=currentProject;
-                            getProjectTables();
-                          }                              
-                     },
-                     function(error){
-                         
-                        $.gritter.add({
-                            position: 'top-right',
-                            title: 'Opps! something went wrong',
-                            text: "We cannot load your project at this point in time. Please try again later.",
-                            class_name: 'danger'
-                        });
-                     }
-                   );
+             function(currentProject){
+                  if(currentProject){
+                    $rootScope.currentProject=currentProject;
+                    getProjectTables();
+                  }                              
+             },
+             function(error){                 
+                $.gritter.add({
+                    position: 'top-right',
+                    title: 'Opps! something went wrong',
+                    text: "We cannot load your project at this point in time. Please try again later.",
+                    class_name: 'danger'
+                });
+             });
         }
 
         function getProjectTables(){
 
            tableService.getProjectTables($rootScope.currentProject).then(
-               function(data){
+                function(data){
+                     $rootScope.dataLoading=false;
+
                     if(!data){
-                      $rootScope.dataLoading=false;
+                    
                       $rootScope.currentProject.tables=[];                       
                     }     
-                    else if(data){
-                        $rootScope.dataLoading=false;
+                    else if(data){                        
                         $rootScope.currentProject.tables=data;
                         
                         if(tableId){
@@ -456,12 +416,11 @@ app.controller('tableDesignerController',
                           $scope.selectTable($rootScope.currentProject.tables[0]); 
                         }                          
 
-                    }else{ 
-                       $rootScope.dataLoading=false;                                             
+                    }else{                                                                   
                        $rootScope.currentProject.tables=[];
                     }          
                    
-               }, function(error){ 
+                }, function(error){ 
                     $rootScope.dataLoading=false;                         
                     $.gritter.add({
                       position: 'top-right',
@@ -469,9 +428,7 @@ app.controller('tableDesignerController',
                       text: "We cannot load your tables at this point in time. Please try again later.",
                       class_name: 'danger'
                     });
-               });
-        }   
-  
-
+                });
+        } 
 
 });
