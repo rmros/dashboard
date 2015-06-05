@@ -30,13 +30,12 @@ app.controller('forgotPasswordController',
           $scope.showSpinner = true;
           userService.changePassword($location.search().code, $scope.password, $scope.confirmPassword).then(function(){
             $scope.showSpinner = false;
-            window.location.href='dashboard.cloudboost.io';
+            window.location.href="#/login";
           }, function(error){
             $scope.showSpinner = false;
             $scope.err = error;
           })
         }
       };
-
      
  }]);

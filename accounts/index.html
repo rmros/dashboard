@@ -26,11 +26,9 @@ mixpanel.init("be05a4d590e8bc9d5f2cd6b3b3ffb78b");</script>
 <!-- end Mixpanel --> 
 </head>
 
-<body class="texture">
-
+<body class="texture" ng-controller="indexController" ng-init="init()">
 
 	<ui-view></ui-view>	
-
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
@@ -59,6 +57,7 @@ mixpanel.init("be05a4d590e8bc9d5f2cd6b3b3ffb78b");</script>
 <script src="app/services/userService.js"></script> 
 
 <!--Controllers-->
+<script type="text/javascript" src="app/controllers/indexController.js"></script>
 <script type="text/javascript" src="app/controllers/loginController.js"></script>
 <script type="text/javascript" src="app/controllers/signUpController.js"></script>
 <script type="text/javascript" src="app/controllers/forgotPasswordController.js"></script>
