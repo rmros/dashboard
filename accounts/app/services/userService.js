@@ -78,7 +78,7 @@ app.service('userService', function($q,$http){
       
    };
 
-   this.activate=function(code){
+  this.activate=function(code){
        var q=$q.defer();
 
        $http.post(serverURL+'/auth/activate', {code:code}).
@@ -90,13 +90,12 @@ app.service('userService', function($q,$http){
                q.reject(data);
          });
 
-
        return q.promise;
-   }
+  }
 
 
 
-   this.facebookSignUp=function(){
+  this.facebookSignUp=function(){
       var q=$q.defer();
 
       $http.get(serverURL+'/auth/facebook').

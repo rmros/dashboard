@@ -8,7 +8,6 @@ app.controller('forgotPasswordController',
           }else{
               $scope.showNewPasswordForm = false;
           }
-
       };
 
       $scope.requestResetPassword = function(isValid){
@@ -25,7 +24,7 @@ app.controller('forgotPasswordController',
         }
       };
 
-       $scope.changePassword = function(isValid){
+      $scope.changePassword = function(isValid){
       
         if(isValid){
           $scope.showSpinner = true;

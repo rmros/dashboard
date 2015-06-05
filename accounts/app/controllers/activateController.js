@@ -14,6 +14,7 @@ app.controller('activateController',
                 $scope.err = "We're sorry, but we can't activate your account at this point in time. Please try again later";
                 console.log(error);
             });
+            
           }else{
                $scope.showSpinner=false;
                $scope.err = "We're sorry, but we can't activate your account at this point in time. Please try again later";

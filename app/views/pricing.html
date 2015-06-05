@@ -12,10 +12,11 @@
       <!--/No spending Limit-->
 
       <!--if spending Limit-->		
-      <div class="col-md-5" ng-show="tempSpendingLimit>0">
+      <div id="doughnut-wrapper" class="col-md-5" ng-show="tempSpendingLimit>0">
       	<div class="donut-circle-Bx cf">
-      	   <div class="pull-left credit-circle">
-              <canvas id="doughnut" class="chart chart-doughnut" data="data" width="685" height="800" labels="labels" colours="colours"></canvas>      	   		
+      	   <div id="credit-circleid" class="pull-left credit-circle">
+            <canvas  id="doughnut" class="chart chart-doughnut" data="data" width="685" height="800" labels="labels" colours="colours"></canvas>    
+
       	   </div>
       	   <div class="pull-left credit-info cf">
       	   		<div class="credit-left-bx cf">

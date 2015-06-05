@@ -18,7 +18,7 @@ app.controller('pricingController',
 	  "address_state": null,
 	  "address_zip": null,
 	  "address_country": null	  
-	};
+	};	
 
 	$scope.validCardShowSpinner=false;
 	$scope.spendingLimitSpinner=false;
@@ -39,7 +39,7 @@ app.controller('pricingController',
         }else{
           loadProject(id);              
         }
-        
+
 	};	
 
 	$scope.removeSpendingLimit=function(){
@@ -74,13 +74,14 @@ app.controller('pricingController',
 	                  		$scope.autoScale=false;
 	                  		$scope.spendingLimitBtn="Manage Spending Limit";	                  		
 	                  		spendingLimitCircle();
+	                  		
 	                  	}else if(data.spendingLimit==0){
 	                  		$scope.spendingLimitBtn="Add Spending Limit";	                  	
 	                  		if($scope.isCardAdded){
 	                  			$scope.autoScale=true;
 	                  		}else{
 	                  			$scope.autoScale=false;
-	                  		}
+	                  		}	                  		
 	                  	}
 
 	             		$.gritter.add({
@@ -302,7 +303,7 @@ app.controller('pricingController',
                   	}            	               
                   	
                 }else{
-                	console.log("na");
+                	
                 	$scope.cardAddEditText="Securely Add CreditCard";
                 	$scope.cardAddEditBtn="Add Credit Card";
                 	$scope.isCardAdded=false;
@@ -328,14 +329,15 @@ app.controller('pricingController',
 
                   	if(data.spendingLimit>0){
                   		$scope.autoScale=false;
-                  		$scope.spendingLimitBtn="Manage Spending Limit";                  		                  		
+                  		$scope.spendingLimitBtn="Manage Spending Limit"; 
+                  		                 		                  		
                   	}else if(data.spendingLimit==0){                  		
                   		$scope.spendingLimitBtn="Add Spending Limit"
                   		if($scope.isCardAdded){
                   			$scope.autoScale=true;
                   		}else{
                   			$scope.autoScale=false;
-                  		}
+                  		}                  		
                   	}  
                   	getinvoice();//Get Invoice 	                 	               	
                 } 
@@ -453,21 +455,27 @@ app.controller('pricingController',
             return diff;
         }
 
-        function spendingLimitCircle(){
+        function spendingLimitCircle(){ 
+
         
         	if($scope.invoiceSettings && $scope.invoiceSettings.spendingLimit>=$scope.invoice.currentInvoice){
         		var left=$scope.invoiceSettings.spendingLimit-$scope.invoice.currentInvoice;        		
         		var used=$scope.invoice.currentInvoice;
-        		$scope.creditLeft=left;      			  			
-        		$scope.labels= ["LEFT","USED"];
-  				$scope.data = [left, used];
-  				$scope.colours=["#00CC00","#B3B3BC"];
+        		$scope.creditLeft=left;    		  			
 
-	  			$scope.$on('create', function (chart) {		  					  
-				});
 
-	  			$scope.$broadcast("$reload", {});
-        	}
+	  			$timeout(function () {
+
+				    $scope.labels= ["LEFT","USED"];
+	  				$scope.data = [left, used];
+	  				$scope.colours=["#00CC00","#B3B3BC"];
+	  				$scope.$broadcast("$reload", {});
+
+				}, 3000);
+
+				$scope.$on('create', function (chart) {		  					  
+				});	  			
+        	}        	      	
 	        
 		}
 
