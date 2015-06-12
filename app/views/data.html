@@ -1,0 +1,114 @@
+<div class="cl-mcont" style="background-color:#F4F6F7;" ng-init="initialize()"> 
+
+    <div class="row">  
+      <div class="col-md-12"> 
+          <div class="tablename-header">
+              <h1>Tables</h1>
+          </div>              
+      </div>  
+    </div>
+
+    <div class="row">  
+      <div class="col-md-12">  
+          <div class="table-apps-div">
+              <div class="row">
+                <div class="col-md-12"> 
+                  <div class="flex-general-row-wrapper">
+
+                    <!--loop-->
+                    <div class="tableBx" ng-repeat="t in currentProject.tables">
+                        <div class="tableApp cf" style="background-color:{{t.tableColor || '#3A5795'}}">
+
+                          <div class="cf">
+                            <span class="table-delete pull-right"><span class="cross" ng-hide="!t.type.isDeletable" ng-click="deleteTableModal(t)">x<span></span>
+                          </div>
+
+                          <div class="table-icon flex-general-row-wrapper-center">  
+                            <div class="">                         
+                             <i class="fa fa-{{t.type.icon}}"></i>
+                            </div>
+                          </div> 
+
+                        </div>
+                        <div class="tableName-wrap flex-general-row-wrapper-center">
+                          <span>{{t.name}}</span>
+                        </div> 
+                    </div> 
+                    <!--/loop-->
+
+                    <!--New table-->
+                    <div class="tableBxNew">
+                        <div class="tableNewApp" ng-click="initiateTableSettings()">                         
+
+                          <div class="table-icon-new flex-general-row-wrapper-center">
+                            <span>+</span>
+                          </div> 
+
+                        </div>
+                        <div class="tableName-wrap flex-general-row-wrapper-center" style="margin-bottom:150px;">
+                          <span>New Table</span>
+                        </div> 
+
+                        <!--Add new table Pop up-->
+                        <div class="popup-div effect1" ng-show="addTablePopup">
+                          <div class="innerpop">
+                          <div class="new-table-name">
+                            <span style="color:blue;">Enter new table name</span>
+                            <input class="newtable form-control" type="text" ng-disabled="!selectedTableType.isRenamable" ng-keyup="checkErrorsForCreate(newTableName,currentProject.tables,'table')" ng-model="newTableName" placeholder="New Table Name" required>
+                          </div>                          
+                          <div class="table-templates">
+                            <span style="color:blue;">Select table type</span>
+                            <select ng-model="newTableType" ng-change="selectType(newTableType)">
+                                <option  ng-repeat="tableType in tableTypes | filter:checkMaxCount"   value="{{tableType.type}}" ng-selected="tableType.type=='custom'">{{tableType.name}}</option>
+                            </select>
+                          </div> 
+                          <div style="margin-top:10px;" data-ng-show="tableErrorForCreate">
+                            <span style="word-break: break-all;color:red;">{{tableErrorForCreate}}</span>
+                          </div>
+                          <div class="popup-buttons-div flex-general-row-wrapper">
+                            <button type="button" ng-click="cancelAddtable()" class="custmBtn tableCancelBtn">Cancel</button>
+                            <button type="button" class="custmBtn tableCreateBtn" ng-disabled="tableErrorForCreate" ng-click="addNewTable()">Create</button>
+                          </div> 
+                          </div>
+                        </div>  
+                        <!--/Add new table Pop up-->
+
+                    </div>
+                    <!--/New table-->
+
+                  </div>                     
+                </div>                  
+              </div>               
+          </div>  
+      </div>  
+    </div>
+
+</div>
+
+<!--delete table modal-->
+  <div class="modal fade colored-header danger" id="md-deleteTable" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+      <div class="pull-right modalX">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>  
+      <div class="flex-general-row-wrapper-center modalH">
+        <h3>Delete Table</h3>        
+      </div>
+      
+      <div class="modal-body">
+        <div class="text-center">
+                 
+          <p>To delete, type in the table name.</p>
+          <center>
+            <input type="text" class="form-control" ng-model="confirmTableName" required style="width:400px;"/>
+          </center> 
+          <div class="flex-general-row-wrapper-center modalF">        
+            <button type="button" class="btn btn-danger btn-flat" style="width:400px;" ng-click="deleteTable(selectedTable)">Continue</button>
+          </div>         
+        </div>
+      </div>      
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

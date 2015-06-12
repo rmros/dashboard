@@ -36,6 +36,12 @@ app.config([
         templateUrl: 'app/views/pricing.html',
         controller: 'pricingController'
     });
+
+    $stateProvider.state('data', {
+        url: '/:appId/data',
+        templateUrl: 'app/views/data.html',
+        controller: 'dataController'
+    });
   
 
 //cors.

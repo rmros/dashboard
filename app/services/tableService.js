@@ -72,7 +72,8 @@ app.factory('tableService',
           name : table.name, 
           type : table.type.type,
           appId : appId,
-          id : table.id
+          id : table.id,
+          tableColor:table.tableColor
         };
 
         $http.put(serverURL+'/table/create/'+appId,obj).
@@ -105,6 +106,7 @@ app.factory('tableService',
                   id : tempData[i].id,
                   name : tempData[i].name,
                   columns : tempData[i].columns,
+                  tableColor: tempData[i].tableColor,
                   type : _.first(_.where(tableTypeService.getTableTypes(), {type : tempData[i].type}))
 
                 };

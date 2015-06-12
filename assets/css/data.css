@@ -1,0 +1,280 @@
+.flex-general-row-wrapper{
+   /* Flex row rules */
+    display: flex;
+    display:-webkit-flex;
+    display:-moz-flex;    
+    
+    flex-flow:row wrap;
+    -moz-flex-flow:row wrap;
+    -webkit-flex-flow:row wrap;
+
+    justify-content:flex-start;
+    -moz-justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+
+    align-items:flex-start;  
+    -moz-align-items: flex-start;  
+    -webkit-align-items:flex-start;    
+}
+
+.flex-general-column-wrapper{
+   /* Flex column rules */
+    display: flex;
+    display:-webkit-flex;
+    display:-moz-flex;    
+    
+    flex-flow:column  wrap;
+    -moz-flex-flow:column  wrap;
+    -webkit-flex-flow:column wrap;
+
+    justify-content:flex-start;
+    -moz-justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+
+    align-items:flex-start;  
+    -moz-align-items: flex-start;  
+    -webkit-align-items:flex-start;    
+}
+
+.flex-general-row-wrapper-center{
+   /* Flex row rules */
+    display: flex;
+    display:-webkit-flex;
+    display:-moz-flex;    
+    
+    flex-flow:row wrap;
+    -moz-flex-flow:row wrap;
+    -webkit-flex-flow:row wrap;
+
+    justify-content:center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+
+    align-items:center;  
+    -moz-align-items: center;  
+    -webkit-align-items:center;    
+}
+
+.flex-equal-ratio-items{
+  flex:1;
+  -moz-flex:1;
+  -webkit-flex:1;
+}
+
+.tablename-header{
+    width:10%;
+    margin: 0 auto;
+}
+
+.cf:before, .cf:after { content: ""; display: table; }
+.cf:after { clear: both; }
+.cf { zoom: 1; }
+
+.tablename-header h1{
+    color:black;
+}
+
+.table-apps-div{
+    width:93%;
+    height:400px;
+    margin: 0 auto;    
+}
+
+.table-icon{     
+    height:60px;  
+    width:100%;    
+}
+
+.table-icon div i{
+    color:white;
+    font-size: 60px;            
+}
+
+.table-icon-new{   
+    height:70px;   
+    padding: 20px;
+    font-size: 70px;
+    width: 100%;   
+}
+
+.table-icon-new span{ 
+   margin-left: -8px;
+    margin-top: -3px;   
+}
+
+
+.tableBx{
+    width:89px;   
+    margin-left: 20px;
+}
+
+.tableBxNew{
+    width:89px;   
+    margin-left: 20px;
+    position: relative;
+}
+.popup-div{
+    height: auto;
+    width:230px;
+    position: absolute;
+    background-color:white;
+    left:-74px;
+    top:100px;
+    padding: 12px;
+    border: 1px solid #7C7C7C;
+    border-radius: 3px;
+}
+
+.effect1{
+    -webkit-box-shadow: 0 0 4px 1px gray;
+    -moz-box-shadow: 0 0 4px 1px gray;
+    box-shadow: 0 0 4px 1px gray;
+}
+
+.popup-div:before{
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 105px;
+    top:-7px;
+    border:8px solid;
+    border-color: white transparent transparent white;
+    -webkit-transform: rotate(45deg);
+   -moz-transform:    rotate(45deg);
+   -ms-transform:     rotate(45deg);
+   -o-transform:      rotate(45deg);
+}
+
+.tableNewApp{
+    height:89px;
+    border-radius: 2px;   
+    width:100%;    
+    padding: 10px;
+    cursor: pointer; 
+    border: 1px solid gray;
+}
+
+.cross{
+    visibility:hidden;
+    font-size: 14px;
+}
+
+.tableApp:hover .cross{
+    visibility:visible;
+    color:white;
+    cursor:pointer;
+}
+
+.new-table-name input{
+    height:26px;
+}
+.new-table-name input:hover,.new-table-name input:focus{  
+    background-color: transparent;
+  outline: 0;  
+}
+
+.table-templates{
+    margin-top: 8px;
+}
+
+.table-templates select{
+  height:26px;
+  width:100%;    
+  outline: 0;
+  font-size: 12px;
+}
+
+.tableNewApp:hover{
+    border: 1px solid black;
+    background-color: white;
+}
+
+.tableNewApp:hover .table-icon-new span{
+    color:black;
+}
+
+.tableApp{
+    height:89px;
+    border-radius: 2px;   
+    width:100%;    
+    padding-bottom:6px;
+    padding-left:6px;
+    padding-right:6px;
+    cursor: pointer;
+}
+
+.tableName-wrap{
+    padding: 6px;
+    color:black;
+    word-break: break-all; 
+    width:100%;     
+}
+
+.new-table-name input{
+    width: 100%;
+}
+
+.popup-buttons-div{
+    margin-top: 7px;
+}
+
+.custmBtn{
+    height:25px;
+    width:47.5%;
+}
+
+.tableCreateBtn{
+    margin-left:8px;
+    background-color: #549AFC;
+    border: none;
+    color:white;
+    border: 1px solid #0C70FC;
+}
+
+.tableCreateBtn:hover{  
+    background-color: #076CF9;   
+    color:white;
+    border: 1px solid #0C70FC;
+}
+
+.tableCancelBtn{   
+    border: none;
+    color:black;
+    border: 1px solid #BCBCBC;
+}
+
+.tableCancelBtn:hover{   
+    border: none;
+    color:black;
+    border: 1px solid #C9C9C9;
+    background-color: #BCBABA;
+}
+
+.modalX{
+    padding-top: 10px;
+    padding-right: 10px;
+}
+.modalH{
+    padding-top:30px;
+}
+.modalF{
+    padding-left: 30px;
+    padding-bottom: 30px;
+    padding-right: 30px;
+    padding-top:10px;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: transparent !important;
+}
+
+.modal-dialog {
+  margin-top: 90px;  
+}
