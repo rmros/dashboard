@@ -10,7 +10,8 @@ app.controller('appsController',
   $intercom,
   $timeout) {
 
-
+  $rootScope.isFullScreen=false;
+  
         $scope.init=function(){
               //Hiding the Menu
               $rootScope.page='apps';

@@ -4,6 +4,7 @@ app.controller('appSettingsController',
     var id;
     $scope.projectSettings={};
     $scope.saveSettingsSpinner=false;
+    $rootScope.isFullScreen=false;
 		$scope.init=function(){
       $rootScope.page='appSettings';
        id = $stateParams.appId;

@@ -18,7 +18,8 @@ app.controller('dataController',
         var id;
         var tableId;
         $scope.newtables=[];
-        $scope.addTablePopup=false;    
+        $scope.addTablePopup=false;
+        $rootScope.isFullScreen=false;    
         
         $scope.initialize = function() {
             $rootScope.page='tableDesigner';
@@ -34,6 +35,10 @@ app.controller('dataController',
               loadProject(id);              
             }            
 
+        };
+
+        $scope.goToDataBrowser=function(t){
+          window.location.href="#/"+id+"/data/table/"+t.id;
         };
        
         $scope.deleteTableModal=function(t){

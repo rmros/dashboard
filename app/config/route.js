@@ -42,6 +42,12 @@ app.config([
         templateUrl: 'app/views/data.html',
         controller: 'dataController'
     });
+
+    $stateProvider.state('dataView', {
+        url: '/:appId/data/table/:tableId',
+        templateUrl: 'app/views/data-view.html',
+        controller: 'dataViewController'
+    });
   
 
 //cors.

@@ -17,7 +17,8 @@ app.controller('tableDesignerController',
       
         var id;
         var tableId;
-        $scope.newtables=[]
+        $scope.newtables=[];
+        $rootScope.isFullScreen=false;
         
         $scope.initialize = function() {
             $rootScope.page='tableDesigner';

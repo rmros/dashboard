@@ -126,6 +126,35 @@ app.factory('tableService',
           return  q.promise;
       };
 
+      global.getProjectTableById = function(id){
+        var q=$q.defer();
+      
+        $http.get(serverURL+'/table/'+id).
+          success(function(data, status, headers, config) {
+            if(data){
+              var tempData = data;      
+             
+                var table = {
+                  id : tempData.id,
+                  name : tempData.name,
+                  columns : tempData.columns,
+                  tableColor: tempData.tableColor,
+                  type : _.first(_.where(tableTypeService.getTableTypes(), {type : tempData.type}))              
+                };
+            }
+            q.resolve(table);
+
+          }).
+          error(function(data, status, headers, config) {
+                q.reject(status);
+                if(status===401){
+                  $rootScope.logOut();
+                }
+          });
+
+          return  q.promise;
+      }; 
+
     return global;
 
 }]);

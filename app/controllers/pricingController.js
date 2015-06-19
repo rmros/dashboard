@@ -27,6 +27,7 @@ app.controller('pricingController',
 	$scope.spendingLimitBtn="Add Spending Limit";
 	$scope.autoScale=false;
 	$scope.isCardAdded=false;
+	$rootScope.isFullScreen=false;
 	
 
 	$scope.init = function(){

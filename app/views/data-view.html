@@ -1,0 +1,309 @@
+<div class="cl-mcont2" style="background-color:#F4F6F7;" ng-init="init()"> 
+
+  <!--Table Header-->
+  <div class="row data-row" style="background-color:{{currentProject.currentTable.tableColor || '#3A5795'}};">
+      <div class="col-md-12">
+          <div class="dataView-header flex-general-row-wrapper">
+            <div class="headerL">
+              <a ng-click="goToTables()" class="flex-general-row-wrapper" style="cursor:pointer;">
+                <div class="back-arrow">
+                  <i class="fa fa-angle-left fa-2x"></i>
+                </div>
+                <div>
+                  <h3>Tables</h3>
+                </div>
+              </a>
+
+            </div> 
+            <div class="headerC flex-general-row-wrapper-center">
+
+              <div class="tableNameDiv flex-general-row-wrapper">              
+                <h3 ng-click="showTableList=!showTableList">{{currentProject.currentTable.name}}</h3> 
+                <i class="fa fa-angle-down fa-2x" ng-click="showTableList=!showTableList"></i> 
+
+                <!--DropDown for TableList-->
+                <div class="tableList-wrapper" ng-show="showTableList">
+                  <div style="background-color:white;width:99.99%; height:210px;" malihuscrollbar-for-popup>
+
+                  <div  ng-repeat="t in currentProject.tables" style="width:240px !important;">
+                    <a href="" ng-click="goToDataBrowser(t)">
+                    <div class="selectTableList cf" style="padding:5px;height:30px;width:100%;">
+
+                      <div class="pull-left">
+                        <i class="fa fa-{{t.type.icon}}" style="margin-top:-10px;"></i>
+                      </div>
+                      <div class="pull-left" style="margin-left:6px;">
+                        <span>{{t.name}}</span>
+                      </div>
+                        
+                    </div> 
+                    </a> 
+                  </div>
+
+                  </div>  
+                </div>  
+                <!--/DropDown for TableList-->             
+              </div>  
+              
+            </div>
+            <div class="headerR">             
+            </div>            
+          </div>  
+      </div>
+  </div>
+  <!--/Table Header-->
+
+  <!--Table-->
+  <div class="row data-table-def">
+     <div class="col-md-12">
+        <div class="data-table-design" malihuscrollbar> 
+
+         <table class="smoothTable" colresize>
+          <thead>            
+            <tr class="cust-head-tr">
+              <th class="fTh cf">
+                <div class="fThDiv">
+                  <checkbox class="btn-default checkBxDflt"  ng-model="rt"></checkbox>
+                </div>                  
+             </th>
+              <th class="cust-th" ng-repeat="column in currentProject.currentTable.columns">              
+                <div class="cust-cell flex-general-row-wrapper">
+                  <div class="cust-cell-name flex-general-row-wrapper">                    
+                    <div class="col-name">
+                       <span style="display:inline">
+                        <i class="fa fa-paperclip col-icon-size" style="padding-top: 5px;padding-right: 6px;"></i>
+                        {{column.name}}
+                      </span>
+                    </div>
+                  </div> 
+
+                  <div class="cust-cell-dropdwn">
+                       <i class="fa fa-angle-down dropdown-icon-size" style="padding-top: 4.6px;"></i>
+                  </div>
+                </div>
+
+                  <!--col dropdown-->
+                  <div class="col-dropdown effect-less">
+                    <div class="flex-general-column-wrapper">
+                      <div class="col-optionz">
+                        <span class="col-options-span">
+                          <i class="fa fa-paperclip " style="padding-top: 5px;padding-right: 6px;"></i>
+                          ColumnName
+                        </span>
+                      </div>
+
+                    </div>  
+                  </div>
+                  <!--/col dropdown-->
+              </th> 
+
+             <!--Extra Add Column-->
+              <th class="addColTh">
+                <div class="addColThDiv">                 
+                  <div class="flex-general-row-wrapper-center" ng-mouseenter="showNewColumnPreview=!showNewColumnPreview" ng-mouseleave="showNewColumnPreview=!showNewColumnPreview" ng-click="initiateColumnSettings()">
+                      <span>+</span>
+                  </div>                                     
+                </div> 
+
+                <!--Add Column PopUp-->
+                <div class="addColPopUpWrapper" ng-show="showAddColPopUp">
+                  <form name="addNewColumnForm" ng-submit="addColumn(addNewColumnForm.$valid)">
+                      <div>
+                        <label class="addcollabel" style="font-size:13px;">Enter new column name</label>
+                        <input class="default-form-elem newcolInput noFocus" type="text" placeholder="New column name" required ng-keyup="checkErrorsForCreate(newColumnObj.name,currentProject.currentTable.columns,'column')" ng-model="newColumnObj.name">
+                      </div>
+
+                      <!--Default -Select DataType--> 
+                      <div style="margin-top:5px;">
+                        <label class="addcollabel" style="font-size:13px;">Select Datatype</label>
+                         <select   class="default-form-elem noFocus" ng-model="newColumnObj.dataType">
+                              <option ng-repeat="dTypes in colDataTypes" ng-show="dTypes.visible" ng-selected="newColumnObj.dataType==dTypes.name" value="{{dTypes.name}}">{{dTypes.text}}</option>
+                          </select>
+                      </div>
+
+                      <!--if dataType is List-->
+                      <div  ng-if="newColumnObj.dataType=='List'" style="margin-top:5px;">
+                        <label class="addcollabel" style="font-size:13px;">Select Target Type</label>
+                         <select   class="default-form-elem noFocus" ng-model="newColumnObj.relatedTo">
+                              <option ng-repeat="eachTable in currentProject.tables"  value="{{eachTable.name}}">{{eachTable.name}}</option>
+                      
+                            <option ng-repeat="dTypes in colDataTypes | filter:filterDataType"  ng-show="dTypes.visible"  value="{{dTypes.name}}">{{dTypes.text}}</option>
+                          </select>
+                      </div>
+
+                      <!--if dataType is Relation-->
+                      <div  ng-if="newColumnObj.dataType=='Relation'" style="margin-top:5px;">
+                        <label class="addcollabel" style="font-size:13px;">Target Type</label>
+                         <select   class="default-form-elem noFocus" data-ng-model="newColumnObj.relatedTo">
+                            <option ng-repeat="eachTable in currentProject.tables"  value="{{eachTable.name}}">{{eachTable.name}}
+                            </option>
+                          </select>
+                      </div>
+
+                      <div  class="flex-add-Bx" style="margin-top:8.5px;">
+                        <!---->
+                        <!--Column required--> 
+                        <div class="add-Bx">
+                              
+                            <div  class="flex-add-Bx">
+                                <div class="add-Bx">
+                                    <label class="addcollabel">Required</label>              
+                                </div>
+                                <div class="add-Bx" style="margin-left:18px;">                                   
+                                    <checkbox class="btn-default checkBxDflt" ng-model="newColumnObj.required" style="border: 1px solid #DBDCDD;"></checkbox>
+                                </div>         
+                            </div>
+
+                        </div>
+                        <!--Column unique-->
+                        <div class="add-Bx">
+
+                            <div  class="flex-add-Bx">
+                                <div class="add-Bx">
+                                     <label class="addcollabel">Unique</label>              
+                                </div>
+                                <div class="add-Bx">                                   
+                                    <checkbox class="btn-default checkBxDflt" ng-hide="col.dataType === 'List'"  ng-model="newColumnObj.unique" style="border: 1px solid #DBDCDD;"></checkbox>
+                                </div>         
+                            </div>
+
+                        </div> 
+                        <!---->        
+                      </div>
+                      <div style="margin-top:8px;" data-ng-show="columnErrorForCreate">
+                        <span style="color:red;font-size:13px; word-break:all;">{{columnErrorForCreate}}</span>
+                      </div>  
+                      <div class="cf" style="margin-top:8px;">
+                        <div class="pull-left">
+                          <button type="button" class="addColBtn cancelColBtn " style="color:black; background-color:white;border:1px solid #DBDCDD;" ng-click="cancelAddNewCol()">Cancel</button> 
+                        </div>
+                        <div class="pull-left" style="margin-left:6px;">
+                          <button type="submit" style="background-color:{{currentProject.currentTable.tableColor || '#3A5795'}}; color:white; border:1px solid {{currentProject.currentTable.tableColor || '#3A5795'}}" class="addColBtn createColBtn" ng-disabled="columnErrorForCreate">Create</button>
+                        </div>                    
+                      </div>
+                  </form>
+                </div>  
+                <!--/Add Column PopUp-->
+              </th>
+              <!--/Extra Add Column--> 
+
+              <!--Dummy th for space-->  
+              <th class="vacuumTh">
+                <div class="vacuumThDiv">                 
+                  <div class="flex-general-row-wrapper-center">
+                     
+                  </div>                                  
+                </div>  
+              </th>           
+              </tr> 
+              <!--Dummy th for space--> 
+          </thead> 
+          <tbody>
+
+            <tr ng-repeat="eachRow in currentTableData">
+              <!--defualt checkbox-->
+              <td  class="fdataTd">
+                  <div class="fTdDiv">
+                    <checkbox class="btn-default checkBxDflt"  ng-model="rt"></checkbox>
+                  </div>              
+              </td>  
+              <!--/defualt checkbox-->
+
+              <td class="dataTd" ng-repeat="column in currentProject.currentTable.columns">                
+                <div class="tdDiv cf">         
+
+                  <!--Id-->
+                  <div ng-if="column.dataType==='Id'" class="real-content pull-left">
+                    {{eachRow.document._id}}                  
+                  </div>                
+                  <!--/Id-->
+                  <!--Common-->
+                  <div ng-if="column.dataType!='Id'" class="real-content pull-left">
+                    {{eachRow.document[column.name]}}                  
+                  </div>                 
+                  <!--/Common-->
+
+                  <div class="modal-wrapper pull-right">
+                    <a class="round-btn">
+                      <i class="fa fa-expand" style="color:{{currentProject.currentTable.tableColor || '#3A5795'}};"></i>&nbsp;
+                    </a>  
+                  </div>
+
+                </div>
+              </td>
+
+             <!--Dummy tds for space-->
+              <td class="" ng-class='{vacuumTd: !showNewColumnPreview}'>
+              </td> 
+              <td class="vacuumTd">
+              </td>           
+              <!--/Dummy tds for space-->
+            </tr>
+
+           <!--Extra Add row-->
+            <tr>
+              <td class="ldataTd">
+                  <div class="lTdDiv">
+                      <div class="flex-general-row-wrapper-center">
+                        <span>+</span>
+                      </div>  
+                  </div>              
+              </td>
+               <td  class="dataTd" ng-repeat="column in currentProject.currentTable.columns">
+                <div class="tdDiv cf"> 
+                </div>  
+              </td>
+              <td class="vacuumTd">
+              </td> 
+              <td class="vacuumTd">
+              </td>
+            </tr>
+            <!--/Extra Add row-->
+
+            <!--Dummy trs for space-->
+            <tr class="vacuumTr">
+              <td class="ldataTd">
+                 <div class="lTdDiv">
+                       
+                  </div> 
+              </td>
+
+              <td class="dataTd" ng-repeat="column in currentProject.currentTable.columns">
+                <div class="tdDiv cf"> 
+                </div>  
+              </td>
+              <td>
+              </td>
+              <td>
+              </td>  
+            </tr>
+
+            <tr class="vacuumTr">
+              <td class="ldataTd">
+                 <div class="lTdDiv">
+                       
+                  </div> 
+              </td>
+
+              <td class="dataTd" ng-repeat="column in currentProject.currentTable.columns">
+                <div class="tdDiv cf"> 
+                </div>  
+              </td> 
+              <td>
+              </td> 
+              <td>
+              </td>
+            </tr>
+            <!--/Dummy trs for space-->
+
+          </tbody>
+
+         </table>       
+          
+        </div>  
+     </div> 
+  </div>  
+  <!--/Table-->
+
+</div>
+

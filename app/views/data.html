@@ -17,10 +17,10 @@
 
                     <!--loop-->
                     <div class="tableBx" ng-repeat="t in currentProject.tables">
-                        <div class="tableApp cf" style="background-color:{{t.tableColor || '#3A5795'}}">
+                        <div class="tableApp cf" style="background-color:{{t.tableColor || '#3A5795'}}" ng-click="goToDataBrowser(t)">
 
                           <div class="cf">
-                            <span class="table-delete pull-right"><span class="cross" ng-hide="!t.type.isDeletable" ng-click="deleteTableModal(t)">x<span></span>
+                            <span class="table-delete pull-right"><span class="cross" ng-hide="!t.type.isDeletable" ng-click="deleteTableModal(t); $event.stopPropagation()">x<span></span>
                           </div>
 
                           <div class="table-icon flex-general-row-wrapper-center">  

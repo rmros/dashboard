@@ -24,7 +24,8 @@ app.controller('dataBrowserController',
       var isAppLoaded = false;
       $scope.isRefreshed = false;
       $scope.cellEditing=true;
-      $scope.saveStaticTypeSpinner=false;       
+      $scope.saveStaticTypeSpinner=false;
+      $rootScope.isFullScreen=false;       
 
       var query = null;
       var paginationOptions = {       

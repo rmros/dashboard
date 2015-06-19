@@ -2181,7 +2181,7 @@ body.texture {
 table.information td {
   font-size: 13px;
   vertical-align: top;
-  padding: 6px;
+  padding: 4px;
 }
 table.information td i {
   width: 15px;
@@ -2194,7 +2194,7 @@ table.information td.category {
   padding-top: 8px;
 }
 table.information > tbody > tr > td {
-  padding-bottom: 30px;
+  padding-bottom: 28px;
 }
 .friend-widget {
   cursor: default;
@@ -5849,7 +5849,7 @@ table td:last-child {
   border-right: 1px solid #dadada;
 }
 table tr:nth-child(2n) {
-  background: #f8f8f8;
+  
 }
 table.no-strip tr:nth-child(2n) {
   background: transparent;
