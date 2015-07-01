@@ -116,7 +116,7 @@ app.controller('appsController',
               $scope.appValidationError=null;
               if(isValid && appIdValidation($scope.appId)){
                 $scope.showSaveBtn = false;               
-                
+                $scope.appValidationError=null;
                 var createProjectPromise=projectService.createProject($scope.name, $scope.appId);
                 createProjectPromise.then(
                   function(data){
@@ -264,12 +264,20 @@ app.controller('appsController',
                $scope.appIdValidationError="App Id must be in lowercase.";               
             }
 
+            //Shouldn't Start with number
+            if(!isNaN(appId[0])){
+                response=false;
+                $scope.appIdValidationError="App Id Shouldn't start with number.";
+            } 
+
             //No Special characters
             var pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/);
             if(pattern.test(appId)){
                response=false;
                $scope.appIdValidationError="App Id shoudn't contain special characters";
             }
+
+                       
 
             return response;
         }

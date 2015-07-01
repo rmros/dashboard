@@ -84,5 +84,16 @@ app.config(function($intercomProvider, INTERCOM_APPID) {
       .asyncLoading(true)
 });
 
+app.filter('extension', function() {
+  return function(val) {
+    if(val){
+      var valArray=val.split(".");    
+      return valArray[valArray.length-1];
+    }else{
+      return false;
+    }
+    
+  }
+});
 
 

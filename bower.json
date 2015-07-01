@@ -29,7 +29,8 @@
     "stripe-angular": "~1.0.2",
     "fontawesome": "~4.3.0",
     "angular-chart.js": "~0.7.1",
-    "handsontable": "~0.14.1"
+    "handsontable": "~0.14.1",
+    "ng-focus-on": "~0.2.2"
   },
   "devDependencies": {}
 }

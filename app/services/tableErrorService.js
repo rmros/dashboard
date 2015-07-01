@@ -88,7 +88,7 @@ app.factory('tableErrorService', function () {
 
         var isCommon=isCommonName(name,arry);
         if(isCommon){
-            return true;
+            return "Name already exists.";
         }   
         
         var isStartNumber=isStartWithNumber(name);

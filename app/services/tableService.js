@@ -154,7 +154,6 @@ app.factory('tableService',
 
           return  q.promise;
       }; 
-
     return global;
 
 }]);

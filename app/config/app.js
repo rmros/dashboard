@@ -26,7 +26,8 @@ var app=angular.module('CloudBoostDashboard',
     'uiSwitch',
     'ui.checkbox',
     'stripe',
-    'chart.js'   
+    'chart.js',
+    'focusOn'  
     ]);
 
 var serverURL = null; 
