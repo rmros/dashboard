@@ -29,8 +29,6 @@ focus) {
   $scope.rowsSelected=[];
   $scope.showInputForEdit=[[]]; 
   $scope.editableField=[[]];  
-  $scope.showRelInputForEdit=[];
-  $scope.relEditableField=[];
 
   $scope.init = function() {      
       id = $stateParams.appId;
@@ -42,20 +40,15 @@ focus) {
   };
 
   $scope.loadTableData = function(t) {          
-
+    var q=$q.defer();
     if(t){   
         var query = new CB.CloudQuery(t.name);       
         query.find({success : function(list){ 
-          //count no objects                    
-          query.count({ success: function(count){ 
-            $scope.currentTableData=list;
-            $scope.isTableLoaded=true;
-            $scope.$digest();            
-          },error: function(err) {          
-          } });
-          //count no objects                                  
+            q.resolve(list);              
 
-        }, error : function(error){                
+        }, error : function(error){ 
+            q.reject(error); 
+
             $.gritter.add({
               position: 'top-right',
               title: 'Opps! something went wrong',
@@ -64,7 +57,7 @@ focus) {
             });
         }});       
     }                  
-          
+    return  q.promise;     
   };
 
   $scope.queryTableById = function(tableName,id) {          
@@ -270,6 +263,79 @@ focus) {
   //End of Files
 
   //Relation
+  $scope.addRelation=function(row,column){
+    nullifyEditable();
+    $scope.editableRow=row;//row
+    $scope.editableColumnName=column.name;//column name 
+    $scope.editableIndex=$scope.currentTableData.indexOf(row);//index
+
+    if(row.get(column.name)){
+      var tableName=row.get(column.name).document._tableName;
+      var rowId=row.get(column.name).document._id;
+
+      $scope.tableDef=_.first(_.where($rootScope.currentProject.tables, {name: tableName}));
+
+      //get table definition    
+      getProjectTableById($scope.tableDef.id)
+      .then(function(table){ 
+
+            //get Table data
+            $scope.queryTableById(tableName,rowId)
+            .then(function(record){
+              $scope.linkedRelatedDoc=record;
+              $("#md-reldocumentviewer").modal();
+            }, function(error){ 
+                  
+            });
+            //End of get Table data
+
+      }, function(error){           
+      });
+      //end of get table definition
+    }else{
+      $scope.linkedRelatedDoc=null;
+    }
+    
+
+    
+  };
+  $scope.searchRelationDocs=function(){
+
+    $("#md-reldocumentviewer").modal("hide");
+
+    //List Relations records 
+    $scope.loadTableData($scope.tableDef)
+    .then(function(list){
+
+        //count no objects 
+        var query = new CB.CloudQuery($scope.tableDef.name);                   
+        query.count({ success: function(count){ 
+           $scope.relationTableData=list;          
+           $scope.$digest(); 
+           $("#md-searchreldocument").modal();          
+        },error: function(err) {          
+        } });
+        //count no objects
+                                      
+    },
+    function(error){       
+    });
+    //List Relations records    
+  };
+
+  $scope.linkRecord=function(relationCBRecord){
+    $scope.editableRow.set($scope.editableColumnName,relationCBRecord);            
+    //Save Cloud Object
+    $scope.saveCloudObject($scope.editableRow)
+    .then(function(obj){  
+      $("#md-searchreldocument").modal("hide");
+      
+    }, function(error){ 
+      $("#md-searchreldocument").modal("hide");
+         
+    });     
+  };
+
   $scope.viewRelationData=function(row,column){
    
     var tableName=row.get(column.name).document._tableName;
@@ -285,9 +351,18 @@ focus) {
           $scope.queryTableById(tableName,rowId)
           .then(function(record){ 
 
+            //Convert ISODate 2 DateObject
+            for(var i=0;i<table.columns.length;++i){
+              if(table.columns[i].dataType=="DateTime"){
+                var isoDate=record.get(table.columns[i].name);
+                record.set(table.columns[i].name,new Date(isoDate));
+              }
+            }
+
             $scope.relatedTableDef=table;
             $scope.relatedTableRecord=record;
             $("#md-relationviewer").modal();
+
           }, function(error){ 
                 
           });
@@ -298,20 +373,92 @@ focus) {
     //end of get table definition
        
   };
-  //Relation DateTime 
-  $scope.showRelDateTimeInput=function(row,column){
-    nullifyFields();
+
+
+  //Relation ACL && JsonObject
+  $scope.showRelJsonObject=function(row,column){
+   
     $scope.relEditableRow=row;//row
-    $scope.relEditableColumnName=column.name;//column name       
-    var index=angular.copy($scope.relatedTableDef.columns.indexOf(column));//index
-    $scope.relEditableIndex=index;
+    $scope.relEditableColumnName=column.name;
 
-    $scope.relEditableField[index]=angular.copy(new Date(row.get(column.name)));
-    $scope.showRelInputForEdit[index]=true;  
-
-    focus(column.id+"relcolumn");        
+    $scope.relEditableJsonObj=angular.copy(row.get(column.name));   
+    if(!row.get(column.name)){
+       $scope.relEditableJsonObj=null;
+    }
+    
+    $("#md-rel-objectviewer").modal("show");
   };
-  //End Relation DateTime
+  $scope.setAndSaveRelJsonObject=function(){
+    $scope.relEditableRow.set($scope.relEditableColumnName,$scope.relEditableJsonObj);
+
+    //Save Cloud Object
+    $scope.saveCloudObject($scope.relEditableRow)
+    .then(function(obj){ 
+      $scope.relEditableRow=null;
+      $scope.relEditableColumnName=null;
+      $scope.relEditableJsonObj=null;
+      $("#md-rel-objectviewer").modal("hide");      
+    }, function(error){
+      $scope.relEditableRow=null;
+      $scope.relEditableColumnName=null;
+      $scope.relEditableJsonObj=null;
+      $("#md-rel-objectviewer").modal("hide");                 
+    });
+  }; 
+
+  //Relation File
+  $scope.relEditFile=function(row,column){    
+    $scope.relEditableRow=row;//row
+    $scope.relEditableColumnName=column.name;//column name
+    $scope.relEditableFile=angular.copy(row.get(column.name));
+
+    $("#md-rel-fileviewer").modal();
+  };
+  $scope.setAndSaveRelFile=function(){    
+    if($scope.selectedFileObj) {
+
+        getCBFile($scope.selectedFileObj)
+        .then(function(cloudBoostFile){
+        
+                $scope.relEditableRow.set($scope.relEditableColumnName,cloudBoostFile);            
+                //Save Cloud Object
+                $scope.saveCloudObject($scope.relEditableRow)
+                .then(function(obj){  
+                  $("#md-rel-fileviewer").modal("hide");
+                  $scope.relEditableRow=null; 
+                  $scope.relEditableColumnName=null;
+                  $scope.relEditableFile=null;
+                  $scope.removeSelectdFile();
+                }, function(error){ 
+                  $("#md-rel-fileviewer").modal("hide");
+                  $scope.relEditableRow=null; 
+                  $scope.relEditableColumnName=null;
+                  $scope.relEditableFile=null;
+                  $scope.removeSelectdFile();   
+                });          
+
+        }, function(err){
+        });
+              
+    }
+  };
+  $scope.deleteRelFile=function(){
+    $scope.relEditableRow.set($scope.relEditableColumnName,null);            
+    //Save Cloud Object
+    $scope.saveCloudObject($scope.relEditableRow)
+    .then(function(obj){ 
+      $scope.relEditableRow=null; 
+      $scope.relEditableColumnName=null;
+      $scope.relEditableFile=null;
+      $scope.removeSelectdFile();
+    }, function(error){ 
+      $scope.relEditableRow=null; 
+      $scope.relEditableColumnName=null;
+      $scope.relEditableFile=null;
+      $scope.removeSelectdFile();    
+    });
+  };
+  //Relation File
   //End of relation
 
   function nullifyFields(){
@@ -323,26 +470,13 @@ focus) {
       }                
       $scope.editableField[$scope.editableIndex][$scope.editableColumnName]=null;//field or value 
     }
-
-    //Relation record
-    if(typeof $scope.relEditableIndex=="number" && $scope.relEditableColumnName){ 
-
-      if($scope.showRelInputForEdit[$scope.relEditableIndex]){
-        $scope.showRelInputForEdit[$scope.relEditableIndex]=false;
-      }                
-      $scope.relEditableField[$scope.relEditableIndex]=null;//field or value 
-    }         
+             
     nullifyEditable(); 
   }
   function nullifyEditable(){             
     $scope.editableRow=null;//row
     $scope.editableColumnName=null;//column name 
     $scope.editableIndex=null;//index 
-
-    //Relation record
-    $scope.relEditableRow=null;//row
-    $scope.relEditableColumnName=null;//column name 
-    $scope.relEditableIndex=null;//index  
   }
 
   //Save 
@@ -366,21 +500,15 @@ focus) {
   //End of Save 
 
   //Save for relation table 
-  $scope.setAndSaveRelTable=function(){
-    //Check if previous value is not equal to modified value
-    if($scope.relEditableRow.get($scope.relEditableColumnName)!=$scope.relEditableField[$scope.relEditableIndex]){
-    $scope.relEditableRow.set($scope.relEditableColumnName,$scope.relEditableField[$scope.relEditableIndex]);
-    
-        //Save Cloud Object
-        $scope.saveCloudObject($scope.relEditableRow)
-        .then(function(obj){  
-          $scope.showRelInputForEdit[$scope.relEditableIndex]=false;
-        }, function(error){ 
-          $scope.showRelInputForEdit[$scope.relEditableIndex]=false;     
-        });
-    }else{
-      $scope.showRelInputForEdit[$scope.relEditableIndex]=false;
-    }         
+  $scope.setAndSaveRelTable=function(cloudObject,column){
+
+    cloudObject.set(column.name,cloudObject.get(column.name));
+
+    //Save Cloud Object
+    $scope.saveCloudObject(cloudObject)
+    .then(function(obj){     
+    }, function(error){           
+    });            
     
   };
   //End of Save for relation table 
@@ -444,8 +572,25 @@ focus) {
           getProjectTableById(tableId)
           .then(function(table){
               if(table){
-                $rootScope.currentProject.currentTable=table; 
-                $scope.loadTableData(table);                 
+                $rootScope.currentProject.currentTable=table;
+
+                //Load data 
+                $scope.loadTableData(table)
+                .then(function(list){
+                    //count no objects 
+                    var query = new CB.CloudQuery(table.name);                   
+                    query.count({ success: function(count){ 
+                       $scope.currentTableData=list;
+                       $scope.isTableLoaded=true;
+                       $scope.$digest();           
+                    },error: function(err) {          
+                    } });
+                    //count no objects
+                                                  
+                },
+                function(error){       
+                });
+                //end of loafing data                 
               }                              
           },
           function(error){       

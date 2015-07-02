@@ -71,14 +71,14 @@
                   <div class="cust-cell-name flex-general-row-wrapper">                    
                     <div class="col-name">
                        <span style="display:inline">
-                        <i class="fa fa-paperclip col-icon-size" style="padding-top: 5px;padding-right: 6px;"></i>
+                        <i class="fa fa-paperclip col-icon-size"></i>
                         {{column.name}}
                       </span>
                     </div>
                   </div> 
 
                   <div class="cust-cell-dropdwn">
-                       <i class="fa fa-angle-down dropdown-icon-size" style="padding-top: 4.6px;"></i>
+                      <i class="fa fa-angle-down dropdown-icon-size" style="padding-top: 4.6px;"></i>
                   </div>
                 </div>
 
@@ -221,7 +221,7 @@
                 <!--/Id-->               
 
                 <!--isSearchable-->
-                <div ng-if="column.dataType=='Boolean' && column.name=='isSearchable'"  class="tdDiv boolean-div cf" style="min-width: 150px">     
+                <div ng-if="column.dataType=='Boolean' && column.name=='isSearchable'"  class="tdDiv boolean-div cf" style="min-width: 165px">     
                   <div class="real-content-center flex-general-row-wrapper-center">  
                       <checkbox  class="btn-default checkBxDflt2 data-checkbx"  ng-model="eachRow.document._isSearchable" ng-click="setAndSaveBoolean(eachRow,column)">
                       </checkbox>                     
@@ -230,7 +230,7 @@
                 <!--/isSearchable-->
 
                 <!--Boolean-->
-                <div ng-if="column.dataType=='Boolean' && column.name!='isSearchable'"  class="tdDiv boolean-div cf" style="min-width: 150px">     
+                <div ng-if="column.dataType=='Boolean' && column.name!='isSearchable'"  class="tdDiv boolean-div cf" style="min-width: 165px">     
                   <div class="real-content-center flex-general-row-wrapper-center">  
                       <checkbox  class="btn-default checkBxDflt2 data-checkbx"  ng-model="eachRow.document[column.name]" ng-click="setAndSaveBoolean(eachRow,column)">
                       </checkbox>                     
@@ -391,7 +391,7 @@
 
                   <!--Popup Edit Button-->
                   <div class="modal-wrapper pull-right">
-                      <a class="round-btn">
+                      <a class="round-btn" ng-click="addRelation(eachRow,column)">
                         <i class="fa fa-expand" style="color:{{currentProject.currentTable.tableColor || '#3A5795'}};"></i>&nbsp;
                       </a>  
                   </div>
@@ -725,6 +725,88 @@
 </div>
 <!-- EditFile Modal -->
 
+
+<!-- Add Relation Modal -->
+  <div class="modal fade colored-header danger" id="md-reldocumentviewer" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <h3>Relation Documents</h3>        
+        </div>      
+        <div class="modal-body">
+          <div class="madd-relation-wrapper">
+            <div  class="add-relation-btn-wrapper">
+              <button type="button"  ng-click="searchRelationDocs()" class="add-relation-btn">Add Relation</button>
+            </div> 
+            <div class="relationid-list-wrapper" malihuscrollbar-for-popup>
+
+                <div class="relationid-list flex-general-row-wrapper-center cf">
+                  <div class="m-relationid id-show">
+                    <a>
+                     {{linkedRelatedDoc.document._id}}
+                    </a>  
+                  </div>
+                  <div class="m-remove-relation remv-show">
+                    <div>
+                     <i class="fa fa-times"></i>
+                    </div>
+                  </div>  
+                </div>
+                
+            </div> 
+          </div> 
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /Add Relation Modal -->
+
+<!-- Search Relation Documents Modal -->
+  <div class="modal fade colored-header danger" id="md-searchreldocument" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <h3>Search Relation Documents</h3>        
+        </div>      
+        <div class="modal-body">
+          <div class="md-search-relation-wrapper">
+            <div class="search-rel-wrapper">
+                <div class="rel-search-btn-wrapper flex-general-row-wrapper">
+                  <div class="rel-searchBx">
+                    <input type="text">
+                  </div>
+                  <div class="rel-searchIcon">
+                    <i class="fa fa-search"></i>
+                  </div>
+                </div>
+                  
+            </div>
+            <div class="relationid-list-wrapper" malihuscrollbar-for-popup>
+
+                <div ng-repeat="eachRelRow in relationTableData" class="relationid-list flex-general-column-wrapper-center">
+                  <div class="m-relationid" ng-click="linkRecord(eachRelRow)">
+                    <a>
+                      {{eachRelRow.document._id}}
+                    </a>  
+                  </div>  
+                </div>               
+                
+            </div>  
+          </div> 
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /Search Relation Documents Modal -->
+
 <!-- Relation Modal -->
   <div class="modal fade colored-header danger" id="md-relationviewer" tabindex="-1" role="dialog">
     <div class="modal-dialog">
@@ -779,16 +861,17 @@
                   <div ng-if="relCol.dataType=='Id'" class="m-value">
                       <div class="m-data-container cf" style="height:37px;">
 
-                        <div class="m-real-content pull-left">                          
-                        {{relatedTableRecord.get(relCol.name)}}                                        
-                        </div>                      
-
+                        <div class="m-real-content pull-left"> 
+                          <div class="m-id-aura">                         
+                          {{relatedTableRecord.get(relCol.name)}}
+                          </div>                                        
+                        </div>
                       </div>
                   </div>
 
                   <!--isSearchable-->
                   <div ng-if="relCol.dataType=='Boolean' && relCol.name=='isSearchable'" class="m-value">
-                      <div class="m-data-container-chk cf" style="height:37px;">
+                      <div class="m-data-container-chk cf">
 
                         <div class="m-real-content-chk pull-left">
                           <checkbox  class="btn-default checkBxDflt data-checkbx"  ng-model="relatedTableRecord.document._isSearchable" ng-click="setAndSaveBoolean(relatedTableRecord,relCol)" style="margin-left:14px;">
@@ -814,15 +897,140 @@
                   <div ng-if="relCol.dataType=='DateTime'" class="m-value">
                       <div class="m-data-container-datetime cf" style="height:30px;">
 
-                        <div class="m-real-content-datetime pull-left">
-                          <input kendo-date-time-picker  value="" k-ng-model=""  class="dateTimeInput"/>
+                        <div class="m-real-contentent-datetime pull-left">
+                          <input kendo-date-time-picker  value="{{relatedTableRecord.document[relCol.name]}}"  k-ng-model="relatedTableRecord.document[relCol.name]"  class="dateTimeInput" ng-blur="setAndSaveRelTable(relatedTableRecord,relCol)"/>
                         </div>                       
 
                       </div>
                   </div>
 
+                  <!--ACL-->
+                  <div ng-if="relCol.dataType=='ACL'" class="m-value">
+                      <div class="m-data-container cf m-acl-cust">
+
+                        <div class="m-real-content-acl pull-left">
+                          <div class="m-acl-aura">
+                          {{relatedTableRecord.get(relCol.name)}}
+                          </div>
+                        </div>
+                        <div class="m-popup-btn pull-right">
+                          <a class="m-round-btn" ng-click="showRelJsonObject(relatedTableRecord,relCol)">
+                            <i class="fa fa-expand" style="color:{{relatedTableDef.tableColor || '#3A5795'}};"></i>&nbsp;
+                          </a>
+                        </div>
+
+                      </div>
+                  </div>
+
+                  <!--JsonObject-->
+                  <div ng-if="relCol.dataType=='Object'" class="m-value">
+                      <div class="m-data-container m-acl-cust cf">
+
+                        <div class="m-real-content-acl pull-left">
+                          <div class="m-acl-aura">
+                          {{relatedTableRecord.get(relCol.name)}}
+                          </div>
+                        </div>
+                        <div class="m-popup-btn pull-right">
+                          <a class="m-round-btn" ng-click="showRelJsonObject(relatedTableRecord,relCol)">
+                            <i class="fa fa-expand" style="color:{{relatedTableDef.tableColor || '#3A5795'}};"></i>&nbsp;
+                          </a>
+                        </div>
+
+                      </div>
+                  </div>
+
+                  <!--Text-->
+                  <div ng-if="relCol.dataType=='Text'" class="m-value">
+                      <div class="m-data-container cf" style="height:35px;">
+
+                        <div class="m-real-content-cmn-types pull-left">                          
+                          <input type="text" ng-model="relatedTableRecord.document[relCol.name]" ng-blur="setAndSaveRelTable(relatedTableRecord,relCol)" class="m-commontypes-aura" ng-blur="setAndSaveRelTable(relatedTableRecord,relCol)">
+                        </div>                       
+
+                      </div>
+                  </div>
+
+                  <!--Email-->
+                  <div ng-if="relCol.dataType=='Email'" class="m-value">
+                      <div class="m-data-container cf" style="height:35px;">
+
+                        <div class="m-real-content-cmn-types pull-left">                          
+                          <input type="email" ng-model="relatedTableRecord.document[relCol.name]" ng-blur="setAndSaveRelTable(relatedTableRecord,relCol)" class="m-commontypes-aura" ng-blur="setAndSaveRelTable(relatedTableRecord,relCol)">
+                        </div>                       
+
+                      </div>
+                  </div>
+
+                  <!--URL-->
+                  <div ng-if="relCol.dataType=='URL'" class="m-value">
+                      <div class="m-data-container cf" style="height:35px;">
+
+                        <div class="m-real-content-cmn-types pull-left">                          
+                          <input type="url" ng-model="relatedTableRecord.document[relCol.name]" ng-blur="setAndSaveRelTable(relatedTableRecord,relCol)" class="m-commontypes-aura" ng-blur="setAndSaveRelTable(relatedTableRecord,relCol)">
+                        </div>                       
+
+                      </div>
+                  </div>
+
+                  <!--Number-->
+                  <div ng-if="relCol.dataType=='Number'" class="m-value">
+                      <div class="m-data-container cf" style="height:35px;">
+
+                        <div class="m-real-content-cmn-types pull-left">                          
+                          <input type="text" ng-model="relatedTableRecord.document[relCol.name]" ng-blur="setAndSaveRelTable(relatedTableRecord,relCol)" class="m-commontypes-aura" ng-blur="setAndSaveRelTable(relatedTableRecord,relCol)">
+                        </div>                       
+
+                      </div>
+                  </div>
+
+                  <!--Files-->
+                  <div ng-if="relCol.dataType=='File'"  class="m-value">
+                      <div class="m-data-container-file cf">
+
+                        <div class="m-real-content-file pull-left">
+                          <!--Images-->
+                          <a ng-click="relEditFile(relatedTableRecord,relCol)" ng-if="(relatedTableRecord.get(relCol.name).document.name | extension)=='jpeg' || (relatedTableRecord.get(relCol.name).document.name | extension)=='jpg' || (relatedTableRecord.get(relCol.name).document.name | extension)=='png' || (relatedTableRecord.get(relCol.name).document.name | extension)=='tif' || (relatedTableRecord.get(relCol.name).document.name | extension)=='gif'">
+                            <img class="m-dynamix-img" src="{{relatedTableRecord.document[relCol.name].document.url}}">
+                          </a>
+
+                          <!--Other Files-->
+                          <a ng-click="relEditFile(relatedTableRecord,relCol)" ng-if="(relatedTableRecord.get(relCol.name).document.name | extension) && ((relatedTableRecord.get(relCol.name).document.name | extension)!='jpeg' && (relatedTableRecord.get(relCol.name).document.name | extension)!='jpg' && (relatedTableRecord.get(relCol.name).document.name | extension)!='png' && (relatedTableRecord.get(relCol.name).document.name | extension)!='tif' && (relatedTableRecord.get(relCol.name).document.name | extension)!='gif')">
+                            <img class="m-static-img" src="assets/images/file2.png">
+                          </a>
+
+                          <!--Add File Button-->
+                          <div ng-if="!relatedTableRecord.get(relCol.name)" ng-click="relEditFile(relatedTableRecord,relCol)" class="m-img-add">
+                            <span>
+                              <i class="fa fa-plus-circle"></i>
+                            </span>
+                          </div>  
+
+                        </div>                       
+
+                      </div>
+                  </div>
+
+                  <!--Relation-->
+                  <div ng-if="relCol.dataType=='Relation'" class="m-value">
+                      <div class="m-data-container cf" style="height:37px;">
+
+                        <div class="m-real-content-rel pull-left">
+                          <div class="m-rel-id-aura" ng-click="viewRelationData(relatedTableRecord,relCol)">
+                            {{relatedTableRecord.get(relCol.name).document._id}}
+                          </div>                         
+                        </div>
+                        <div class="m-popup-btn pull-right">
+                          <a class="m-round-btn">
+                            <i class="fa fa-expand" style="color:{{relatedTableDef.tableColor || '#3A5795'}};"></i>&nbsp;
+                          </a>
+                        </div>
+
+                      </div>
+                  </div>
+
                   <!--Others-->
-                  <div ng-if="relCol.dataType!='Id' && relCol.dataType!='Boolean' && relCol.dataType!='DateTime' && relCol.dataType!='File' && relCol.dataType!='DateTime'" class="m-value">
+                  <div ng-if="relCol.dataType!='Id' && relCol.dataType!='Boolean' && relCol.dataType!='DateTime' && relCol.dataType!='File'  && relCol.dataType!='Text' && relCol.dataType!='ACL' && relCol.dataType!='Object' && relCol.dataType!='Email' && relCol.dataType!='URL' && relCol.dataType!='Number' && relCol.dataType!='File' && relCol.dataType!='Relation'" class="m-value">
                       <div class="m-data-container cf" style="height:37px;">
 
                         <div class="m-real-content pull-left">
@@ -849,3 +1057,183 @@
     </div><!-- /.modal-dialog -->
 </div>
 <!-- Relation Modal -->
+
+<!-- Relation EditJSON Modal -->
+  <div class="modal fade colored-header danger" id="md-rel-objectviewer" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <h3>Object Viewer</h3>        
+        </div>      
+        <div class="modal-body">
+
+          <pre pretty-json="relEditableJsonObj" edition="true" style="min-height:220px">
+          </pre>       
+
+          <div class="flex-general-row-wrapper-center modalF">        
+            <button type="button" ng-click="setAndSaveRelJsonObject()" class="btn btn-primary btn-flat" style="width:400px;">Save</button>
+          </div> 
+
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!--  Relation EditJSON Modal -->
+
+
+
+<!-- Relation EditFile Modal -->
+  <div class="modal fade colored-header danger" id="md-rel-fileviewer" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" ng-click="removeSelectdFile()" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <h3>Files</h3>        
+        </div>      
+        <div class="modal-body">
+
+          <div class="flex-general-row-wrapper-center">
+              <!--Add file-->
+              <div ng-if="!relEditableFile && !selectedFile">
+                <div class="modal-add-file">
+                  <input filechange type="file" id="notification-file" class="form-control">
+                </div>                
+              </div>
+
+            <div  ng-if="selectedFile && selectedFileExtension">  
+              <!--View File for Images-->
+              <div ng-if="selectedFile  && (selectedFileExtension=='jpeg' || selectedFileExtension=='jpg' || selectedFileExtension=='png' || selectedFileExtension=='tif' || selectedFileExtension=='gif')" class="modal-view-file flex-general-column-wrapper-center">  
+
+                <!--Image-->
+                <div class="">
+                  <a class="modal-anchor">
+                    <img src="{{selectedFile}}">                  
+                  </a>                  
+                </div>
+
+                <div class="flex-general-row-wrapper-center">
+                  <span style="margin-top:12px;">{{selectedfileName}}</span> 
+                </div>
+
+                <!--Image Edit tools--> 
+                <div class="moda-img-tools2 flex-general-row-wrapper-center">
+                  <div class="modal-img-option2">
+                    <a ng-click="setAndSaveRelFile()">
+                     <i class="fa fa-floppy-o"></i>
+                    </a>
+                  </div>
+                  <div class="modal-img-option2" style="margin-left:5px;">
+                    <a ng-click="removeSelectdFile()">
+                    <i class="fa fa-times-circle-o"  style="color:red"></i>
+                    </a>
+                  </div>                  
+                </div>
+
+              </div> 
+
+              <!--View File for Other Files-->
+              <div ng-if="selectedFile  && (selectedFileExtension!='jpeg' && selectedFileExtension!='jpg' && selectedFileExtension!='png' && selectedFileExtension!='tif' && selectedFileExtension!='gif')" class="modal-view-other-file flex-general-column-wrapper-center">
+
+                  <!--Image-->
+                  <div>
+                    <a class="modal-anchor flex-general-row-wrapper-center">
+                      <img src="assets/images/file2.png">                  
+                    </a>                  
+                  </div> 
+
+                  <div class="flex-general-row-wrapper-center">
+                    <span style="margin-top:12px;">{{selectedfileName}}</span> 
+                  </div>
+
+                  <!--Image Edit tools--> 
+                  <div class="moda-img-tools2 flex-general-row-wrapper-center">
+                    <div class="modal-img-option2">
+                      <a ng-click="setAndSaveRelFile()">
+                       <i class="fa fa-floppy-o"></i>
+                      </a>
+                    </div>
+                    <div class="modal-img-option2" style="margin-left:5px;">
+                      <a ng-click="removeSelectdFile()">
+                        <i class="fa fa-times-circle-o"  style="color:red"></i>
+                      </a>
+                    </div>                  
+                  </div>
+
+                </div>
+              
+            </div>
+
+            <div  ng-if="!selectedFile">  
+              <!--View File for Images-->
+              <div ng-if="relEditableFile && relEditableFile.document.url && ((relEditableFile.document.name | extension)=='jpeg' || (relEditableFile.document.name | extension)=='jpg' || (relEditableFile.document.name | extension)=='png' || (relEditableFile.document.name | extension)=='tif' || (relEditableFile.document.name | extension)=='gif')" class="modal-view-file">
+
+                <!--Image-->
+                <div>
+                  <a class="modal-anchor flex-general-row-wrapper-center">
+                    <img src="{{relEditableFile.document.url}}">                  
+                  </a>                  
+                </div>
+                <div class="flex-general-row-wrapper-center">
+                  <span style="margin-top:14px;">{{relEditableFile.document.name}}</span> 
+                </div>               
+
+                <!--Image Edit tools--> 
+                <div class="moda-img-tools2 flex-general-row-wrapper-center">
+                  <div class="modal-img-option2">
+                    <a href="{{relEditableFile.document.url}}" target="_blank">
+                     <i class="fa fa-download"></i>
+                    </a>
+                  </div>
+                  <div class="modal-img-option2" style="margin-left:5px;">
+                    <a ng-click="deleteRelFile()">
+                    <i class="fa fa-trash-o"></i>
+                    </a>
+                  </div>                  
+                </div>
+
+              </div> 
+
+               <!--View File for Other Files-->
+              <div ng-if="relEditableFile && relEditableFile.document.url && ((relEditableFile.document.name | extension)!='jpeg' && (relEditableFile.document.name | extension)!='jpg' && (relEditableFile.document.name | extension)!='png' && (relEditableFile.document.name | extension)!='tif' && (relEditableFile.document.name | extension)!='gif')" class="modal-view-other-file">
+
+                  <!--Image-->
+                  <div>
+                    <a class="modal-anchor flex-general-row-wrapper-center">
+                      <img src="assets/images/file2.png">                  
+                    </a>                  
+                  </div> 
+
+                  <div class="flex-general-row-wrapper-center">
+                    <span style="margin-top:14px;">{{relEditableFile.document.name}}</span>  
+                  </div>                             
+
+                  <!--Image Edit tools--> 
+                  <div class="moda-img-tools2 flex-general-row-wrapper-center">
+                    <div class="modal-img-option2">
+                      <a href="{{relEditableFile.document.url}}" target="_blank">
+                       <i class="fa fa-download"></i>
+                      </a>
+                    </div>
+                    <div class="modal-img-option2" style="margin-left:5px;">
+                      <a ng-click="deleteRelFile()">
+                      <i class="fa fa-trash-o"></i>
+                      </a>
+                    </div>                  
+                  </div>
+
+                </div>  
+            </div>     
+
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!--Relation EditFile Modal -->

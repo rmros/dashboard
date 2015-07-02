@@ -96,4 +96,15 @@ app.filter('extension', function() {
   }
 });
 
+app.filter('ISO2DateObject', function() {
+  return function(val) {
+    if(val){
+      return new Date(val);
+    }else{
+      return new Date();
+    }
+    
+  }
+});
+
 
