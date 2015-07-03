@@ -400,8 +400,73 @@
                 </div>
                 <!--/Relation-->
 
+                <!--List-->
+                <div ng-if="column.dataType=='List'" class="tdDiv cf" style="min-width:325px"> 
+
+                  <div class="real-content-list-text pull-left"> 
+                      <!--Text,Email,Number,URL--> 
+                      <div ng-show="eachRow.document[column.name]" ng-if="column.relatedTo=='Text' || column.relatedTo=='Email' || column.relatedTo=='Number' || column.relatedTo=='URL' || column.relatedTo=='Boolean'" class="cf list-text-wrapper">
+
+                        <div class="pull-left text-list-torrent flex-general-row-wrapper">
+                         
+                          <div ng-repeat="eachText in eachRow.document[column.name] track by $index" class="list-text">
+                            <span>{{eachText}}</span>
+                          </div>                        
+
+                        </div>           
+
+                      </div>
+                      <!--DateTime--> 
+                      <div ng-show="column.relatedTo=='DateTime'" class="cf list-text-wrapper">
+
+                        <div class="pull-left text-list-torrent flex-general-row-wrapper">
+                         
+                          <div ng-repeat="eachDate in eachRow.document[column.name] track by $index" class="list-text">
+                            <span>{{eachDate | date:'medium' }}</span>
+                          </div>                        
+
+                        </div>           
+
+                      </div> 
+
+                      <!--Boolean--> 
+                      <!--<div ng-show="column.relatedTo=='Boolean'" class="cf list-text-wrapper">
+
+                        <div ng-repeat="eachBoolean in eachRow.document[column.name] track by $index" class="text-list-torrent flex-general-row-wrapper">
+                         
+                          <div class="flex-general-row-wrapper">
+
+                            <div ng-if="eachBoolean==true" class="list-boolean" style="background-color:green;">
+                              <span>{{eachBoolean}}</span>                      
+                            </div>
+
+                            <div ng-if="!eachBoolean || eachBoolean==false" class="list-boolean" style="background-color:red;">                       
+                                <span>{{eachBoolean}}</span>                           
+                            </div>
+
+                          </div>  
+                                                  
+
+                        </div>
+
+
+
+                      </div> -->          
+                  </div>
+
+                  <!--Popup Edit Button-->
+                  <div class="modal-wrapper pull-right">
+                      <a class="round-btn" ng-click="openCommonTypesListModal(eachRow,column)">
+                        <i class="fa fa-expand" style="color:{{currentProject.currentTable.tableColor || '#3A5795'}};"></i>&nbsp;
+                      </a>  
+                  </div>
+                  <!--/Popup Edit Button--> 
+
+                </div>
+                <!--/List-->
+
                 <!--Others-->
-                <div ng-if="column.dataType!='Id' && column.dataType!='Boolean' && column.dataType!='DateTime' && column.dataType!='ACL' && column.dataType!='Text' && column.dataType!='Email' && column.dataType!='URL' && column.dataType!='Number' && column.dataType!='Object' && column.dataType!='File' && column.dataType!='Relation'" class="tdDiv cf" style="min-width: 210px"> 
+                <div ng-if="column.dataType!='Id' && column.dataType!='Boolean' && column.dataType!='DateTime' && column.dataType!='ACL' && column.dataType!='Text' && column.dataType!='Email' && column.dataType!='URL' && column.dataType!='Number' && column.dataType!='Object' && column.dataType!='File' && column.dataType!='Relation' && column.dataType!='List'" class="tdDiv cf" style="min-width: 210px"> 
 
                   <div class="real-content pull-left">  
                     {{eachRow.get(column.name)}} {{column.dataType}}                
@@ -739,10 +804,10 @@
         </div>      
         <div class="modal-body">
           <div class="madd-relation-wrapper">
-            <div  class="add-relation-btn-wrapper">
+            <div  ng-show="!linkedRelatedDoc" class="add-relation-btn-wrapper">
               <button type="button"  ng-click="searchRelationDocs()" class="add-relation-btn">Add Relation</button>
             </div> 
-            <div class="relationid-list-wrapper" malihuscrollbar-for-popup>
+            <div ng-show="linkedRelatedDoc" class="relationid-list-wrapper" malihuscrollbar-for-popup>
 
                 <div class="relationid-list flex-general-row-wrapper-center cf">
                   <div class="m-relationid id-show">
@@ -898,7 +963,7 @@
                       <div class="m-data-container-datetime cf" style="height:30px;">
 
                         <div class="m-real-contentent-datetime pull-left">
-                          <input kendo-date-time-picker  value="{{relatedTableRecord.document[relCol.name]}}"  k-ng-model="relatedTableRecord.document[relCol.name]"  class="dateTimeInput" ng-blur="setAndSaveRelTable(relatedTableRecord,relCol)"/>
+                          <input kendo-date-time-picker  value="{{relatedTableRecord.document[relCol.name]}}"  k-ng-model="relatedTableRecord.document[relCol.name]"   class="dateTimeInput" ng-blur="setAndSaveRelTable(relatedTableRecord,relCol)"/>
                         </div>                       
 
                       </div>
@@ -1237,3 +1302,136 @@
     </div><!-- /.modal-dialog -->
 </div>
 <!--Relation EditFile Modal -->
+
+
+<!---List Modals-->
+
+
+
+<!-- Add-View List common types Modal -->
+  <div class="modal fade colored-header danger" id="md-list-commontypes" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <h3>Documents List</h3>        
+        </div>      
+        <div class="modal-body">
+          <div class="madd-relation-wrapper">
+            <div  class="add-list-btn-wrapper">
+
+              <!--Text,Email,URL,Number-->
+              <div ng-show="editableColumn.relatedTo=='Text' || editableColumn.relatedTo=='Email' || editableColumn.relatedTo=='URL' || editableColumn.relatedTo=='Number'" class="document-list-wrapper flex-general-row-wrapper">
+
+                  <div class="document-list-txt-add-wrapper flex-general-row-wrapper-center cf">
+                    <!--Text-->
+                    <div ng-show="editableColumn.relatedTo=='Text'" class="list-text-aura">
+                        <input type="text" ng-model="newListItem" class="list-modal-text">
+                    </div>
+                    <!--Email-->
+                    <div ng-show="editableColumn.relatedTo=='Email'" class="list-text-aura">
+                        <input type="email" ng-model="newListItem" class="list-modal-text">
+                    </div>
+                    <!--URL-->
+                    <div ng-show="editableColumn.relatedTo=='URL'" class="list-text-aura">
+                        <input type="url" ng-model="newListItem" class="list-modal-text">
+                    </div>
+                    <!--Number-->
+                    <div ng-show="editableColumn.relatedTo=='Number'" class="list-text-aura">
+                        <input type="number" ng-model="newListItem" class="list-modal-text">
+                    </div>
+
+                  </div>
+                 <div class="list-text-add-btn">                   
+                     <button ng-click="addListItem()">Add</button>                   
+                  </div>
+
+              </div>
+              <!--/Text,Email,URL,Number-->
+
+              <!--DateTime-->
+              <div ng-show="editableColumn.relatedTo=='DateTime'" class="document-list-wrapper flex-general-row-wrapper">
+
+                  <div class="list-datetime-add-btn">                   
+                     <button ng-click="addListItem()">Add</button>                   
+                  </div>
+                  <div class="list-datetime-aura flex-general-row-wrapper-center cf">
+
+                     <input kendo-date-time-picker  k-ng-model="newListItem"  class="list-m-datetime" />                
+
+                  </div>                 
+
+              </div>
+              <!--/DateTime-->
+
+            </div>
+           
+
+            <!--List Text,Email,URL,Number-->
+            <div ng-if="editableColumn.relatedTo=='Text' || editableColumn.relatedTo=='Email' || editableColumn.relatedTo=='URL' || editableColumn.relatedTo=='Number'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
+
+                <div ng-repeat="eachText in editableList track by $index" class="document-list-txt-wrapper flex-general-row-wrapper-center cf">
+                  <!--Text-->
+                  <div ng-if="editableColumn.relatedTo=='Text'" class="list-text-aura">
+
+                      <input type="text" ng-model="eachText" class="list-modal-text" ng-blur="setAndSaveList(eachText,$index)">
+
+                  </div>
+                  <!--Email-->
+                  <div ng-if="editableColumn.relatedTo=='Email'" class="list-text-aura">
+
+                      <input type="email" ng-model="eachText" class="list-modal-text" ng-blur="setAndSaveList(eachText,$index)">
+
+                  </div>
+                  <!--URL-->
+                  <div ng-if="editableColumn.relatedTo=='URL'" class="list-text-aura">
+
+                      <input type="url" ng-model="eachText" class="list-modal-text" ng-blur="setAndSaveList(eachText,$index)">
+
+                  </div>
+                  <!--Number-->
+                  <div ng-if="editableColumn.relatedTo=='Number'" class="list-text-aura">
+
+                      <input type="number" ng-model="eachText" class="list-modal-text" ng-blur="setAndSaveList(eachText,$index)">
+
+                  </div>
+
+                  <div class="m-remove-document list-text-remv-show">
+                    <div ng-click="deleteListItem($index)">
+                     <i class="fa fa-trash-o fa-lg"></i>
+                    </div>
+                  </div>  
+                </div>
+
+            </div>
+
+            <!--List DateTime-->
+            <div ng-show="editableColumn.relatedTo=='DateTime'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
+
+                <div  ng-repeat="eachDate in editableList track by $index" class="document-list-datetime-wrapper flex-general-row-wrapper cf">        
+
+                  <div class="list-datetime-aura-list">
+
+                    <input kendo-date-time-picker value="{{eachDate | ISO2DateObject}}" k-ng-model="eachDate"  class="list-m-datetime-list" ng-blur="setAndSaveList(eachDate,$index )"/>   
+
+                  </div>
+
+                  <div class="m-remove-document list-datetime-remv-show">
+                    <div ng-click="deleteListItem($index)">
+                      <i class="fa fa-trash-o fa-lg"></i>
+                    </div>
+                  </div>
+                    
+                </div>
+
+            </div>
+
+          </div> 
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /Add-View List common types Modal -->

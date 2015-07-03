@@ -28,7 +28,8 @@ focus) {
   $scope.showSerialNo=[];
   $scope.rowsSelected=[];
   $scope.showInputForEdit=[[]]; 
-  $scope.editableField=[[]];  
+  $scope.editableField=[[]];
+  $scope.newListItem=null;   
 
   $scope.init = function() {      
       id = $stateParams.appId;
@@ -83,6 +84,9 @@ focus) {
     $scope.saveCloudObject(row)
     .then(function(obj){
         //scope.$digest();
+        if($scope.tableDef){
+          convertISO2DateObj($scope.tableDef,obj);
+        }
     }, function(error){ 
            
     });     
@@ -269,11 +273,12 @@ focus) {
     $scope.editableColumnName=column.name;//column name 
     $scope.editableIndex=$scope.currentTableData.indexOf(row);//index
 
+    $scope.relColumn=_.first(_.where($rootScope.currentProject.currentTable.columns,{name:column.name}));
+    $scope.tableDef=_.first(_.where($rootScope.currentProject.tables, {name: $scope.relColumn.relatedTo}));
+    
     if(row.get(column.name)){
       var tableName=row.get(column.name).document._tableName;
-      var rowId=row.get(column.name).document._id;
-
-      $scope.tableDef=_.first(_.where($rootScope.currentProject.tables, {name: tableName}));
+      var rowId=row.get(column.name).document._id;  
 
       //get table definition    
       getProjectTableById($scope.tableDef.id)
@@ -294,6 +299,7 @@ focus) {
       //end of get table definition
     }else{
       $scope.linkedRelatedDoc=null;
+      $("#md-reldocumentviewer").modal();
     }
     
 
@@ -341,10 +347,10 @@ focus) {
     var tableName=row.get(column.name).document._tableName;
     var rowId=row.get(column.name).document._id;
 
-    var tableDef=_.first(_.where($rootScope.currentProject.tables, {name: tableName}));
+    $scope.tableDef=_.first(_.where($rootScope.currentProject.tables, {name: tableName}));
 
     //get table definition    
-    getProjectTableById(tableDef.id)
+    getProjectTableById($scope.tableDef.id)
     .then(function(table){ 
 
           //get Table data
@@ -352,12 +358,7 @@ focus) {
           .then(function(record){ 
 
             //Convert ISODate 2 DateObject
-            for(var i=0;i<table.columns.length;++i){
-              if(table.columns[i].dataType=="DateTime"){
-                var isoDate=record.get(table.columns[i].name);
-                record.set(table.columns[i].name,new Date(isoDate));
-              }
-            }
+            convertISO2DateObj(table,record);           
 
             $scope.relatedTableDef=table;
             $scope.relatedTableRecord=record;
@@ -374,7 +375,14 @@ focus) {
        
   };
 
-
+  function convertISO2DateObj(table,cloudObject){
+      for(var i=0;i<table.columns.length;++i){
+          if(table.columns[i].dataType=="DateTime"){
+            var isoDate=cloudObject.get(table.columns[i].name);
+            cloudObject.set(table.columns[i].name,new Date(isoDate));
+          }
+      }
+  }
   //Relation ACL && JsonObject
   $scope.showRelJsonObject=function(row,column){
    
@@ -397,7 +405,8 @@ focus) {
       $scope.relEditableRow=null;
       $scope.relEditableColumnName=null;
       $scope.relEditableJsonObj=null;
-      $("#md-rel-objectviewer").modal("hide");      
+      $("#md-rel-objectviewer").modal("hide");
+      convertISO2DateObj($scope.tableDef,obj);      
     }, function(error){
       $scope.relEditableRow=null;
       $scope.relEditableColumnName=null;
@@ -429,6 +438,7 @@ focus) {
                   $scope.relEditableColumnName=null;
                   $scope.relEditableFile=null;
                   $scope.removeSelectdFile();
+                  convertISO2DateObj($scope.tableDef,obj);
                 }, function(error){ 
                   $("#md-rel-fileviewer").modal("hide");
                   $scope.relEditableRow=null; 
@@ -451,6 +461,7 @@ focus) {
       $scope.relEditableColumnName=null;
       $scope.relEditableFile=null;
       $scope.removeSelectdFile();
+      convertISO2DateObj($scope.tableDef,obj);
     }, function(error){ 
       $scope.relEditableRow=null; 
       $scope.relEditableColumnName=null;
@@ -460,6 +471,83 @@ focus) {
   };
   //Relation File
   //End of relation
+
+//List
+$scope.openCommonTypesListModal=function(row,column){
+  nullifyEditable();
+  $scope.editableRow=row;//row
+  $scope.editableColumnName=column.name;//column name  
+
+  $scope.editableColumn=column;//column
+  $scope.editableList=row.get(column.name);
+    
+  if(column.relatedTo=="DateTime"){    
+    convertFieldsISO2DateObj(); 
+  }
+  
+  $("#md-list-commontypes").modal();
+};
+
+function convertFieldsISO2DateObj(){
+  if($scope.editableList && $scope.editableList.length>0){
+    for(var i=0;i<$scope.editableList.length;++i){
+        $scope.editableList[i]= new Date($scope.editableList[i]);
+    }    
+  }      
+}
+
+$scope.addListItem=function(){
+  if($scope.newListItem){
+      if(!$scope.editableList || $scope.editableList.length==0){
+        $scope.editableList=[];
+      }
+      if( $scope.editableColumn.relatedTo=="DateTime"){    
+          $scope.newListItem=new Date($scope.newListItem); 
+      }
+      $scope.editableList.push($scope.newListItem);
+      $scope.editableRow.set($scope.editableColumnName,$scope.editableList);
+      //Save Cloud Object
+      $scope.saveCloudObject($scope.editableRow)
+      .then(function(obj){ 
+        $scope.newListItem=null;
+    
+        if( $scope.editableColumn.relatedTo=="DateTime"){    
+          convertFieldsISO2DateObj(); 
+        }
+
+        $scope.$digest();  
+      }, function(error){
+        $scope.newListItem=null;
+        $scope.$digest();         
+      });
+  }
+  
+};
+$scope.deleteListItem=function(index){
+ 
+  $scope.editableList.splice(index,1);
+  $scope.editableRow.set($scope.editableColumnName,$scope.editableList);
+  //Save Cloud Object
+  $scope.saveCloudObject($scope.editableRow)
+  .then(function(obj){ 
+    if( $scope.editableColumn.relatedTo=="DateTime"){    
+      convertFieldsISO2DateObj(); 
+    }   
+  }, function(error){         
+  });  
+  
+};
+
+$scope.setAndSaveList=function(data,index){
+  $scope.editableList[index]=data;
+  $scope.editableRow.set($scope.editableColumnName,$scope.editableList);
+  //Save Cloud Object
+  $scope.saveCloudObject($scope.editableRow)
+  .then(function(obj){    
+  }, function(error){         
+  });
+};
+//End of List
 
   function nullifyFields(){
     //Disable column to edit
@@ -506,7 +594,8 @@ focus) {
 
     //Save Cloud Object
     $scope.saveCloudObject(cloudObject)
-    .then(function(obj){     
+    .then(function(obj){  
+      convertISO2DateObj($scope.tableDef,cloudObject);   
     }, function(error){           
     });            
     
