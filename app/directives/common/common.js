@@ -13,6 +13,44 @@ app.directive('tooltip', function(){
     };
 });
 
+app.directive('infotooltipleft', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){       
+            $(element)
+            .attr('title',scope.$eval(attrs.infotooltipleft))
+            .tooltipster({
+               arrow:false,
+               animation: 'fade',
+               delay: 200,
+               theme: 'tooltipster-shadow',
+               touchDevices: false,
+               trigger: 'hover',
+               position:'left'
+            });
+        }
+    };
+});
+
+app.directive('infotooltipright', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){       
+            $(element)  
+            .attr('title',scope.$eval(attrs.infotooltipright))          
+            .tooltipster({
+               arrow:false,
+               animation: 'fade',
+               delay: 200,
+               theme: 'tooltipster-light',
+               touchDevices: false,
+               trigger: 'hover',
+               position:'left'
+            });
+        }
+    };
+});
+
 app.directive('colresize', function(){
     return {
         restrict: 'A',
@@ -23,6 +61,7 @@ app.directive('colresize', function(){
 });
 
 
+//Scrollbar for both vertical and horizontal
 app.directive('malihuscrollbar', function(){
     return {
         restrict: 'A',
@@ -36,14 +75,14 @@ app.directive('malihuscrollbar', function(){
                 scrollButtons:{enable:true,
                     scrollAmount: 20,
                     scrollType: "stepless"
-                }   
-
-
+                }
             });
         }
     };
 });
 
+
+//A mini Scrollbar for both vertical and horizontal
 app.directive('malihuscrollbarForPopup', function(){
     return {
         restrict: 'A',
@@ -142,4 +181,8 @@ app.directive('filechange', function(){
         }
     };
 });
+
+
+
+
 

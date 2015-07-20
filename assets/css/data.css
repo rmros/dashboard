@@ -379,9 +379,11 @@
 }
 
 .data-table-design{ 
-    height:84.4vh;
-    width:97.9vw;    
+    width:100vw;
+    height:81.5vh; 
+    overflow: auto;         
 }
+
 
 .smoothTable { 
    width:94.6vw; 
@@ -404,7 +406,7 @@
 }
 
 .col-icon-size{
-    font-size: 16px !important;
+    font-size: 16px !important;    
 }
 .dropdown-icon-size{
     font-size: 20px !important;
@@ -425,9 +427,13 @@
 .col-dropdown{
     position: absolute;
     height: auto;
-    width: 99.90%;
+    width: 90%;
     background-color: white;
-    display: none;   
+    z-index: 99999; 
+    right:1px;
+    -webkit-box-shadow: 0 0 1px 2px #C0C0C0;
+    -moz-box-shadow: 0 0 1px 2px #C0C0C0;
+    box-shadow: 0 0 1px 2px #C0C0C0;
 }
 
 .col-options-span{
@@ -577,8 +583,9 @@
 }
 
 .vacuumTr{
-    background-color:#F4F6F7;
+    background-color:#F4F6F7;    
 }
+
 .vacuumTr td {
     border:none !important;
 }
@@ -593,6 +600,9 @@
 .vacuumThDiv div{
   height:26px;
   width:110px;  
+}
+.sno-spinner{
+    margin-top: 1px;
 }
 
 .checkBxDflt{
@@ -868,6 +878,12 @@
 .m-real-content{
     padding: 4px;
 }
+.m-real-content-list-file {
+    padding:1px;
+}
+.m-real-geopoint {
+    padding:1px;
+}
 .m-real-content-chk{
     padding-top: 1px;    
     padding-left: 4px;
@@ -936,7 +952,71 @@
 .m-rel-id-aura{
     padding: 3px;
     background-color: #E0EDFF;
-    cursor: pointer;    
+    cursor: pointer;
+    margin-left: 3px;    
+}
+.m-rel-common{
+    padding-bottom: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: #E0EDFF;
+    border-radius: 2px;
+    margin-left: 3px;
+}
+.m-rel-geopoint{
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 3px;
+    background-color: #E0EDFF;
+    border-radius: 2px;
+    margin-left: 3px;
+    height: 24px;
+}
+.m-rel-relation{
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 3px;
+    background-color: #E0EDFF;
+    border-radius: 2px;
+    margin-left: 3px;
+    height: 24px;
+    cursor: pointer;
+}
+.m-rel-images{
+    border: 1px solid #E8EAEB;
+    border-radius: 1.5px;
+    margin-left: 3px;
+}
+.m-rel-images img{
+    width:30px;
+    height: 27px;
+}
+.m-rel-othersfiles{   
+    margin-left: 3px;
+}
+.m-rel-othersfiles img{
+    width:22px;
+    height:25px;
+}
+.m-rel-true{
+    padding-bottom: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: green;
+    border-radius: 2px;
+    color: white;
+    margin-left: 3px;
+}
+.m-rel-false{
+    padding-bottom: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: red;
+    border-radius: 2px;
+    color: white;
+    margin-left: 3px;
 }
 
 .madd-relation-wrapper{
@@ -959,6 +1039,12 @@
 }
 
 .relationid-list-wrapper{
+    margin-top: 20px;
+    width: 100%;
+    height:150px;
+}
+
+.geopoint-list-wrapper{
     margin-top: 20px;
     width: 100%;
     height:90px;
@@ -1038,18 +1124,87 @@
     background-color: #E8E8E8; 
     border-radius: 6px;      
 }
+.list-geopoint{
+    padding-top: 3px;
+    padding-bottom: 1.5px;
+    padding-left: 3px;
+    padding-right: 3px;
+    margin-left: 5px;
+    margin-top:4px;
+    height:24px;
+    background-color: #E8E8E8; 
+    border-radius: 2px;      
+}
 
-.list-boolean{
+.list-relation{
+    padding-top: 2px;
+    padding-bottom: 1px;
+    padding-left: 3px;
+    padding-right: 3px;
+    margin-left: 5px;
+    margin-top:4px;
+    height:24px;
+    background-color: #E8E8E8; 
+    cursor: pointer;
+}
+.list-Json{
     padding-top: 1.5px;
     padding-bottom: 1.5px;
     padding-left: 3px;
     padding-right: 3px;
     margin-left: 5px;
     margin-top:4px;
-    height:24px;     
+    height:23px;
+    background-color: #E8E8E8; 
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+}
+.list-File-images{
+    border: 1px solid #F0F0F0;
+    border-radius: 2px;
+    margin-left: 3px;
+    cursor: pointer;   
+}
+.list-File-images img{
+    width:34px;
+    height: 26px;    
+}
+.list-File-others{    
+    margin-left: 3px;
+    cursor: pointer;   
+}
+.list-File-others img{
+    width:28px;
+    height: 28px;    
+}
+
+.list-text-true{
+    padding-top: 1.5px;
+    padding-bottom: 1.5px;
+    padding-left: 3px;
+    padding-right: 3px;
+    margin-left: 5px;
+    margin-top:4px;
+    height:24px;
+    background-color: #15C902; 
     border-radius: 6px; 
     color: white;     
 }
+
+.list-text-false{
+    padding-top: 1.5px;
+    padding-bottom: 1.5px;
+    padding-left: 3px;
+    padding-right: 3px;
+    margin-left: 5px;
+    margin-top:4px;
+    height:24px;
+    background-color: #E03000; 
+    border-radius: 6px; 
+    color: white;     
+}
+
 
 .document-list-wrapper{
     margin-top: 20px;
@@ -1128,16 +1283,49 @@
     width: 532px;
     height:30px;
     margin-top: 7px;    
-    padding: 0;       
+    padding: 0;        
+}
+.document-list-file-wrapper{
+    width: 532px;
+    height:auto;
+    margin-top: 7px;    
+    padding: 0;         
 }
 .list-datetime-aura-list{
     width:95%;
     height:32px;         
 }
+.list-boolean-aura-list{
+    width:95%;
+    height:32px;       
+}
+.list-file-aura-list{
+    width:100px;
+    height:90px;   
+}
+.list-m-file-list{
+    width:100px;
+    height:90px;
+    cursor: pointer;    
+}
+.list-m-file2-list{
+    width:90px;
+    height:90px;
+    cursor: pointer;
+}
 .list-m-datetime-list{
     border-radius: 0px !important;
     width:98%;     
     margin-top: 0px;
+}
+.list-boolean-add-btn{
+   width:98%;     
+   margin-top: 0px; 
+}
+.list-boolean-add-btn button{
+   width:98%;     
+   margin-top: 0px;
+   height: 33px; 
 }
 .datetime-list-del-btn{
     height: 26px;
@@ -1145,4 +1333,213 @@
 .list-datetime-remv-show{
     margin-top: 4.6px;
     margin-left: 5px;
+}
+.list-m-json-list{
+    height:23px;
+    width:98%;
+    background-color: #E8EAEB;
+    padding-bottom:2px;
+    padding-left:2px;
+    padding-right:2px;
+    border-radius: 2px;
+    margin-top: 3px;
+    cursor: pointer;
+}
+.geopoint-container{
+    width:320px; 
+}
+.geopoint-wrapper{
+    padding: 3px;
+    background-color: #EBEBEB;
+    cursor: pointer;
+}
+.googlemap-popup-wrapper{
+    padding: 9px;
+}
+.googlemap-popup-content{
+    height:234px;
+    padding-top: 12px;
+    padding-right: 12px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}
+.angular-google-map-container { 
+    height: 210px; 
+}
+
+.geopoint-name{
+    width:100%; 
+}
+.geopoint-error{
+    width:100%; 
+}
+.geopoint-error span{
+    color: red; 
+}
+.geopoint-inputz{
+    width: 220px;
+    height: 30px;
+    font-size: 14px;  
+    color: blue; 
+}
+.geopoint-inputz:focus{
+    outline: none;
+}
+.m-geopoint{
+    background-color: #E8EAEB;
+    padding-bottom: 3px;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top:3px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.table-tools-strip{
+    width:99.9vw;   
+    height:47px;    
+    background-color:#EBEBE0; 
+    padding-left: 8px;
+    padding-top: 10px;
+    padding-bottom: 6px;
+    padding-right: 8px;
+} 
+.table-strip-wrapper{
+    width: 100%;
+    height:30px;      
+}  
+
+.table-strip-tools{
+    width: 70%;    
+}
+.table-strip-info{
+    width: 29.99%;  
+    height: 28px;
+}
+.table-tool-btn{
+    background-color: white;
+    color: black;
+    border: 1px solid #DBDBDB;
+    height: 28px;
+}
+.table-tool-btn:focus{
+  outline: none;
+}
+.data-info-div{  
+    height: 28px;   
+    width: 100%; 
+    margin-top: 3px;
+}
+.data-info-div p{ 
+    float: right;                   
+}
+
+.hide-col-btn{
+    background-color: white;
+    color: black;
+    border: 1px solid #DBDBDB;
+    height: 28px;
+    width: 200px !important;    
+}
+.hide-col-btn:focus{
+    outline: none;    
+}
+.hidden-col-wrapper{
+    position: relative;    
+}
+.hidden-col-container{
+    position: absolute;
+    z-index: 4;
+    background-color: white;
+    width: 198.7px;
+    top: -2.6px; 
+    border-top: 1px solid #DBDBDB;
+    border-left: 1px solid #DBDBDB;
+    border-right: 1px solid #DBDBDB;
+    border-bottom: 1px solid #DBDBDB;    
+}
+.hidden-col-short-btnwrapper{
+    padding: 7px;
+}
+.hidden-col-short-btn{
+    background-color: white;
+    color: blue;
+    border: 1px solid #DBDBDB;
+    border-radius: 3px;
+    margin-left: 24.7px;
+}
+.hidden-col-short-btn:focus{
+    outline: none;
+}
+.list-hidden-col-wrapper{
+    width: 197.2px;   
+    height:120px;
+    margin-top: 8px; 
+    padding-bottom: 5px;   
+}
+.list-hidden-col-container{
+    width: 180px;      
+}
+
+.hidden-col-chbx-div{
+    margin-left: 7px;
+}
+.hidden-col-chbx{
+    height:20px;
+    width: 20px;
+}
+.hidden-col-name-div{
+    margin-left: 4px;
+}
+
+.hidden-col-name-div span{
+    font-size: 12px;
+}
+
+.col-configure{
+    padding: 10px;
+}
+.config-col-constain{
+    font-size: 12px;
+    color: black;
+}
+
+.config-save-btn-save{
+    width: 48.77%;   
+}
+
+.config-save-btn-cancel{
+    width: 48.99%;     
+}
+
+.config-save-btn-save:focus{
+    outline: none;  
+}
+.config-save-btn-cancel:focus{
+    outline: none;     
+}
+.ace_editor { 
+ min-height:240px;
+ height: auto; 
+}
+/*Fixed columns*/
+
+.fix-prime-thead{
+
+}
+.fix-prime-id{
+
+}
+.fix-collective-chkbx{
+    
+}
+.fix-collective-id{
+
+}
+/*Fixed columns*/
+.sno-errorinfo i{
+    color: #F9B404;
+}
+.sno-saved i{
+    color: #00BB27;
 }

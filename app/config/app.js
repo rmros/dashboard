@@ -27,8 +27,12 @@ var app=angular.module('CloudBoostDashboard',
     'ui.checkbox',
     'stripe',
     'chart.js',
-    'focusOn'  
+    'focusOn',
+    'uiGmapgoogle-maps',
+    'infinite-scroll',
+    'ui.ace'
     ]);
+app.value('THROTTLE_MILLISECONDS', 1250)
 
 var serverURL = null; 
 var landingURL = null;
@@ -55,9 +59,17 @@ app.config(['ngClipProvider', function(ngClipProvider) {
 app.config(function() {
 	
 	if(__isDevelopment){
-        	Stripe.setPublishableKey('pk_test_ZLrh0BYVlddBmEPKUGalN8uQ');
+        Stripe.setPublishableKey('pk_test_ZLrh0BYVlddBmEPKUGalN8uQ');
 	}else{
-        	Stripe.setPublishableKey('pk_live_Ti8jTq0L19lku7o7LN6ZkNPB');
+        Stripe.setPublishableKey('pk_live_Ti8jTq0L19lku7o7LN6ZkNPB');
 	}
 	
 });
+
+app.config(function(uiGmapGoogleMapApiProvider) {
+    uiGmapGoogleMapApiProvider.configure({
+        //    key: 'your api key',
+        v: '3.17',
+        libraries: 'weather,geometry,visualization'
+    });
+})

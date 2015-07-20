@@ -1,0 +1,19 @@
+default:
+  - 'copy'
+  - 'less'
+  - 'autoprefixer'
+  - 'jshint'
+  - 'uglify'
+  - 'connect'
+  - 'qunit:local'
+  - 'watch'
+
+test-travis:
+  - 'jshint'
+  - 'connect'
+  - 'qunit:travis'
+
+test-local:
+  - 'jshint'
+  - 'connect'
+  - 'qunit:local'

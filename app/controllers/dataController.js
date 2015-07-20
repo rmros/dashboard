@@ -51,13 +51,18 @@ app.controller('dataController',
            if ($scope.confirmTableName === null) {
 
               $scope.confirmTableName=null; 
-              $('#md-deleteTable').modal("hide");
-              $.gritter.add({
-                  position: 'top-right',
-                  title: 'Warning',
-                  text: 'Table name you entered was empty.',
-                  class_name: 'prusia'
-              }); 
+              $('#md-deleteTable').modal("hide");              
+
+              $.amaran({
+                  'theme'     :'colorful',
+                  'content'   :{
+                     bgcolor:'#EE364E',
+                     color:'#fff',
+                     message:'Table name you entered was empty.'
+                  },
+                  'position'  :'bottom right',
+                  'outEffect' :'slideBottom'
+              });
                         
             } else if($scope.confirmTableName === t.name){            
 
@@ -72,23 +77,32 @@ app.controller('dataController',
                   $('#md-deleteTable').modal("hide");               
                   $scope.confirmTableName=null;                                
               },
-              function(error){ 
-                   $.gritter.add({
-                      position: 'top-right',
-                      title: 'Oops!',
-                      text: 'We cannot delete table right now',
-                      class_name: 'danger'
+              function(error){                   
+                  $.amaran({
+                      'theme'     :'colorful',
+                      'content'   :{
+                         bgcolor:'#EE364E',
+                         color:'#fff',
+                         message:'We cannot delete table right now.'
+                      },
+                      'position'  :'bottom right',
+                      'outEffect' :'slideBottom'
                   });              
               });              
 
             }else{  
                 $scope.confirmTableName=null;
-                $('#md-deleteTable').modal("hide");               
-                $.gritter.add({
-                    position: 'top-right',
-                    title: 'Warning',
-                    text: 'Table name doesnot match.',
-                    class_name: 'prusia'
+                $('#md-deleteTable').modal("hide");         
+               
+                $.amaran({
+                      'theme'     :'colorful',
+                      'content'   :{
+                         bgcolor:'#EE364E',
+                         color:'#fff',
+                         message:'Table name doesnot match'
+                      },
+                      'position'  :'bottom right',
+                      'outEffect' :'slideBottom'
                 });         
             }        
                         
@@ -151,7 +165,18 @@ app.controller('dataController',
             $scope.newtables=[];
             $scope.newTableName = '';                           
         },
-        function(error){ 
+        function(error){
+           $.amaran({
+                'theme'     :'colorful',
+                'content'   :{
+                   bgcolor:'#EE364E',
+                   color:'#fff',
+                   message:'Error in adding table..please try again'
+                },
+                'position'  :'bottom right',
+                'outEffect' :'slideBottom'
+          }); 
+
           for(var i=0;i<$scope.newtables.length;++i){           
             var removableTable=_.first(_.where($rootScope.currentProject.tables, {id:$scope.newtables[i].id}));
             var index=$rootScope.currentProject.tables.indexOf(removableTable);
@@ -288,13 +313,17 @@ app.controller('dataController',
                     getProjectTables();
                   }                              
              },
-             function(error){                 
-                $.gritter.add({
-                    position: 'top-right',
-                    title: 'Opps! something went wrong',
-                    text: "We cannot load your project at this point in time. Please try again later.",
-                    class_name: 'danger'
-                });
+             function(error){                
+                 $.amaran({
+                        'theme'     :'colorful',
+                        'content'   :{
+                           bgcolor:'#EE364E',
+                           color:'#fff',
+                           message:'We cannot load your project at this point in time. Please try again later.'
+                        },
+                        'position'  :'bottom right',
+                        'outEffect' :'slideBottom'
+                  });
              });
         }
 
@@ -312,14 +341,17 @@ app.controller('dataController',
                  
                     }         
                    
-                }, function(error){ 
-                    $rootScope.dataLoading=false;                         
-                    $.gritter.add({
-                      position: 'top-right',
-                      title: 'Opps! something went wrong',
-                      text: "We cannot load your tables at this point in time. Please try again later.",
-                      class_name: 'danger'
-                    });
+                }, function(error){                     
+                    $.amaran({
+                        'theme'     :'colorful',
+                        'content'   :{
+                           bgcolor:'#EE364E',
+                           color:'#fff',
+                           message:'We cannot load your tables at this point in time. Please try again later.'
+                        },
+                        'position'  :'bottom right',
+                        'outEffect' :'slideBottom'
+                  });
                 });
         }     
       

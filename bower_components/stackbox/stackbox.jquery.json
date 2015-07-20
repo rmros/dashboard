@@ -1,0 +1,26 @@
+{
+  "name": "stackbox",
+  "title": "Stackbox Modal Dialog",
+  "description": "jQuery plugin for creating stackable modal boxes.",
+  "keywords": [
+    "modal",
+    "modalbox",
+    "stackable",
+    "dialog",
+    "lightbox"
+  ],
+  "version": "0.3.4",
+  "author": {
+    "name": "Stefan Bruvik"
+  },
+  "licenses": [{
+    "type": "MIT",
+    "url": "https://github.com/stebru/stackbox/blob/v0.2.1/LICENSE"
+  }],
+  "bugs": "https://github.com/stebru/stackbox/issues",
+  "homepage": "https://github.com/stebru/stackbox",
+  "docs": "http://stefan.codes/stackbox/",
+  "dependencies": {
+    "jquery": ">=1.0"
+  }
+}
