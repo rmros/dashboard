@@ -8331,3 +8331,21 @@ ul.timeline li > .date {
   font-weight: normal;
 }
 
+.flex-general-column-wrapper-center{
+   / Flex row rules /
+    display: flex;
+    display:-webkit-flex;
+    display:-moz-flex;    
+    
+    flex-flow:column wrap;
+    -moz-flex-flow:column wrap;
+    -webkit-flex-flow:column wrap;
+
+    justify-content:center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+
+    align-items:center;  
+    -moz-align-items: center;  
+    -webkit-align-items:center;    
+}
