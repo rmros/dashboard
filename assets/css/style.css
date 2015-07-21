@@ -8330,6 +8330,7 @@ ul.timeline li > .date {
   font-weight: normal;
 }
 
+
 .flex-general-row-wrapper{
    /* Flex row rules */
     display: flex;
@@ -8389,6 +8390,7 @@ ul.timeline li > .date {
 
 .flex-general-column-wrapper-center{
    /* Flex row rules */
+
     display: flex;
     display:-webkit-flex;
     display:-moz-flex;    
@@ -8424,3 +8426,6 @@ ul.timeline li > .date {
   margin-left: 10px;
 }
 
+=======
+}
+>>>>>>> 817235afada82299265f27418a16082549419feb
