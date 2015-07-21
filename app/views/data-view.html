@@ -1283,16 +1283,16 @@
           <!--Modal table header-->
           <div class="row">
             <div class="col-md-12">
-              <div class="m-table-header" style="background-color:{{relatedTableDef.tableColor || '#3A5795'}};">
+              <div class="m-table-header" style="background-color:{{relatedTableDefArray[relatedTableDefArray.length-1].tableColor || '#3A5795'}};">
                  <div class="pull-left">
                   <h4>
-                    {{relatedTableDef.name}}
+                    {{relatedTableDefArray[relatedTableDefArray.length-1].name}}
                   </h4>
                  </div> 
 
                  <div class="pull-right m-table-ctrls">                  
                   <div>
-                    <span style="margin-top:4px;">
+                    <span style="margin-top:4px;" ng-click="saveRelationObj(relatedTableRecordArray[relatedTableRecordArray.length-1])">
                       <i class="fa fa-floppy-o fa-lg"></i>
                     </span>
                   </div>
@@ -1308,7 +1308,7 @@
             <div id="relationTable" malihuscrollbar-for-popup>          
               
               <div class="modal-rel-form flex-general-column-wrapper">
-                <div class="m-key-value" ng-repeat="relCol in relatedTableDef.columns">
+                <div class="m-key-value" ng-repeat="relCol in relatedTableDefArray[relatedTableDefArray.length-1].columns">
                   <!--Column Name-->
                   <div class="m-key cf">
                     
@@ -1362,7 +1362,7 @@
 
                         <div class="m-real-content pull-left"> 
                           <div class="m-id-aura">                         
-                          {{relatedTableRecord.get(relCol.name)}}
+                          {{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name)}}
                           </div>                                        
                         </div>
                       </div>
@@ -1373,7 +1373,7 @@
                       <div class="m-data-container-chk cf" style="height:10px !important;">
 
                         <div class="m-real-content-chk pull-left">
-                          <checkbox  class="btn-default checkBxDflt data-checkbx"  ng-model="relatedTableRecord.document[relCol.name]" ng-click="setRelBoolean(relatedTableRecord,relCol)" style="margin-left:14px;">
+                          <checkbox  class="btn-default checkBxDflt data-checkbx"  ng-model="relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]" ng-click="setRelBoolean(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)" style="margin-left:14px;">
                           </checkbox>
                         </div>                       
 
@@ -1385,7 +1385,7 @@
                       <div class="m-data-container-datetime cf" style="height:30px;">
 
                         <div class="m-real-contentent-datetime pull-left">
-                          <input kendo-date-time-picker  value="{{relatedTableRecord.document[relCol.name]}}"  k-ng-model="relatedTableRecord.document[relCol.name]"   ng-blur="setRelTable(relatedTableRecord,relCol)" class="dateTimeInput"/>
+                          <input kendo-date-time-picker  value="{{relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]}}"  k-ng-model="relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]"   ng-blur="setRelTable(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)" class="dateTimeInput"/>
                         </div>                       
 
                       </div>
@@ -1397,12 +1397,12 @@
 
                         <div class="m-real-content-acl pull-left">
                           <div class="m-acl-aura">
-                          {{relatedTableRecord.get(relCol.name)}}
+                          {{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name)}}
                           </div>
                         </div>
                         <div class="m-popup-btn pull-right">
-                          <a class="m-round-btn" ng-click="showRelJsonObject(relatedTableRecord,relCol)">
-                            <i class="fa fa-expand" style="color:{{relatedTableDef.tableColor || '#3A5795'}};"></i>&nbsp;
+                          <a class="m-round-btn" ng-click="showRelJsonObject(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)">
+                            <i class="fa fa-expand" style="color:{{relatedTableDefArray[relatedTableDefArray.length-1].tableColor || '#3A5795'}};"></i>&nbsp;
                           </a>
                         </div>
 
@@ -1415,12 +1415,12 @@
 
                         <div class="m-real-content-acl pull-left">
                           <div class="m-acl-aura">
-                          {{relatedTableRecord.get(relCol.name)}}
+                          {{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name)}}
                           </div>
                         </div>
                         <div class="m-popup-btn pull-right">
-                          <a class="m-round-btn" ng-click="showRelJsonObject(relatedTableRecord,relCol)">
-                            <i class="fa fa-expand" style="color:{{relatedTableDef.tableColor || '#3A5795'}};"></i>&nbsp;
+                          <a class="m-round-btn" ng-click="showRelJsonObject(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)">
+                            <i class="fa fa-expand" style="color:{{relatedTableDefArray[relatedTableDefArray.length-1].tableColor || '#3A5795'}};"></i>&nbsp;
                           </a>
                         </div>
 
@@ -1432,7 +1432,7 @@
                       <div class="m-data-container cf" style="height:35px;">
 
                         <div class="m-real-content-cmn-types pull-left">                          
-                          <input type="text" ng-model="relatedTableRecord.document[relCol.name]" ng-blur="setAndSaveRelTable(relatedTableRecord,relCol)" class="m-commontypes-aura" ng-blur="setAndSaveRelTable(relatedTableRecord,relCol)">
+                          <input type="text" ng-model="relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]" ng-blur="setRelTable(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)" class="m-commontypes-aura" >
                         </div>                       
 
                       </div>
@@ -1443,7 +1443,7 @@
                       <div class="m-data-container cf" style="height:35px;">
 
                         <div class="m-real-content-cmn-types pull-left">                          
-                          <input type="email" ng-model="relatedTableRecord.document[relCol.name]" ng-blur="setAndSaveRelTable(relatedTableRecord,relCol)" class="m-commontypes-aura" ng-blur="setAndSaveRelTable(relatedTableRecord,relCol)">
+                          <input type="email" ng-model="relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]" ng-blur="setRelTable(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)" class="m-commontypes-aura" >
                         </div>                       
 
                       </div>
@@ -1454,7 +1454,7 @@
                       <div class="m-data-container cf" style="height:35px;">
 
                         <div class="m-real-content-cmn-types pull-left">                          
-                          <input type="url" ng-model="relatedTableRecord.document[relCol.name]" ng-blur="setAndSaveRelTable(relatedTableRecord,relCol)" class="m-commontypes-aura" ng-blur="setAndSaveRelTable(relatedTableRecord,relCol)">
+                          <input type="url" ng-model="relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]" ng-blur="setRelTable(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)" class="m-commontypes-aura" >
                         </div>                       
 
                       </div>
@@ -1465,7 +1465,7 @@
                       <div class="m-data-container cf" style="height:35px;">
 
                         <div class="m-real-content-cmn-types pull-left">                          
-                          <input type="text" ng-model="relatedTableRecord.document[relCol.name]" ng-blur="setAndSaveRelTable(relatedTableRecord,relCol)" class="m-commontypes-aura" ng-blur="setAndSaveRelTable(relatedTableRecord,relCol)">
+                          <input type="text" ng-model="relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]" ng-blur="setRelTable(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)" class="m-commontypes-aura" >
                         </div>                       
 
                       </div>
@@ -1477,17 +1477,17 @@
 
                         <div class="m-real-content-file pull-left">
                           <!--Images-->
-                          <a ng-click="relEditFile(relatedTableRecord,relCol)" ng-if="(relatedTableRecord.get(relCol.name).document.name | extension)=='jpeg' || (relatedTableRecord.get(relCol.name).document.name | extension)=='jpg' || (relatedTableRecord.get(relCol.name).document.name | extension)=='png' || (relatedTableRecord.get(relCol.name).document.name | extension)=='tif' || (relatedTableRecord.get(relCol.name).document.name | extension)=='gif'">
-                            <img class="m-dynamix-img" src="{{relatedTableRecord.document[relCol.name].document.url}}">
+                          <a ng-click="relEditFile(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)" ng-if="(relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='jpeg' || (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='jpg' || (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='png' || (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='tif' || (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='gif'">
+                            <img class="m-dynamix-img" src="{{relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name].document.url}}">
                           </a>
 
                           <!--Other Files-->
-                          <a ng-click="relEditFile(relatedTableRecord,relCol)" ng-if="(relatedTableRecord.get(relCol.name).document.name | extension) && ((relatedTableRecord.get(relCol.name).document.name | extension)!='jpeg' && (relatedTableRecord.get(relCol.name).document.name | extension)!='jpg' && (relatedTableRecord.get(relCol.name).document.name | extension)!='png' && (relatedTableRecord.get(relCol.name).document.name | extension)!='tif' && (relatedTableRecord.get(relCol.name).document.name | extension)!='gif')">
+                          <a ng-click="relEditFile(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)" ng-if="(relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension) && ((relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='jpeg' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='jpg' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='png' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='tif' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='gif')">
                             <img class="m-static-img" src="assets/images/file2.png">
                           </a>
 
                           <!--Add File Button-->
-                          <div ng-if="!relatedTableRecord.get(relCol.name)" ng-click="relEditFile(relatedTableRecord,relCol)" class="m-img-add">
+                          <div ng-if="!relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name)" ng-click="relEditFile(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)" class="m-img-add">
                             <span>
                               <i class="fa fa-plus-circle"></i>
                             </span>
@@ -1503,15 +1503,15 @@
                       <div class="m-data-container cf" style="height:37px;">
 
                         <div class="m-real-geopoint pull-left">
-                          <div class="m-geopoint" ng-click="relToggleGoogleMap($event,relatedTableRecord,relCol)">
-                            { <span>{{relatedTableRecord.get(relCol.name).latitude}}</span>,&nbsp;
-                            <span>{{relatedTableRecord.get(relCol.name).longitude}}</span> }
-                          </div>                          
+                          <div class="m-geopoint" ng-click="relToggleGoogleMap($event,relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)">
+                            { <span>{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).latitude}}</span>,&nbsp;
+                            <span>{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).longitude}}</span> }
+                          </div>                           
 
                         </div>
                         <div class="m-popup-btn pull-right">
-                          <a class="m-round-btn" ng-click="relEditGeoPoint(relatedTableRecord,relCol)">
-                            <i class="fa fa-expand" style="color:{{relatedTableDef.tableColor || '#3A5795'}};"></i>&nbsp;
+                          <a class="m-round-btn" ng-click="relEditGeoPoint(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)">
+                            <i class="fa fa-expand" style="color:{{relatedTableDefArray[relatedTableDefArray.length-1].tableColor || '#3A5795'}};"></i>&nbsp;
                           </a>
                         </div>
 
@@ -1523,14 +1523,14 @@
                       <div class="m-data-container cf" style="height:37px;">
 
                         <div class="m-real-content-rel pull-left">
-                          <div ng-if="relatedTableRecord.document[relCol.name]" class="m-rel-id-aura" ng-click="viewRelationData(relatedTableRecord,relCol)">                          
-                            {{relatedTableRecord.get(relCol.name).document._id}}
+                          <div ng-if="relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]" class="m-rel-id-aura" ng-click="viewRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)">                          
+                            {{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document._id}}
 
                           </div>                         
                         </div>
                         <div class="m-popup-btn pull-right">
                           <a class="m-round-btn">
-                            <i class="fa fa-expand" style="color:{{relatedTableDef.tableColor || '#3A5795'}};"></i>&nbsp;
+                            <i class="fa fa-expand" style="color:{{relatedTableDefArray[relatedTableDefArray.length1].tableColor || '#3A5795'}};"></i>&nbsp;
                           </a>
                         </div>
 
@@ -1546,7 +1546,7 @@
                         <div ng-if="relCol.relatedTo=='Text' || relCol.relatedTo=='Email' || relCol.relatedTo=='Number' || relCol.relatedTo=='URL'" class="m-real-content pull-left">                           
                           <div  class="m-list-condition flex-general-row-wrapper">
                              
-                              <div ng-repeat="eachText in relatedTableRecord.document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
+                              <div ng-repeat="eachText in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
                                   <div class="m-rel-common">
                                     {{eachText}}
                                   </div>
@@ -1559,7 +1559,7 @@
                         <div ng-if="relCol.relatedTo=='DateTime'" class="m-real-content pull-left">                           
                           <div  class="m-list-condition flex-general-row-wrapper">
                              
-                              <div ng-repeat="eachDateTime in relatedTableRecord.document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
+                              <div ng-repeat="eachDateTime in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
                                   <div class="m-rel-common">
                                     {{eachDateTime | ISO2DateObject}}
                                   </div>
@@ -1572,7 +1572,7 @@
                         <div ng-if="relCol.relatedTo=='Boolean'" class="m-real-content pull-left">                          
                           <div  class="m-list-condition flex-general-row-wrapper">
                              
-                              <div ng-repeat="eachBoolean in relatedTableRecord.document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
+                              <div ng-repeat="eachBoolean in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
 
                                   <div ng-if="eachBoolean" class="m-rel-true">
                                     {{eachBoolean}}
@@ -1591,7 +1591,7 @@
                         <div ng-if="relCol.relatedTo=='Object'" class="m-real-content pull-left">    
                           <div  class="m-list-condition flex-general-row-wrapper">
                              
-                              <div ng-repeat="eachObj in relatedTableRecord.document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
+                              <div ng-repeat="eachObj in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
 
                                   <div class="m-rel-common">
                                     {{eachObj}}
@@ -1606,7 +1606,7 @@
                         <div ng-if="relCol.relatedTo=='File'" class="m-real-content-list-file pull-left">  
                           <div  class="m-list-condition flex-general-row-wrapper cf">
                              
-                              <div ng-repeat="eachFile in relatedTableRecord.document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper pull-left">
+                              <div ng-repeat="eachFile in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper pull-left">
                                   <!--Images-->
                                   <div ng-if="eachFile && eachFile.document.url && ((eachFile.document.name | extension)=='jpeg' || (eachFile.document.name | extension)=='jpg' || (eachFile.document.name | extension)=='png' || (eachFile.document.name | extension)=='tif' || (eachFile .document.name | extension)=='gif')" class="m-rel-images">
 
@@ -1632,7 +1632,7 @@
                              
                               <div class="m-list-loop flex-general-row-wrapper">
 
-                                  <div class="m-rel-geopoint" ng-repeat="eachGeopoint in relatedTableRecord.document[relCol.name] track by $index" ng-show="eachGeopoint" >
+                                  <div class="m-rel-geopoint" ng-repeat="eachGeopoint in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" ng-show="eachGeopoint" >
                                     <div>
                                       { <span>{{eachGeopoint.latitude}}</span>,&nbsp;
                                       <span>{{eachGeopoint.longitude}}</span> }
@@ -1647,9 +1647,9 @@
                         <div ng-if="relCol.relatedTo!='Text' && relCol.relatedTo!='Email' && relCol.relatedTo!='Number' && relCol.relatedTo!='URL' && relCol.relatedTo!='DateTime' && relCol.relatedTo!='Boolean' && relCol.relatedTo!='File' && relCol.relatedTo!='Object' && relCol.relatedTo!='GeoPoint'" class="m-real-content pull-left">  
                           <div  class="m-list-condition flex-general-row-wrapper">
                              
-                              <div ng-repeat="eachRel in relatedTableRecord.document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
+                              <div ng-repeat="eachRel in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
                                   
-                                  <div class="m-rel-relation" ng-click="listViewRelationData(relatedTableRecord,relCol,$index)">
+                                  <div class="m-rel-relation" ng-click="listViewRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,$index)">
                                     {{eachRel.document._id}}
                                   </div> 
                                  
@@ -1660,8 +1660,8 @@
                         </div>
 
                         <div class="m-popup-btn pull-right">
-                          <a class="m-round-btn" ng-click="openCommonTypesListModal(relatedTableRecord,relCol)">
-                            <i class="fa fa-expand" style="color:{{relatedTableDef.tableColor || '#3A5795'}};"></i>&nbsp;
+                          <a class="m-round-btn" ng-click="openCommonTypesListModal(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)">
+                            <i class="fa fa-expand" style="color:{{relatedTableDefArray[relatedTableDefArray.length-1].tableColor || '#3A5795'}};"></i>&nbsp;
                           </a>
                         </div>
 
@@ -1673,11 +1673,11 @@
                       <div class="m-data-container cf" style="height:37px;">
 
                         <div class="m-real-content pull-left">
-                          {{relatedTableRecord.get(relCol.name)}}
+                          {{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name)}}
                         </div>
                         <div class="m-popup-btn pull-right">
                           <a class="m-round-btn">
-                            <i class="fa fa-expand" style="color:{{relatedTableDef.tableColor || '#3A5795'}};"></i>&nbsp;
+                            <i class="fa fa-expand" style="color:{{relatedTableDefArray[relatedTableDefArray.length-1].tableColor || '#3A5795'}};"></i>&nbsp;
                           </a>
                         </div>
 
@@ -2078,8 +2078,7 @@
               </div>
           
 
-            </div>
-           
+            </div>           
 
 
             <!--List Text-->
@@ -2277,7 +2276,7 @@
 
                 <div ng-repeat="eachGeopoint in editableList track by $index" class="relationid-list flex-general-row-wrapper-center cf">
 
-                  <div class="m-relationid id-show" ng-click="listViewRelationData(editableRow,editableColumn,$index)">
+                  <div class="m-relationid id-show" >
                     <div ng-click="editListGeoPoint($index)">
                       { <span>34534</span>,&nbsp;
                       <span>3234</span> }
