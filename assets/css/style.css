@@ -1463,12 +1463,11 @@ body.texture {
   margin: 0;
 }
 .login-container .middle-login {
-  width: 430px;
-  left: 50%;
+  width: 50%;
+  left: 25%;
   top: 50%;
   position: absolute;
-  margin-top: -170px;
-  margin-left: -215px;
+  margin-top: -170px;  
 }
 .login-container .block-flat {
   padding: 0;
@@ -8329,5 +8328,99 @@ ul.timeline li > .date {
 .col-label-names{
   font-size: 14px;
   font-weight: normal;
+}
+
+.flex-general-row-wrapper{
+   /* Flex row rules */
+    display: flex;
+    display:-webkit-flex;
+    display:-moz-flex;    
+    
+    flex-flow:row wrap;
+    -moz-flex-flow:row wrap;
+    -webkit-flex-flow:row wrap;
+
+    justify-content:flex-start;
+    -moz-justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+
+    align-items:flex-start;  
+    -moz-align-items: flex-start;  
+    -webkit-align-items:flex-start;
+}
+
+.flex-general-column-wrapper{
+   /* Flex column rules */
+    display: flex;
+    display:-webkit-flex;
+    display:-moz-flex;    
+    
+    flex-flow:column  wrap;
+    -moz-flex-flow:column  wrap;
+    -webkit-flex-flow:column wrap;
+
+    justify-content:flex-start;
+    -moz-justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+
+    align-items:flex-start;  
+    -moz-align-items: flex-start;  
+    -webkit-align-items:flex-start;    
+}
+
+.flex-general-row-wrapper-center{
+   /* Flex row rules */
+    display: flex;
+    display:-webkit-flex;
+    display:-moz-flex;    
+    
+    flex-flow:row wrap;
+    -moz-flex-flow:row wrap;
+    -webkit-flex-flow:row wrap;
+
+    justify-content:center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+
+    align-items:center;  
+    -moz-align-items: center;  
+    -webkit-align-items:center;    
+}
+
+.flex-general-column-wrapper-center{
+   /* Flex row rules */
+    display: flex;
+    display:-webkit-flex;
+    display:-moz-flex;    
+    
+    flex-flow:column wrap;
+    -moz-flex-flow:column wrap;
+    -webkit-flex-flow:column wrap;
+
+    justify-content:center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+
+    align-items:center;  
+    -moz-align-items: center;  
+    -webkit-align-items:center;    
+}
+
+.news-dashboard{ 
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+.login-image-container{
+  width:50%;  
+  height: auto;
+}
+.login-image-container img{
+  width:100%;
+  height: auto;  
+}
+.login-descri-container{
+  width: 45%;
+  margin-left: 10px;
 }
 
