@@ -2325,12 +2325,11 @@ table.information > tbody > tr > td {
   margin: 0;
 }
 .sign-up-container .middle-sign-up {
-  width: 470px;
-  left: 50%;
+  width: 60%;
+  left: 20%;
   top: 50%;
   position: absolute;
-  margin-top: -282px;
-  margin-left: -235px;
+  margin-top: -282px;  
 }
 .forgotpassword-container .middle {
   width: 470px;
@@ -8331,3 +8330,4 @@ ul.timeline li > .date {
   font-size: 14px;
   font-weight: normal;
 }
+

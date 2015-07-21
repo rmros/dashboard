@@ -1,5 +1,3 @@
-
-
 <div id="cl-wrapper" class="sign-up-container"  style="background-image: url('/assets/images/bg-header-2.jpg')">
 
 	<div class="middle-sign-up">
@@ -11,55 +9,60 @@
 					</a>
 				</h3>
 			</div>
+
 			<div>
-				<form style="margin-bottom: 0px !important;" class="form-horizontal"  name="userForm" ng-submit="signUp(userForm.$valid)">
-					<div class="content">
-
-						<h4 class="title text-center" style="color:gray;">Sign up now. It just takes 30 seconds.</h4>
-
-              			<p class="text-center" ng-show="err" style="color:red;">{{err}}</p>
-              			<div class="text-center" ng-show="showSpinner">
-              				<i class="fa fa-spin fa-4x fa-spinner"></i>
-              			</div>
-              				
-              			<div ng-hide="showSpinner"><!--no spinner-->	
-							<div class="form-group">
-								<div class="col-sm-12">
-									<div class="input-group">
-										<span class="input-group-addon"><i class="fa fa-user"></i></span>
-										<input type="text" name="nick"  placeholder="Your name" class="form-control" required  ng-model="name">
-									</div>
-                  <div id="nick-error"></div>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="col-sm-12">
-									<div class="input-group">
-										<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-										<input type="email" name="email"  placeholder="E-mail" class="form-control" required  ng-model="email">
-									</div>
-                  <div id="email-error"></div>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="col-sm-12">
-									<div class="input-group">
-										<span class="input-group-addon"><i class="fa fa-lock"></i></span>
-										<input id="pass1" type="password" placeholder="Password" class="form-control" required  ng-model="password">
-									</div>
-                  <div id="password-error"></div>
-								</div>
+				<div class="col-md-6">
+				</div>		
+				<div class="col-md-6" style="">
 							
-							</div>
-             <p class="spacer">By creating an account, you agree with the Terms and Conditions.</p>
-            <button class="btn btn-block btn-success btn-rad btn-lg" type="submit">Sign Up</button>
-							
-						  <p class="spacer">Already have an account? <a class="login-link" id="login-link" href="/accounts">Log in</a></p>	
+					<form style="margin-bottom: 30px !important; margin-top: 30px !important; border-left:1px solid #E2E2E2;" class="form-horizontal"  name="userForm" ng-submit="signUp(userForm.$valid)">
+						<div class="content">						
 
-				</div><!--no spinner-->		  
-					</div>
+	              			<p class="text-center" ng-show="err" style="color:red;">{{err}}</p>
+	              			<div class="text-center" ng-show="showSpinner">
+	              				<i class="fa fa-spin fa-4x fa-spinner"></i>
+	              			</div>
+	              				
+	              			<!--no spinner-->		
+	              			<div ng-hide="showSpinner">	
+								<div class="form-group">
+									<div class="col-sm-12">
+										<div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-user"></i></span>
+											<input type="text" name="nick"  placeholder="Your name" class="form-control" required  ng-model="name">
+										</div>
+	                                    <div id="nick-error"></div>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<div class="col-sm-12">
+										<div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+											<input type="email" name="email"  placeholder="E-mail" class="form-control" required  ng-model="email">
+										</div>
+	                  <div id="email-error"></div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-12">
+										<div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+											<input id="pass1" type="password" placeholder="Password" class="form-control" required  ng-model="password">
+										</div>
+	                 				 <div id="password-error"></div>
+									</div>
+								
+								</div>
+				             <p class="spacer">By creating an account, you agree with the <a href="https://www.cloudboost.io/terms" target="_blank">Terms and Conditions.</a></p>
+				            <button class="btn btn-block btn-success btn-rad btn-lg" type="submit">Sign Up</button>
+								
+							  <p class="spacer">Already have an account? <a class="login-link" id="login-link" href="/accounts">Log in</a></p>	
+
+					</div><!--no spinner-->	
+				 </div>	  
+				</div>
 			  </form>
-
 
 			</div>
 		</div>
