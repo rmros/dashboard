@@ -13,22 +13,19 @@ app.controller('loginController',
 
           var logInPromise=userService.logIn($scope.email,$scope.password);
 
-          logInPromise.then(
-              function(data){               
+          logInPromise.then(function(data){               
 
-                  $.cookie('userId', data._id, { path: '/' });
-                  $.cookie('userFullname', data.name, { path: '/' });
-                  $.cookie('email', data.email, { path: '/' });
-                  $.cookie('createdAt', data.createdAt, { path: '/' });
-                  
-                  window.location.href=dashboardURL;
-                  //$scope.showSpinner=false;
-              },
-              function(error){
-                   $scope.showSpinner=false;
-                   $scope.err=error.message;
-              }
-          );
+            $.cookie('userId', data._id, { path: '/' });
+            $.cookie('userFullname', data.name, { path: '/' });
+            $.cookie('email', data.email, { path: '/' });
+            $.cookie('createdAt', data.createdAt, { path: '/' });
+            
+            window.location.href=dashboardURL;
+            //$scope.showSpinner=false;
+          }, function(error){
+              $scope.showSpinner=false;
+              $scope.err=error.message;
+          });
 
       }
   };

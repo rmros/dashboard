@@ -1,3 +1,39 @@
+
+app.directive('circlepulse', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){       
+            $(element).jPulse({
+                color: "black",
+                size: 120,
+                speed: 2000,
+                interval: 400,
+                left: 0,
+                top: 0,
+                zIndex: -1
+            });
+        }
+    };
+});
+
+app.directive('appIdValidation', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){
+            $(element).keyup(function(){
+               
+              var error=appIdValidation(scope.appId);
+              if(error){
+                $(element)[0].setCustomValidity(error);
+              }else{
+                $(element)[0].setCustomValidity("");
+              }                
+                                
+            });
+        }
+    };
+});
+
 app.directive('tooltip', function(){
     return {
         restrict: 'A',
@@ -181,6 +217,36 @@ app.directive('filechange', function(){
         }
     };
 });
+
+
+ function appIdValidation(appId){
+      var appIdValidationError=null;
+      var response=true;
+      //LowerCase
+      if((appId) && (appId!= appId.toLowerCase()))
+      {
+        response=false;
+        appIdValidationError="App Id must be in lowercase."; 
+                              
+      }
+
+      //Shouldn't Start with number
+      if((appId) && (!isNaN(appId[0]))){
+        response=false;
+        appIdValidationError="App Id Shouldn't start with number.";
+           
+      } 
+
+      //No Special characters
+      var pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/);
+      if((appId) && (pattern.test(appId))){
+        response=false;
+        appIdValidationError="App Id shoudn't contain special characters";         
+      }                 
+
+      return appIdValidationError;
+  }
+
 
 
 

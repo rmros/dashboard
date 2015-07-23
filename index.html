@@ -17,6 +17,7 @@
 	<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">-->
 
   <link rel="stylesheet" href="assets/fonts/font-awesome-4/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   
   <link href="bower_components/animate-css/animate.min.css" rel="stylesheet" />  
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/css/bootstrap-select.min.css" />
@@ -47,7 +48,6 @@
 
 <!--CloudBoost Javscript SDK-->
 <script src="https://cloudboost.io/js-sdk/1.0.0.js"></script>
-
     
 </head>
 <body class="animated" data-ng-controller="indexController">
@@ -97,8 +97,11 @@
 
         </div>
       </div>
-      <div class="text-right collapse-button" ng-show="!currentProject" style="padding:7px 9px;">        
-        <button id="sidebar-collapse" class="btn btn-default" style=""><i style="color:#fff;" class="fa fa-angle-left"></i></button>
+      <div class="text-right collapse-button" ng-show="false" style="padding:7px 9px;">        
+        <button id="sidebar-collapse" class="btn btn-default" style="">
+          <i style="color:#fff;" class="fa fa-angle-left"></i>
+        </button>
+
       </div>
     </div>  
   </div>
@@ -112,7 +115,7 @@
 
         <ul class="nav navbar-nav navbar-right user-nav">
           <li class="dropdown profile_menu">
-            <a class="dropdown-toggle" data-toggle="dropdown"><img alt="Avatar" src="assets/images/anonymous.jpg"><span>{{userFullname}}</span> <b class="caret"></b></a>
+            <a class="dropdown-toggle" data-toggle="dropdown"><img  alt="Avatar" src="assets/images/anonymous.jpg"><span>{{userFullname}}</span> <b class="caret"></b></a>
             <ul class="dropdown-menu">          
               <li><a ng-click="logOut()">Sign Out</a></li>
             </ul>
@@ -128,7 +131,7 @@
     </div>
   </div>
   
-  <!-- /TOP NAVBAR -->  
+  <!-- /TOP NAVBAR --> 
   <ui-view></ui-view>   
 	
 </div>
@@ -194,6 +197,8 @@
 <script type="text/javascript" src="bower_components/angular-ui-ace/ui-ace.js"></script>
 <script type="text/javascript" src="assets/js/AmaranJS/dist/js/jquery.amaran.min.js"></script>
 <script type="text/javascript" src="assets/js/tooltipster-master/js/jquery.tooltipster.min.js"></script>
+<script type="text/javascript" src="assets/js/simplepulse/dist/jQuery.jPulse.js"></script>
+
 <!--/UI Grid-->
 
 <!--Stripe-->

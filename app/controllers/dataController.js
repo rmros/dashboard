@@ -33,7 +33,18 @@ app.controller('dataController',
               getProjectTables();              
             }else{
               loadProject(id);              
-            }            
+            }
+
+            //Start the beacon
+            var x = 0;
+            addCircle(x);
+            setInterval(function () {
+                if (x === 0) {
+                    x = 1;
+                }
+                addCircle(x);
+                x++;
+            }, 1200);            
 
         };
 
@@ -353,7 +364,23 @@ app.controller('dataController',
                         'outEffect' :'slideBottom'
                   });
                 });
-        }     
+        } 
+
+  function addCircle(id) {
+      $('.first-table-beacon-container').append('<div  id="' + id + '" class="circlepulse first-table-beacon"></div>');
+
+      $('#' + id).animate({
+          'width': '38px',
+          'height': '38px',
+          'margin-top': '-15px',
+          'margin-left': '-15px',
+          'opacity': '0'
+      }, 4000, 'easeOutCirc');
+
+      setInterval(function () {
+          $('#' + id).remove();
+      }, 4000);
+  }    
       
 
 });

@@ -11,25 +11,22 @@ app.controller('indexController',
         }else{
            $scope.userFullname=$.cookie('userFullname'); 
         }            
-      }
-    );  
+    });  
 
     $rootScope.logOut=function(){
       var logOutPromise=userService.logOut();
-      logOutPromise.then(
-         function(data){           
+      logOutPromise
+      .then(function(data){           
 
-              $.removeCookie('userId', { path: '/' });
-              $.removeCookie('userFullname', { path: '/' });
-              $.removeCookie('email', { path: '/' });
-              $.removeCookie('createdAt', { path: '/' });
+        $.removeCookie('userId', { path: '/' });
+        $.removeCookie('userFullname', { path: '/' });
+        $.removeCookie('email', { path: '/' });
+        $.removeCookie('createdAt', { path: '/' });
 
-              window.location.href="/accounts";
-         },
-         function(error){
+        window.location.href="/accounts";
+      },function(error){
            console.log(error);
-         }
-       );      
+      });      
     }; 
 
     $scope.toggleSideMenu=function(){     
@@ -49,4 +46,4 @@ app.controller('indexController',
     } 
       				
 		
-	}]);
+}]);
