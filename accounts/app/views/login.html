@@ -1,16 +1,16 @@
 <div id="cl-wrapper" class="login-container" style="background-image: url('/assets/images/bg-header-2.jpg')">
-<div class="middle-login">
+<div class="middle-login" ng-init="init()">
 		<div class="block-flat">
 			<div class="header">							
 				<h3 class="text-center">
 					<a href="https://www.cloudboost.io">
-					 <img class="account-logo" src="../../../assets/images/cbfull.png" alt="logo" style="margin-top:5px;" />
+					 <img class="account-logo" src="../../../assets/images/cbfull-small.png" alt="logo" style="margin-top:5px;" />
 					</a> 
 				</h3>
 			</div>
 			<div>
 				<div class="col-md-6">
-					<div style="margin-top:50px;margin-left:20px;">
+					<div style="margin-top:80px;margin-left:20px; padding-bottom:100px;">
 						<div>
 							<span>WHAT'S NEW</span>
 						</div>
@@ -35,16 +35,22 @@
 					</div>		
 				</div>	
 				<div class="col-md-6">
-					<form style="margin-bottom:20px !important; margin-top:20px !important; border-left:1px solid #E5E5E5;" class="form-horizontal" name="userForm" ng-submit="logIn(userForm.$valid)">
-					<div class="content">
+					<form style="margin-bottom:20px !important; margin-top:40px !important; border-left:1px solid #E5E5E5;" class="form-horizontal" name="userForm" ng-submit="logIn(userForm.$valid)">
+					<div class="content">						
 
-						<h4 class="title"><b>Welcome back! Glad to see you again.</b></h4>
+						<div ng-show="showSpinner" class="flex-general-column-wrapper-center" style="height:200px;">
+							<div class="text-center">
+							 	<i class="icon ion-load-c fa-spin fa-4x"></i>
+							</div>
+							<div>
+								<span style="font-size:20px;">Loging</span>
+							</div>	
+						</div>
+
+						<h4 ng-show="!showSpinner" class="title"><b>Welcome back! Glad to see you again.</b></h4>
+
 						<p ng-hide="showSpinner" class="text-center" style="color:red;">{{err}}</p>
-
-						 <div class="text-center" ng-show="showSpinner" style="padding-bottom:30px;">
-						 	<i class="fa fa-spin fa-4x fa-spinner"></i>
-						 </div>
-
+						
 						<div ng-show="!showSpinner">
 							<div class="form-group">
 								<div class="col-sm-12">

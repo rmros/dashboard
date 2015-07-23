@@ -173,7 +173,7 @@
 
 .tableNewApp{
     height:89px;
-    border-radius: 2px;   
+    border-radius: 4px;   
     width:100%;    
     padding: 10px;
     cursor: pointer; 
@@ -222,7 +222,7 @@
 
 .tableApp{
     height:89px;
-    border-radius: 2px;   
+    border-radius: 4px;   
     width:100%;    
     padding-bottom:6px;
     padding-left:6px;

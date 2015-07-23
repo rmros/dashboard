@@ -17,7 +17,7 @@
 	<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">-->
 
   <link rel="stylesheet" href="assets/fonts/font-awesome-4/css/font-awesome.min.css">
-  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="bower_components/ionicons/css/ionicons.min.css">
   
   <link href="bower_components/animate-css/animate.min.css" rel="stylesheet" />  
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/css/bootstrap-select.min.css" />
@@ -60,17 +60,11 @@
       <div class="menu-space">
         <div class="content">
           <!--SideBar Logo-->
-          <div class="sidebar-logo" ng-show="!dataLoading">
+          <div class="sidebar-logo">
             <div class="logo">
             </div>
           </div>
-          <!--/SideBar Logo-->
-
-          <!--SideBar Spinner-->
-          <div class="sidebar-spinner" ng-show="dataLoading">
-            <div><i class="fa fa-spinner fa-spin fa-2x"></i></div>
-          </div>
-          <!--/SideBar Spinner-->
+          <!--/SideBar Logo-->         
 
           <ul class="cl-vnavigation">
             <li  ng-class="{active:page=='apps','menu-active':page=='apps'}" data-toggle="tooltip" data-placement="right" title="Apps" tooltip><a href="#/"><i class="fa fa-th-large "></i><span>Apps</span></a>             

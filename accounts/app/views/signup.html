@@ -1,18 +1,18 @@
 <div id="cl-wrapper" class="sign-up-container"  style="background-image: url('/assets/images/bg-header-2.jpg')">
 
-	<div class="middle-sign-up">
+	<div class="middle-sign-up" ng-init="init()">
 		<div class="block-flat">
 			<div class="header">							
 				<h3 class="text-center">
 					<a href="https://www.cloudboost.io">									
-						<img class="account-logo" src="../../../assets/images/cbfull.png" alt="logo"/>
+						<img class="account-logo" src="../../../assets/images/cbfull-small.png" alt="logo"/>
 					</a>
 				</h3>
 			</div>
 
 			<div>
 				<div class="col-md-5">
-					<div class="flex-general-column-wrapper-center" style="margin-top:80px;">
+					<div class="flex-general-column-wrapper-center plan-block" style="margin-top:80px;">
 
 						<p style="color:#ffffff;  background-color: #3f3f3f;
 						  color: white;
@@ -26,19 +26,25 @@
 						<h1 style="color:#3f3f3f;font-size:90px"><b>$50<span style="font-size:45px">USD</span></b></h1><br/>
 						<h2 style="color:#3f3f3f"><b>Free</b> credits, <br/><b>Every month</b> for life.</h2>
 
-						<br/>
+						<br/>								
 						
 					</div>
 				</div>		
-				<div class="col-md-7" style="">
+				<div class="col-md-7">
 							
 					<form style="margin-bottom: 30px !important; margin-top: 30px !important; border-left:1px solid #E2E2E2;" class="form-horizontal"  name="userForm" ng-submit="signUp(userForm.$valid)">
 						<div class="content">						
 
-	              			<p class="text-center" ng-show="err" style="color:red;">{{err}}</p>
-	              			<div class="text-center" ng-show="showSpinner">
-	              				<i class="fa fa-spin fa-4x fa-spinner"></i>
+							<div ng-show="showSpinner" class="flex-general-column-wrapper-center spinner-signup">		              			
+		              			<div class="text-center">            				
+		              				<i class="icon ion-load-c fa-spin fa-4x"></i>	
+		              			</div>
+		              			<div>
+		              				<span style="font-size:20px;">Signing up</span>
+		              			</div>		
 	              			</div>
+
+	              			<p class="text-center" ng-show="err" style="color:red;">{{err}}</p>
 	              				
 	              			<!--no spinner-->		
 	              			<div ng-hide="showSpinner">	
@@ -58,7 +64,7 @@
 											<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
 											<input type="email" name="email"  placeholder="E-mail" class="form-control" required  ng-model="email">
 										</div>
-	                  <div id="email-error"></div>
+	                  					<div id="email-error"></div>
 									</div>
 								</div>
 								<div class="form-group">

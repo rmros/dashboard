@@ -34,7 +34,8 @@
     "angular-google-maps": "~2.1.5",
     "stackbox": "~0.3.4",
     "ngInfiniteScroll": "~1.2.1",
-    "angular-ui-ace": "bower"
+    "angular-ui-ace": "bower",
+    "ionicons": "~2.0.1"
   },
   "devDependencies": {}
 }

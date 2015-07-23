@@ -3,7 +3,7 @@ app.controller('loginController',
   function($scope,userService,$http,$cookies,$rootScope){
 
   $scope.init=function()  {   
-      $scope.showSpinner=false;     
+    $scope.showSpinner=false;      
   }
 
   $scope.logIn=function(isValid){
