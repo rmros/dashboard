@@ -73,7 +73,6 @@ app.factory('tableService',
           type : table.type.type,
           appId : appId,
           id : table.id,
-          tableColor:table.tableColor
         };
 
         $http.put(serverURL+'/table/create/'+appId,obj).

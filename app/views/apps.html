@@ -122,12 +122,9 @@
         </div>         
     </div>
     <!--While Loading-->
-    <div ng-if="dataLoading" class="row flex-general-column-wrapper-center" style="height:78vh;">
+    <div ng-show="dataLoading" class="row flex-general-column-wrapper-center" style="height:78vh;">
       <div>
-          <i class="icon ion-load-c fa-spin fa-4x"></i>
-      </div>
-      <div>
-          <span style="font-size:20px;">Loading your apps</span>
+          <img src='/assets/images/horizontalLoaderGrey.gif' />
       </div>
     </div>
     <!--/While Loading-->

@@ -13,26 +13,27 @@
           <div class="table-apps-div">
               <div class="row">
                 <div class="col-md-12"> 
-                  <div class="flex-general-row-wrapper">
+                  <div class="flex-general-row-wrapper-center">
 
                     <!--loop-->
                     <div class="tableBx" ng-repeat="t in currentProject.tables">
-                        <div class="tableApp cf" style="background-color:{{t.tableColor || '#3A5795'}}" ng-click="goToDataBrowser(t)">
+                        <div class="tableApp cf " style="background-color:{{'#3A5795'}}" ng-click="goToDataBrowser(t)">
 
                           <div class="cf">
-                            <span class="table-delete pull-right"><span class="cross" ng-hide="!t.type.isDeletable" ng-click="deleteTableModal(t); $event.stopPropagation()">x<span></span>
+                            <span class="table-delete pull-right"><span class="cross tableOptionIcon" ng-hide="!t.type.isDeletable" ng-click="deleteTableModal(t); $event.stopPropagation()"><i class="icon ion-trash-b"></i><span></span>
                           </div>
 
-                          <div class="table-icon flex-general-row-wrapper-center">  
-                            <div class="">                         
-                             <i class="fa fa-{{t.type.icon}}"></i>
+                          <center>  
+                            <div >                         
+                             <i class="icon {{t.type.icon}} tableIcon"></i>
+                             </div>
+                             <div>
+                             <span class="tableText">{{t.name}}</span>
                             </div>
-                          </div> 
+                          </center> 
 
                         </div>
-                        <div class="tableName-wrap flex-general-row-wrapper-center">
-                          <span>{{t.name}}</span>
-                        </div> 
+                        
                     </div> 
                     <!--/loop-->
 
@@ -42,14 +43,17 @@
 
                           <div class="first-table-beacon-container"></div>
 
-                          <div class="table-icon-new flex-general-row-wrapper-center">
-                            <span>+</span>
-                          </div> 
+                          <center>  
+                            <div >                         
+                             <i class="icon ion-plus-round"></i>
+                             </div>
+                             <div>
+                             <span class="newTableText">ADD NEW TABLE</span>
+                            </div>
+                          </center> 
 
                         </div>
-                        <div class="tableName-wrap flex-general-row-wrapper-center" style="margin-bottom:150px;">
-                          <span>New Table</span>
-                        </div> 
+                        
 
                         <!--Add new table Pop up-->
                         <div class="popup-div effect1" ng-show="addTablePopup">
@@ -85,13 +89,8 @@
       </div>  
     </div>
     <!--While Loading-->
-    <div ng-if="dataLoading" class="row flex-general-column-wrapper-center" style="height:68vh;">
-      <div>
-          <i class="icon ion-load-c fa-spin fa-4x"></i>
-      </div>
-      <div>
-          <span style="font-size:20px;">Loading your tables</span>
-      </div>
+    <div ng-show="dataLoading" class="row flex-general-column-wrapper-center" style="height:68vh;">
+      <img src='/assets/images/horizontalLoaderGrey2.gif' />
     </div>
     <!--/While Loading-->
 </div>
@@ -116,7 +115,7 @@
             <input type="text" class="form-control" ng-model="confirmTableName" required style="width:400px;"/>
           </center> 
           <div class="flex-general-row-wrapper-center modalF">        
-            <button type="button" class="btn btn-danger btn-flat" style="width:400px;" ng-click="deleteTable(selectedTable)">Continue</button>
+            <button type="button" class="btn btn-danger btn-flat" style="width:400px;" ng-click="deleteTable(selectedTable)">DELETE TABLE</button>
           </div>         
         </div>
       </div>      

@@ -6,7 +6,7 @@ app.factory('tableTypeService', function (utilityService) {
         return[
           {
               type:"custom",
-              icon : "table",
+              icon : "ion-ios-list",
               name:"Custom",
               isRenamable: true,
               isEditable: true,
@@ -67,7 +67,7 @@ app.factory('tableTypeService', function (utilityService) {
           },
           {
               type:"user",
-              icon : "user",
+              icon : "ion-person-stalker",
               name:"User",
               isRenamable: false,
               isEditable: true,
@@ -180,7 +180,7 @@ app.factory('tableTypeService', function (utilityService) {
           },
           {
               type:"role",
-              icon : "shield",
+              icon : "ion-unlocked",
               name:"Role",
               isRenamable: false,
               isEditable: true,

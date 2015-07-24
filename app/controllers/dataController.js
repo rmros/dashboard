@@ -236,10 +236,7 @@ app.controller('dataController',
                              id: uniqueId,
                            name: tableName,
                            type: table,
-                        columns: columnArray,
-                     tableColor: randomColor({
-                                   luminosity: 'bright'
-                                 })
+                        columns: columnArray
                     };                   
                   
                     $scope.newtables.push(t);

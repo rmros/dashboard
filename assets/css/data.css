@@ -123,14 +123,16 @@
 
 
 .tableBx{
-    width:89px;   
+    width:250px;   
     margin-left: 20px;
+    margin-bottom: 20px;
 }
 
 .tableBxNew{
-    width:89px;   
-    margin-left: 20px;
-    position: relative;
+    width:250px;   
+     margin-left: 20px;
+    margin-bottom: 20px;
+    
 }
 .popup-div{
     height: auto;
@@ -175,10 +177,12 @@
     height:89px;
     border-radius: 4px;   
     width:100%;    
-    padding: 10px;
+    padding: 15px;
     cursor: pointer; 
     border: 1px solid gray;
     position: relative;
+    font-size:30px;
+
 }
 
 .cross{
@@ -1553,3 +1557,31 @@
   top:13%;
   left:13%;
 }
+
+.tableIcon{
+    color:white;
+    font-size : 30px;
+    padding:12px;
+    padding-right:0px;
+}
+
+.tableText{
+    color:white;
+    padding-left:6px;
+    font-weight:600;
+    margin-bottom:10px !important;
+}
+
+.tableOptionIcon{
+    font-size:20px !important;
+    padding:10px !important;
+}
+
+.newTableText{
+    padding-left:6px;
+    font-weight:600;
+    margin-bottom:10px !important;
+    font-size:15px;
+}
+
+

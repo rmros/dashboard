@@ -35,16 +35,11 @@
 					<form style="margin-bottom: 30px !important; margin-top: 30px !important; border-left:1px solid #E2E2E2;" class="form-horizontal"  name="userForm" ng-submit="signUp(userForm.$valid)">
 						<div class="content">						
 
-							<div ng-show="showSpinner" class="flex-general-column-wrapper-center spinner-signup">		              			
-		              			<div class="text-center">            				
-		              				<i class="icon ion-load-c fa-spin fa-4x"></i>	
-		              			</div>
-		              			<div>
-		              				<span style="font-size:20px;">Signing up</span>
-		              			</div>		
+							<div ng-show="showSpinner" class="flex-general-column-wrapper-center spinner-signup">     			
+		              			 <img src='/assets/images/horizontalLoaderWhite.gif' />
 	              			</div>
 
-	              			<p class="text-center" ng-show="err" style="color:red;">{{err}}</p>
+	              			<p ng-hide="showSpinner" class="text-center" ng-show="err" style="color:red;">{{err}}</p>
 	              				
 	              			<!--no spinner-->		
 	              			<div ng-hide="showSpinner">	
