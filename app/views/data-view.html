@@ -19,7 +19,7 @@
 
               <div ng-show="isTableLoaded" class="tableNameDiv flex-general-row-wrapper">              
                 <h3 ng-click="showTableList=!showTableList">{{currentProject.currentTable.name}}</h3> 
-                <i class="fa fa-angle-down fa-2x" ng-click="showTableList=!showTableList"></i>                
+                <i class="fa fa-angle-down fa-2x" ng-click="showTableList=!showTableList"></i>        
 
                 <!--DropDown for TableList-->
                 <div class="tableList-wrapper" ng-show="showTableList">
@@ -46,7 +46,24 @@
               </div>  
               
             </div>
-            <div class="headerR">             
+            <div class="headerR"> 
+              <a href="https://docs.cloudboost.io" target="blank" style="color:white;">
+
+                <div class="flex-general-row-wrapper pull-right" style="cursor:pointer;position:relative;">     
+
+                  <div>
+                    <h5><i class="fa fa-book"></i></h5>
+                  </div>
+                  <div>
+                    <h5>&nbsp;Documentation</h5>
+                  </div>
+
+                  <!--Beacon-->
+                  <div class="first-data-beacon-container" style="cursor:pointer;"></div> 
+                </div>               
+
+              </a>  
+                        
             </div>            
           </div>  
       </div>
@@ -120,12 +137,27 @@
             <p>{{selectedRowsCount}} rows selected</p>
           </div>
 
-          <!--Row Error info-->
-          <div class="data-info-div" ng-if="rowErrorMode.length>0">
+          <!--Row info-->
+          <div class="data-info-div" ng-if="!saveSpinner">
+            <!--Warning-->
+            <p ng-repeat="rowWar in rowWarningMode" class="sno-warninginfo" style="margin-right:30px;" ng-if="rowWar==true" infotooltipleft="rowInfo">
+              <i class="fa fa-exclamation-triangle fa-lg"></i>
+            </p>
+
+            <!--Error-->
             <p ng-repeat="rowErr in rowErrorMode" class="sno-errorinfo" style="margin-right:30px;" ng-if="rowErr==true" infotooltipleft="rowInfo">
               <i class="fa fa-exclamation-triangle fa-lg"></i>
+            </p>
+
+          </div>        
+
+          <!--General Saving Spinner-->
+          <div ng-show="saveSpinner" class="data-info-div">
+            <p class="sno-savingSpin" style="margin-right:30px;">            
+              <i class="fa fa-spinner fa-spin fa-2x"></i>
             </p>            
-          </div>           
+          </div>
+
       </div>  
 
     </div>  
@@ -137,7 +169,7 @@
         
         <div id="scrollbar-wrapper" class="data-table-design" infinite-scroll="addMoreRecords()">
        
-         <table  class="smoothTable">
+         <table  class="smoothTable" >
           <thead>            
             <tr class="cust-head-tr fix-prime-thead">
               <th class="fTh cf">
@@ -153,7 +185,7 @@
                     <div class="col-name">
                        <span style="display:inline">
                         <!--Id-->
-                        <i ng-if="column.dataType==='Id'" class="fa fa-lock col-icon-size"></i>
+                        <i ng-if="column.dataType==='Id'" class="fa fa-shield col-icon-size"></i>
 
                         <!--Boolean-->
                         <i ng-if="column.dataType=='Boolean'"  class="fa fa-check col-icon-size"></i>
@@ -166,6 +198,9 @@
 
                         <!--Text-->
                         <i ng-if="column.dataType=='Text'" class="fa fa-text-height col-icon-size"></i>
+
+                        <!--Encrypted Text-->
+                        <i ng-if="column.dataType=='Password'" class="fa fa-lock col-icon-size"></i>
 
                         <!--Email-->
                         <i ng-if="column.dataType=='Email'" class="fa fa-envelope-o col-icon-size"></i>
@@ -217,14 +252,14 @@
                         </span>
                       </div>
 
-                      <div ng-if="column.dataType!='Id' && column.dataType!='Object' && column.dataType!='ACL' && column.dataType!='File' && column.dataType!='Relation' && column.dataType!='List'" ng-click="sortASC(column)" class="col-optionz">
+                      <div ng-if="column.dataType!='Id' && column.dataType!='Object' && column.dataType!='ACL' && column.dataType!='File' && column.dataType!='Relation' && column.dataType!='List' && column.dataType!='Password'" ng-click="sortASC(column)" class="col-optionz">
                         <span class="col-options-span">
                           <i class="fa fa-sort-alpha-asc" style="padding-top: 5px;padding-right: 6px;"></i>
                           Sort Ascending
                         </span>
                       </div>
 
-                      <div ng-if="column.dataType!='Id' && column.dataType!='Object' && column.dataType!='ACL' && column.dataType!='File' && column.dataType!='Relation' && column.dataType!='List'" ng-click="sortDESC(column)" class="col-optionz">
+                      <div ng-if="column.dataType!='Id' && column.dataType!='Object' && column.dataType!='ACL' && column.dataType!='File' && column.dataType!='Relation' && column.dataType!='List' && column.dataType!='Password'" ng-click="sortDESC(column)" class="col-optionz">
                         <span class="col-options-span">
                           <i class="fa fa-sort-alpha-desc" style="padding-top: 5px;padding-right: 6px;"></i>
                           Sort Descending
@@ -400,26 +435,31 @@
               <td  class="fdataTd fix-collective-chkbx">
                   <div class="fTdDiv flex-general-row-wrapper-center">
                     <!--Checkbox-->
-                    <checkbox  ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index]" class="btn-default checkBxDflt"  ng-model="rowsSelected[$index]" ng-click="selectThisRow($index)"></checkbox>
+                    <checkbox  ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="btn-default checkBxDflt"  ng-model="rowsSelected[$index]" ng-click="selectThisRow($index)"></checkbox>
                     <!--<span ng-show="!showSerialNo[$index]" class="sno">{{$index+1}}</span>-->
 
                     <!--Edit mode-->
-                    <span ng-if="rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index]" class="sno-edit">
+                    <span ng-if="rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="sno-edit">
                       <i class="fa fa-pencil"></i>
                     </span>
 
+                    <!--Warning mode-->
+                    <span ng-if="rowWarningMode[$index] && !rowEditMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowErrorMode[$index]" class="sno-warninginfo" infotooltipright="rowInfo">
+                      <i class="fa fa-exclamation-triangle"></i>
+                    </span>
+
                     <!--Error mode-->
-                    <span ng-if="rowErrorMode[$index] && !rowEditMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index]" class="sno-errorinfo" infotooltipright="rowInfo">
+                    <span ng-if="rowErrorMode[$index] && !rowWarningMode[$index] && !rowEditMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index]" class="sno-errorinfo" infotooltipright="rowInfo">
                       <i class="fa fa-exclamation-triangle"></i>
                     </span>
 
                     <!--Spinner-->
-                    <span ng-if="rowSpinnerMode[$index] && !rowEditMode[$index] && !rowErrorMode[$index] && !rowSavedMode[$index]" class="sno-spinner">
+                    <span ng-if="rowSpinnerMode[$index] && !rowEditMode[$index] && !rowErrorMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="sno-spinner">
                       <i class="fa fa-spinner fa-spin"></i>
                     </span>
 
                     <!--Saved Tick-->
-                    <span ng-if="rowSavedMode[$index] && !rowSpinnerMode[$index] && !rowEditMode[$index] && !rowErrorMode[$index]" class="sno-saved">
+                    <span ng-if="rowSavedMode[$index] && !rowSpinnerMode[$index] && !rowEditMode[$index] && !rowErrorMode[$index] && !rowWarningMode[$index]" class="sno-saved">
                       <i class="fa fa-check"></i>
                     </span>                               
 
@@ -447,7 +487,7 @@
                 <!--/Boolean-->
 
                 <!--DateTime-->
-                <div ng-if="column.dataType=='DateTime'" ng-dblclick="showDateTimeInput(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
+                <div ng-if="column.dataType=='DateTime'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
                     <span class="timeSpan">                      
@@ -515,6 +555,20 @@
 
                 </div>
                 <!--/Text-->
+
+                <!--Encrypted Text-->
+                <div ng-if="column.dataType=='Password'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
+
+                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
+                      <span ng-if="eachRow.get(column.name)">********</span>                    
+                  </div>
+
+                   <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">                             
+                    <input type="text"  focus-on="{{column.id}}column" ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput"  ng-blur="setAndSave()" />               
+                  </div>
+
+                </div>
+                <!--/Encrypted Text-->
 
                 <!--Email-->
                 <div ng-if="column.dataType=='Email'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
@@ -612,13 +666,14 @@
                 <div ng-if="column.dataType=='List'" class="tdDiv cf" style="min-width:325px"> 
 
                   <div class="real-content-list-text pull-left"> 
-                      <!--Text,Email,Number,URL--> 
-                      <div ng-show="eachRow.document[column.name]" ng-if="column.relatedTo=='Text' || column.relatedTo=='Email' || column.relatedTo=='Number' || column.relatedTo=='URL'" class="cf list-text-wrapper">
+                      <!--Text,Encrypted Text,Email,Number,URL--> 
+                      <div ng-show="eachRow.document[column.name]" ng-if="column.relatedTo=='Text' || column.relatedTo=='Password' || column.relatedTo=='Email' || column.relatedTo=='Number' || column.relatedTo=='URL'" class="cf list-text-wrapper">
 
                         <div class="pull-left text-list-torrent flex-general-row-wrapper">
                          
                           <div ng-repeat="eachText in eachRow.document[column.name] track by $index" class="list-text">
-                            <span>{{eachText}}</span>
+                            <span ng-if="column.relatedTo!='Password'">{{eachText}}</span>
+                            <span ng-if="column.relatedTo=='Password'" style="font-size:14px;">*****</span>
                           </div>                        
 
                         </div>           
@@ -724,7 +779,7 @@
                       </div>
 
                       <!--Relation--> 
-                      <div ng-show="eachRow.document[column.name]" ng-if="column.relatedTo!='Text' && column.relatedTo!='Email' && column.relatedTo!='Number' && column.relatedTo!='URL' && column.relatedTo!='DateTime' && column.relatedTo!='Boolean' && column.relatedTo!='File' && column.relatedTo!='Object' && column.relatedTo!='Geo Point'" class="cf list-text-wrapper">
+                      <div ng-show="eachRow.document[column.name]" ng-if="column.relatedTo!='Text' &&  column.relatedTo!='Password' && column.relatedTo!='Email' && column.relatedTo!='Number' && column.relatedTo!='URL' && column.relatedTo!='DateTime' && column.relatedTo!='Boolean' && column.relatedTo!='File' && column.relatedTo!='Object' && column.relatedTo!='Geo Point'" class="cf list-text-wrapper">
 
                         <div class="pull-left text-list-torrent flex-general-row-wrapper">
                          
@@ -786,10 +841,10 @@
                 <!--/Geo Point-->
 
                 <!--Others-->
-                <div ng-if="column.dataType!='Id' && column.dataType!='Boolean' && column.dataType!='DateTime' && column.dataType!='ACL' && column.dataType!='Text' && column.dataType!='Email' && column.dataType!='URL' && column.dataType!='Number' && column.dataType!='Object' && column.dataType!='File' && column.dataType!='Relation' && column.dataType!='List' && column.dataType!='GeoPoint'" class="tdDiv cf" style="min-width: 210px"> 
+                <div ng-if="column.dataType!='Id' && column.dataType!='Boolean' && column.dataType!='DateTime' && column.dataType!='ACL' && column.dataType!='Text' && column.dataType!='Password' && column.dataType!='Email' && column.dataType!='URL' && column.dataType!='Number' && column.dataType!='Object' && column.dataType!='File' && column.dataType!='Relation' && column.dataType!='List' && column.dataType!='GeoPoint'" class="tdDiv cf" style="min-width: 210px"> 
 
                   <div class="real-content pull-left">  
-                    {{eachRow.get(column.name)}} {{column.dataType}}                
+                    {{eachRow.get(column.name)}}              
                   </div>
 
                   <!--Popup Edit Button-->
@@ -917,20 +972,36 @@
   <!--While Loading-->
   <div ng-show="!isTableLoaded" class="wyl-table-loading">
     <div id="table-spinner" class="flex-general-column-wrapper-center">
-      <div>
-      <i class="icon ion-load-c fa-spin fa-4x"></i>
-      </div>
-      
-      <div>
-        <span style="font-size:20px;">Loading</span>
-      </div> 
+        <div>
+          <!--Animated Circle-->
+          <div class="cssload-bell">
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+          </div>
+          <!--/Animated Circle-->
+        </div>  
+        <div style="margin-top:63px;">
+         <span style="font-size:20px;">Loading</span>
+        </div>
 
     </div>
   </div>  
   <!--/While Loading-->
 
 </div>
-
 
 
 <!-- EditJSON Modal -->
@@ -1203,7 +1274,7 @@
                     </a>  
                   </div>
                   <div class="m-remove-relation remv-show">
-                    <div ng-click="deleteValue()">
+                    <div ng-click="deleteRelLink()">
                      <i class="fa fa-times"></i>
                     </div>
                   </div>  
@@ -1233,7 +1304,7 @@
             <div class="search-rel-wrapper">
                 <div class="rel-search-btn-wrapper flex-general-row-wrapper">
                   <div class="rel-searchBx">
-                    <input type="text">
+                    <input type="text" ng-model="searchRelDocId">
                   </div>
                   <div class="rel-searchIcon">
                     <i class="fa fa-search"></i>
@@ -1243,7 +1314,7 @@
             </div>
             <div class="relationid-list-wrapper" malihuscrollbar-for-popup>
 
-                <div ng-repeat="eachRelRow in relationTableData" class="relationid-list flex-general-column-wrapper-center">
+                <div ng-repeat="eachRelRow in relationTableData | filter:searchRelDocId" class="relationid-list flex-general-column-wrapper-center">
                   <div class="m-relationid" ng-click="linkRecord(eachRelRow)">
                     <a>
                       {{eachRelRow.document._id}}
@@ -1314,7 +1385,7 @@
                     
                     <div class="pull-left m-col-icon">
                       <!--Id-->
-                      <i ng-if="relCol.dataType==='Id'" class="fa fa-lock col-icon-size"></i>
+                      <i ng-if="relCol.dataType==='Id'" class="fa fa-shield col-icon-size"></i>
 
                       <!--Boolean-->
                       <i ng-if="relCol.dataType=='Boolean'" class="fa fa-check col-icon-size"></i>
@@ -1327,6 +1398,9 @@
 
                       <!--Text-->
                       <i ng-if="relCol.dataType=='Text'" class="fa fa-text-height col-icon-size"></i>
+
+                      <!--Encrypted Text-->
+                      <i ng-if="relCol.dataType=='Password'" class="fa fa-lock col-icon-size"></i>
 
                       <!--Email-->
                       <i ng-if="relCol.dataType=='Email'" class="fa fa-envelope-o col-icon-size"></i>
@@ -1438,6 +1512,18 @@
                       </div>
                   </div>
 
+
+                  <!--Encrypted Text-->
+                  <div ng-if="relCol.dataType=='Password'" class="m-value">
+                      <div class="m-data-container cf" style="height:35px;">
+
+                        <div class="m-real-content-cmn-types pull-left">                          
+                          <input type="text" ng-model="relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]" ng-blur="setRelTable(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)" class="m-commontypes-aura" >
+                        </div>                       
+
+                      </div>
+                  </div>
+
                   <!--Email-->
                   <div ng-if="relCol.dataType=='Email'" class="m-value">
                       <div class="m-data-container cf" style="height:35px;">
@@ -1529,8 +1615,8 @@
                           </div>                         
                         </div>
                         <div class="m-popup-btn pull-right">
-                          <a class="m-round-btn">
-                            <i class="fa fa-expand" style="color:{{relatedTableDefArray[relatedTableDefArray.length1].tableColor || '#3A5795'}};"></i>&nbsp;
+                          <a class="m-round-btn" ng-click="addRelation(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)">
+                            <i class="fa fa-expand" style="color:#3A5795;"></i>&nbsp;
                           </a>
                         </div>
 
@@ -1542,8 +1628,8 @@
                   <div ng-if="relCol.dataType=='List'" class="m-value">
                       <div class="m-data-container cf" style="height:37px;">
 
-                        <!--Text,Email,Number,URL-->
-                        <div ng-if="relCol.relatedTo=='Text' || relCol.relatedTo=='Email' || relCol.relatedTo=='Number' || relCol.relatedTo=='URL'" class="m-real-content pull-left">                           
+                        <!--Text,Encrypted Text,Email,Number,URL-->
+                        <div ng-if="relCol.relatedTo=='Text' || relCol.relatedTo=='Password' || relCol.relatedTo=='Email' || relCol.relatedTo=='Number' || relCol.relatedTo=='URL'" class="m-real-content pull-left">                           
                           <div  class="m-list-condition flex-general-row-wrapper">
                              
                               <div ng-repeat="eachText in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
@@ -1644,7 +1730,7 @@
                         </div>
 
                         <!--Relation--> 
-                        <div ng-if="relCol.relatedTo!='Text' && relCol.relatedTo!='Email' && relCol.relatedTo!='Number' && relCol.relatedTo!='URL' && relCol.relatedTo!='DateTime' && relCol.relatedTo!='Boolean' && relCol.relatedTo!='File' && relCol.relatedTo!='Object' && relCol.relatedTo!='GeoPoint'" class="m-real-content pull-left">  
+                        <div ng-if="relCol.relatedTo!='Text' && relCol.relatedTo!='Password' && relCol.relatedTo!='Email' && relCol.relatedTo!='Number' && relCol.relatedTo!='URL' && relCol.relatedTo!='DateTime' && relCol.relatedTo!='Boolean' && relCol.relatedTo!='File' && relCol.relatedTo!='Object' && relCol.relatedTo!='GeoPoint'" class="m-real-content pull-left">  
                           <div  class="m-list-condition flex-general-row-wrapper">
                              
                               <div ng-repeat="eachRel in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
@@ -1669,7 +1755,7 @@
                   </div>
 
                   <!--Others-->
-                  <div ng-if="relCol.dataType!='Id' && relCol.dataType!='Boolean' && relCol.dataType!='DateTime' && relCol.dataType!='File'  && relCol.dataType!='Text' && relCol.dataType!='ACL' && relCol.dataType!='Object' && relCol.dataType!='Email' && relCol.dataType!='URL' && relCol.dataType!='Number' && relCol.dataType!='File' && relCol.dataType!='Relation' && relCol.dataType!='List' && relCol.dataType!='GeoPoint'" class="m-value">
+                  <div ng-if="relCol.dataType!='Id' && relCol.dataType!='Boolean' && relCol.dataType!='DateTime' && relCol.dataType!='File'  && relCol.dataType!='Text' &&  relCol.dataType!='Password' && relCol.dataType!='ACL' && relCol.dataType!='Object' && relCol.dataType!='Email' && relCol.dataType!='URL' && relCol.dataType!='Number' && relCol.dataType!='File' && relCol.dataType!='Relation' && relCol.dataType!='List' && relCol.dataType!='GeoPoint'" class="m-value">
                       <div class="m-data-container cf" style="height:37px;">
 
                         <div class="m-real-content pull-left">
@@ -1974,6 +2060,22 @@
               </div>
               <!--/Text-->
 
+              <!--Encrypted Text-->
+              <div ng-if="editableColumn.relatedTo=='Password'" class="document-list-wrapper flex-general-row-wrapper">
+                  <div class="document-list-txt-add-wrapper flex-general-row-wrapper-center cf">
+                  
+                    <div  class="list-text-aura">
+                        <input type="text" ng-model="newListItem" class="list-modal-text">
+                    </div>                  
+
+                  </div>
+                 <div class="list-text-add-btn">                   
+                     <button ng-click="addListItem(newListItem)">Add</button>                   
+                  </div>
+
+              </div>
+              <!--/Encrypted Text-->
+
               <!--Email-->
               <div ng-if="editableColumn.relatedTo=='Email'" class="document-list-wrapper flex-general-row-wrapper">
 
@@ -2071,7 +2173,7 @@
               <!--Geopoint-->
 
               <!--Relation-->
-              <div ng-if="editableColumn.relatedTo!='Text' && editableColumn.relatedTo!='Email' && editableColumn.relatedTo!='URL' && editableColumn.relatedTo!='Number' && editableColumn.relatedTo!='DateTime' && editableColumn.relatedTo!='Object' && editableColumn.relatedTo!='Boolean' && editableColumn.relatedTo!='File' && editableColumn.relatedTo!='GeoPoint'" class="document-list-wrapper">
+              <div ng-if="editableColumn.relatedTo!='Text' && editableColumn.relatedTo!='Password' && editableColumn.relatedTo!='Email' && editableColumn.relatedTo!='URL' && editableColumn.relatedTo!='Number' && editableColumn.relatedTo!='DateTime' && editableColumn.relatedTo!='Object' && editableColumn.relatedTo!='Boolean' && editableColumn.relatedTo!='File' && editableColumn.relatedTo!='GeoPoint'" class="document-list-wrapper">
                   
                   <button type="button"  ng-click="listSearchRelationDocs()" class="add-relation-btn">Add Relation</button>
 
@@ -2083,6 +2185,28 @@
 
             <!--List Text-->
             <div ng-if="editableColumn.relatedTo=='Text'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
+
+                <div ng-repeat="eachText in editableList track by $index" class="document-list-txt-wrapper flex-general-row-wrapper-center cf">
+                  
+                  <div  class="list-text-aura">
+
+                      <input type="text" ng-model="eachText" class="list-modal-text" ng-blur="setAndSaveList(eachText,$index)">
+
+                  </div>
+                
+
+                  <div class="m-remove-document list-text-remv-show">
+                    <div ng-click="deleteListItem($index)">
+                     <i class="fa fa-trash-o fa-lg"></i>
+                    </div>
+                  </div>  
+                </div>
+
+            </div>
+
+
+            <!--List Encrypted Text-->
+            <div ng-if="editableColumn.relatedTo=='Password'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
 
                 <div ng-repeat="eachText in editableList track by $index" class="document-list-txt-wrapper flex-general-row-wrapper-center cf">
                   
@@ -2236,16 +2360,16 @@
 
                   <div ng-repeat="eachFile in editableList track by $index">
 
-                    <!--Images-->
-                  <div ng-if="eachFile && eachFile.document.url && ((eachFile.document.name | extension)=='jpeg' || (eachFile.document.name | extension)=='jpg' || (eachFile.document.name | extension)=='png' || (eachFile.document.name | extension)=='tif' || (eachFile .document.name | extension)=='gif')" class="flex-general-row-wrapper" style="margin-left:4px;">
+                  <!--Images-->
+                  <div ng-if="eachFile && eachFile.document.url && ((eachFile.document.name | extension)=='jpeg' || (eachFile.document.name | extension)=='jpg' || (eachFile.document.name | extension)=='png' || (eachFile.document.name | extension)=='tif' || (eachFile .document.name | extension)=='gif')" class="flex-general-row-wrapper list-file-display" style="margin-left:4px;">
 
                       <div class="list-file-aura-list flex-general-row-wrapper-center">               
-                        <img ng-click="showListFile(editableRow,editableColumn,$index)" src="{{eachFile.document.url}}" class="list-m-file-list" />
+                        <img ng-click="showListFile(editableRow,editableColumn,$index)" src="{{eachFile.document.url}}" class="list-m-file-list list-file-display-item" />
                       </div>
 
-                      <div class="m-remove-document list-datetime-remv-show">
+                      <div class="list-images-remove-cross">
                         <div ng-click="deleteListItem($index)">
-                          <i class="fa fa-trash-o fa-lg"></i>
+                          X
                         </div>
                       </div>
                   </div>
@@ -2294,7 +2418,7 @@
             </div>
 
             <!--Relation-->
-            <div ng-if="editableColumn.relatedTo!='Text' && editableColumn.relatedTo!='Email' && editableColumn.relatedTo!='URL' && editableColumn.relatedTo!='Number' && editableColumn.relatedTo!='DateTime' && editableColumn.relatedTo!='Object' && editableColumn.relatedTo!='Boolean' && editableColumn.relatedTo!='File' && editableColumn.relatedTo!='GeoPoint'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
+            <div ng-if="editableColumn.relatedTo!='Text' && editableColumn.relatedTo!='Password' &&editableColumn.relatedTo!='Email' && editableColumn.relatedTo!='URL' && editableColumn.relatedTo!='Number' && editableColumn.relatedTo!='DateTime' && editableColumn.relatedTo!='Object' && editableColumn.relatedTo!='Boolean' && editableColumn.relatedTo!='File' && editableColumn.relatedTo!='GeoPoint'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
 
                 <div ng-repeat="eachRelation in editableList track by $index" class="relationid-list flex-general-row-wrapper-center cf">
                   <div class="m-relationid id-show" ng-click="listViewRelationData(editableRow,editableColumn,$index)">
@@ -2515,7 +2639,7 @@
             <div class="search-rel-wrapper">
                 <div class="rel-search-btn-wrapper flex-general-row-wrapper">
                   <div class="rel-searchBx">
-                    <input type="text">
+                    <input type="text" ng-model="searchRelListDoc">
                   </div>
                   <div class="rel-searchIcon">
                     <i class="fa fa-search"></i>
@@ -2525,7 +2649,7 @@
             </div>
             <div class="relationid-list-wrapper" malihuscrollbar-for-popup>
 
-                <div ng-repeat="eachRelRow in listRelationTableData" class="relationid-list flex-general-column-wrapper-center">
+                <div ng-repeat="eachRelRow in listRelationTableData | filter:searchRelListDoc" class="relationid-list flex-general-column-wrapper-center">
                   <div class="m-relationid" ng-click="listAddRelation(eachRelRow)">
                     <a>
                       {{eachRelRow.document._id}}

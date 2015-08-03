@@ -44,7 +44,7 @@ app.config([
     });
 
     $stateProvider.state('dataView', {
-        url: '/:appId/data/table/:tableId',
+        url: '/:appId/data/table/:tableName',
         templateUrl: 'app/views/data-view.html',
         controller: 'dataViewController'
     });

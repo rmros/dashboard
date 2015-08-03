@@ -35,8 +35,13 @@
 					<form style="margin-bottom: 30px !important; margin-top: 30px !important; border-left:1px solid #E2E2E2;" class="form-horizontal"  name="userForm" ng-submit="signUp(userForm.$valid)">
 						<div class="content">						
 
-							<div ng-show="showSpinner" class="flex-general-column-wrapper-center spinner-signup">     			
-		              			 <img src='/assets/images/horizontalLoaderWhite.gif' />
+							<div ng-show="showSpinner" class="flex-general-column-wrapper-center spinner-signup"> 
+								<div>    			
+		              			 <img src="../assets/images/spinesolid.gif">	              			
+		              			</div>
+		              			<div>    			
+		              			 	<span style="font-size:20px;">Signing Up</span>
+		              			</div>
 	              			</div>
 
 	              			<p ng-hide="showSpinner" class="text-center" ng-show="err" style="color:red;">{{err}}</p>
@@ -77,7 +82,8 @@
 								
 							  <p class="spacer">Already have an account? <a class="login-link" id="login-link" href="/accounts">Log in</a></p>	
 
-					</div><!--no spinner-->	
+						</div>
+						<!--no spinner-->	
 				 </div>	  
 				</div>
 			  </form>

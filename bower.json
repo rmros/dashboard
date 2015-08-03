@@ -35,7 +35,8 @@
     "stackbox": "~0.3.4",
     "ngInfiniteScroll": "~1.2.1",
     "angular-ui-ace": "bower",
-    "ionicons": "~2.0.1"
+    "ionicons": "~2.0.1",
+    "angu-fixed-header-table": "~1.2.0"
   },
   "devDependencies": {}
 }

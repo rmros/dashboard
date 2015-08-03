@@ -21,7 +21,7 @@ uiGmapGoogleMapApi) {
 
   //Init
   var id;
-  var tableId;
+  var tableName;
   $scope.isTableLoaded=false;
   $rootScope.isFullScreen=true; 
 
@@ -38,6 +38,7 @@ uiGmapGoogleMapApi) {
   $scope.selectedRowsCount=0;
   $scope.areSelectAllRows=false;  
   $scope.rowEditMode=[];
+  $scope.rowWarningMode=[];
   $scope.rowErrorMode=[];
   $scope.rowSpinnerMode=[]; 
   $scope.rowSavedMode=[]; 
@@ -62,11 +63,22 @@ uiGmapGoogleMapApi) {
 
   $scope.init = function() { 
     id = $stateParams.appId;
-    tableId= $stateParams.tableId;
+    tableName= $stateParams.tableName;
     $scope.colDataTypes=columnDataTypeService.getcolumnDataTypes();
-    if(id && tableId){        
+    if(id && tableName){        
       loadProject(id);                   
-    }     
+    }
+
+    //Start the beacon
+    var x = 0;
+    addCircle(x);
+    setInterval(function () {
+        if (x === 0) {
+            x = 1;
+        }
+        addCircle(x);
+        x++;
+    }, 1200);     
        
   };
 
@@ -123,7 +135,7 @@ uiGmapGoogleMapApi) {
     });
      row.set(column.name,!row.get(column.name));
     if(requiredField){      
-      rowErrorMode(i,row,column.name);     
+      rowWarningMode(i,row,column.name);     
     }else{
       rowSpinnerMode(i);     
 
@@ -137,7 +149,7 @@ uiGmapGoogleMapApi) {
           showSaveIconInSecond(i);
 
       }, function(error){ 
-         rowInitMode(i);    
+         rowErrorMode(i,error);    
       });
     }       
     
@@ -146,7 +158,7 @@ uiGmapGoogleMapApi) {
 
   //DateTime
   //Invoke DateTime
-  $scope.showDateTimeInput=function(row,column){
+  /*$scope.showDateTimeInput=function(row,column){
     nullifyFields();
     $scope.editableRow=row;//row
     $scope.editableColumnName=column.name;//column name 
@@ -165,7 +177,7 @@ uiGmapGoogleMapApi) {
     $scope.editableField[index][column.name]=angular.copy(new Date(row.get(column.name)));
     
     focus(column.id+"column");    
-  };
+  };*/
   //End DateTime
 
   //Text
@@ -186,7 +198,14 @@ uiGmapGoogleMapApi) {
 
     //Field or value     
     $scope.editableField[index]=arry2;
-    $scope.editableField[index][column.name]=angular.copy(row.get(column.name));
+    if(column.dataType=="Password"){
+      $scope.editableField[index][column.name]=null;
+    }else if(column.dataType=="DateTime"){
+      $scope.editableField[index][column.name]=angular.copy(new Date(row.get(column.name)));
+    }else{
+      $scope.editableField[index][column.name]=angular.copy(row.get(column.name));
+    }
+    
 
     focus(column.id+"column");           
   };
@@ -224,7 +243,7 @@ uiGmapGoogleMapApi) {
       $scope.editableRow.set($scope.editableColumnName,JSON.parse($scope.editableJsonObj));
       if(requiredField){  
         $("#md-objectviewer").modal("hide");    
-        rowErrorMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);
+        rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);
       }else{
         rowSpinnerMode($scope.editableIndex);        
     
@@ -236,8 +255,8 @@ uiGmapGoogleMapApi) {
           showSaveIconInSecond($scope.editableIndex);
         }, function(error){ 
           $("#md-objectviewer").modal("hide");
-          $scope.editableJsonObj=null;
-          rowInitMode($scope.editableIndex);    
+          $scope.editableJsonObj=null;          
+          rowErrordMode($scope.editableIndex,error);     
         });
       }  
 
@@ -291,7 +310,7 @@ uiGmapGoogleMapApi) {
             $scope.editableRow.set($scope.editableColumnName,cloudBoostFile);
             if(requiredField){
               $("#md-fileviewer").modal("hide");      
-              rowErrorMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);
+              rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);
             }else{
               rowSpinnerMode($scope.editableIndex); 
                 
@@ -304,8 +323,8 @@ uiGmapGoogleMapApi) {
                   showSaveIconInSecond($scope.editableIndex);
                 }, function(error){ 
                   $("#md-fileviewer").modal("hide");
-                  $scope.removeSelectdFile();  
-                  rowInitMode($scope.editableIndex);  
+                  $scope.removeSelectdFile();                   
+                  rowErrorMode($scope.editableIndex,error);
                 }); 
             }             
 
@@ -342,7 +361,7 @@ uiGmapGoogleMapApi) {
 
       $scope.editableRow.set($scope.editableColumnName,null); 
       if(requiredField){      
-        rowErrorMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);
+        rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);
       }else{
         rowSpinnerMode($scope.editableIndex);
                     
@@ -356,7 +375,8 @@ uiGmapGoogleMapApi) {
         }, function(error){ 
           $scope.editableFile=null;
           $scope.removeSelectdFile();
-          rowInitMode($scope.editableIndex);
+          rowErrorMode($scope.editableIndex,error);
+
           $("#md-fileviewer").modal("hide");     
         });
 
@@ -480,7 +500,7 @@ function saveGeopoint(){
   
   if(requiredField){  
     $("#md-geodocumentviewer").modal("hide");    
-    rowErrorMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);
+    rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);
   }else{
     rowSpinnerMode($scope.editableIndex);
 
@@ -493,7 +513,7 @@ function saveGeopoint(){
     }, function(error){ 
       $("#md-geodocumentviewer").modal("hide");
       $scope.editableGeopoint=null;
-      rowInitMode($scope.editableIndex);     
+      rowErrorMode($scope.editableIndex,error);    
     });
   }  
 }  
@@ -515,18 +535,18 @@ $scope.addRelation=function(row,column){
       var rowId=row.get(column.name).document._id;  
 
       //get table definition    
-      getProjectTableById($scope.tableDef.id)
+      getProjectTableByName($rootScope.currentProject.appId,$scope.tableDef.name)
       .then(function(table){ 
 
-            //get Table data
-            $scope.queryTableById(tableName,rowId)
-            .then(function(record){
-              $scope.linkedRelatedDoc=record;
-              $("#md-reldocumentviewer").modal();
-            }, function(error){ 
-                  
-            });
-            //End of get Table data
+          //get Table data
+          $scope.queryTableById(tableName,rowId)
+          .then(function(record){
+            $scope.linkedRelatedDoc=record;
+            $("#md-reldocumentviewer").modal();
+          }, function(error){ 
+                
+          });
+          //End of get Table data
 
       }, function(error){           
       });
@@ -534,11 +554,9 @@ $scope.addRelation=function(row,column){
     }else{
       $scope.linkedRelatedDoc=null;
       $("#md-reldocumentviewer").modal();
-    }
-    
-
-    
+    } 
   };
+
   $scope.searchRelationDocs=function(){
 
     $("#md-reldocumentviewer").modal("hide");
@@ -575,9 +593,9 @@ $scope.addRelation=function(row,column){
          }          
        }
     });
-     $scope.editableRow.set($scope.editableColumnName,relationCBRecord); 
+    $scope.editableRow.set($scope.editableColumnName,relationCBRecord); 
     if(requiredField){      
-      rowErrorMode(i,$scope.editableRow,$scope.editableColumnName);
+      rowWarningMode(i,$scope.editableRow,$scope.editableColumnName);
       $("#md-searchreldocument").modal("hide");
       $("#md-reldocumentviewer").modal("hide");     
     }else{
@@ -590,8 +608,8 @@ $scope.addRelation=function(row,column){
         showSaveIconInSecond(i);
         
       }, function(error){ 
-        $("#md-searchreldocument").modal("hide");
-        rowInitMode(i); 
+        $("#md-searchreldocument").modal("hide");      
+        rowErrorMode(i,error);
       });
 
     }      
@@ -662,7 +680,7 @@ $scope.addRelation=function(row,column){
       }
   }
 
-  $scope.deleteValue=function(){
+  $scope.deleteRelLink=function(){
 
     var i=$scope.currentTableData.indexOf($scope.editableRow);   
     rowEditMode(i);
@@ -677,7 +695,7 @@ $scope.addRelation=function(row,column){
     $scope.editableRow.set($scope.editableColumnName,null);
 
     if(requiredField){      
-      rowErrorMode(i,$scope.editableRow,$scope.editableColumnName);     
+      rowWarningMode(i,$scope.editableRow,$scope.editableColumnName);     
     }else{
       rowSpinnerMode(i);
                   
@@ -687,8 +705,11 @@ $scope.addRelation=function(row,column){
         $scope.relatedTableDefArray=[];
         $scope.relatedTableRecordArray=[];
         showSaveIconInSecond(i);
+        $scope.linkedRelatedDoc=null;
+        $("#md-reldocumentviewer").modal("hide");
       }, function(error){ 
-          rowInitMode(i);  
+          rowErrorMode(i,error); 
+          $("#md-reldocumentviewer").modal("hide"); 
       });
 
     }
@@ -910,7 +931,7 @@ $scope.addListItem=function(newListItem){
       $scope.editableRow.set($scope.editableColumnName,$scope.editableList);
 
       if(requiredField){      
-        rowErrorMode(i,$scope.editableRow,$scope.editableColumnName);     
+        rowWarningMode(i,$scope.editableRow,$scope.editableColumnName);     
       }else{
         rowSpinnerMode(i);
 
@@ -926,8 +947,8 @@ $scope.addListItem=function(newListItem){
 
           //$scope.$digest();  
         }, function(error){
-          newListItem=null;
-          rowInitMode(i); 
+          newListItem=null;      
+          rowErrorMode(i,error);
           //$scope.$digest();         
         });
 
@@ -953,7 +974,7 @@ $scope.deleteListItem=function(index){
   }
   $scope.editableRow.set($scope.editableColumnName,$scope.editableList);
   if(requiredField){      
-    rowErrorMode(i,$scope.editableRow,$scope.editableColumnName); 
+    rowWarningMode(i,$scope.editableRow,$scope.editableColumnName); 
     $("#md-list-commontypes").modal("hide");    
   }else{
     rowSpinnerMode(i);  
@@ -965,8 +986,8 @@ $scope.deleteListItem=function(index){
         convertFieldsISO2DateObj(); 
       }
       showSaveIconInSecond(i);   
-    }, function(error){    
-      rowInitMode(i);       
+    }, function(error){        
+      rowErrorMode(i,error);       
     });
  }   
   
@@ -1021,7 +1042,7 @@ $scope.listSetAndSaveFile=function(){
             $scope.editableRow.set($scope.editableColumnName,$scope.editableList);
 
             if(requiredField){      
-              rowErrorMode(i,$scope.editableRow,$scope.editableColumnName);
+              rowWarningMode(i,$scope.editableRow,$scope.editableColumnName);
               $("#md-list-fileviewer").modal("hide"); 
               $("#md-list-commontypes").modal("hide");    
             }else{
@@ -1036,8 +1057,8 @@ $scope.listSetAndSaveFile=function(){
               //$scope.$digest();  
             }, function(error){
               $("#md-list-fileviewer").modal("hide");
-              $scope.removeSelectdFile(); 
-              rowInitMode(i);         
+              $scope.removeSelectdFile();             
+              rowErrorMode(i,error);        
               //$scope.$digest();         
             });
           }            
@@ -1064,7 +1085,7 @@ $scope.deleteListFile=function(){
   $scope.listEditableRow.set($scope.listEditableColumn.name,$scope.listEditableRow.document[$scope.listEditableColumn.name]);
 
   if(requiredField){      
-    rowErrorMode(i,$scope.listEditableRow,$scope.listEditableColumn.name);  
+    rowWarningMode(i,$scope.listEditableRow,$scope.listEditableColumn.name);  
     $("#md-list-fileviewer").modal("hide"); 
     $("#md-list-commontypes").modal("hide");     
   }else{
@@ -1076,7 +1097,7 @@ $scope.deleteListFile=function(){
       $("#md-list-fileviewer").modal("hide");
       showSaveIconInSecond(i);   
     }, function(error){  
-      rowInitMode(i);       
+      rowErrorMode(i,error);       
     });
 
   }
@@ -1125,7 +1146,7 @@ $scope.listAddRelation=function(relationDoc){
     $scope.editableList.push(relationDoc);
     $scope.editableRow.set($scope.editableColumnName,$scope.editableList);
     if(requiredField){      
-      rowErrorMode(i,$scope.editableRow,$scope.editableColumnName); 
+      rowWarningMode(i,$scope.editableRow,$scope.editableColumnName); 
       $("#md-searchlistdocument").modal("hide");
       $("#md-list-commontypes").modal("hide");      
     }else{
@@ -1138,8 +1159,8 @@ $scope.listAddRelation=function(relationDoc){
         showSaveIconInSecond(i);          
         //$scope.$digest();  
       }, function(error){
-        $("#md-searchlistdocument").modal("hide");  
-        rowInitMode(i);               
+        $("#md-searchlistdocument").modal("hide");       
+        rowErrorMode(i,error);               
         //$scope.$digest();         
       });
     }              
@@ -1242,7 +1263,7 @@ $scope.listAddGeopoint=function(valid){
     $scope.editableRow.set($scope.editableColumnName,$scope.editableList);
 
     if(requiredField){      
-      rowErrorMode(i,$scope.editableRow,$scope.editableColumnName.name); 
+      rowWarningMode(i,$scope.editableRow,$scope.editableColumnName.name); 
       $("#md-list-geodocumentviewer").modal("hide"); 
       $("#md-list-commontypes").modal("hide");    
     }else{
@@ -1260,8 +1281,8 @@ $scope.listAddGeopoint=function(valid){
       }, function(error){
         $scope.listEditableGeopoint.latitude=null;
         $scope.listEditableGeopoint.longitude=null; 
-        $("#md-list-geodocumentviewer").modal("hide");        
-        rowInitMode(i); 
+        $("#md-list-geodocumentviewer").modal("hide");          
+        rowErrorMode(i,error);
         //$scope.$digest();         
       });
 
@@ -1300,7 +1321,7 @@ $scope.listGeoPointsetAndSave=function(valid){
       $scope.editableRow.set($scope.editableColumnName,$scope.editableList);
 
       if(requiredField){      
-        rowErrorMode(i,$scope.editableRow,$scope.editableColumnName);
+        rowWarningMode(i,$scope.editableRow,$scope.editableColumnName);
         $("#md-list-edit-geodocumentviewer").modal("hide");
         $("#md-list-commontypes").modal("hide");     
       }else{
@@ -1316,8 +1337,8 @@ $scope.listGeoPointsetAndSave=function(valid){
         }, function(error){ 
           $scope.listEditableGeopoint.latitude=null;
           $scope.listEditableGeopoint.longitude=null; 
-          $("#md-list-edit-geodocumentviewer").modal("hide");
-          rowInitMode(i); 
+          $("#md-list-edit-geodocumentviewer").modal("hide");      
+          rowErrorMode(i,error); 
                   
         });
      }
@@ -1346,7 +1367,7 @@ $scope.setAndSaveList=function(data,index){
   }  
   
   if(requiredField){      
-    rowErrorMode(i,$scope.editableRow,$scope.editableColumnName); 
+    rowWarningMode(i,$scope.editableRow,$scope.editableColumnName); 
     if( $scope.editableColumn.relatedTo=="Object"){    
       $("#md-list-objectviewer").modal("hide"); 
     }
@@ -1364,8 +1385,8 @@ $scope.setAndSaveList=function(data,index){
     }, function(error){ 
       if( $scope.editableColumn.relatedTo=="Object"){    
         $("#md-list-objectviewer").modal("hide"); 
-      } 
-      rowInitMode(i);        
+      }     
+      rowErrorMode(i,error);       
     });
 
   }
@@ -1408,7 +1429,7 @@ $scope.setAndSaveList=function(data,index){
 
         $scope.editableRow.set($scope.editableColumnName,$scope.editableField[$scope.editableIndex][$scope.editableColumnName]);
         if(requiredField){      
-          rowErrorMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);          
+          rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);          
         }else{
           rowSpinnerMode($scope.editableIndex);          
         
@@ -1418,8 +1439,8 @@ $scope.setAndSaveList=function(data,index){
             $scope.showInputForEdit[$scope.editableIndex][$scope.editableColumnName]=false;
             showSaveIconInSecond($scope.editableIndex);
           }, function(error){ 
-            $scope.showInputForEdit[$scope.editableIndex][$scope.editableColumnName]=false; 
-            rowInitMode($scope.editableIndex);    
+            $scope.showInputForEdit[$scope.editableIndex][$scope.editableColumnName]=false;           
+            rowErrorMode($scope.editableIndex,error);   
           });
         }
 
@@ -1450,7 +1471,7 @@ $scope.setAndSaveList=function(data,index){
     });
      
     if(requiredField){      
-      rowErrorMode(i,$scope.editableRow,$scope.editableColumnName);
+      rowWarningMode(i,$scope.editableRow,$scope.editableColumnName);
       $("#md-relationviewer").hide();      
     }else{
       rowSpinnerMode(i);
@@ -1459,8 +1480,8 @@ $scope.setAndSaveList=function(data,index){
       .then(function(obj){  
         $("#md-relationviewer").hide();
         showSaveIconInSecond(i);   
-      }, function(error){
-        rowInitMode(i);             
+      }, function(error){    
+        rowErrorMode(i,error);            
       });
     }           
     
@@ -1517,17 +1538,15 @@ $scope.setAndSaveList=function(data,index){
 
   function getProjectTables(){
 
-   tableService.getProjectTables($rootScope.currentProject)
-   .then(function(data){       
+    tableService.getProjectTables($rootScope.currentProject)
+    .then(function(data){       
 
-      if(!data){
-      
+      if(!data){      
         $rootScope.currentProject.tables=[];                       
-      }     
-      else if(data){                        
+      }else if(data){                        
           $rootScope.currentProject.tables=data;
 
-          getProjectTableById(tableId)
+          getProjectTableByName($rootScope.currentProject.appId,tableName)
           .then(function(table){
               if(table){
                 $rootScope.currentProject.currentTable=table;
@@ -1535,10 +1554,13 @@ $scope.setAndSaveList=function(data,index){
                 //Load data 
                 $scope.loadTableData(table,orderBy,orderByType,10,0)
                 .then(function(list){              
-                   $scope.currentTableData=list;
-                   $scope.totalRecords=10;
-                   $scope.isTableLoaded=true;
-                   //$scope.$digest();                                               
+                    $scope.currentTableData=list;
+                    $scope.totalRecords=10;
+                    $scope.isTableLoaded=true; 
+
+                    //Fixed Header Re-run                 
+                    //$(".smoothTable").floatThead('reflow')
+                                                                                   
                 },
                 function(error){  
                   $.amaran({
@@ -1587,10 +1609,10 @@ $scope.setAndSaveList=function(data,index){
     });
   } 
 
-  function getProjectTableById(tableDefId){
+  function getProjectTableByName(appId,tableDefName){
     var q=$q.defer();
 
-    tableService.getProjectTableById(tableDefId)
+    tableService.getProjectTableByName(appId,tableDefName)
     .then(function(table){
         q.resolve(table);
     }, function(error){ 
@@ -1637,11 +1659,11 @@ $scope.setAndSaveList=function(data,index){
   };
   
   $scope.goToDataBrowser=function(t){
-    window.location.href="#/"+id+"/data/table/"+t.id;
+    window.location.href="#/"+id+"/data/table/"+t.name;
   };
 
   $scope.filterDataType=function(dataTypeObj){
-    if(dataTypeObj.type!="List" && dataTypeObj.type!="Relation"){
+    if(dataTypeObj.type!="List" && dataTypeObj.type!="Relation" && dataTypeObj.name!="Password"){
       return dataTypeObj;
     }
   };
@@ -1674,18 +1696,18 @@ $scope.setAndSaveList=function(data,index){
     }; 
 
     $scope.newColumnObj=newcol; 
-    $scope.showAddColPopUp=true;
-    $("#scrollbar-wrapper").mCustomScrollbar("scrollTo",['top','right']);   
+    $scope.showAddColPopUp=true;   
+    //$("#scrollbar-wrapper").mCustomScrollbar("scrollTo",['top','right']);      
   };
 
   $scope.addColumn = function(valid) {
     if(valid){
       $rootScope.currentProject.currentTable.columns.push($scope.newColumnObj);
-      $("#scrollbar-wrapper").mCustomScrollbar("update");
+      /*$("#scrollbar-wrapper").mCustomScrollbar("update");
       $(".data-table-design").css("height","84.2vh");
       $timeout(function(){ 
         $(".data-table-design").css("height","84.4vh");
-      }, 2000);
+      }, 2000);*/
 
 
       tableService.saveTable($rootScope.currentProject.appId, $rootScope.currentProject.currentTable)
@@ -1719,8 +1741,7 @@ $scope.setAndSaveList=function(data,index){
       $scope.showColOptions[i]=false;
 
       tableService.saveTable(id,$scope.currentProject.currentTable)
-      .then(function(table){
-        console.log(table);
+      .then(function(table){        
 
           //load more data
           $scope.loadTableData($rootScope.currentProject.currentTable,orderBy,orderByType,$scope.totalRecords,0)
@@ -1823,12 +1844,12 @@ $scope.setAndSaveList=function(data,index){
   $scope.checkErrorsForCreate=function(name,arrayList,type){
     var result=tableErrorService.checkErrorsForCreate(name,arrayList,type);
     if(result){
-          if(type=="table"){
-            $scope.tableErrorForCreate=result;
-          }
-          if(type=="column"){
-            $scope.columnErrorForCreate=result;
-          }
+        if(type=="table"){
+          $scope.tableErrorForCreate=result;
+        }
+        if(type=="column"){
+          $scope.columnErrorForCreate=result;
+        }
 
     }else{
       $scope.tableErrorForCreate=null;
@@ -2001,6 +2022,7 @@ $scope.geoPointValidation=function(type,value){
 function rowInitMode(index){
   $scope.rowInfo=null;
   $scope.rowEditMode[index]=false;
+  $scope.rowWarningMode[index]=false;
   $scope.rowErrorMode[index]=false;
   $scope.rowSpinnerMode[index]=false; 
   $scope.rowSavedMode[index]=false;
@@ -2009,12 +2031,13 @@ function rowInitMode(index){
 function rowEditMode(index){
   $scope.rowInfo=null;
   $scope.rowEditMode[index]=true;
+  $scope.rowWarningMode[index]=false;
   $scope.rowErrorMode[index]=false;
   $scope.rowSpinnerMode[index]=false; 
   $scope.rowSavedMode[index]=false;
 }
 
-function rowErrorMode(index,row,columnName){
+function rowWarningMode(index,row,columnName){
   var colNames="";
   for(var i=0;i<$scope.currentProject.currentTable.columns.length;++i){
     var col=$scope.currentProject.currentTable.columns[i];
@@ -2028,25 +2051,43 @@ function rowErrorMode(index,row,columnName){
   $scope.rowInfo="This row is not saved because these "+colNames+" are required";
 
   $scope.rowEditMode[index]=false;
-  $scope.rowErrorMode[index]=true;
+  $scope.rowWarningMode[index]=true;
+  $scope.rowErrorMode[index]=false;
   $scope.rowSpinnerMode[index]=false; 
   $scope.rowSavedMode[index]=false;
+}
+
+function rowErrorMode(index,error){
+  $scope.rowInfo=error;
+  $scope.rowEditMode[index]=false;
+  $scope.rowWarningMode[index]=false;
+  $scope.rowErrorMode[index]=false;
+  $scope.rowSpinnerMode[index]=true; 
+  $scope.rowSavedMode[index]=false;
+  //General Spinner
+  $scope.saveSpinner=false;
 }
 
 function rowSpinnerMode(index){
   $scope.rowInfo=null;
   $scope.rowEditMode[index]=false;
+  $scope.rowWarningMode[index]=false;
   $scope.rowErrorMode[index]=false;
   $scope.rowSpinnerMode[index]=true; 
   $scope.rowSavedMode[index]=false;
+  //General Spinner
+  $scope.saveSpinner=true;
 }
 
 function rowSavedMode(index){
   $scope.rowInfo=null;
   $scope.rowEditMode[index]=false;
+  $scope.rowWarningMode[index]=false;
   $scope.rowErrorMode[index]=false;
   $scope.rowSpinnerMode[index]=false; 
   $scope.rowSavedMode[index]=true;
+  //General Spinner
+  $scope.saveSpinner=false;
 }
 
 function showSaveIconInSecond(index){  
@@ -2057,5 +2098,57 @@ function showSaveIconInSecond(index){
 }
 
 /*------/Partial & Table Definition Functions---------------*/   
+function addCircle(id) {
+  $('.first-data-beacon-container').append('<div  id="' + id + '" class="circlepulse2 first-data-beacon"></div>');
+
+  $('#' + id).animate({
+      'width': '40px',
+      'height': '40px',
+      'margin-top': '-20px',
+      'margin-left': '-20px',
+      'opacity': '0'
+  }, 4000, 'easeOutCirc');
+
+  setInterval(function () {
+      $('#' + id).remove();
+  }, 4000);
+}
+//Notification
+
+function errorNotify(errorMsg){
+  $.amaran({
+      'theme'     :'colorful',
+      'content'   :{
+         bgcolor:'#EE364E',
+         color:'#fff',
+         message:errorMsg
+      },
+      'position'  :'top right'
+  });
+}
+
+function successNotify(successMsg){
+  $.amaran({
+      'theme'     :'colorful',
+      'content'   :{
+         bgcolor:'#149600',
+         color:'#fff',
+         message:successMsg
+      },
+      'position'  :'top right'
+  });
+}
+
+function WarningNotify(WarningMsg){
+  $.amaran({
+      'theme'     :'colorful',
+      'content'   :{
+         bgcolor:'#EAC004',
+         color:'#fff',
+         message:WarningMsg
+      },
+      'position'  :'top right'
+  });
+}
 
 });

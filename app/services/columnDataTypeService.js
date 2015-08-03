@@ -30,9 +30,9 @@ app.factory('columnDataTypeService', function () {
             },
             {
               name : 'Password',
-              text : 'Password',
+              text : 'Encrypted Text',
               type: 'static',
-              visible: false
+              visible: true
             },
             {
               name : 'Boolean',

@@ -1,16 +1,24 @@
 
-app.directive('circlepulse', function(){
+app.directive('fixedtableheadcol', function(){
     return {
         restrict: 'A',
         link: function(scope, element, attrs){       
-            $(element).jPulse({
-                color: "black",
-                size: 120,
-                speed: 2000,
-                interval: 400,
-                left: 0,
-                top: 0,
-                zIndex: -1
+            $(element).freezeHeader({ 'height': '300px' });
+        }
+    };
+});
+
+app.directive('fixedthead', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){       
+            var $table = $(element);
+            $table.floatThead({
+                scrollContainer: function($table){
+                    return $table.closest('.data-table-design');
+                },
+                zIndex:8,
+                useAbsolutePositioning:false
             });
         }
     };

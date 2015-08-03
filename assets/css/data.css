@@ -96,7 +96,8 @@
 .table-apps-div{
     width:93%;
     height:400px;
-    margin: 0 auto;    
+    margin: 0 auto;   
+    margin-bottom: 200px;    
 }
 
 .table-icon{     
@@ -132,15 +133,15 @@
     width:250px;   
      margin-left: 20px;
     margin-bottom: 20px;
-    
+    position: relative;
 }
 .popup-div{
     height: auto;
     width:230px;
     position: absolute;
-    background-color:white;
-    left:-74px;
-    top:100px;
+    background-color:#ECF0F5;
+    left:3.5%;
+    top:110%;
     padding: 12px;
     border: 1px solid #7C7C7C;
     border-radius: 3px;
@@ -166,7 +167,7 @@
     left: 105px;
     top:-7px;
     border:8px solid;
-    border-color: white transparent transparent white;
+    border-color: #ECF0F5 transparent transparent #ECF0F5;
     -webkit-transform: rotate(45deg);
    -moz-transform:    rotate(45deg);
    -ms-transform:     rotate(45deg);
@@ -199,9 +200,8 @@
 .new-table-name input{
     height:26px;
 }
-.new-table-name input:hover,.new-table-name input:focus{  
-    background-color: transparent;
-  outline: 0;  
+.new-table-name input:focus{
+    outline: 0;  
 }
 
 .table-templates{
@@ -214,7 +214,9 @@
   outline: 0;
   font-size: 12px;
 }
-
+.newtable{
+    padding-left: 3.5px;
+}
 .tableNewApp:hover{
     border: 1px solid black;
     background-color: white;
@@ -256,29 +258,30 @@
 
 .tableCreateBtn{
     margin-left:8px;
-    background-color: #549AFC;
+    background-color: #3A5795;
     border: none;
     color:white;
-    border: 1px solid #0C70FC;
+    border: 1px solid #3A5795;
 }
 
 .tableCreateBtn:hover{  
-    background-color: #076CF9;   
+    background-color: #3A5795;   
     color:white;
-    border: 1px solid #0C70FC;
+    border: 1px solid #3A5795;
 }
 
 .tableCancelBtn{   
     border: none;
     color:black;
     border: 1px solid #BCBCBC;
+    background-color: white;
 }
 
 .tableCancelBtn:hover{   
     border: none;
     color:black;
     border: 1px solid #C9C9C9;
-    background-color: #BCBABA;
+    background-color: white;
 }
 
 .modalX{
@@ -322,6 +325,10 @@
     width:20%;     
 }
 
+.headerR{     
+    padding-top: 17px;   
+}
+
 .headerC{
     width: 59%;
 }
@@ -338,7 +345,7 @@
    position: relative;
 }
 .wyl-table-loading{   
-    height:88vh;
+    height:80vh;
     width:99.6vw;   
 } 
 
@@ -354,7 +361,7 @@
     width:260px;
     height:auto;    
     position: absolute;
-    z-index: 1;
+    z-index: 9;
     left: -63px;
     top: 54px;
     -webkit-box-shadow: 0 0 2px 1px #D4D5D6;
@@ -388,11 +395,9 @@
     height:81.5vh; 
     overflow: auto;         
 }
-
-
 .smoothTable { 
    width:94.6vw; 
-   background-color: white;    
+   background-color: white;     
 }
 
 .checkBx-custom{    
@@ -434,7 +439,7 @@
     height: auto;
     width: 90%;
     background-color: white;
-    z-index: 99999; 
+    z-index: 9999; 
     right:1px;
     -webkit-box-shadow: 0 0 1px 2px #C0C0C0;
     -moz-box-shadow: 0 0 1px 2px #C0C0C0;
@@ -538,7 +543,7 @@
 }
 
 .addColTh{
-    position: relative;
+    position: relative;   
 }
 
 .addColThDiv div { 
@@ -552,10 +557,11 @@
     margin-top:-6px;
     font-weight: bold;
 }
+
 .addColPopUpWrapper{
     height:auto;
     width:257px;
-    position: absolute;    
+    position: absolute;     
     top:0;
     left:-6px;
     -webkit-box-shadow: 0 0 6px 2px #D4D5D6;
@@ -1433,7 +1439,7 @@
 .data-info-div{  
     height: 28px;   
     width: 100%; 
-    margin-top: 3px;
+    margin-top: 3px;   
 }
 .data-info-div p{ 
     float: right;                   
@@ -1453,8 +1459,8 @@
     position: relative;    
 }
 .hidden-col-container{
-    position: absolute;
-    z-index: 4;
+    position: absolute; 
+    z-index: 9;   
     background-color: white;
     width: 198.7px;
     top: -2.6px; 
@@ -1542,11 +1548,17 @@
 
 }
 /*Fixed columns*/
-.sno-errorinfo i{
+.sno-warninginfo i{
     color: #F9B404;
+}
+.sno-errorinfo i{
+    color: red;
 }
 .sno-saved i{
     color: #00BB27;
+}
+.sno-savingSpin i{
+    color:black;
 }
 
 .first-table-beacon{
@@ -1554,8 +1566,17 @@
   height: 0px;
   margin-top: 0px;
   margin-left: 0px;
-  top:13%;
-  left:13%;
+  top:17%;
+  left:7%;
+}
+
+.first-data-beacon{
+  width: 0px;
+  height: 0px;
+  margin-top: 0px;
+  margin-left:-3px;
+  top:46%;
+  left:3%;
 }
 
 .tableIcon{
@@ -1573,8 +1594,7 @@
 }
 
 .tableOptionIcon{
-    font-size:20px !important;
-    padding:10px !important;
+    font-size:16px !important;   
 }
 
 .newTableText{
@@ -1583,5 +1603,20 @@
     margin-bottom:10px !important;
     font-size:15px;
 }
-
+.table-wrapper{   
+    height: 89.60vh;
+    overflow: auto;
+}
+.list-file-display{
+    position: relative;
+}
+.list-images-remove-cross{
+    position: absolute;
+    padding: 2px;
+    background-color: #2A2B2A;
+    color: white;
+    top: 0;
+    right:0;
+    cursor: pointer;   
+}
 

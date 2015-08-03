@@ -11,7 +11,7 @@ app.factory('tableService',
         var promise = [];
       
         for(var i=0;i<tables.length; i++){
-            promise.push(global.saveTable(appId, tables[i]));
+          promise.push(global.saveTable(appId, tables[i]));
         }
 
         $q.all(promise).then(function(){
@@ -69,86 +69,91 @@ app.factory('tableService',
         //serialze
         var obj = {
           columns : table.columns,
-          name : table.name, 
-          type : table.type.type,
-          appId : appId,
-          id : table.id,
+          name    : table.name, 
+          type    : table.type.type,
+          appId   : appId,
+          id      : table.id          
         };
 
-        $http.put(serverURL+'/table/create/'+appId,obj).
-          success(function(data, status, headers, config) {
-                q.resolve(data);
+        if(table && table._id){
+          obj._id=table._id;
+        }
 
-                /****Tracking*********/            
-                 mixpanel.track('Save Table', { "Table name": table.name,"appId": appId});
-                /****End of Tracking*****/
-          }).
-          error(function(data, status, headers, config) {
-                q.reject(status);
-                if(status===401){
-                  $rootScope.logOut();
-                }
-          });
-          return  q.promise;
+        $http.put(serverURL+'/table/create/'+appId,obj).
+        success(function(data, status, headers, config) {
+            q.resolve(data);
+
+            /****Tracking*********/            
+             mixpanel.track('Save Table', { "Table name": table.name,"appId": appId});
+            /****End of Tracking*****/
+        }).
+        error(function(data, status, headers, config) {
+            q.reject(status);
+            if(status===401){
+              $rootScope.logOut();
+            }
+        });
+        return  q.promise;
      };
      
     global.getProjectTables = function(currentProject){
         var q=$q.defer();
       
-        $http.get(serverURL+'/table/get/'+currentProject.appId).
+        $http.put(serverURL+'/table/get/'+currentProject.appId).
           success(function(data, status, headers, config) {
             if(data.length>0){
               var tempData = data;
               data = [];
               for(var i=0;i<tempData.length;i++){
                 var table = {
-                  id : tempData[i].id,
-                  name : tempData[i].name,
+                  _id     : tempData[i]._id,
+                  id      : tempData[i].id,
+                  name    : tempData[i].name,
                   columns : tempData[i].columns,
-                  tableColor: tempData[i].tableColor,
-                  type : _.first(_.where(tableTypeService.getTableTypes(), {type : tempData[i].type}))
-
+                  type    : _.first(_.where(tableTypeService.getTableTypes(), {type : tempData[i].type}))
                 };
 
                 data.push(table);
               }
             }
-                q.resolve(data);
+            q.resolve(data);
           }).
           error(function(data, status, headers, config) {
-                q.reject(status);
-                if(status===401){
-                  $rootScope.logOut();
-                }
+            q.reject(status);
+            if(status===401){
+              $rootScope.logOut();
+            }
           });
 
           return  q.promise;
       };
 
-      global.getProjectTableById = function(id){
+      global.getProjectTableByName = function(appId,Name){
         var q=$q.defer();
       
-        $http.get(serverURL+'/table/'+id).
+        var obj={appId:appId};
+
+        $http.put(serverURL+'/table/'+Name,obj).
           success(function(data, status, headers, config) {
             if(data){
               var tempData = data;      
              
                 var table = {
-                  id : tempData.id,
-                  name : tempData.name,
+                  _id     : tempData._id,
+                  id      : tempData.id,
+                  name    : tempData.name,
                   columns : tempData.columns,
-                  tableColor: tempData.tableColor,
-                  type : _.first(_.where(tableTypeService.getTableTypes(), {type : tempData.type}))              
+                  type    : _.first(_.where(tableTypeService.getTableTypes(), {type : tempData.type}))              
                 };
             }
             q.resolve(table);
 
           }).
           error(function(data, status, headers, config) {
-                q.reject(status);
-                if(status===401){
-                  $rootScope.logOut();
-                }
+              q.reject(status);
+              if(status===401){
+                $rootScope.logOut();
+              }
           });
 
           return  q.promise;

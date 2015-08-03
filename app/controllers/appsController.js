@@ -12,6 +12,10 @@ app.controller('appsController',
 
   $rootScope.isFullScreen=false;
   $scope.showProject=[];
+  $scope.newApp={
+    name:null,
+    appId:null
+  };
   
   $scope.init=function(){
         //Hiding the Menu
@@ -37,12 +41,7 @@ app.controller('appsController',
                $scope.projectListObj=data;                    
           },function(error){
               $rootScope.dataLoading=false; 
-              $.gritter.add({
-                position: 'top-right',
-                title: 'Something went wrong',
-                text: 'Cannot connect to server. Please try again.',
-                class_name: 'danger'
-              });
+              errorNotify('Cannot connect to server. Please try again.');
           });
          //listing ends
 
@@ -67,14 +66,10 @@ app.controller('appsController',
 
   $scope.deleteProject = function(){               
       if ($scope.confirmAppName === null) { 
-        $('#deleteappmodal').modal("hide"); 
-        $.gritter.add({
-            position: 'top-right',
-            title: 'Warning',
-            text: 'App name you entered was empty.',
-            class_name: 'prusia'
-        }); 
-        $scope.confirmAppName=null;          
+        $('#deleteappmodal').modal("hide");        
+        WarningNotify('App name you entered was empty.');
+        $scope.confirmAppName=null;   
+
       } else {
         if($scope.confirmAppName === $scope.projectToBeDeleted.name){
 
@@ -88,36 +83,21 @@ app.controller('appsController',
                   $('#deleteappmodal').modal("hide");  
                   //project is deleted.
                   $scope.projectListObj.splice($scope.projectListObj.indexOf($scope.projectToBeDeleted),1);
-                  $.gritter.add({
-                    position: 'top-right',
-                    title: 'Successfull',
-                    text: 'The project is successfully deleted.',
-                    class_name: 'success'
-                  });
+                  successNotify('The project is successfully deleted.');                
 
                 },
                 function(error){
                   $scope.confirmAppName=null;
                   $('#deleteappmodal').modal("hide");  
-                  $scope.isLoading[$scope.projectToBeDeletedIndex] = false;                        
-                  $.gritter.add({
-                    position: 'top-right',
-                    title: 'oops! something went wrong',
-                    text: 'Cannot delete this project at this point in time. Please try again later.',
-                    class_name: 'danger'
-                  });
+                  $scope.isLoading[$scope.projectToBeDeletedIndex] = false; 
+                  errorNotify('Cannot delete this project at this point in time. Please try again later.');
                    
                 });
 
         } else{  
           $scope.confirmAppName=null;
-          $('#deleteappmodal').modal("hide");               
-          $.gritter.add({
-              position: 'top-right',
-              title: 'Warning',
-              text: 'App name doesnot match.',
-              class_name: 'prusia'
-          });         
+          $('#deleteappmodal').modal("hide"); 
+          WarningNotify('App name doesnot match.');                  
         }                      
       }        
   };
@@ -128,7 +108,7 @@ app.controller('appsController',
           $scope.showSaveBtn = false;               
           $scope.appValidationError=null;
 
-          var createProjectPromise=projectService.createProject($scope.name, $scope.appId);
+          var createProjectPromise=projectService.createProject($scope.newApp.name, $scope.newApp.appId);
           createProjectPromise
           .then(function(data){
               $scope.showSaveBtn = true;
@@ -139,35 +119,20 @@ app.controller('appsController',
                 $scope.projectListObj.push(data);
               }
               
-              $.gritter.add({
-                  position: 'top-right',
-                  title: 'Successefull',
-                  text: 'The project is successfully created.',
-                  class_name: 'success'
-              });
+              successNotify('The project is successfully created.');           
 
-              $scope.name="";
-              $scope.appId = "";
+              $scope.newApp.name="";
+              $scope.newApp.appId = "";
 
                            
             },function(error){
               $scope.showSaveBtn = true;
-              if(error === 400){                   
-                $.gritter.add({
-                  position: 'top-right',
-                    title: 'Sorry!',
-                    text: 'App ID already exists. Please choose a different App ID.',
-                    class_name: 'danger'
-                });
+              if(error === 400){           
+                errorNotify('App ID already exists. Please choose a different App ID.');
               }
 
-              if(error === 500){                     
-                  $.gritter.add({
-                    position: 'top-right',
-                    title: 'Error',
-                    text: 'Cannot connect to server. Please try again.',
-                    class_name: 'danger'
-                  });
+              if(error === 500){           
+                errorNotify('Cannot connect to server. Please try again.');  
               }
                
             });
@@ -183,18 +148,14 @@ app.controller('appsController',
         var editProjectPromise=projectService.editProject(appId,name);
             editProjectPromise.then(
               function(data){
-                 $scope.isLoading[index] = false;
-                  $scope.projectListObj[index]=data;                      
-                  $.gritter.add({
-                    position: 'top-right',
-                    title: 'Successfull',
-                    text: 'The project is successfully modified.',
-                    class_name: 'success'
-                  });
+                $scope.isLoading[index] = false;
+                $scope.projectListObj[index]=data;           
+                successNotify('The project is successfully modified.');
               },
               function(error){
-                  $scope.isLoading[index] = false;
-                  $scope.editprojectError=error;                       
+                $scope.isLoading[index] = false;
+                $scope.editprojectError=error;  
+                errorNotify(error);                     
               }
             );
 
@@ -293,6 +254,43 @@ app.controller('appsController',
       }, 4000);
   }
 
+//Notification
+
+function errorNotify(errorMsg){
+  $.amaran({
+      'theme'     :'colorful',
+      'content'   :{
+         bgcolor:'#EE364E',
+         color:'#fff',
+         message:errorMsg
+      },
+      'position'  :'top right'
+  });
+}
+
+function successNotify(successMsg){
+  $.amaran({
+      'theme'     :'colorful',
+      'content'   :{
+         bgcolor:'#149600',
+         color:'#fff',
+         message:successMsg
+      },
+      'position'  :'top right'
+  });
+}
+
+function WarningNotify(WarningMsg){
+  $.amaran({
+      'theme'     :'colorful',
+      'content'   :{
+         bgcolor:'#EAC004',
+         color:'#fff',
+         message:WarningMsg
+      },
+      'position'  :'top right'
+  });
+}    
   
 
 }]);

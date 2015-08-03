@@ -1,6 +1,6 @@
-<div class="cl-mcont" style="background-color:#F4F6F7;" ng-init="initialize()"> 
+<div class="cl-mcont table-wrapper" style="background-color:#F4F6F7;" ng-init="initialize()"> 
 
-    <div class="row">  
+    <div ng-if="!dataLoading" class="row">  
       <div class="col-md-12"> 
           <div class="tablename-header">
               <h1>Tables</h1>
@@ -8,23 +8,27 @@
       </div>  
     </div>
 
-    <div ng-if="!dataLoading" class="row">  
+    <div ng-if="!dataLoading" class="row table-items">  
       <div class="col-md-12">  
           <div class="table-apps-div">
               <div class="row">
                 <div class="col-md-12"> 
-                  <div class="flex-general-row-wrapper-center">
+                  <div class="flex-general-row-wrapper-center table-tiles">
 
                     <!--loop-->
                     <div class="tableBx" ng-repeat="t in currentProject.tables">
-                        <div class="tableApp cf " style="background-color:{{'#3A5795'}}" ng-click="goToDataBrowser(t)">
+                        <div class="tableApp cf " style="background-color:#3A5795" ng-click="goToDataBrowser(t)">
 
                           <div class="cf">
-                            <span class="table-delete pull-right"><span class="cross tableOptionIcon" ng-hide="!t.type.isDeletable" ng-click="deleteTableModal(t); $event.stopPropagation()"><i class="icon ion-trash-b"></i><span></span>
+                            <span class="table-delete pull-right">
+                              <span class="cross tableOptionIcon" ng-hide="!t.type.isDeletable" ng-click="deleteTableModal(t); $event.stopPropagation()">
+                                X
+                              </span>
+                            </span>
                           </div>
 
                           <center>  
-                            <div >                         
+                            <div>                         
                              <i class="icon {{t.type.icon}} tableIcon"></i>
                              </div>
                              <div>
@@ -56,25 +60,35 @@
                         
 
                         <!--Add new table Pop up-->
-                        <div class="popup-div effect1" ng-show="addTablePopup">
+                        <div id="add-new-table-popup" class="popup-div effect1" ng-show="addTablePopup">
                           <div class="innerpop">
-                          <div class="new-table-name">
-                            <span style="color:blue;">Enter new table name</span>
-                            <input class="newtable form-control" type="text" ng-disabled="!selectedTableType.isRenamable" ng-keyup="checkErrorsForCreate(newTableName,currentProject.tables,'table')" ng-model="newTableName" placeholder="New Table Name" required>
-                          </div>                          
-                          <div class="table-templates">
-                            <span style="color:blue;">Select table type</span>
-                            <select ng-model="newTableType" ng-change="selectType(newTableType)">
-                                <option  ng-repeat="tableType in tableTypes | filter:checkMaxCount"   value="{{tableType.type}}" ng-selected="tableType.type=='custom'">{{tableType.name}}</option>
-                            </select>
-                          </div> 
-                          <div style="margin-top:10px;" data-ng-show="tableErrorForCreate">
-                            <span style="word-break: break-all;color:red;">{{tableErrorForCreate}}</span>
-                          </div>
-                          <div class="popup-buttons-div flex-general-row-wrapper">
-                            <button type="button" ng-click="cancelAddtable()" class="custmBtn tableCancelBtn">Cancel</button>
-                            <button type="button" class="custmBtn tableCreateBtn" ng-disabled="tableErrorForCreate" ng-click="addNewTable()">Create</button>
-                          </div> 
+                            <div class="new-table-name">
+                              <span>Enter new table name</span>
+                              <input class="newtable" type="text" ng-disabled="!selectedTableType.isRenamable" ng-keyup="checkErrorsForCreate(newTableName,currentProject.tables,'table')" ng-model="newTableName" placeholder="New Table Name" required>
+                            </div>
+
+                            <div class="table-templates">
+                              <span>Select table type</span>
+                              <select ng-model="newTableType" ng-change="selectType(newTableType)">
+                                  <option  ng-repeat="tableType in tableTypes | filter:checkMaxCount"   value="{{tableType.type}}" ng-selected="tableType.type=='custom'">{{tableType.name}}</option>
+                              </select>
+                            </div>
+
+                            <div style="margin-top:10px;" data-ng-show="tableErrorForCreate">
+                              <span style="word-break: break-all;color:red;">{{tableErrorForCreate}}</span>
+                            </div>
+
+                            <div class="popup-buttons-div flex-general-row-wrapper">
+
+                              <button ng-disabled="isCreatingTable" type="button" ng-click="cancelAddtable()" class="custmBtn tableCancelBtn">Cancel</button>
+
+                              <button ng-show="!isCreatingTable" type="button" class="custmBtn tableCreateBtn" ng-disabled="tableErrorForCreate" ng-click="addNewTable(newTableName)">Create</button>
+
+                              <!--While Saving-->
+                              <button ng-show="isCreatingTable" type="button" class="custmBtn tableCreateBtn" ng-disabled="tableErrorForCreate">
+                                <i class="fa fa-spinner fa-spin"></i>&nbsp;Creating..</button>
+                              <!--/While Saving-->
+                            </div> 
                           </div>
                         </div>  
                         <!--/Add new table Pop up-->
@@ -90,7 +104,30 @@
     </div>
     <!--While Loading-->
     <div ng-show="dataLoading" class="row flex-general-column-wrapper-center" style="height:68vh;">
-      <img src='/assets/images/horizontalLoaderGrey2.gif' />
+        <div>
+          <!--Animated Circle-->
+          <div class="cssload-bell">
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+          </div>
+          <!--/Animated Circle-->
+        </div>  
+        <div style="margin-top:63px;">
+         <span style="font-size:20px;">Your tables on the way</span>
+        </div>
     </div>
     <!--/While Loading-->
 </div>
@@ -115,7 +152,12 @@
             <input type="text" class="form-control" ng-model="confirmTableName" required style="width:400px;"/>
           </center> 
           <div class="flex-general-row-wrapper-center modalF">        
-            <button type="button" class="btn btn-danger btn-flat" style="width:400px;" ng-click="deleteTable(selectedTable)">DELETE TABLE</button>
+            <button ng-show="!isDeletingTable" type="button" class="btn btn-danger btn-flat" style="width:400px;" ng-click="deleteTable(selectedTable)">DELETE TABLE</button>
+
+            <!--While Deleting-->
+            <button ng-show="isDeletingTable" type="button" class="btn btn-danger btn-flat" style="width:400px;">
+              <i class="fa fa-spinner fa-spin"></i>&nbsp;DELETING TABLE</button>
+            <!--/While Deleting-->
           </div>         
         </div>
       </div>      
