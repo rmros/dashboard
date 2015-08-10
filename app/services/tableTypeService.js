@@ -106,7 +106,7 @@ app.factory('tableTypeService', function (utilityService) {
                   id : utilityService.makeId(),
                   relatedToType :null,
                   relationType: null,
-                  required: true,
+                  required: false,
                   unique: true,
                   isRenamable: false,
                   isEditable: false,

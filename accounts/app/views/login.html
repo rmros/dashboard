@@ -10,13 +10,14 @@
 			</div>
 			<div>
 				<div class="col-md-6">
-					<div style="margin-top:80px;margin-left:20px; padding-bottom:100px;">
+					<!--If Feed-->
+					<div ng-if="feed && !isBlogLoading" style="margin-top:80px;margin-left:20px; padding-bottom:100px;">
 						<div>
 							<span>WHAT'S NEW</span>
 						</div>
 						<div style="margin-top:3px;">
-							<a href="">
-							   <span style="color:#0275B3; font-weight:bold; font-size:16px;">Available now: Real-time Messaging &nbsp;<i class="fa fa-long-arrow-right"></i>
+							<a href="{{feed.link}}" target="_blank">
+							   <span style="color:#0275B3; font-weight:bold; font-size:16px;">{{feed.title}} &nbsp;<i class="fa fa-long-arrow-right"></i>
 							   </span>
 						    </a>
 						</div>
@@ -28,12 +29,50 @@
 
 						    <div class="login-descri-container">
 						    	<span>
-						    		See when customers are online, when they’re replying, and deliver messages in real-time.
+						    		{{feed.contentSnippet}}
 						    	</span>		
 						    </div>
 						</div>	
-					</div>		
+					</div>	
+
+					<!--If Feed Doesn't ,Default-->	
+					<div ng-if="!feed && !isBlogLoading" style="margin-top:80px;margin-left:20px; padding-bottom:100px;">
+					<div>
+						<span>WHAT'S IN IT FOR YOU?</span>
+					</div>
+					<div style="margin-top:3px;">
+						<a href="https://www.cloudboost.io/pricing" target="_blank">
+						   <span style="color:#0275B3; font-weight:bold; font-size:16px;">50$ Free credits, 
+Every month for life &nbsp;<i class="fa fa-long-arrow-right"></i>
+						   </span>
+					    </a>
+					</div>
+					<div class="news-dashboard flex-general-row-wrapper" style="margin-top:5px;">
+
+						<div class="login-image-container">
+							<img src="../assets/images/logtash.png" >
+					    </div>
+
+					    <div class="login-descri-container">
+					    	<span>
+					    		sjdygfvsydgysudgvyusdg dfvdfvdf dfvgdf
+					    	</span>		
+					    </div>
+					</div>	
+					</div>
+
+					<!--While Loading-->	
+					<div ng-if="isBlogLoading" style="margin-top:120px;margin-left:20px; height:50px;" class="blog-spinner flex-general-column-wrapper-center">
+					
+						<div style="margin-top:3px;">
+							<i class="fa fa-spinner fa-spin fa-2x"></i>
+						</div>
+						
+					</div>
+					<!--/While Loading-->
+
 				</div>	
+
 				<div class="col-md-6">
 					<form style="margin-bottom:20px !important; margin-top:40px !important; border-left:1px solid #E5E5E5;" class="form-horizontal" name="userForm" ng-submit="logIn(userForm.$valid)">
 					<div class="content">						
