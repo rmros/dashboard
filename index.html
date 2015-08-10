@@ -59,7 +59,7 @@
     <div class="cl-navblock">
       <div class="menu-space">
         <div class="content">
-          <a href="https://www.cloudboost.io" target="_blank">
+          <a href="#/">
           <!--SideBar Logo-->
           <div class="sidebar-logo">
             <div class="logo">
@@ -72,22 +72,17 @@
             <li  ng-class="{active:page=='apps','menu-active':page=='apps'}" data-toggle="tooltip" data-placement="right" title="Apps" tooltip><a href="#/"><i class="fa fa-th-large "></i><span>Apps</span></a>             
             </li>
 
-             <li ng-class="{active:page=='tableDesigner','menu-active':page=='tableDesigner'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Table Designer" tooltip><a href="#/{{currentProject.appId}}/data/designer/table/"  ng-click="toggleSideMenu()"><i class="fa fa-pencil-square"></i><span>Table Designer</span></a>   
+             <li ng-class="{active:page=='tableDesigner','menu-active':page=='tableDesigner'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Table Designer" tooltip><a href="#/{{currentProject.appId}}/table"  ng-click="toggleSideMenu()"><i class="fa fa-pencil-square"></i><span>Table Designer</span></a>   
             </li>
 
-            <li ng-class="{active:page=='dataBrowser','menu-active':page=='dataBrowser'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Data Browser" tooltip><a href="#/{{currentProject.appId}}/data/browser/table/" ng-click="toggleSideMenu()"><i class="fa fa-table"></i><span>Data Browser</span></a>   
-            </li>
-
-            <li data-toggle="tooltip" data-placement="right" title="Documentation" tooltip><a href="https://docs.cloudboost.io" target="blank"><i class="fa fa-book" ></i><span>Docs</span></a>   
+            <li data-toggle="tooltip" data-placement="right" title="Documentation" tooltip><a href="https://docs.cloudboost.io" target="blank"><i class="fa fa-book" ></i><span>Docs</span></a>
             </li>
 
             <li ng-class="{active:page=='pricing','menu-active':page=='pricing'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Billing" tooltip><a  href="#/{{currentProject.appId}}/pricing"><i class="fa fa-credit-card"></i><span>Billing</span></a>
             </li>
 
             <li ng-class="{active:page=='appSettings','menu-active':page=='appSettings'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Settings" tooltip><a href="#/{{currentProject.appId}}/settings" ng-click="toggleSideMenu()"><i class="fa fa-cog"></i><span>Settings</span></a>   
-            </li>          
-
-            
+            </li>       
 
           </ul>
 
@@ -135,6 +130,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
 
 <script type="text/javascript" src="bower_components/ace-builds/src-min-noconflict/ace.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
@@ -238,11 +234,9 @@
 <script type="text/javascript" src="app/controllers/indexController.js"></script>
 <script type="text/javascript" src="app/controllers/appsController.js"></script>
 <script type="text/javascript" src="app/controllers/tableDesignerController.js"></script>
-<script type="text/javascript" src="app/controllers/dataController.js"></script>
 <script type="text/javascript" src="app/controllers/dataBrowserController.js"></script>
 <script type="text/javascript" src="app/controllers/appSettingsController.js"></script>
 <script type="text/javascript" src="app/controllers/pricingController.js"></script>
-<script type="text/javascript" src="app/controllers/dataViewController.js"></script>
 
 <!--Directives-->
 <script type="text/javascript" src="app/directives/common/common.js"></script>

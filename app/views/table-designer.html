@@ -1,353 +1,177 @@
- 
-        
-<div class="cl-mcont aside" data-ng-init="initialize()">
-   <div class="page-aside">      
-        <div class="content">     
-            <h2>Tables</h2>            
-            <div class="row">        
-              <ul class="nav nav-pills nav-stacked tableUl">
-                <li class="tableList flex-li" ng-repeat="t in currentProject.tables" ng-click="selectTable(t)" ng-class="{liActive: (selectedTable === t)}">
-                    <div class="flex-wrapper">
+<div class="cl-mcont table-wrapper" style="background-color:#F4F6F7;" ng-init="initialize()"> 
 
-                      <div class="flex-items tableIcon">
-                        <i class="fa fa-{{t.type.icon}} fa-lg"></i>
-                      </div> 
-
-                      <div class="flex-items tableName">
-                        <p>{{t.name}}</p>
-                      </div>
-
-                      <div class="flex-items tableEdit">
-                         <!--<a  id="{{t.id}}"  ng-hide="!t.type.isRenamable" data-type="text" data-title="Enter new table name" ng-model="t" xeditable>
-
-                            <i class="fa fa-pencil"></i>
-
-                         </a>-->
-                      </div>
-
-                      <div class="flex-items tableDelete">
-                         <i class="fa fa-times" ng-hide="!t.type.isDeletable" ng-click="deleteTableModal(t)"></i>
-                      </div> 
-
-                    </div>  
-                </li>
-              </ul>               
-                
-            </div> 
-             <div style="margin-top:16px; width:100%">
-                  <button type="button" ng-click="initiateTableSettings()" style="width:100%" class="btn btn-primary btn-trans" ><i class="fa fa-plus"></i>Add Table</button>                
-            </div>                            
-        </div>      
-    </div>   
-    
-    <div class="content" style="background-color:white">
-
-      <div class="row" ng-show="currentProject.tables.length==0">
-        <div class="col-md-12">
-         <div  style="padding-left:20px;">
-             <h2><i class="fa fa-mail-reply"></i>&nbsp;No tables, Add tables to start your journey</h2>
-         </div>
-
-        </div>  
-      </div>      
-      
-       <div class="row" ng-show="currentProject.tables.length>0">
-        <div class="col-md-12">
-          <h2 style="color:#55555A">&nbsp;&nbsp;{{selectedTable.name}}</h2>               
-              <div class="table-responsive" style="margin:4px;">
-                <table class="table no-border">
-                  <thead class="no-border">
-                    <tr>
-                      <th style="width:2%;"><i class="fa fa-arrows"></th>
-                      <th style="width:22%;"><strong>Column Name</strong></th>
-                      <th style="width:20%;"><strong>Type</strong></th>
-                      <th style="width:17%;"><strong>Required</strong></th>
-                      <th style="width:17%;"><strong>Unique</strong></th>
-                      <th style="width:12%;"><strong>Action</strong></th>
-                    </tr>
-                  </thead>
-                  <tbody class="no-border-y">
-                    <tr ng-repeat="col in selectedTable.columns">
-                      <td style="width:2%;"></td>
-                      <td style="width:22%;">
-                        <!--Column Name-->                     
-                          <span id="{{col.id}}column" class="colName"  ng-model="col">{{col.name}}</span>  
-
-                           <!--Previous code for Xeditable popup-->
-                           <!--<span id="{{col.id}}column" class="colName" data-type="text" data-title="Enter new column name"  ng-model="col" ng-disabled="!col.isEditable" column-xeditable>{{col.name}}</span>-->            
-                      
-                      </td>
-                      <td  style="width:20%;">
-                          <!--Column Type--> 
-
-                              <!--if dataType is Not Editable-->
-                              <p>{{col.dataType}}</p>
-                              <br>
-
-                              <div  ng-if="col.dataType=='List'" ng-repeat="eachTable in currentProject.tables">
-                                <p ng-if="eachTable.name==col.relatedTo">{{eachTable.name}}</p>
-                              </div> 
-                              <div  ng-if="col.dataType=='List'" ng-repeat="dTypes in colDataTypes | filter:filterDataType">
-                                <p ng-if="dTypes.name==col.relatedTo">{{dTypes.text}}</p>
-                              </div>
-
-                              <div  ng-if="col.dataType=='Relation'" ng-repeat="eachTable in currentProject.tables">
-                                <p ng-if="eachTable.name==col.relatedTo">{{eachTable.name}}</p>
-                              </div>
-                              <!--//End if dataType is Not Editable-->
-
-                              <!--<div ng-click="canChangeDatatype(col)" ng-if="col.isEditable || col.saved">                               
-
-                               
-                                <select ng-model="col.dataType" style="width:150px" ng-change="saveTables()">
-                                    <option ng-repeat="dTypes in colDataTypes" ng-show="dTypes.visible" ng-selected="col.dataType==dTypes.name" value="{{dTypes.name}}">{{dTypes.text}}</option>
-                                </select> 
-
-                                <br>
-                                                          
-                                
-                                <select  ng-if="col.dataType=='List'" style="width:150px; margin-top:4px;" ng-model="col.relatedTo" ng-change="saveTables()" ng-disabled="!col.isEditable || col.saved">
-                                    <option ng-repeat="eachTable in currentProject.tables" ng-selected="eachTable.name==col.relatedTo" value="{{eachTable.name}}">{{eachTable.name}}</option>
-                                
-                                    <option ng-repeat="dTypes in colDataTypes | filter:filterDataType" ng-selected="dTypes.name==col.relatedTo" ng-show="dTypes.visible"  value="{{dTypes.name}}">{{dTypes.text}}</option>
-                                     
-                                </select>
-                              
-                                
-                                <select   style="width:150px; margin-top:4px;" ng-if="col.dataType=='Relation'" data-ng-model="col.relatedTo" ng-change="saveTables()" ng-disabled="!col.isEditable || col.saved">
-                                    <option ng-repeat="eachTable in currentProject.tables" ng-selected="eachTable.name==col.relatedTo" value="{{eachTable.name}}">{{eachTable.name}}
-                                    </option>
-                                </select> 
-
-                         </div>  -->
-                      </td>
-                      <td style="width:17%;"> 
-                        <!--Column required-->                       
-                        <checkbox class="btn-default" ng-model="col.required" ng-disabled="true"></checkbox>
-                      </td>
-                 
-                      <td style="width:17%;">
-                        <!--Column unique-->  
-                        <checkbox class="btn-default" ng-hide="col.dataType === 'List'"  ng-model="col.unique" ng-disabled="true"></checkbox>          
-                      </td>
-                       <td style="width:12%;">
-                          <!--Column tools-->                       
-                        <a class="label label-danger" ng-class="{disable:!col.isDeletable}" ng-disabled="!col.isDeletable"  ng-click="deleteCol(col)">
-                        <i class="fa fa-times"></i></a>                           
-                        </td>
-                    </tr>
-                   
-                  </tbody>
-              </table>  
-              <center data-ng-hide="columnErrorForEdit" style="margin-top:20px;margin-bottom:20px">
-                   <button class="btn btn-primary btn-trans" ng-hide="!selectedTable.type.isEditable" ng-click="initiateColumnSettings()"><i class="fa fa-plus"></i>Add new Column</button>
-              </center>
-              </div>
-                   
-        </div>
-      </div>
+    <div ng-if="!dataLoading && !loadingTablesError" class="row">  
+      <div class="col-md-12"> 
+          <div class="tablename-header">
+              <h1>Tables</h1>
+          </div>              
+      </div>  
     </div>
 
+    <div ng-if="!dataLoading && !loadingTablesError" class="row table-items" style="margin-top:34px;">  
+      <div class="col-md-12">  
+          <div class="table-apps-div">
+              <div class="row">
+                <div class="col-md-12"> 
+                  <div class="flex-general-row-wrapper-center table-tiles">
+
+                    <!--loop-->
+                    <div class="tableBx" ng-repeat="t in currentProject.tables">
+                        <div class="tableApp cf " style="background-color:#3A5795" ng-click="goToDataBrowser(t)">
+
+                          <div class="cf">
+                            <span class="table-delete pull-right">
+                              <span class="cross tableOptionIcon" ng-hide="!t.type.isDeletable" ng-click="deleteTableModal(t); $event.stopPropagation()">
+                                X
+                              </span>
+                            </span>
+                          </div>
+
+                          <center>  
+                            <div>                         
+                             <i class="icon {{t.type.icon}} tableIcon"></i>
+                             </div>
+                             <div>
+                             <span infotooltipleft="tableErrorForCreate" class="tableText">{{t.name}}</span>
+                            </div>
+                          </center> 
+
+                        </div>
+                        
+                    </div> 
+                    <!--/loop-->
+
+                    <!--New table-->
+                    <div class="tableBxNew">
+                        <div class="tableNewApp" ng-click="initiateTableSettings()"> 
+
+                          <div class="first-table-beacon-container"></div>
+
+                          <center>  
+                            <div >                         
+                             <i class="icon ion-plus-round"></i>
+                             </div>
+                             <div>
+                             <span class="newTableText">ADD NEW TABLE</span>
+                            </div>
+                          </center> 
+
+                        </div>
+                        
+
+                        <!--Add new table Pop up-->
+                        <div id="add-new-table-popup" class="popup-div effect1" >
+                          <div class="innerpop">
+                            <div class="new-table-name">
+                              <span>Enter new table name</span>
+                              <input class="newtable" type="text" ng-disabled="!selectedTableType.isRenamable" ng-keyup="checkErrorsForCreate(newTableName,currentProject.tables,'table')" ng-model="newTableName" placeholder="New Table Name" required>
+                            </div>
+
+                            <div class="table-templates">
+                              <span>Select table type</span>
+                              <select ng-model="newTableType" ng-change="selectType(newTableType)">
+                                  <option  ng-repeat="tableType in tableTypes | filter:checkMaxCount"   value="{{tableType.type}}" ng-selected="tableType.type=='custom'">{{tableType.name}}</option>
+                              </select>
+                            </div>
+
+                            <div style="margin-top:10px;" data-ng-show="!tableErrorForCreate">
+                              <span  style="word-break: break-all;">click here to create table</span>
+                            </div>
+                            <div style="margin-top:10px;" data-ng-show="tableErrorForCreate">
+                              <span  style="word-break: break-all;color:red;">{{tableErrorForCreate}}</span>
+                            </div>
+
+                            <div class="popup-buttons-div flex-general-row-wrapper">
+
+                              <button ng-disabled="isCreatingTable" type="button" ng-click="cancelAddtable()" data-close-stackbox="true" class="custmBtn tableCancelBtn">Cancel</button>
+
+                              <button ng-show="!isCreatingTable" type="button" class="custmBtn tableCreateBtn" ng-disabled="tableErrorForCreate" data-close-stackbox="{{!addTablePopup}}" ng-click="addNewTable(newTableName)">Create</button>
+
+                              <!--While Saving-->
+                              <button ng-show="isCreatingTable" type="button" class="custmBtn tableCreateBtn" ng-disabled="tableErrorForCreate">
+                                <i class="fa fa-spinner fa-spin"></i>&nbsp;Creating..</button>
+                              <!--/While Saving-->
+                            </div> 
+                          </div>
+                        </div>  
+                        <!--/Add new table Pop up-->
+
+                    </div>
+                    <!--/New table-->
+
+                  </div>                     
+                </div>                  
+              </div>               
+          </div>  
+      </div>  
+    </div>
+    <!--Tables Loading Error-->
+    <div ng-show="!dataLoading && loadingTablesError" class="row flex-general-column-wrapper-center" style="height:64vh;">
+        <div>
+          <h4 style="color:red;">{{loadingTablesError}}</h4>
+        </div>
+    </div>
+    <!--/Tables Loading Error-->   
+
+    <!--While Loading-->
+    <div ng-show="dataLoading && !loadingTablesError" class="row flex-general-column-wrapper-center" style="height:68vh;">
+        <div>
+          <!--Animated Circle-->
+          <div class="cssload-bell">
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+          </div>
+          <!--/Animated Circle-->
+        </div>  
+        <div style="margin-top:63px;">
+         <span style="font-size:20px;">Your tables on the way</span>
+        </div>
+    </div>
+    <!--/While Loading-->
 </div>
-
-  <!-- Add New table -->
-<div class="modal fade colored-header bs-modal-add-table"  tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-
-        <h3>Add a new table</h3>
-        <button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
-      </div>
-      <div class="modal-body form">
-        <!--Error Service-->
-         <div class="form-group">
-           <div data-ng-show="tableErrorForCreate" class="alert alert-danger smallPadding" role="alert">
-            <i class="fa fa-exclamation-triangle"></i> &nbsp; {{tableErrorForCreate}}
-          </div>
-        </div>    
-        <!--Select table Form-->            
-        <div class="flex-add-Bx">
-          <div class="add-Bx">
-              <select class="form-control"  ng-model="newTableType" ng-change="selectType(newTableType)">
-                <option  ng-repeat="tableType in tableTypes | filter:checkMaxCount"   value="{{tableType.type}}" ng-selected="tableType.type=='custom'">{{tableType.name}}</option>
-            </select> 
-          </div> 
-           <div class="add-Bx" style="margin-left:6px;">
-               <input type="text" class="form-control" ng-disabled="!selectedTableType.isRenamable" ng-keyup="checkErrorsForCreate(newTableName,currentProject.tables,'table')" ng-model="newTableName" placeholder="Name of the new table" required />
-          </div>
-        </div>          
-
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Close</button> 
-        <button type="submit" class="btn bg-infoBlueBtn" ng-disabled="tableErrorForCreate" ng-click="addNewTable()" data-dismiss="modal">Submit</button> 
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /Add New table -->
-<!--end of modal-->
 
 <!--delete table modal-->
   <div class="modal fade colored-header danger" id="md-deleteTable" tabindex="-1" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
-      <div class="modal-header">
-        <h3>Delete Table</h3>
+
+      <div class="pull-right modalX">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>  
+      <div class="flex-general-row-wrapper-center modalH">
+        <h3>Delete Table</h3>        
       </div>
+      
       <div class="modal-body">
         <div class="text-center">
-          <div class="i-circle danger"><i class="fa fa-times"></i></div>         
+                 
           <p>To delete, type in the table name.</p>
           <center>
             <input type="text" class="form-control" ng-model="confirmTableName" required style="width:400px;"/>
-          </center>          
+          </center> 
+          <div class="flex-general-row-wrapper-center modalF">        
+            <button ng-show="!isDeletingTable" type="button" class="btn btn-danger btn-flat" style="width:400px;" ng-click="deleteTable(selectedTable)">DELETE TABLE</button>
+
+            <!--While Deleting-->
+            <button ng-show="isDeletingTable" type="button" class="btn btn-danger btn-flat" style="width:400px;">
+              <i class="fa fa-spinner fa-spin"></i>&nbsp;DELETING TABLE</button>
+            <!--/While Deleting-->
+          </div>         
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-danger btn-flat" ng-click="deleteTable(selectedTable)">Continue</button>
-      </div>
+      </div>      
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-
-
-<!-- Add New Column -->
-<div class="modal fade colored-header bs-modal-add-column"  tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form name="addNewColumnForm" ng-submit="addColumn(addNewColumnForm.$valid)">
-          <div class="modal-header">
-
-            <h3>Add a new Column</h3>
-            <button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          </div>
-          <div class="modal-body form">
-            <!--Error Service-->
-             <div class="form-group">
-               <div data-ng-show="columnErrorForCreate" class="alert alert-danger smallPadding" role="alert">
-                <i class="fa fa-exclamation-triangle"></i> &nbsp; {{columnErrorForCreate}}
-              </div>
-            </div> 
-
-            <!--Select table Form--> 
-            <div class="flex-add-Bx">
-               <div class="add-Bx">
-                  <label class="col-label-names">New Column Name</label>
-              </div>    
-
-               <div class="flex-inputs">
-                   <input type="text" class="form-control"  ng-keyup="checkErrorsForCreate(newColumnObj.name,selectedTable.columns,'column')" ng-model="newColumnObj.name" placeholder="Name of the new Column" required />
-              </div>
-            </div>
-
-            <!--Default -Select DataType-->
-            <div class="flex-add-Bx" style="margin-top:6px;">
-              <div class="add-Bx">
-                   <label class="col-label-names">Select A Data Type</label>
-              </div>
-
-              <div class="flex-inputs">
-                  <select ng-model="newColumnObj.dataType" class="form-control">
-                      <option ng-repeat="dTypes in colDataTypes" ng-show="dTypes.visible" ng-selected="newColumnObj.dataType==dTypes.name" value="{{dTypes.name}}">{{dTypes.text}}</option>
-                  </select>  
-              </div>         
-            </div> 
-
-            <!--if dataType is List-->
-            <div ng-if="newColumnObj.dataType=='List'" class="flex-add-Bx" style="margin-top:6px;">
-              <div class="add-Bx">
-                   <label class="col-label-names">Select Target Type</label>
-              </div>
-
-              <div class="flex-inputs">              
-                  <select   class="form-control"  ng-model="newColumnObj.relatedTo">
-                      <option ng-repeat="eachTable in currentProject.tables"  value="{{eachTable.name}}">{{eachTable.name}}</option>
-                  
-                      <option ng-repeat="dTypes in colDataTypes | filter:filterDataType"  ng-show="dTypes.visible"  value="{{dTypes.name}}">{{dTypes.text}}</option>
-                       
-                  </select>
-              </div>         
-            </div>
-
-            <!--if dataType is Relation-->
-            <div ng-if="newColumnObj.dataType=='Relation'" class="flex-add-Bx" style="margin-top:6px;">
-              <div class="add-Bx">
-                   <label class="col-label-names">Target Type</label>
-              </div>
-
-              <div class="flex-inputs">              
-                <select   class="form-control" data-ng-model="newColumnObj.relatedTo">
-                    <option ng-repeat="eachTable in currentProject.tables"  value="{{eachTable.name}}">{{eachTable.name}}
-                    </option>
-                </select>
-              </div>         
-            </div>   
-
-            
-            <div  class="flex-add-Bx" style="margin-top:14px;">
-              <div class="add-Bx">
-                   <label class="col-label-names">Constraints</label>              
-              </div>
-              <div class="flex-inputs">  
-
-                  <div  class="flex-add-Bx">
-                    <!---->
-                    <!--Column required--> 
-                    <div class="add-Bx">
-                          
-                        <div  class="flex-add-Bx">
-                            <div class="add-Bx">
-                                <label style="color:gray">Required</label>              
-                            </div>
-                            <div class="add-Bx">                                   
-                                <checkbox class="btn-default" ng-model="newColumnObj.required" ></checkbox>
-                            </div>         
-                        </div>
-
-                    </div>
-                    <!--Column unique-->
-                    <div class="add-Bx">
-
-                        <div  class="flex-add-Bx">
-                            <div class="add-Bx">
-                                 <label style="color:gray">Unique</label>              
-                            </div>
-                            <div class="add-Bx">                                   
-                                <checkbox class="btn-default" ng-hide="col.dataType === 'List'"  ng-model="newColumnObj.unique"></checkbox>
-                            </div>         
-                        </div>
-
-                    </div> 
-                    <!---->        
-                  </div>
-
-              </div>         
-            </div>    
-
-          </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Close</button> 
-            <button type="submit" class="btn bg-infoBlueBtn" ng-disabled="columnErrorForCreate" >Submit</button> 
-          </div>
-      </form>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div>
-<!-- //Add New Column -->
- 
-
-
-
-
-  
-
-
-   
-  
-  

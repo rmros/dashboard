@@ -96,8 +96,7 @@
 .table-apps-div{
     width:93%;
     height:400px;
-    margin: 0 auto;   
-    margin-bottom: 200px;    
+    margin: 0 auto;       
 }
 
 .table-icon{     
@@ -131,7 +130,7 @@
 
 .tableBxNew{
     width:250px;   
-     margin-left: 20px;
+    margin-left: 20px;
     margin-bottom: 20px;
     position: relative;
 }
@@ -145,6 +144,11 @@
     padding: 12px;
     border: 1px solid #7C7C7C;
     border-radius: 3px;
+    display: none;    
+}
+.innerpop{
+    padding: 12px;
+    height: 183px;
 }
 
 .effect1{
@@ -182,8 +186,7 @@
     cursor: pointer; 
     border: 1px solid gray;
     position: relative;
-    font-size:30px;
-
+    font-size:30px;   
 }
 
 .cross{
@@ -432,7 +435,10 @@
     padding: 0 !important;
 }
 .cust-cell{
-    padding: 7px;
+    padding: 7px;    
+}
+.cust-cell-width{
+    width: 220px;
 }
 .col-dropdown{
     position: absolute;
@@ -495,6 +501,17 @@
     margin-top: 1.6px !important;
     margin-left:-1.8px !important;       
 }
+.delete-data-btn{   
+    padding-top: 1px;
+    margin-top:2px !important;
+    visibility: hidden;
+}
+.delete-data-btn i{
+    font-size: 18px;
+    margin-top: 3px !important;
+    margin-left:-1.8px !important; 
+    color:#E00404;   
+}
 .square-btn div{     
     margin-left:5px !important; 
     font-size: 24px;
@@ -502,7 +519,7 @@
 }
 .real-content{   
     margin-top:4.4px;
-    width:75%;    
+    width:75%;       
 }
 .real-content-center{   
     margin-top:4.4px;
@@ -524,6 +541,9 @@
     box-shadow: 0 0 1px 1px #D4D5D6;
 }
 .dataTd:hover .round-btn{
+    visibility: visible;    
+}
+.dataTd:hover .delete-data-btn{
     visibility: visible;    
 }
 .dataTd:hover .square-btn{
@@ -816,6 +836,15 @@
     padding-right: 8px;
     color: white;
 }
+.m-table-strip{
+    width: 100%;
+    height:32px;    
+    padding-bottom: 2px;
+    padding-left: 6px;
+    padding-right: 8px;
+    color: black;
+    background-color: #EBEBE0;
+}
 
 .m-table-ctrls i{   
     margin-top: 11px;
@@ -857,7 +886,7 @@
 }
 .m-popup-btn{   
     display: block;
-    margin-top: 1px;
+    margin-top: 1px;   
 }
 .m-round-btn{
     height:26px;
@@ -882,8 +911,20 @@
     -moz-box-shadow: 0 0 1px 1px #D4D5D6;
     box-shadow: 0 0 1px 1px #D4D5D6;
 }
-
+.m-delete-data-btn{
+    height:26px;
+    width:26px; 
+    visibility: hidden;  
+}
+.m-delete-data-btn i{
+   font-size: 18px;
+   color: #CD0000; 
+   margin-top: 3.5px;
+}
 .m-data-container:hover .m-round-btn{
+    visibility: visible;    
+}
+.m-data-container:hover .m-delete-data-btn{
     visibility: visible;    
 }
 .m-real-content{
@@ -928,7 +969,8 @@
 }
 .m-real-content-cmn-types{    
     height:100%;
-    width: 100%;
+    width: 89%;
+    overflow: hidden;
 }
 .m-data-container-file{
     padding: 3px;
@@ -1070,6 +1112,12 @@
     margin-top: 10px;
 }
 
+.relationid-list-empty{
+    width: 545px;
+    height:39px;     
+    margin-top: 10px;
+}
+
 .relationid-list a{
     color: black;
 }
@@ -1155,9 +1203,9 @@
     margin-left: 5px;
     margin-top:4px;
     height:24px;
-    background-color: #E8E8E8; 
-    cursor: pointer;
+    background-color: #E8E8E8;     
 }
+
 .list-Json{
     padding-top: 1.5px;
     padding-bottom: 1.5px;
@@ -1168,22 +1216,19 @@
     height:23px;
     background-color: #E8E8E8; 
     border-radius: 6px;
-    overflow: hidden;
-    cursor: pointer;
+    overflow: hidden;    
 }
 .list-File-images{
     border: 1px solid #F0F0F0;
     border-radius: 2px;
-    margin-left: 3px;
-    cursor: pointer;   
+    margin-left: 3px;     
 }
 .list-File-images img{
     width:34px;
     height: 26px;    
 }
 .list-File-others{    
-    margin-left: 3px;
-    cursor: pointer;   
+    margin-left: 3px;     
 }
 .list-File-others img{
     width:28px;
@@ -1220,8 +1265,15 @@
 .document-list-wrapper{
     margin-top: 20px;
     width: 100%;
-    height:250px;    
+    max-height:100px; 
+    max-height:250px;     
 }
+.document-list-add-wrapper{
+    margin-top: 20px;
+    width: 100%;
+    height:auto;   
+}
+
 .document-list-txt-add-wrapper{
     width: 90%;
     height:30px;
@@ -1294,7 +1346,7 @@
     width: 532px;
     height:30px;
     margin-top: 7px;    
-    padding: 0;        
+    padding: 0;
 }
 .document-list-file-wrapper{
     width: 532px;
@@ -1306,13 +1358,13 @@
     width:95%;
     height:32px;         
 }
-.list-boolean-aura-list{
-    width:95%;
-    height:32px;       
+.list-boolean-aura-list{    
+    height:32px;
 }
 .list-file-aura-list{
     width:100px;
-    height:90px;   
+    height:90px; 
+    border: 1px solid #C9C7C7;     
 }
 .list-m-file-list{
     width:100px;
@@ -1574,9 +1626,9 @@
   width: 0px;
   height: 0px;
   margin-top: 0px;
-  margin-left:-3px;
-  top:46%;
-  left:3%;
+  margin-left:0px;
+  top:40%;
+  left:2%;
 }
 
 .tableIcon{
@@ -1618,5 +1670,10 @@
     top: 0;
     right:0;
     cursor: pointer;   
+}
+.relSaveError{
+    margin-top: 5.6px !important;   
+    color: red;
+    display: block;
 }
 

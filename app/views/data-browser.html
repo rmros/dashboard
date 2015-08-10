@@ -1,204 +1,3002 @@
+<div class="cl-mcont2" style="background-color:#F4F6F7;" ng-init="init()"> 
 
-        
-<div class="cl-mcont aside" data-ng-init="initialize()">
-   <div class="page-aside"> 
-        <div class="block-flat">
-            <div class="header">              
-              <h2>Tables</h2>
-            </div>
-            
-              <div class="row">                 
-                  <ul class="nav nav-pills nav-stacked tableUl margin-bottom">
-                      <li class="tableList flex-li" ng-repeat="t in currentProject.currentTables" ng-click="selectTable(t)" ng-class="{liActive: (selectedTable === t)}">
-                          <div class="flex-wrapper">
+  <!--Table Header-->
+  <div class="row data-row" style="background-color:#3A5795">
+      <div class="col-md-12">
+          <div class="dataView-header flex-general-row-wrapper">
+            <div class="headerL">
+              <a ng-click="goToTables()" class="flex-general-row-wrapper" style="cursor:pointer;">
+                <div class="back-arrow">
+                  <i class="fa fa-angle-left fa-2x"></i>
+                </div>
+                <div>
+                  <h3>Tables</h3>
+                </div>
+              </a>
 
-                            <div class="flex-items tableIcon">
-                              <i class="fa fa-{{t.type.icon}} fa-lg"></i>
-                            </div> 
+            </div> 
+            <div class="headerC flex-general-row-wrapper-center">
 
-                            <div class="flex-items tableName">
-                              <p>{{t.name}}</p>
-                            </div>
-                          </div>  
-                      </li>
-                  </ul>
-              </div>
-            
-        </div>       
-    </div>   
-    
-    <div class="content" style="background-color:white">
-      <div class="row">
-        <div class="col-md-12">
-          <!--No tables-->    
-          <div  ng-show="currentProject.currentTables.length==0">
-             <h2><i class="fa fa-exclamation"></i>&nbsp;No tables, Add tables in your <a href="#/{{currentProject.appId}}/data/designer/table/tableId">&nbsp;Table Designer</a></h2>
-         </div>
+              <div ng-show="isTableLoaded" class="tableNameDiv flex-general-row-wrapper">              
+                <h3 ng-click="showTableList=!showTableList">{{currentProject.currentTable.name}}</h3> 
+                <i class="fa fa-angle-down fa-2x" ng-click="showTableList=!showTableList"></i>        
 
-         <!--tables tools-->
-         <div ng-show="currentProject.currentTables.length>0">
-            <button ng-click="addRow()" type="submit" class="btn btn-info btn-rad btn-trans"><i class="fa fa-plus-square fa-lg"></i>&nbsp;Row</button>               
+                <!--DropDown for TableList-->
+                <div class="tableList-wrapper" ng-show="showTableList">
+                  <div style="background-color:white;width:99.99%; height:210px;" malihuscrollbar-for-popup>
 
-            <button ng-click="deleteRow()" type="submit" class="btn btn-info btn-rad btn-trans"><i class="fa fa-minus-square fa-lg"></i>&nbsp;Row</button>
+                  <div  ng-repeat="t in currentProject.tables" style="width:240px !important;">
+                    <a href="" ng-click="goToDataBrowser(t)">
+                    <div class="selectTableList cf" style="padding:5px;height:30px;width:100%;">
 
-            <button ng-click="refresh()" type="submit" class="btn btn-info btn-rad btn-trans"><i class="fa fa-refresh fa-lg" ng-class="{'fa-spin':isRefreshed}"></i>&nbsp;Refresh</button>
-
-            <button ng-show="selectedTable.isColumn" ng-click="removeRelation()" type="submit" class="btn btn-info btn-rad btn-trans"><i class="fa fa-scissors fa-lg"></i>&nbsp;Remove Relation</button>      
-        </div>
-
-        </div>  
-      </div>
-
-      <!--grid row starts-->
-      <div class="row" style="margin-top:3px;" ng-show="currentProject.currentTables.length>0">
-          <div class="col-md-12">                                                  
-                <div class="content grid-parent">
-                  <!--grid-->
-                  <div class="table-responsive grid" ui-grid-edit ui-grid-pagination ui-grid-resize-column ui-grid-selection ui-grid-resize-columns external-scopes="clickHandler" ui-grid="gridOptions" style="height:504px; width:990px;">
+                      <div class="pull-left">
+                        <i class="fa fa-{{t.type.icon}}" style="margin-top:-10px;"></i>
+                      </div>
+                      <div class="pull-left" style="margin-left:6px;">
+                        <span>{{t.name}}</span>
+                      </div>
+                        
+                    </div> 
+                    </a> 
                   </div>
-                  <!--/grid--> 
-                </div>                     
-          </div>
-      </div>
-      <!--grid row ends-->
 
-    </div>
-</div>
-
-<!-- EditJSON Modal -->
-<div id="jsonModal" class="modal fade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Object Viewer</h4>
-      </div>
-      <div class="modal-body" >
-        <pre pretty-json="jsonObj" edition="true" style="min-height:200px">
-        </pre>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" data-ng-click="saveObjectChanges()" data-dismiss="modal">Save changes</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-
-<!-- Relation List Modal -->
-<div class="modal fade colored-header" id="relation-list" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-    <div class="modal-header">
-      <h3>List</h3>
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    </div>
-    <div class="modal-body">
-
-        <div class="add-field-btn">         
-            <button ng-click="addStaticTypeField()" class="btn btn-info btn-rad btn-trans">
-            <i class="fa fa-plus-square fa-lg"></i>&nbsp;Add field</button>          
-        </div> 
-
-        <div class="row" ng-repeat="eachField in staticTypeListFields">
-
-          <!--field-->
-          <div class="form-group col-md-12 no-margin">
-            <div class="pull-left" style="margin-top:3px;!important; width:75%">
+                  </div>  
+                </div>  
+                <!--/DropDown for TableList-->             
+              </div>  
               
-                <!--Text-->
-                <input ng-if="relationDataType=='Text'" type="text" ng-model="eachField.value"  placeholder="Text">
+            </div>
+            <div class="headerR"> 
+              <div class="flex-general-row-wrapper pull-right">
+                <!--Apps link-->
+                <div style="margin-right:20px;">
+                  <a href="/#/" style="color:white;">
 
-                <!--Email-->
-                <input ng-if="relationDataType=='Email'" type="email" ng-model="eachField.value" class="form-control" placeholder="Email">
-
-                <!--URL-->
-                <input ng-if="relationDataType=='URL'" type="url" ng-model="eachField.value" class="form-control" placeholder="URL">
-
-                <!--Number-->
-                <input ng-if="relationDataType=='Number'" type="number" ng-model="eachField.value" class="form-control" placeholder="Number">
-
-                <!--Boolean-->
-                <switch ng-if="relationDataType=='Boolean'" id="enabled" name="enabled"  style=" margin-left:3px; margin-right:5px;" class="blue"  ng-model="eachField.value"></switch>
-
-                <!--DateTime-->
-                <input  ng-if="relationDataType=='DateTime'" kendo-date-time-picker style="width:100%"  k-ng-model="eachField.value" k-format="'MM/dd/yyyy h:mm tt'"/>
-
-                <!--File-->
-                <!--If File Value is there-->
-                <a href="{{eachField.value.url}}" ng-if="relationDataType=='File'" ng-show="eachField.value" target="_blank" >{{eachField.value.name}}</a>
-
-                <div ng-if="relationDataType=='File'" ng-show="!eachField.value">
-                  <!--If File Value isn't there-->
-                   <input  ng-if="relationDataType=='File'" ng-show="!eachField.value" fileupload-modal type="file" style="width:100%"  data-index="{{$index}}"/> 
-                </div>                                
-              
-            </div>           
-            
-            <div class="pull-left list-tools">
-
-                <div class="row">
-
-                  <div class="col-md-6">
-                     <!--File-->
-                      <a class="label label-primary" ng-click="swipeToFileInput($index)" ng-if="relationDataType=='File' && eachField.value">
-                          <i class="fa fa-pencil"></i>
-                          Change
-                      </a>
+                    <div class="flex-general-row-wrapper pull-right" style="cursor:pointer;">     
 
                       <div>
-                        <a class="label label-primary" ng-click="assignFileBack($index)" ng-if="relationDataType=='File' && temporaryFile && $index==temporaryFileIndex">
-                            <i class="fa fa-times"></i>
-                            Cancel
-                        </a>
+                        <h5><i class="fa fa-th-large"></i></h5>
+                      </div>
+                      <div>
+                        <h5>&nbsp;Apps</h5>
                       </div>
 
-                      <!--Dummy element for when File url isn't there(visibility:none)-->
-                       <a class="label label-primary"  ng-if="relationDataType=='File' && !eachField.value" style="  visibility: hidden !important;">
-                          <i class="fa fa-pencil"></i>
-                          Change
-                      </a>
-                      <!--Dummy element for when Other than File isn't there(visibility:none)-->
-                       <a class="label label-primary"  ng-if="relationDataType!='File'" style="  visibility: hidden !important;">
-                          <i class="fa fa-pencil"></i>
-                          Change
-                      </a>
-                  </div>
-                  <div class="col-md-6">
-                      <!--General-->
-                      <a class="label label-danger" ng-click="deleteStaticTypeField($index)">
-                          <i class="fa fa-times"></i>
-                      </a>
-                  </div> 
+                    </div>               
 
+                  </a>  
+                </div>
+
+                <!--Documentation link-->
+                <div>
+                  <a href="https://docs.cloudboost.io" target="blank" style="color:white;">
+
+                    <div class="flex-general-row-wrapper pull-right" style="cursor:pointer;position:relative;">     
+
+                      <div>
+                        <h5><i class="fa fa-book"></i></h5>
+                      </div>
+                      <div>
+                        <h5>&nbsp;Documentation</h5>
+                      </div>
+
+                      <!--Beacon-->
+                      <div class="first-data-beacon-container" style="cursor:pointer;"></div> 
+                    </div>               
+
+                  </a>  
+                </div>
+              </div>
+                        
+            </div>            
+          </div>  
+      </div>
+  </div>
+  <!--/Table Header--> 
+
+  <div class="table-tools-strip">
+    <div class="table-strip-wrapper cf">
+
+      <div class="table-strip-tools flex-general-row-wrapper pull-left">
+        <!--Delete rows-->
+        <button ng-if="selectedRowsCount>0" type="button" class="table-tool-btn" ng-click="deleteSelectedRows()">
+          <i class="fa fa-trash-o"></i>
+        Delete rows
+        </button>
+
+        <!--Hide columns-->
+        <div class="hide-col-btn-group">
+          <button type="button" class="hide-col-btn" ng-click="toggleHiddenColShow()">
+            <div class="pull-left">
+              <div style="margin-left:10px;">
+                <i class="fa fa-columns"></i>
+                Hide Columns 
+              </div>           
+            </div>
+            <div class="pull-right"> 
+              <span class="caret"></span>
+            </div>
+          </button>
+
+          <div class="hidden-col-wrapper" ng-show="showHiddenColList">
+            <div class="hidden-col-container">
+              <!--show all and hide all button-->
+              <div class="hidden-col-short-btnwrapper flex-general-row-wrapper">
+
+                <div>
+                  <button type="button" ng-click="showallHiddenCols()" class="hidden-col-short-btn">show all</button>
+                </div> 
+                <div>
+                  <button type="button" ng-click="hideallHiddenCols()" class="hidden-col-short-btn" style="margin-left:4px;">hide all</button>
                 </div> 
 
+              </div>
+                
+              <!--columns which are hidden-->
+              <div  class="list-hidden-col-wrapper" malihuscrollbar-for-popup>
+
+                <div ng-repeat="hcol in hideColumn track by $index" ng-if="hcol==true" class="list-hidden-col-container">
+
+                  <div class="flex-general-row-wrapper">
+                    <div class="hidden-col-chbx-div">
+                      <checkbox  class="hidden-col-chbx"  ng-model="hcol" ng-click="showThisColFromHidden($index)"></checkbox>
+                    </div>
+                    <div class="hidden-col-name-div">
+                      <span>{{currentProject.currentTable.columns[$index].name}}</span>
+                    </div>
+                  </div> 
+
+                </div>
+              </div>
+                
             </div>
+          </div>            
+          
+        </div>
+
+      </div>
+      <div class="table-strip-info flex-general-row-wrapper pull-right cf">
+          <!--Row selection info-->
+          <div class="data-info-div"  ng-if="selectedRowsCount>0">
+            <p>{{selectedRowsCount}} rows selected</p>
           </div>
 
+          <!--Row info-->
+          <div class="data-info-div" ng-if="!saveSpinner">
+            <!--Warning-->
+            <p ng-repeat="rowWar in rowWarningMode" class="sno-warninginfo" style="margin-right:30px;" ng-if="rowWar==true" infotooltipleft="rowInfo">
+              <i class="fa fa-exclamation-triangle fa-lg"></i>
+            </p>
+
+            <!--Error-->
+            <p ng-repeat="rowErr in rowErrorMode" class="sno-errorinfo" style="margin-right:30px;" ng-if="rowErr==true" infotooltipleft="rowInfo">
+              <i class="fa fa-exclamation-triangle fa-lg"></i>
+            </p>
+
+            <!--Saving-->
+            <p ng-repeat="rowSaved in rowSavedMode" class="sno-saved" style="margin-right:30px;" ng-if="rowSaved==true">             
+              <i class="fa fa-check fa-lg"></i>
+            </p>
+
+          </div>        
+
+          <!--General Saving Spinner-->
+          <div ng-show="saveSpinner" class="data-info-div">
+            <p class="sno-savingSpin" style="margin-right:30px;">            
+              <i class="fa fa-spinner fa-spin fa-2x"></i>
+            </p>            
+          </div>        
+
+      </div>  
+
+    </div>  
+  </div> 
+
+  <!--Table-->
+  <div ng-show="isTableLoaded" class="row data-table-def">
+     <div class="col-md-12">
+        
+        <div id="scrollbar-wrapper" class="data-table-design" infinite-scroll="addMoreRecords()">
+       
+         <table  class="smoothTable" >
+          <thead>            
+            <tr class="cust-head-tr fix-prime-thead">
+              <th class="fTh cf">
+                <div class="fThDiv">
+                  <checkbox class="btn-default checkBxDflt" ng-model="areSelectAllRows" ng-click="selectAllRows()"></checkbox>
+                </div>                  
+              </th>
+             
+              <th ng-repeat="column in currentProject.currentTable.columns"  ng-if="!hideColumn[$index]" class="cust-th"> 
+
+                <div class="cust-cell flex-general-row-wrapper" ng-class="{true: 'cust-cell-width'}[!currentTableData || currentTableData.length==0]">
+                  <div class="cust-cell-name flex-general-row-wrapper">                    
+                    <div class="col-name">
+                       <span style="display:inline">
+                        <!--Id-->
+                        <i ng-if="column.dataType==='Id'" class="fa fa-shield col-icon-size"></i>
+
+                        <!--Boolean-->
+                        <i ng-if="column.dataType=='Boolean'"  class="fa fa-check col-icon-size"></i>
+
+                         <!--DateTime-->
+                        <i ng-if="column.dataType=='DateTime'" class="fa fa-calendar-o col-icon-size"></i>
+                        <!--ACL or Object-->
+                        <i ng-if="column.dataType=='ACL' || column.dataType=='Object'" class="fa fa-bullseye col-icon-size"></i>
+
+                        <!--Text-->
+                        <i ng-if="column.dataType=='Text'" class="fa fa-text-height col-icon-size"></i>
+                        <!--Encrypted Text-->
+                        <i ng-if="column.dataType=='Password'" class="fa fa-lock col-icon-size"></i>
+
+                        <!--Email-->
+                        <i ng-if="column.dataType=='Email'" class="fa fa-envelope-o col-icon-size"></i>
+
+                        <!--URL-->
+                        <i ng-if="column.dataType=='URL'" class="fa fa-globe col-icon-size"></i>
+
+                        <!--Number-->
+                        <i ng-if="column.dataType=='Number'" class="fa fa-th col-icon-size"></i>
+
+                        <!--File-->
+                        <i ng-if="column.dataType=='File'" class="fa fa-paperclip col-icon-size"></i>
+
+                        <!--Relation-->
+                        <i ng-if="column.dataType=='Relation'" class="fa fa-external-link col-icon-size"></i>
+
+                        <!--List-->
+                        <i ng-if="column.dataType=='List'" class="fa fa-bars col-icon-size"></i>
+
+                        <!--GeoPoint-->
+                        <i ng-if="column.dataType=='GeoPoint'" class="fa fa-map-marker col-icon-size"></i>
+
+                        {{column.name}}
+                      </span>
+                    </div>
+                  </div> 
+
+                  <div ng-if="column.dataType!='Id'" class="cust-cell-dropdwn" ng-click="toggleColOptions($index)">
+                      <i class="fa fa-angle-down dropdown-icon-size" style="padding-top: 4.6px;"></i>
+                  </div>
+                </div>
+
+                  <!--col dropdown-->
+                  <div ng-if="showColOptions[$index] && column.dataType!='Id'" class="col-dropdown">
+                    <!--Column options-->
+                    <div ng-show="!editColumn[$index]" class="flex-general-column-wrapper">          
+
+                      <div ng-if="column.isDeletable" ng-click="deleteColumn(column)" class="col-optionz">
+                        <span class="col-options-span">
+                          <i class="fa fa-minus-circle" style="padding-top: 5px;padding-right: 6px;"></i>
+                          Delete Column
+                        </span>
+                      </div>
+
+                      <div ng-if="column.isEditable" ng-click="editThisColumn(column)" class="col-optionz">
+                        <span class="col-options-span">
+                          <i class="fa fa-wrench" style="padding-top: 5px;padding-right: 6px;"></i>
+                          Configure Column
+                        </span>
+                      </div>
+
+                      <div ng-if="column.dataType!='Id' && column.dataType!='Object' && column.dataType!='ACL' && column.dataType!='File' && column.dataType!='Relation' && column.dataType!='List' && column.dataType!='Password'" ng-click="sortASC(column)" class="col-optionz">
+                        <span class="col-options-span">
+                          <i class="fa fa-sort-alpha-asc" style="padding-top: 5px;padding-right: 6px;"></i>
+                          Sort Ascending
+                        </span>
+                      </div>
+
+                      <div ng-if="column.dataType!='Id' && column.dataType!='Object' && column.dataType!='ACL' && column.dataType!='File' && column.dataType!='Relation' && column.dataType!='List' && column.dataType!='Password'" ng-click="sortDESC(column)" class="col-optionz">
+                        <span class="col-options-span">
+                          <i class="fa fa-sort-alpha-desc" style="padding-top: 5px;padding-right: 6px;"></i>
+                          Sort Descending
+                        </span>
+                      </div>
+
+                      <div ng-if="column.dataType!='Id'" ng-click="hideThisColumn(column)" class="col-optionz">
+                        <span class="col-options-span">
+                          <i class="fa fa-eye-slash" style="padding-top: 5px;padding-right: 6px;"></i>
+                          Hide Column
+                        </span>
+                      </div>
+
+                    </div>  
+
+                    <!--Configure column-->
+                    <div ng-show="editColumn[$index]" class="col-configure">
+
+                      <div class="">
+
+                          <!--isRequired-->
+                          <div class="flex-general-row-wrapper">
+
+                            <div>
+                             <checkbox  class="hidden-col-chbx"  ng-model="column.required" ></checkbox>
+                            </div>
+
+                             <div class="" style="margin-left:5px;">
+                              <span class="config-col-constain">isRequired</span>
+                             </div>
+
+                          </div>
+                         
+
+                          <!--isUnique-->
+                          <div class="flex-general-row-wrapper">
+
+                            <div>
+                             <checkbox  class="hidden-col-chbx"  ng-model="column.unique" ></checkbox>
+                            </div>
+
+                             <div class="" style="margin-left:5px;">
+                              <span class="config-col-constain">isUnique</span>
+                             </div>
+                             
+                          </div>                          
+
+                      </div> 
+
+                      <!--Buttons-->
+                      <div class="" style="margin-top:5px;">
+                        <div class="flex-general-row-wrapper">
+                          <button ng-click="cancelConfigCol(column)" type="button" class="config-save-btn-cancel" style="color:black; background-color:white;border:1px solid #DBDCDD;">cancel</button>
+
+                          <button ng-click="saveConfigCol(column)" type="button" class="config-save-btn-save" style="margin-left:2px; background-color:{{currentProject.currentTable.tableColor || '#3A5795'}}; color:white; border:1px solid {{currentProject.currentTable.tableColor || '#3A5795'}}" >save</button>
+                          
+                        </div>                         
+                      </div> 
+
+                    </div>
+                    <!--/Configure column-->
+
+                  </div>
+                  <!--/col dropdown-->
+              </th> 
+
+             <!--Extra Add Column-->
+              <th class="addColTh">
+                <div class="addColThDiv">                 
+                  <div class="flex-general-row-wrapper-center" ng-mouseenter="showNewColumnPreview=!showNewColumnPreview" ng-mouseleave="showNewColumnPreview=!showNewColumnPreview" ng-click="initiateColumnSettings()">
+                      <span>+</span>
+                  </div>                                     
+                </div> 
+
+                <!--Add Column PopUp-->
+                <div class="addColPopUpWrapper" ng-show="showAddColPopUp">
+                  <form name="addNewColumnForm" ng-submit="addColumn(addNewColumnForm.$valid)">
+                      <div>
+                        <label class="addcollabel" style="font-size:13px;">Enter new column name</label>
+                        <input class="default-form-elem newcolInput noFocus" type="text" placeholder="New column name" required ng-keyup="checkErrorsForCreate(newColumnObj.name,currentProject.currentTable.columns,'column')" ng-model="newColumnObj.name">
+                      </div>
+
+                      <!--Default Select DataType--> 
+                      <div style="margin-top:5px;">
+                        <label class="addcollabel" style="font-size:13px;">Select Datatype</label>
+                         <select   class="default-form-elem noFocus" ng-model="newColumnObj.dataType">
+                              <option ng-repeat="dTypes in colDataTypes" ng-show="dTypes.visible" ng-selected="newColumnObj.dataType==dTypes.name" value="{{dTypes.name}}">{{dTypes.text}}</option>
+                          </select>
+                      </div>
+
+                      <!--if dataType is List-->
+                      <div  ng-if="newColumnObj.dataType=='List'" style="margin-top:5px;">
+                        <label class="addcollabel" style="font-size:13px;">Select Target Type</label>
+                         <select   class="default-form-elem noFocus" ng-model="newColumnObj.relatedTo">
+                              <option ng-repeat="eachTable in currentProject.tables"  value="{{eachTable.name}}">{{eachTable.name}}</option>
+                      
+                            <option ng-repeat="dTypes in colDataTypes | filter:filterDataType"  ng-show="dTypes.visible"  value="{{dTypes.name}}">{{dTypes.text}}</option>
+                          </select>
+                      </div>
+
+                      <!--if dataType is Relation-->
+                      <div  ng-if="newColumnObj.dataType=='Relation'" style="margin-top:5px;">
+                        <label class="addcollabel" style="font-size:13px;">Target Type</label>
+                         <select   class="default-form-elem noFocus" data-ng-model="newColumnObj.relatedTo">
+                            <option ng-repeat="eachTable in currentProject.tables"  value="{{eachTable.name}}">{{eachTable.name}}
+                            </option>
+                          </select>
+                      </div>
+
+                      <div  class="flex-add-Bx" style="margin-top:8.5px;">
+                        <!---->
+                        <!--Column required--> 
+                        <div class="add-Bx">
+                              
+                            <div  class="flex-add-Bx">
+                                <div class="add-Bx">
+                                    <label class="addcollabel">Required</label>              
+                                </div>
+                                <div class="add-Bx" style="margin-left:18px;">                                   
+                                    <checkbox class="btn-default checkBxDflt" ng-model="newColumnObj.required" style="border: 1px solid #DBDCDD;"></checkbox>
+                                </div>         
+                            </div>
+
+                        </div>
+                        <!--Column unique-->
+                        <div ng-if="newColumnObj.dataType!='Boolean' && newColumnObj.dataType!='GeoPoint' && newColumnObj.dataType!='File' && newColumnObj.dataType!='List' && newColumnObj.dataType!='Object'" class="add-Bx">
+
+                            <div  class="flex-add-Bx">
+                                <div class="add-Bx">
+                                     <label class="addcollabel">Unique</label>              
+                                </div>
+                                <div class="add-Bx">                                   
+                                    <checkbox class="btn-default checkBxDflt" ng-hide="col.dataType === 'List'"  ng-model="newColumnObj.unique" style="border: 1px solid #DBDCDD;"></checkbox>
+                                </div>         
+                            </div>
+
+                        </div> 
+                        <!---->        
+                      </div>
+                      <div style="margin-top:8px;" data-ng-show="columnErrorForCreate">
+                        <span style="color:red;font-size:13px; word-break:all;">{{columnErrorForCreate}}</span>
+                      </div>  
+                      <div class="cf" style="margin-top:8px;">
+                        <div class="pull-left">
+                          <button type="button" class="addColBtn cancelColBtn " style="color:black; background-color:white;border:1px solid #DBDCDD;" ng-click="cancelAddNewCol()">Cancel</button> 
+                        </div>
+                        <div class="pull-left" style="margin-left:6px;">
+                          <button type="submit" style="background-color:#3A5795; color:white; border:1px solid #3A5795" class="addColBtn createColBtn" ng-disabled="columnErrorForCreate">Create</button>
+                        </div>                    
+                      </div>
+                  </form>
+                </div>  
+                <!--/Add Column PopUp-->
+              </th>
+              <!--/Extra Add Column--> 
+
+              <!--Dummy th for space-->  
+              <th id="extra-col-th" class="vacuumTh">
+                <div class="vacuumThDiv">                 
+                  <div class="flex-general-row-wrapper-center">
+                     
+                  </div>                                  
+                </div>  
+              </th>           
+              </tr> 
+              <!--Dummy th for space--> 
+          </thead> 
+          <tbody>
+
+            <tr ng-repeat="eachRow in currentTableData">
+
+              <!--default checkbox-->
+              <td  class="fdataTd fix-collective-chkbx">
+                  <div class="fTdDiv flex-general-row-wrapper-center">
+                    <!--Checkbox-->
+                    <checkbox  ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="btn-default checkBxDflt"  ng-model="rowsSelected[$index]" ng-click="selectThisRow($index)"></checkbox>
+                    <!--<span ng-show="!showSerialNo[$index]" class="sno">{{$index+1}}</span>-->
+
+                    <!--Edit mode-->
+                    <span ng-if="rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="sno-edit">
+                      <i class="fa fa-pencil"></i>
+                    </span>
+
+                    <!--Warning mode-->
+                    <span ng-if="rowWarningMode[$index] && !rowEditMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowErrorMode[$index]" class="sno-warninginfo" infotooltipright="rowInfo">
+                      <i class="fa fa-exclamation-triangle"></i>
+                    </span>
+
+                    <!--Error mode-->
+                    <span ng-if="rowErrorMode[$index] && !rowWarningMode[$index] && !rowEditMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index]" class="sno-errorinfo" infotooltipright="rowInfo">
+                      <i class="fa fa-exclamation-triangle"></i>
+                    </span>
+
+                    <!--Spinner-->
+                    <span ng-if="rowSpinnerMode[$index] && !rowEditMode[$index] && !rowErrorMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="sno-spinner">
+                      <i class="fa fa-spinner fa-spin"></i>
+                    </span>
+
+                    <!--Saved Tick-->
+                    <span ng-if="rowSavedMode[$index] && !rowSpinnerMode[$index] && !rowEditMode[$index] && !rowErrorMode[$index] && !rowWarningMode[$index]" class="sno-saved">
+                      <i class="fa fa-check"></i>
+                    </span>                               
+
+                  </div>              
+              </td>  
+              <!--/default checkbox-->
+
+              <td ng-repeat="column in currentProject.currentTable.columns" ng-if="!hideColumn[$index]" ng-class="{true: 'fix-collective-id'}[column.dataType==='Id']" class="dataTd">   
+                
+                <!--Id-->             
+                <div ng-if="column.dataType==='Id'" class="tdDiv cf" style="min-width: 175px">         
+                  <div class="real-content pull-left">
+                    {{eachRow.get(column.name)}}                 
+                  </div>            
+                </div>
+                <!--/Id-->          
+
+                <!--Boolean-->
+                <div ng-if="column.dataType=='Boolean'"  class="tdDiv boolean-div cf" style="min-width: 165px">     
+                  <div class="real-content-center flex-general-row-wrapper-center">  
+                      <checkbox  class="btn-default checkBxDflt2 data-checkbx"  ng-model="eachRow.document[column.name]" ng-click="setAndSaveBoolean(eachRow,column)">
+                      </checkbox>                     
+                  </div>                  
+                </div>
+                <!--/Boolean-->
+
+                <!--DateTime-->
+                <div ng-if="column.dataType=='DateTime'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
+
+                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
+                    <span class="timeSpan">                      
+                      {{eachRow.get(column.name) | date:'medium'}}
+                    </span>                                
+                  </div>                  
+                  <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">          
+                    <input kendo-date-time-picker  focus-on="{{column.id}}column" value="{{editableField[$parent.$parent.$index][column.name]}}" k-ng-model="editableField[$parent.$parent.$parent.$index][column.name]"  class="dateTimeInput"  ng-blur="setAndSave()"/>
+
+                  </div>
+
+                </div>
+                <!--/DateTime-->
+
+                <!--ACL-->
+                <div ng-if="column.dataType=='ACL'" class="tdDiv cf" style="min-width: 260px"> 
+
+                  <div class="real-content pull-left"> 
+                    <div class="objectSpan">
+                      {{eachRow.get(column.name) }} 
+                    </div>                
+                  </div>
+
+                  <!--Popup Edit Button-->
+                  <div class="modal-wrapper pull-right">
+                      <a class="round-btn" ng-click="showCommonTypes(eachRow,column)">
+                        <i class="fa fa-expand" style="color:{{currentProject.currentTable.tableColor || '#3A5795'}};"></i>&nbsp;
+                      </a>  
+                  </div>
+                  <!--/Popup Edit Button--> 
+
+                </div>
+                <!--/ACL-->
+
+                <!--JsonObject-->
+                <div ng-if="column.dataType=='Object'" class="tdDiv cf" style="min-width: 260px"> 
+
+                  <div class="real-content pull-left"> 
+                    <div class="objectSpan">
+                      {{eachRow.get(column.name) }} 
+                    </div>                
+                  </div>
+
+                  <!--Popup Edit Button-->
+                  <div class="modal-wrapper pull-right">
+                      <a class="round-btn" ng-click="showCommonTypes(eachRow,column)">
+                        <i class="fa fa-expand" style="color:{{currentProject.currentTable.tableColor || '#3A5795'}};"></i>&nbsp;
+                      </a>  
+                  </div>
+                  <!--/Popup Edit Button--> 
+
+                </div>
+                <!--/JsonObject-->
+
+                <!--Text-->
+                <div ng-if="column.dataType=='Text'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
+
+                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">              
+                      {{eachRow.get(column.name)}}                                
+                  </div>
+
+                   <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">                             
+                    <input type="text"  focus-on="{{column.id}}column" ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput"  ng-blur="setAndSave()" />               
+                  </div>
+
+                </div>
+                <!--/Text-->
+
+                <!--Encrypted Text-->
+                <div ng-if="column.dataType=='Password'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
+
+                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
+                      <span ng-if="eachRow.get(column.name)">********</span>                    
+                  </div>                
+
+                  <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">                             
+                    <input type="text"  focus-on="{{column.id}}column" ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput"  ng-blur="setAndSave()" />               
+                  </div>
+
+                  <!--Delete data-->
+                  <div ng-if="(!column.required) && eachRow.get(column.name) && (!showInputForEdit[$parent.$parent.$parent.$index][column.name])" class="modal-wrapper pull-right"> 
+                      <a class="delete-data-btn" ng-click="deleteData(eachRow,column)">             
+                       <i class="fa fa-minus-circle"></i>&nbsp;
+                      </a>                    
+                  </div>
+                  <!--/Delete data-->
+
+                </div>
+                <!--/Encrypted Text-->
+
+                <!--Email-->
+                <div ng-if="column.dataType=='Email'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
+
+                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
+                    <a class="emailSpan" href="{{eachRow.get(column.name) }}" target="_blank">
+                      {{eachRow.get(column.name) }}
+                    </a>                
+                  </div>
+
+                  <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">                             
+                    <input type="email"  focus-on="{{column.id}}column" ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput"  ng-blur="setAndSave()" />               
+                  </div> 
+
+                </div>
+                <!--/Email-->
+
+                <!--URL-->
+                <div ng-if="column.dataType=='URL'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
+
+                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
+                    <a class="emailSpan" href="{{eachRow.get(column.name) }}" target="_blank">
+                      {{eachRow.get(column.name)}}
+                    </a>                
+                  </div>
+
+                   <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">                             
+                    <input type="url"  focus-on="{{column.id}}column" ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput"  ng-blur="setAndSave()" />               
+                  </div> 
+
+                </div>
+                <!--/URL-->
+
+                <!--Number-->
+                <div ng-if="column.dataType=='Number'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
+
+                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">                    
+                      {{eachRow.get(column.name)}}                                   
+                  </div>
+
+                   <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">                             
+                    <input type="text"  focus-on="{{column.id}}column" ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput"  ng-blur="setAndSave()" />               
+                  </div> 
+
+                </div>
+                <!--/Number-->
+               
+                <!--File-->
+                <div ng-if="column.dataType=='File'" class="tdDivFile cf" style="min-width: 190px"> 
+
+                  <div class="real-content-file pull-left">
+                    <div class="flex-general-row-wrapper-center"> 
+                      <!--Image Files-->
+                      <a ng-if="(eachRow.get(column.name).document.name | extension)=='jpeg' || (eachRow.get(column.name).document.name | extension)=='jpg' || (eachRow.get(column.name).document.name | extension)=='png' || (eachRow.get(column.name).document.name | extension)=='tif' || (eachRow.get(column.name).document.name | extension)=='gif'" ng-click="showCommonTypes(eachRow,column)">
+                        <img  src="{{eachRow.document[column.name].document.url}}" class="fileT-thumb-width" alt="image" />
+                      </a> 
+
+                      <!--Other Files-->
+                      <a  ng-if="(eachRow.get(column.name).document.name | extension) && ((eachRow.get(column.name).document.name | extension)!='jpeg' && (eachRow.get(column.name).document.name | extension)!='jpg' && (eachRow.get(column.name).document.name | extension)!='png' && (eachRow.get(column.name).document.name | extension)!='tif' && (eachRow.get(column.name).document.name | extension)!='gif')" ng-click="showCommonTypes(eachRow,column)">
+                        <img src="assets/images/file2.png" class="fileT-thumb-width2" alt="image" />
+                      </a>
+                         
+                      <!--Add File-->   
+                      <a ng-if="!eachRow.get(column.name)" class="square-btn fileT-thumb-width3" ng-click="showCommonTypes(eachRow,column)">
+                        <div  style="color:{{currentProject.currentTable.tableColor || '#3A5795'}};">+</div>&nbsp;
+                      </a>
+                                                             
+                    </div>         
+                  </div>               
+
+                </div>
+                <!--/File-->
+
+                <!--Relation-->
+                <div ng-if="column.dataType=='Relation'"  class="tdDiv cf" style="min-width: 240px"> 
+
+                  <div class="real-content pull-left"> 
+                    <div ng-click="viewRelationData(eachRow,column)" ng-if="eachRow.document[column.name]" class="relation-id-wrapper">
+                      {{eachRow.get(column.name).document._id}}
+                    </div>                                    
+                  </div>
+
+                  <!--Popup Edit Button-->
+                  <div class="modal-wrapper pull-right">
+                      <a class="round-btn" ng-click="addRelation(eachRow,column)">
+                        <i class="fa fa-expand" style="color:{{currentProject.currentTable.tableColor || '#3A5795'}};"></i>&nbsp;
+                      </a>  
+                  </div>
+                  <!--/Popup Edit Button--> 
+
+                </div>
+                <!--/Relation-->
+
+                <!--List-->
+                <div ng-if="column.dataType=='List'" class="tdDiv cf" style="min-width:325px"> 
+
+                  <div class="real-content-list-text pull-left"> 
+                      <!--TextText,Email,Number,URL--> 
+                      <div ng-show="eachRow.document[column.name]" ng-if="column.relatedTo=='Text' || column.relatedTo=='Email' || column.relatedTo=='Number' || column.relatedTo=='URL'" class="cf list-text-wrapper">
+
+                        <div class="pull-left text-list-torrent flex-general-row-wrapper">
+                         
+                          <div ng-repeat="eachText in eachRow.document[column.name] track by $index" class="list-text">
+                            <span ng-if="column.relatedTo!='Password'">{{eachText}}</span>
+                            <span ng-if="column.relatedTo=='Password'" style="font-size:14px;">*****</span>
+                          </div>                        
+
+                        </div>           
+
+                      </div>
+
+                      <!--DateTime--> 
+                      <div ng-show="column.relatedTo=='DateTime'" class="cf list-text-wrapper">
+
+                        <div class="pull-left text-list-torrent flex-general-row-wrapper">
+                         
+                          <div ng-repeat="eachDate in eachRow.document[column.name] track by $index" class="list-text">
+                            <span>{{eachDate | date:'medium' }}</span>
+                          </div>                        
+
+                        </div>           
+
+                      </div> 
+
+                     <!--Boolean--> 
+                     <div ng-show="column.relatedTo=='Boolean'" class="cf list-text-wrapper">
+
+                        <div class="pull-left text-list-torrent flex-general-row-wrapper">
+                         
+                         <div ng-repeat="eachText in eachRow.document[column.name] track by $index">
+                            <!--True-->
+                            <div  ng-if="eachText" class="list-text-true">
+                              <span >{{eachText}}</span>                              
+                            </div>
+                            <!--False-->
+                            <div ng-if="!eachText" class="list-text-false">                              
+                              <span>false</span>
+                            </div>
+                         </div>
+
+                        </div>           
+
+                      </div>
+
+                      <!--JSON-Object--> 
+                      <div ng-show="column.relatedTo=='Object'" class="cf list-text-wrapper">
+
+                        <div class="pull-left text-list-torrent flex-general-row-wrapper">
+                         
+                         <div ng-repeat="eachJSON in eachRow.document[column.name] track by $index">
+                                                    
+                            <div class="list-Json">
+                              <span>{{eachJSON || "null"}}</span>                              
+                            </div>                
+
+                         </div>
+
+                        </div>           
+
+                      </div>
+
+                      <!--File--> 
+                      <div ng-show="column.relatedTo=='File'" class="cf list-text-wrapper">
+
+                        <div class="pull-left text-list-torrent flex-general-row-wrapper">
+                         
+                         <div ng-repeat="eachFile in eachRow.document[column.name] track by $index" class="flex-general-row-wrapper">      
+                            <!--Images-->                                              
+                            <div ng-if="eachFile && eachFile.document.url && ((eachFile.document.name | extension)=='jpeg' || (eachFile.document.name | extension)=='jpg' || (eachFile.document.name | extension)=='png' || (eachFile.document.name | extension)=='tif' || (eachFile .document.name | extension)=='gif')" class="list-File-images">
+                              <img src="{{eachFile.document.url}}">                             
+                            </div>
+                            
+                            <!--Other Files-->               
+                            <div ng-if="eachFile && eachFile.document.url && ((eachFile.document.name | extension)!='jpeg' && (eachFile.document.name | extension)!='jpg' && (eachFile.document.name | extension)!='png' && (eachFile.document.name | extension)!='tif' && (eachFile .document.name | extension)!='gif')" class="list-File-others">
+                              <img src="assets/images/file2.png">                             
+                            </div>
+                         </div>
+
+                        </div>
+                      </div>
+
+                      <!--Geo Point--> 
+                      <div  ng-if="column.relatedTo=='GeoPoint'" class="cf list-text-wrapper">
+
+                        <div class="pull-left text-list-torrent flex-general-row-wrapper">
+                         
+                         <div ng-repeat="eachGeo in eachRow.document[column.name] track by $index">
+                            <div class="list-geopoint">
+                              <div ng-click="listToggleGoogleMap($event,eachRow,column,$index)">
+                                { <span>{{eachGeo.latitude}}</span>,&nbsp;
+                                <span>{{eachGeo.longitude}}</span> }
+                              </div>
+                            </div>                         
+
+                            <!--google map-->
+                            <div id="{{$parent.$parent.$index}}{{column.name}}listmap" class="googlemap-popup-wrapper hidden">
+                              <div class="googlemap-popup-header">
+                              </div>
+                              <div class="googlemap-popup-content"> 
+                                <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+                                    <ui-gmap-marker idkey='marker.id' coords='marker.coords'></ui-gmap-marker>
+                                </ui-gmap-google-map>
+                              </div> 
+                            </div>
+                            <!--google map--> 
+                          </div>                      
+
+                        </div>           
+
+                      </div>
+
+                      <!--Relation--> 
+                      <div ng-show="eachRow.document[column.name]" ng-if="column.relatedTo!='Text' && column.relatedTo!='Email' && column.relatedTo!='Number' && column.relatedTo!='URL' && column.relatedTo!='DateTime' && column.relatedTo!='Boolean' && column.relatedTo!='File' && column.relatedTo!='Object' && column.relatedTo!='Geo Point'" class="cf list-text-wrapper">
+
+                        <div class="pull-left text-list-torrent flex-general-row-wrapper">
+                         
+                          <div ng-repeat="eachRelation in eachRow.document[column.name] track by $index" class="list-relation">
+                            <span>{{eachRelation.document._id}}</span>
+                          </div>                        
+
+                        </div>           
+
+                      </div> 
+
+                  </div>
+
+                  <!--Popup Edit Button-->
+                  <div class="modal-wrapper pull-right">
+                      <a class="round-btn" ng-click="showCommonTypes(eachRow,column)">
+                        <i class="fa fa-expand" style="color:{{currentProject.currentTable.tableColor || '#3A5795'}};"></i>&nbsp;
+                      </a>  
+                  </div>
+                  <!--/Popup Edit Button--> 
+
+                </div>
+                <!--/List-->
+
+
+                <!--Geo Point-->
+                <div ng-if="column.dataType=='GeoPoint'" class="tdDiv cf geopoint-container"> 
+
+                  <div ng-show="eachRow.document[column.name]" class="real-content geopoint-wrapper pull-left flex-general-row-wrapper-center"> 
+
+                    <div  class="geopoint"  ng-click="toggleGoogleMap($event,eachRow,column)">
+                      { <span>{{eachRow.get(column.name).latitude}}</span>,&nbsp;
+                      <span>{{eachRow.get(column.name).longitude}}</span> }
+                    </div> 
+
+                    <!--google map-->
+                    <div id="{{$parent.$parent.$index}}{{column.name}}map" class="googlemap-popup-wrapper hidden">
+                      <div class="googlemap-popup-header">
+                      </div>
+                      <div class="googlemap-popup-content"> 
+                        <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+                            <ui-gmap-marker idkey='marker.id' coords='marker.coords'></ui-gmap-marker>
+                        </ui-gmap-google-map>
+                      </div> 
+                    </div>
+                    <!--google map-->
+
+                  </div>
+
+                  <!--Popup Edit Button-->
+                  <div class="modal-wrapper pull-right">
+                      <a class="round-btn" ng-click="showCommonTypes(eachRow,column)">
+                        <i class="fa fa-expand" style="color:{{currentProject.currentTable.tableColor || '#3A5795'}};"></i>&nbsp;
+                      </a>  
+                  </div>
+                  <!--/Popup Edit Button--> 
+
+                </div>
+                <!--/Geo Point-->
+
+                <!--Others-->
+                <div ng-if="column.dataType!='Id' && column.dataType!='Boolean' && column.dataType!='DateTime' && column.dataType!='ACL' && column.dataType!='Text' && column.dataType!='Password' && column.dataType!='Email' && column.dataType!='URL' && column.dataType!='Number' && column.dataType!='Object' && column.dataType!='File' && column.dataType!='Relation' && column.dataType!='List' && column.dataType!='GeoPoint'" class="tdDiv cf" style="min-width: 210px"> 
+
+                  <div class="real-content pull-left">  
+                    {{eachRow.get(column.name)}}              
+                  </div>
+
+                  <!--Popup Edit Button-->
+                  <div class="modal-wrapper pull-right">
+                      <a class="round-btn">
+                        <i class="fa fa-expand" style="color:{{currentProject.currentTable.tableColor || '#3A5795'}};"></i>&nbsp;
+                      </a>  
+                  </div>
+                  <!--/Popup Edit Button--> 
+
+                </div>
+                <!--/Others-->            
+
+              </td>            
+
+             <!--Dummy tds for space-->
+              <td class="" ng-class='{vacuumTd: !showNewColumnPreview}'>
+              </td> 
+              <td class="vacuumTd">
+              </td>           
+              <!--/Dummy tds for space-->
+            </tr>
+
+           <!--Extra Add row-->
+            <tr>
+              <td class="ldataTd addRowTd" ng-click="addRow()">
+                  <div class="lTdDiv">
+                      <div class="flex-general-row-wrapper-center">
+                        <span>+</span>
+                      </div>  
+                  </div>              
+              </td>
+               <td  class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="!hideColumn[$index]">
+                <div class="tdDiv cf" ng-click="addRow()" style="cursor:cell;"> 
+                </div>  
+              </td>
+              <td class="vacuumTd">
+              </td> 
+              <td class="vacuumTd">
+              </td>
+            </tr>
+            <!--/Extra Add row-->
+
+            <!--Dummy trs for space-->
+            <tr class="vacuumTr">
+              <td class="ldataTd">
+                 <div class="lTdDiv">
+                       
+                  </div> 
+              </td>
+
+              <td class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="!hideColumn[$index]">
+                <div class="tdDiv cf"> 
+                </div>  
+              </td>
+              <td>
+              </td>
+              <td>
+              </td>  
+            </tr>
+
+
+            <tr class="vacuumTr">
+              <td class="ldataTd">
+                 <div class="lTdDiv">
+                       
+                  </div> 
+              </td>
+
+              <td class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="!hideColumn[$index]">
+                <div class="tdDiv cf"> 
+                </div>  
+              </td> 
+              <td>
+              </td> 
+              <td>
+              </td>
+            </tr>
+
+            <tr class="vacuumTr">
+              <td class="ldataTd">
+                 <div class="lTdDiv">
+                       
+                  </div> 
+              </td>
+
+              <td class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="!hideColumn[$index]">
+                <div class="tdDiv cf"> 
+                </div>  
+              </td>
+              <td>
+              </td>
+              <td>
+              </td>  
+            </tr>
+
+            <tr class="vacuumTr">
+              <td class="ldataTd">
+                 <div class="lTdDiv">
+                       
+                  </div> 
+              </td>
+
+              <td class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="!hideColumn[$index]">
+                <div class="tdDiv cf"> 
+                </div>  
+              </td>
+              <td>
+              </td>
+              <td>
+              </td>  
+            </tr>
+            <!--/Dummy trs for space-->
+
+          </tbody>
+
+         </table>       
+       
+        </div> 
+        
+     </div> 
+  </div>  
+  <!--/Table-->
+
+  <!--While Loading-->
+  <div ng-show="!isTableLoaded" class="wyl-table-loading">
+    <div id="table-spinner" class="flex-general-column-wrapper-center">
+        <div>
+          <!--Animated Circle-->
+          <div class="cssload-bell">
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+            <div class="cssload-circle">
+              <div class="cssload-inner"></div>
+            </div>
+          </div>
+          <!--/Animated Circle-->
+        </div>  
+        <div style="margin-top:63px;">
+         <span style="font-size:20px;">Loading</span>
         </div>
 
     </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Cancel</button>
-      <button type="button" ng-show="!saveStaticTypeSpinner" class="btn btn-primary btn-flat" ng-click="saveStaticTypeField()">Save</button>
+  </div>  
+  <!--/While Loading-->
 
-      <button type="button" ng-show="saveStaticTypeSpinner" class="btn btn-primary btn-flat">
-        <i class="fa fa-spinner fa-spin"></i>Saving..</button>
-    </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
- 
+</div>
 
 
+<!-- EditJSON Modal -->
+  <div class="modal fade colored-header danger" id="md-objectviewer" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <h3>Object Viewer</h3>        
+        </div>      
+        <div class="modal-body">        
+         
+          <div ui-ace="{ mode: 'json', theme: 'monokai' }" ng-model="editableJsonObj">
+          </div>
+          
+        </div>
+
+        <div class="flex-general-row-wrapper-center modalF">        
+            <button type="button" ng-click="setAndSaveJsonObject()" class="btn btn-primary btn-flat" style="width:400px;">Save</button>
+          </div> 
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- EditJSON Modal -->
+
+<!-- EditFile Modal -->
+  <div class="modal fade colored-header danger" id="md-fileviewer" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" ng-click="removeSelectdFile()" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <h3>Files</h3>        
+        </div>      
+        <div class="modal-body">
+
+          <div class="flex-general-row-wrapper-center">
+              <!--Add file-->
+              <div ng-if="!editableFile && !selectedFile">
+                <div class="modal-add-file">
+                  <input filechange type="file" id="notification-file" class="form-control">
+                </div>                
+              </div>
+
+            <div  ng-if="selectedFile && selectedFileExtension">  
+              <!--View File for Images-->
+              <div ng-if="selectedFile  && (selectedFileExtension=='jpeg' || selectedFileExtension=='jpg' || selectedFileExtension=='png' || selectedFileExtension=='tif' || selectedFileExtension=='gif')" class="modal-view-file flex-general-column-wrapper-center">  
+
+                <!--Image-->
+                <div class="">
+                  <a class="modal-anchor">
+                    <img src="{{selectedFile}}">                  
+                  </a>                  
+                </div>
+
+                <div class="flex-general-row-wrapper-center">
+                  <span style="margin-top:12px;">{{selectedfileName}}</span> 
+                </div>
+
+                <!--Image Edit tools--> 
+                <div class="moda-img-tools2 flex-general-row-wrapper-center">
+                  <div class="modal-img-option2">
+                    <a ng-click="setAndSaveFile()">
+                     <i class="fa fa-floppy-o"></i>
+                    </a>
+                  </div>
+                  <div class="modal-img-option2" style="margin-left:5px;">
+                    <a ng-click="removeSelectdFile()">
+                    <i class="fa fa-times-circle-o"  style="color:red"></i>
+                    </a>
+                  </div>                  
+                </div>
+
+              </div> 
+
+              <!--View File for Other Files-->
+              <div ng-if="selectedFile  && (selectedFileExtension!='jpeg' && selectedFileExtension!='jpg' && selectedFileExtension!='png' && selectedFileExtension!='tif' && selectedFileExtension!='gif')" class="modal-view-other-file flex-general-column-wrapper-center">
+
+                  <!--Image-->
+                  <div>
+                    <a class="modal-anchor flex-general-row-wrapper-center">
+                      <img src="assets/images/file2.png">                  
+                    </a>                  
+                  </div> 
+
+                  <div class="flex-general-row-wrapper-center">
+                    <span style="margin-top:12px;">{{selectedfileName}}</span> 
+                  </div>
+
+                  <!--Image Edit tools--> 
+                  <div class="moda-img-tools2 flex-general-row-wrapper-center">
+                    <div class="modal-img-option2">
+                      <a ng-click="setAndSaveFile()">
+                       <i class="fa fa-floppy-o"></i>
+                      </a>
+                    </div>
+                    <div class="modal-img-option2" style="margin-left:5px;">
+                      <a ng-click="removeSelectdFile()">
+                        <i class="fa fa-times-circle-o"  style="color:red"></i>
+                      </a>
+                    </div>                  
+                  </div>
+
+                </div>
+              
+            </div>
+
+            <div  ng-if="!selectedFile">  
+              <!--View File for Images-->
+              <div ng-if="editableFile && editableFile.document.url && ((editableFile.document.name | extension)=='jpeg' || (editableFile.document.name | extension)=='jpg' || (editableFile.document.name | extension)=='png' || (editableFile.document.name | extension)=='tif' || (editableFile.document.name | extension)=='gif')" class="modal-view-file">
+
+                <!--Image-->
+                <div>
+                  <a class="modal-anchor flex-general-row-wrapper-center">
+                    <img src="{{editableFile.document.url}}">                  
+                  </a>                  
+                </div>
+                <div class="flex-general-row-wrapper-center">
+                  <span style="margin-top:14px;">{{editableFile.document.name}}</span> 
+                </div>               
+
+                <!--Image Edit tools--> 
+                <div class="moda-img-tools2 flex-general-row-wrapper-center">
+                  <div class="modal-img-option2">
+                    <a href="{{editableFile.document.url}}" target="_blank">
+                     <i class="fa fa-download"></i>
+                    </a>
+                  </div>
+                  <div class="modal-img-option2" style="margin-left:5px;">
+                    <a ng-click="deleteFile()">
+                    <i class="fa fa-trash-o"></i>
+                    </a>
+                  </div>                  
+                </div>
+
+              </div> 
+
+               <!--View File for Other Files-->
+              <div ng-if="editableFile && editableFile.document.url && ((editableFile.document.name | extension)!='jpeg' && (editableFile.document.name | extension)!='jpg' && (editableFile.document.name | extension)!='png' && (editableFile.document.name | extension)!='tif' && (editableFile.document.name | extension)!='gif')" class="modal-view-other-file">
+
+                  <!--Image-->
+                  <div>
+                    <a class="modal-anchor flex-general-row-wrapper-center">
+                      <img src="assets/images/file2.png">                  
+                    </a>                  
+                  </div> 
+
+                  <div class="flex-general-row-wrapper-center">
+                    <span style="margin-top:14px;">{{editableFile.document.name}}</span>  
+                  </div>                             
+
+                  <!--Image Edit tools--> 
+                  <div class="moda-img-tools2 flex-general-row-wrapper-center">
+                    <div class="modal-img-option2">
+                      <a href="{{editableFile.document.url}}" target="_blank">
+                       <i class="fa fa-download"></i>
+                      </a>
+                    </div>
+                    <div class="modal-img-option2" style="margin-left:5px;">
+                      <a ng-click="deleteFile()">
+                      <i class="fa fa-trash-o"></i>
+                      </a>
+                    </div>                  
+                  </div>
+
+                </div>  
+            </div>     
+
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- EditFile Modal -->
+
+<!--GEO POINT-->
+
+<!-- Add/Remove GeoPoint -->
+  <div class="modal fade colored-header danger" id="md-geodocumentviewer" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <h3>Geo Point</h3>        
+        </div>      
+        <div class="modal-body">
+          <form role="form" name="geoPointForm" ng-submit="setAndSaveGeopoint(geoPointForm.$valid)">
+
+            <div class="madd-relation-wrapper">            
+              <div class="geopoint-list-wrapper">
+
+                  <div class="geo-point-add-remv flex-general-row-wrapper-center">
+                    <div class="flex-general-row-wrapper">
+
+                      <!--Latitude-->
+                      <div>
+
+                        <div class="geopoint-name">
+                          <h4>Latitude</h4>                          
+                        </div>  
+                        
+                        <input type="text" ng-model="editableGeopoint.latitude" class="geopoint-inputz"  ng-blur="geoPointValidation('latitude',editableGeopoint.latitude)" minlength="-90" maxlength="90" required>
+
+                        <div ng-if="geopointEditError && (geopointEditError.type=='latitude')" class="geopoint-error">
+                          <span>{{geopointEditError.msg}}</span>                          
+                        </div>
+                      </div>
+
+                      <!--Longitude-->
+                      <div style="margin-left:4px;">
+                        
+                        <div class="geopoint-name">
+                          <h4>Longitude</h4>
+                        </div>
+
+                        <input type="text" ng-model="editableGeopoint.longitude" class="geopoint-inputz" ng-blur="geoPointValidation('longitude',editableGeopoint.longitude)" minlength="-180" maxlength="180" required>
+
+                        <div ng-if="geopointEditError && (geopointEditError.type=='longitude')" class="geopoint-error">
+                          <span>{{geopointEditError.msg}}</span>                          
+                        </div>
+                      </div>
+
+                    </div> 
+                  </div>
+                  
+              </div> 
+            </div> 
+
+            <div ng-show="!geopointEditError" class="flex-general-row-wrapper-center modalF">        
+              <button  type="submit" class="btn btn-primary btn-flat" style="width:400px;">Save</button>
+            </div>
+        </form>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /Add/Remove GeoPoint -->
 
 
-  
+<!-- Add Relation Modal -->
+<div class="modal fade colored-header danger" id="md-reldocumentviewer" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <h3>Relation Documents</h3>        
+        </div>      
+        <div class="modal-body">
+          <div class="madd-relation-wrapper">
+            <div  ng-show="!linkedRelatedDoc" class="add-relation-btn-wrapper">
+              <button type="button"  ng-click="searchRelationDocs()" class="add-relation-btn">Add Relation</button>
+            </div> 
+            <!--Relation-->
+            <div ng-show="linkedRelatedDoc && !relToRel" class="relationid-list-wrapper" malihuscrollbar-for-popup>
+
+                <div class="relationid-list flex-general-row-wrapper-center cf">
+                  <div class="m-relationid id-show">
+                    
+                     {{linkedRelatedDoc}}
+                    
+                  </div>
+                  <div class="m-remove-relation remv-show">
+                    <div ng-click="deleteRelLink()">
+                     <i class="fa fa-times"></i>
+                    </div>
+                  </div>  
+                </div>
+                
+            </div> 
+
+            <!--Relation of relation-->
+            <div ng-show="linkedRelatedDoc && relToRel" class="relationid-list-wrapper" malihuscrollbar-for-popup>
+
+                <div class="relationid-list flex-general-row-wrapper-center cf">
+                  <div class="m-relationid id-show">
+                    
+                     {{linkedRelatedDoc}}
+                    
+                  </div>
+                  <div class="m-remove-relation remv-show">
+                    <div ng-click="setRelationData(relEditableRow,relEditableColumn,null)">
+                     <i class="fa fa-times"></i>
+                    </div>
+                  </div>  
+                </div>
+                
+            </div>
+
+          </div> 
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /Add Relation Modal -->
+
+<!-- Search Relation Documents Modal -->
+  <div class="modal fade colored-header danger" id="md-searchreldocument" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <h3>Search Relation Documents</h3>        
+        </div>      
+        <div class="modal-body">
+
+          <!--List-->
+          <div ng-if="!searchRelDocsError" class="md-search-relation-wrapper">
+            <div ng-show="relationTableData.length>1" class="search-rel-wrapper">
+                <div class="rel-search-btn-wrapper flex-general-row-wrapper">
+                  <div class="rel-searchBx">
+                    <input type="text" ng-model="searchRelDocId">
+                  </div>
+                  <div class="rel-searchIcon">
+                    <i class="fa fa-search"></i>
+                  </div>
+                </div>
+                  
+            </div>
+            <div class="relationid-list-wrapper" malihuscrollbar-for-popup>
+
+                <!--show list-->
+                <div ng-show="relationTableData.length>0 && !relToRel" ng-repeat="eachRelRow in relationTableData | filter:searchRelDocId" class="relationid-list flex-general-column-wrapper-center">
+                  <div class="m-relationid" ng-click="linkRecord(eachRelRow)">
+                    <a>
+                      {{eachRelRow.document._id}}
+                    </a>  
+                  </div>  
+                </div> 
+
+                <!--show list of relation to relation-->
+                <div ng-show="relationTableData.length>0 && relToRel" ng-repeat="eachRelRow in relationTableData | filter:searchRelDocId" class="relationid-list flex-general-column-wrapper-center">
+                  <div class="m-relationid" ng-click="setRelationData(relEditableRow,relEditableColumn,eachRelRow)">
+                    <a>
+                      {{eachRelRow.document._id}}
+                    </a>  
+                  </div>  
+                </div>
+
+                <!--no records-->
+                <div ng-show="!relationTableData || relationTableData.length==0" class="relationid-list-empty flex-general-column-wrapper-center">
+                  <div class="flex-general-column-wrapper-center">                  
+                      <p>No records found </p>
+                      <p ng-click="goToDataBrowser(tableDef)" style="cursor:pointer; color:blue;">(go to table {{tableDef.name}})</p>                  
+                  </div>                 
+                   
+                </div>              
+                
+            </div>  
+          </div>
+
+          <!--Error-->
+          <div class="flex-general-column-wrapper-center" ng-if="searchRelDocsError">
+            <div class="flex-general-column-wrapper-center">
+              <p style="color:red;">{{searchRelDocsError}}</p>
+            </div> 
+          </div>  
+
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /Search Relation Documents Modal -->
+
+<!-- Relation Modal -->
+  <div class="modal fade colored-header danger" id="md-relationviewer" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" ng-click="closeRelModal()" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <div class="flex-general-row-wrapper">
+
+            <div style="width:50px;" ng-if="relatedTableDefArray && relatedTableDefArray.length>1">
+             <h3 ng-click="goToPrevRel()"><i class="fa fa-arrow-left"></i></h3> 
+            </div>
+
+            <div>
+             <h3>Relation Viewer</h3> 
+            </div> 
+          </div>       
+        </div>      
+        <div class="modal-body"> 
+          <!--No Data-->
+          <div ng-if="(!viewRelDataError) && (relatedTableRecordArray.length==0)" class="row">
+            <div class="col-md-12">
+               <div class="flex-general-column-wrapper-center">
+                <span style="font-size:14px;">No Data</span>
+               </div>
+            </div>  
+          </div>
+
+          <!--Error-->
+          <div ng-if="viewRelDataError" class="row">
+            <div class="col-md-12">
+               <div class="flex-general-column-wrapper-center">
+                <span style="font-size:14px;color:red;">{{viewRelDataError}}</span>
+               </div>
+            </div>  
+          </div>
+
+          <!--Modal table header-->
+          <div ng-if="(!viewRelDataError) && (relatedTableRecordArray.length!=0)" class="row">
+            <div class="col-md-12">
+              <div class="m-table-header" style="background-color:#3A5795">
+                 <div class="pull-left">
+                  <h4>
+                    {{relatedTableDefArray[relatedTableDefArray.length-1].name}}
+                  </h4>
+                 </div> 
+              </div>  
+            </div>  
+          </div>  
+          <!--/Modal table header-->
+
+          <!--Modal table strip-->
+          <div ng-if="(!viewRelDataError) && (relatedTableRecordArray.length!=0)" class="row">
+            <div class="col-md-12">
+              <div class="m-table-strip">                  
+
+                 <div class="pull-right m-table-ctrls"> 
+
+                  <!--Save Button-->
+                  <div ng-if="!relationErrorMode && !relationSpinnerMode && !relationSaveTickMode">
+                    <span style="margin-top:4px;" ng-click="saveRelationObj(relatedTableRecordArray[relatedTableRecordArray.length-1])">
+                      <i class="fa fa-floppy-o fa-lg"></i>
+                    </span>
+                  </div>
+
+                  <!--Spinner-->
+                  <div ng-if="!relationErrorMode && relationSpinnerMode && !relationSaveTickMode">
+                    <span style="margin-top:4px;">
+                      <i class="fa fa-spinner fa-spin fa-lg"></i>
+                    </span>
+                  </div>
+
+                  <!--Save Tick-->
+                  <div ng-if="!relationErrorMode && !relationSpinnerMode && relationSaveTickMode">
+                    <span style="margin-top:4px;">
+                      <i class="fa fa-check fa-lg" style="color:#1CC902;"></i>
+                    </span>
+                  </div>
+
+                  <!--Error-->
+                  <div ng-if="relationErrorMode && !relationSpinnerMode && !relationSaveTickMode">
+                    <span style="margin-top:4px;">
+                     <span class="relSaveError">{{relationErrorMode}}</span>
+                    </span>
+                  </div>
+
+                 </div>        
+
+              </div>  
+            </div>  
+          </div>  
+          <!--/Modal table strip-->
+         
+          <!--Modal Related Table Form-->
+          <div ng-if="(!viewRelDataError) && (relatedTableRecordArray.length!=0)" class="relation-data-wrapper" style="margin-top:3px;">
+            <div id="relationTable" malihuscrollbar-for-popup>          
+              
+              <div class="modal-rel-form flex-general-column-wrapper">
+                <div class="m-key-value" ng-repeat="relCol in relatedTableDefArray[relatedTableDefArray.length-1].columns">
+                  <!--Column Name-->
+                  <div class="m-key cf">
+                    
+                    <div class="pull-left m-col-icon">
+                      <!--Id-->
+                      <i ng-if="relCol.dataType==='Id'" class="fa fa-shield col-icon-size"></i>
+
+                      <!--Boolean-->
+                      <i ng-if="relCol.dataType=='Boolean'" class="fa fa-check col-icon-size"></i>
+
+                       <!--DateTime-->
+                      <i ng-if="relCol.dataType=='DateTime'" class="fa fa-calendar-o col-icon-size"></i>
+
+                      <!--ACL or Object-->
+                      <i ng-if="relCol.dataType=='ACL' || column.dataType=='Object'" class="fa fa-bullseye col-icon-size"></i>
+
+                      <!--Text-->
+                      <i ng-if="relCol.dataType=='Text'" class="fa fa-text-height col-icon-size"></i>
+
+                      <!--Encrypted Text-->
+                      <i ng-if="relCol.dataType=='Password'" class="fa fa-lock col-icon-size"></i>
+
+                      <!--Email-->
+                      <i ng-if="relCol.dataType=='Email'" class="fa fa-envelope-o col-icon-size"></i>
+
+                      <!--URL-->
+                      <i ng-if="relCol.dataType=='URL'" class="fa fa-globe col-icon-size"></i>
+
+                      <!--Number-->
+                      <i ng-if="relCol.dataType=='Number'" class="fa fa-th col-icon-size"></i>
+
+                      <!--File-->
+                      <i ng-if="relCol.dataType=='File'" class="fa fa-paperclip col-icon-size"></i>
+
+                      <!--Relation-->
+                      <i ng-if="relCol.dataType=='Relation'" class="fa fa-external-link col-icon-size"></i>
+
+                      <!--List-->
+                      <i ng-if="relCol.dataType=='List'" class="fa fa-bars col-icon-size"></i>
+
+                      <!--GeoPoint-->
+                      <i ng-if="relCol.dataType=='GeoPoint'" class="fa fa-map-marker col-icon-size"></i>
+                    </div>
+                    <div class="pull-left m-col-name">
+                      {{relCol.name}}
+                    </div> 
+
+                  </div>
+               
+
+                  <!--Id-->
+                  <div ng-if="relCol.dataType=='Id'" class="m-value">
+                      <div class="m-data-container cf" style="height:37px;">
+
+                        <div class="m-real-content pull-left"> 
+                          <div class="m-id-aura">                         
+                          {{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name)}}
+                          </div>                                        
+                        </div>
+                      </div>
+                  </div>                 
+
+                  <!--Boolean-->
+                  <div ng-if="relCol.dataType=='Boolean'" class="m-value">
+                      <div class="m-data-container-chk cf" style="height:10px !important;">
+
+                        <div class="m-real-content-chk pull-left">
+                          <checkbox  class="btn-default checkBxDflt data-checkbx"  ng-model="relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]" ng-change="setRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name])" style="margin-left:14px;">
+                          </checkbox>
+                        </div>                       
+
+                      </div>
+                  </div>
+
+                  <!--DateTime-->
+                  <div ng-if="relCol.dataType=='DateTime'" class="m-value">
+                      <div class="m-data-container-datetime cf" style="height:30px;">
+
+                        <div class="m-real-contentent-datetime pull-left">
+                          <input kendo-date-time-picker  value="{{relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]}}"  k-ng-model="relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]"   ng-blur="setRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name])" class="dateTimeInput"/>
+                        </div>                       
+
+                      </div>
+                  </div>
+
+                  <!--ACL-->
+                  <div ng-if="relCol.dataType=='ACL'" class="m-value">
+                      <div class="m-data-container cf m-acl-cust">
+
+                        <div class="m-real-content-acl pull-left">
+                          <div class="m-acl-aura">
+                          {{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name)}}
+                          </div>
+                        </div>
+                        <div class="m-popup-btn pull-right">
+                          <a class="m-round-btn" ng-click="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)">
+                            <i class="fa fa-expand" style="color:#3A5795;"></i>&nbsp;
+                          </a>
+                        </div>
+
+                      </div>
+                  </div>
+
+                  <!--JsonObject-->
+                  <div ng-if="relCol.dataType=='Object'" class="m-value">
+                      <div class="m-data-container m-acl-cust cf">
+
+                        <div class="m-real-content-acl pull-left">
+                          <div class="m-acl-aura">
+                          {{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name)}}
+                          </div>
+                        </div>
+                        <div class="m-popup-btn pull-right">
+                          <a class="m-round-btn" ng-click="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)">
+                            <i class="fa fa-expand" style="color:#3A5795"></i>&nbsp;
+                          </a>
+                        </div>
+
+                      </div>
+                  </div>
+
+                  <!--Text-->
+                  <div ng-if="relCol.dataType=='Text'" class="m-value">
+                      <div class="m-data-container cf" style="height:35px;">
+
+                        <div class="m-real-content-cmn-types pull-left">                          
+                          <input type="text" ng-model="relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]" ng-blur="setRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name])" class="m-commontypes-aura" >
+                        </div>                       
+
+                      </div>
+                  </div> 
+                   
+                  <!--Encrypted Text-->
+                  <div ng-if="relCol.dataType=='Password'" class="m-value">
+                      <div class="m-data-container cf" style="height:35px;">
+
+                        <div class="m-real-content-cmn-types pull-left"> 
+                          <!--Diaply Mode-->
+                          <input ng-if="!relationShowInput[relCol.name]" type="text" value="*****" ng-click="holdRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name])" class="m-commontypes-aura" >
+
+                          <!--Edit Mode-->
+                          <input focus-on="{{relCol.name}}relcol" ng-if="relationShowInput[relCol.name]" type="text" ng-model="relationHoldData[column.name]" ng-blur="setRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,relationHoldData[column.name])" class="m-commontypes-aura">
+
+                        </div>
+
+                        <!--Delete data-->
+                        <div ng-if="!relCol.required && relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] && !relationShowInput[relCol.name]" class="m-popup-btn pull-right">
+                          <a class="m-delete-data-btn" ng-click="deleteRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,null)">
+                            <i class="fa fa-minus-circle"></i>&nbsp;
+                          </a>
+                        </div>                       
+
+                      </div>
+                  </div>
+
+                  <!--Email-->
+                  <div ng-if="relCol.dataType=='Email'" class="m-value">
+                      <div class="m-data-container cf" style="height:35px;">
+
+                        <div class="m-real-content-cmn-types pull-left">                          
+                          <input type="email" ng-model="relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]" ng-blur="setRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name])" class="m-commontypes-aura" >
+                        </div>                       
+
+                      </div>
+                      <div>
+                        <span style="color:red;margin-left:1.5px;">{{relationError[relCol.name]}}</span>
+                      </div>
+                  </div>
+
+                  <!--URL-->
+                  <div ng-if="relCol.dataType=='URL'" class="m-value">
+                      <div class="m-data-container cf" style="height:35px;">
+
+                        <div class="m-real-content-cmn-types pull-left">                          
+                          <input type="url" ng-model="relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]" ng-blur="setRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name])" class="m-commontypes-aura" >
+                        </div>                       
+
+                      </div>
+                      <div>
+                        <span style="color:red;margin-left:1.5px;">{{relationError[relCol.name]}}</span>
+                      </div>
+                  </div>
+
+                  <!--Number-->
+                  <div ng-if="relCol.dataType=='Number'" class="m-value">
+                      <div class="m-data-container cf" style="height:35px;">
+
+                        <div class="m-real-content-cmn-types pull-left">                          
+                          <input type="text" ng-model="relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]" ng-blur="setRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name])" class="m-commontypes-aura" >
+                        </div>                       
+
+                      </div>
+                      <div>
+                        <span style="color:red;margin-left:1.5px;">{{relationError[relCol.name]}}</span>
+                      </div>
+                  </div>
+
+                  <!--Files-->
+                  <div ng-if="relCol.dataType=='File'"  class="m-value">
+                      <div class="m-data-container-file cf">
+
+                        <div class="m-real-content-file pull-left">
+                          <!--Images-->
+                          <a ng-click="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)" ng-if="(relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='jpeg' || (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='jpg' || (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='png' || (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='tif' || (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='gif' && !setRelFileSpinner && !setRelFileError" >
+                            <img class="m-dynamix-img" src="{{relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name].document.url}}">
+                          </a>
+
+                          <!--Other Files-->
+                          <a ng-click="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)" ng-if="(relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension) && ((relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='jpeg' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='jpg' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='png' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='tif' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='gif') && !setRelFileSpinner && !setRelFileError">
+                            <img class="m-static-img" src="assets/images/file2.png">
+                          </a>
+
+                          <!--Add File Button-->
+                          <div ng-if="!relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name) && !setRelFileSpinner && !setRelFileError" ng-click="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)" class="m-img-add">
+                            <span>
+                              <i class="fa fa-plus-circle"></i>
+                            </span>
+                          </div> 
+
+                          <!--Spinner-->
+                          <div ng-if="setRelFileSpinner" class="m-img-add">
+                            <span>
+                             <i class="fa fa-spinner fa-spin"></i>
+                            </span>
+                          </div>
+
+                          <!--Error-->
+                          <div ng-if="setRelFileError && !setRelFileSpinner" class="m-img-add">
+                            <span>
+                              {{setRelFileError}}
+                            </span>
+                          </div> 
+
+                        </div>                       
+
+                      </div>
+                  </div>
+
+                  <!--Geo Point-->
+                  <div ng-if="relCol.dataType=='GeoPoint'" class="m-value">
+                      <div class="m-data-container cf" style="height:37px;">
+
+                        <div class="m-real-geopoint pull-left">
+                          <div class="m-geopoint" ng-click="relToggleGoogleMap($event,relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)">
+                            { <span>{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).latitude}}</span>,&nbsp;
+                            <span>{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).longitude}}</span> }
+                          </div>                           
+
+                        </div>
+                        <div class="m-popup-btn pull-right">
+                          <a class="m-round-btn" ng-click="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)">
+                            <i class="fa fa-expand" style="color:#3A5795;"></i>&nbsp;
+                          </a>
+                        </div>
+
+                      </div>
+                  </div>
+
+                  <!--Relation-->
+                  <div ng-if="relCol.dataType=='Relation'" class="m-value">
+                      <div class="m-data-container cf" style="height:37px;">
+
+                        <div class="m-real-content-rel pull-left">
+                          <div ng-if="relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]" class="m-rel-id-aura" ng-click="viewRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)">                          
+                            {{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document._id}}
+
+                          </div>                         
+                        </div>
+                        <div class="m-popup-btn pull-right">
+                          <a class="m-round-btn" ng-click="addRelationToRelation(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)">
+                            <i class="fa fa-expand" style="color:#3A5795;"></i>&nbsp;
+                          </a>
+                        </div>
+
+                      </div>
+                  </div>
 
 
-   
-  
-  
+                  <!--List-->
+                  <div ng-if="relCol.dataType=='List'" class="m-value">
+                      <div class="m-data-container cf" style="height:37px;">
+
+                        <!--Text,Encrypted Text,Email,Number,URL-->
+                        <div ng-if="relCol.relatedTo=='Text' || relCol.relatedTo=='Password' || relCol.relatedTo=='Email' || relCol.relatedTo=='Number' || relCol.relatedTo=='URL'" class="m-real-content pull-left">                           
+                          <div  class="m-list-condition flex-general-row-wrapper">
+                             
+                              <div ng-repeat="eachText in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
+                                  <div class="m-rel-common">
+                                    {{eachText}}
+                                  </div>
+                              </div>
+
+                          </div>
+                        </div>  
+
+                        <!--DateTime-->
+                        <div ng-if="relCol.relatedTo=='DateTime'" class="m-real-content pull-left">                           
+                          <div  class="m-list-condition flex-general-row-wrapper">
+                             
+                              <div ng-repeat="eachDateTime in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
+                                  <div class="m-rel-common">
+                                    {{eachDateTime | ISO2DateObject}}
+                                  </div>
+                              </div>
+
+                          </div>
+                        </div>  
+
+                         <!--Boolean-->
+                        <div ng-if="relCol.relatedTo=='Boolean'" class="m-real-content pull-left">                          
+                          <div  class="m-list-condition flex-general-row-wrapper">
+                             
+                              <div ng-repeat="eachBoolean in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
+
+                                  <div ng-if="eachBoolean" class="m-rel-true">
+                                    {{eachBoolean}}
+                                  </div>
+
+                                  <div ng-if="!eachBoolean" class="m-rel-false">
+                                    false
+                                  </div>
+
+                              </div>
+
+                          </div>
+                        </div>  
+
+                        <!--Object-->
+                        <div ng-if="relCol.relatedTo=='Object'" class="m-real-content pull-left">    
+                          <div  class="m-list-condition flex-general-row-wrapper">
+                             
+                              <div ng-repeat="eachObj in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
+
+                                  <div class="m-rel-common">
+                                    {{eachObj}}
+                                  </div>                                 
+
+                              </div>
+
+                          </div>
+                        </div>  
+
+                        <!--File--> 
+                        <div ng-if="relCol.relatedTo=='File'" class="m-real-content-list-file pull-left">  
+                          <div  class="m-list-condition flex-general-row-wrapper cf">
+                             
+                              <div ng-repeat="eachFile in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper pull-left">
+                                  <!--Images-->
+                                  <div ng-if="eachFile && eachFile.document.url && ((eachFile.document.name | extension)=='jpeg' || (eachFile.document.name | extension)=='jpg' || (eachFile.document.name | extension)=='png' || (eachFile.document.name | extension)=='tif' || (eachFile .document.name | extension)=='gif')" class="m-rel-images">
+
+                                    <img src="{{eachFile.document.url}}">
+
+                                  </div> 
+
+                                  <!--Other Files-->                                
+                                  <div ng-if="eachFile && eachFile.document.url && ((eachFile.document.name | extension)!='jpeg' && (eachFile.document.name | extension)!='jpg' && (eachFile.document.name | extension)!='png' && (eachFile.document.name | extension)!='tif' && (eachFile .document.name | extension)!='gif')"  class="m-rel-othersfiles">
+
+                                    <img src="assets/images/file2.png">
+
+                                  </div>
+                              </div>
+
+                          </div>
+
+                        </div>
+
+                        <!--GeoPoint-->
+                        <div ng-if="relCol.relatedTo=='GeoPoint'" class="m-real-geopoint pull-left">                           
+                          <div  class="m-list-condition flex-general-row-wrapper">
+                             
+                              <div class="m-list-loop flex-general-row-wrapper">
+
+                                  <div class="m-rel-geopoint" ng-repeat="eachGeopoint in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" ng-show="eachGeopoint" >
+                                    <div>
+                                      { <span>{{eachGeopoint.latitude}}</span>,&nbsp;
+                                      <span>{{eachGeopoint.longitude}}</span> }
+                                    </div>
+                                  </div>
+                              </div>
+
+                          </div>
+                        </div>
+
+                        <!--Relation--> 
+                        <div ng-if="relCol.relatedTo!='Text' && relCol.relatedTo!='Password' && relCol.relatedTo!='Email' && relCol.relatedTo!='Number' && relCol.relatedTo!='URL' && relCol.relatedTo!='DateTime' && relCol.relatedTo!='Boolean' && relCol.relatedTo!='File' && relCol.relatedTo!='Object' && relCol.relatedTo!='GeoPoint'" class="m-real-content pull-left">  
+                          <div  class="m-list-condition flex-general-row-wrapper">
+                             
+                              <div ng-repeat="eachRel in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
+                                  
+                                  <div class="m-rel-relation" ng-click="listViewRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,$index)">
+                                    {{eachRel.document._id}}
+                                  </div> 
+                                 
+                              </div>
+
+                          </div>
+
+                        </div>
+
+                        <div class="m-popup-btn pull-right">
+                          <a class="m-round-btn" ng-click="showRelationList(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)">
+                            <i class="fa fa-expand" style="color:#3A5795"></i>&nbsp;
+                          </a>
+                        </div>
+
+                      </div>
+                  </div>
+
+                  <!--Others-->
+                  <div ng-if="relCol.dataType!='Id' && relCol.dataType!='Boolean' && relCol.dataType!='DateTime' && relCol.dataType!='File'  && relCol.dataType!='Text' &&  relCol.dataType!='Password' && relCol.dataType!='ACL' && relCol.dataType!='Object' && relCol.dataType!='Email' && relCol.dataType!='URL' && relCol.dataType!='Number' && relCol.dataType!='File' && relCol.dataType!='Relation' && relCol.dataType!='List' && relCol.dataType!='GeoPoint'" class="m-value">
+                      <div class="m-data-container cf" style="height:37px;">
+
+                        <div class="m-real-content pull-left">
+                          {{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name)}}
+                        </div>
+                        <div class="m-popup-btn pull-right">
+                          <a class="m-round-btn">
+                            <i class="fa fa-expand" style="color:{{relatedTableDefArray[relatedTableDefArray.length-1].tableColor || '#3A5795'}};"></i>&nbsp;
+                          </a>
+                        </div>
+
+                      </div>
+                  </div>
+                   
+                <div>  
+              </div>  
+
+            </div>  
+          </div>
+          <!--/Modal Related Table Form-->
+
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- Relation Modal -->
+
+<!-- Relation EditJSON Modal -->
+  <div class="modal fade colored-header danger" id="md-rel-objectviewer" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <h3>Object Viewer</h3>        
+        </div>      
+        <div class="modal-body">
+
+          <div ui-ace="{ mode: 'json', theme: 'monokai' }" ng-model="relEditableJsonObj">
+          </div>
+
+          <!--Error-->
+          <div>
+            <p style="color:red;">{{relationError[relEditableColumn.name]}}</p>
+          </div>       
+
+        </div>
+         
+        <!--Set Button-->
+        <div class="flex-general-row-wrapper-center modalF">        
+  <button type="button" ng-click="setRelationData(relEditableRow,relEditableColumn,relEditableJsonObj)" class="btn btn-primary btn-flat" style="width:400px;">Set</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!--  Relation EditJSON Modal -->
+
+
+
+<!-- Relation EditFile Modal -->
+  <div class="modal fade colored-header danger" id="md-rel-fileviewer" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" ng-click="removeSelectdFile()" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <h3>Files</h3>        
+        </div>      
+        <div class="modal-body">
+
+          <div class="flex-general-row-wrapper-center">
+              <!--Add file-->
+              <div ng-if="!relEditableFile && !selectedFile">
+                <div class="modal-add-file">
+                  <input filechange type="file" id="notification-file" class="form-control">
+                </div>                
+              </div>
+
+            <div  ng-if="selectedFile && selectedFileExtension">  
+              <!--View File for Images-->
+              <div ng-if="selectedFile  && (selectedFileExtension=='jpeg' || selectedFileExtension=='jpg' || selectedFileExtension=='png' || selectedFileExtension=='tif' || selectedFileExtension=='gif')" class="modal-view-file flex-general-column-wrapper-center">  
+
+                <!--Image-->
+                <div class="">
+                  <a class="modal-anchor">
+                    <img src="{{selectedFile}}">                  
+                  </a>                  
+                </div>
+
+                <div class="flex-general-row-wrapper-center">
+                  <span style="margin-top:12px;">{{selectedfileName}}</span> 
+                </div>
+
+                <!--Image Edit tools--> 
+                <div class="moda-img-tools2 flex-general-row-wrapper-center">
+                  <div class="modal-img-option2">
+                    <a ng-click="setRelFile()">
+                     <i class="fa fa-plus-square"></i>
+                    </a>
+                  </div>
+                  <div class="modal-img-option2" style="margin-left:5px;">
+                    <a ng-click="removeSelectdFile()">
+                    <i class="fa fa-times-circle-o"  style="color:red"></i>
+                    </a>
+                  </div>                  
+                </div>
+
+              </div> 
+
+              <!--View File for Other Files-->
+              <div ng-if="selectedFile  && (selectedFileExtension!='jpeg' && selectedFileExtension!='jpg' && selectedFileExtension!='png' && selectedFileExtension!='tif' && selectedFileExtension!='gif')" class="modal-view-other-file flex-general-column-wrapper-center">
+
+                  <!--Image-->
+                  <div>
+                    <a class="modal-anchor flex-general-row-wrapper-center">
+                      <img src="assets/images/file2.png">                  
+                    </a>                  
+                  </div> 
+
+                  <div class="flex-general-row-wrapper-center">
+                    <span style="margin-top:12px;">{{selectedfileName}}</span> 
+                  </div>
+
+                  <!--Image Edit tools--> 
+                  <div class="moda-img-tools2 flex-general-row-wrapper-center">
+                    <div class="modal-img-option2">
+                      <a ng-click="setRelFile()">
+                       <i class="fa fa-plus-square"></i>
+                      </a>
+                    </div>
+                    <div class="modal-img-option2" style="margin-left:5px;">
+                      <a ng-click="removeSelectdFile()">
+                        <i class="fa fa-times-circle-o"  style="color:red"></i>
+                      </a>
+                    </div>                  
+                  </div>
+
+                </div>
+              
+            </div>
+
+            <div  ng-if="!selectedFile">  
+              <!--View File for Images-->
+              <div ng-if="relEditableFile && relEditableFile.document.url && ((relEditableFile.document.name | extension)=='jpeg' || (relEditableFile.document.name | extension)=='jpg' || (relEditableFile.document.name | extension)=='png' || (relEditableFile.document.name | extension)=='tif' || (relEditableFile.document.name | extension)=='gif')" class="modal-view-file">
+
+                <!--Image-->
+                <div>
+                  <a class="modal-anchor flex-general-row-wrapper-center">
+                    <img src="{{relEditableFile.document.url}}">                  
+                  </a>                  
+                </div>
+                <div class="flex-general-row-wrapper-center">
+                  <span style="margin-top:14px;">{{relEditableFile.document.name}}</span> 
+                </div>               
+
+                <!--Image Edit tools--> 
+                <div class="moda-img-tools2 flex-general-row-wrapper-center">
+                  <div class="modal-img-option2">
+                    <a href="{{relEditableFile.document.url}}" target="_blank">
+                     <i class="fa fa-download"></i>
+                    </a>
+                  </div>
+                  <div class="modal-img-option2" style="margin-left:5px;">
+                    <a ng-click="setRelationData(relEditableRow,relEditableColumn,null)">
+                    <i class="fa fa-times-circle-o"  style="color:red"></i>
+                    </a>
+                  </div>                  
+                </div>
+
+              </div> 
+
+               <!--View File for Other Files-->
+              <div ng-if="relEditableFile && relEditableFile.document.url && ((relEditableFile.document.name | extension)!='jpeg' && (relEditableFile.document.name | extension)!='jpg' && (relEditableFile.document.name | extension)!='png' && (relEditableFile.document.name | extension)!='tif' && (relEditableFile.document.name | extension)!='gif')" class="modal-view-other-file">
+
+                  <!--Image-->
+                  <div>
+                    <a class="modal-anchor flex-general-row-wrapper-center">
+                      <img src="assets/images/file2.png">                  
+                    </a>                  
+                  </div> 
+
+                  <div class="flex-general-row-wrapper-center">
+                    <span style="margin-top:14px;">{{relEditableFile.document.name}}</span>  
+                  </div>                             
+
+                  <!--Image Edit tools--> 
+                  <div class="moda-img-tools2 flex-general-row-wrapper-center">
+                    <div class="modal-img-option2">
+                      <a href="{{relEditableFile.document.url}}" target="_blank">
+                       <i class="fa fa-download"></i>
+                      </a>
+                    </div>
+                    <div class="modal-img-option2" style="margin-left:5px;">
+                      <a ng-click="setRelationData(relEditableRow,relEditableColumn,null)">
+                      <i class="fa fa-times-circle-o"  style="color:red"></i>
+                      </a>
+                    </div>                  
+                  </div>
+
+                </div>  
+            </div>     
+
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!--Relation EditFile Modal -->
+
+
+<!-- Add/Remove Relational GeoPoint -->
+  <div class="modal fade colored-header danger" id="md-rel-geodocumentviewer" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <h3>Geo Point</h3>        
+        </div>      
+        <div class="modal-body">
+          <form role="form" name="relGeoPointForm" ng-submit="relSetAndSaveGeopoint(relGeoPointForm.$valid)">
+
+            <div class="madd-relation-wrapper">            
+              <div class="geopoint-list-wrapper">
+
+                  <div class="geo-point-add-remv flex-general-row-wrapper-center">
+                    <div class="flex-general-row-wrapper">
+
+                      <!--Latitude-->
+                      <div>
+
+                        <div class="geopoint-name">
+                          <h4>Latitude</h4>                          
+                        </div>  
+                        
+                        <input type="text" ng-model="relEditableGeopoint.latitude" class="geopoint-inputz"  ng-blur="geoPointValidation('latitude',relEditableGeopoint.latitude)" minlength="-90" maxlength="90" required>
+
+                        <div ng-if="geopointEditError && (geopointEditError.type=='latitude')" class="geopoint-error">
+                          <span>{{geopointEditError.msg}}</span>                          
+                        </div>
+                      </div>
+
+                      <!--Longitude-->
+                      <div style="margin-left:4px;">
+                        
+                        <div class="geopoint-name">
+                          <h4>Longitude</h4>
+                        </div>
+
+                        <input type="text" ng-model="relEditableGeopoint.longitude" class="geopoint-inputz" ng-blur="geoPointValidation('longitude',relEditableGeopoint.longitude)" minlength="-180" maxlength="180" required>
+
+                        <div ng-if="geopointEditError && (geopointEditError.type=='longitude')" class="geopoint-error">
+                          <span>{{geopointEditError.msg}}</span>                          
+                        </div>
+                      </div>
+
+                    </div> 
+                  </div>
+                  
+              </div> 
+            </div> 
+
+            <div ng-show="!geopointEditError" class="flex-general-row-wrapper-center modalF">        
+              <button  type="submit" class="btn btn-primary btn-flat" style="width:400px;">Set</button>
+            </div>
+        </form>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /Add/Remove Relational GeoPoint -->
+
+
+<!---List Modals-->
+<!-- Add-View List common types Modal -->
+  <div class="modal fade colored-header danger" id="md-list-commontypes" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <h3>Documents List</h3>        
+        </div>      
+        <div class="modal-body">
+          <div class="madd-relation-wrapper">
+            <div  class="add-list-btn-wrapper">            
+
+              <!--Text-->
+              <div ng-if="editableColumn.relatedTo=='Text'" class="document-list-add-wrapper flex-general-row-wrapper">
+                  <div class="document-list-txt-add-wrapper flex-general-row-wrapper-center cf">
+                  
+                    <div  class="list-text-aura">
+                        <input type="text" ng-model="$parent.newListItem" class="list-modal-text">
+                    </div>                  
+
+                  </div>
+                 <div class="list-text-add-btn">                   
+                     <button ng-click="addListItem(newListItem)">Add</button>                   
+                  </div>
+
+              </div>
+              <!--/Text-->
+
+              <!--Email-->
+              <div ng-if="editableColumn.relatedTo=='Email'" class="document-list-add-wrapper flex-general-row-wrapper">
+
+                  <div class="document-list-txt-add-wrapper flex-general-row-wrapper-center cf">
+                   
+                    <div class="list-text-aura">
+                      <input type="text" ng-model="$parent.newListItem" class="list-modal-text">
+                    </div>                  
+
+                  </div>
+                  <div class="list-text-add-btn">                   
+                    <button ng-click="addListItem(newListItem)">Add</button>                   
+                  </div>                   
+
+              </div>                          
+              <!--/Email-->
+
+              <!--URL-->
+              <div ng-if="editableColumn.relatedTo=='URL'" class="document-list-add-wrapper flex-general-row-wrapper">
+
+                  <div class="document-list-txt-add-wrapper flex-general-row-wrapper-center cf">
+                   
+                    <div class="list-text-aura">
+                        <input type="text" ng-model="$parent.newListItem" class="list-modal-text">
+                    </div>                  
+
+                  </div>
+                 <div class="list-text-add-btn">                   
+                     <button ng-click="addListItem(newListItem)">Add</button>                   
+                  </div>
+
+              </div>
+              <!--/URL-->
+
+              <!--Number-->
+              <div ng-if="editableColumn.relatedTo=='Number'" class="document-list-add-wrapper flex-general-row-wrapper">
+
+                  <div class="document-list-txt-add-wrapper flex-general-row-wrapper-center cf">
+                   
+                    <div class="list-text-aura">
+                        <input type="text" ng-model="$parent.newListItem" class="list-modal-text">
+                    </div>                  
+
+                  </div>
+                 <div class="list-text-add-btn">                   
+                     <button ng-click="addListItem(newListItem)">Add</button>                   
+                  </div>
+
+              </div>
+              <!--/Number-->              
+
+              <!--DateTime-->
+              <div ng-if="editableColumn.relatedTo=='DateTime'" class="document-list-add-wrapper flex-general-row-wrapper">
+
+                  <div class="list-datetime-add-btn">                   
+                     <button ng-click="addListItem(newListItem)">Add</button>                   
+                  </div>
+                  <div class="list-datetime-aura flex-general-row-wrapper-center cf">
+
+                     <input kendo-date-time-picker  k-ng-model="$parent.newListItem"  class="list-m-datetime" />                
+
+                  </div>                 
+
+              </div>
+              <!--/DateTime-->
+
+              <!--Boolean-->
+              <div ng-if="editableColumn.relatedTo=='Boolean' || editableColumn.relatedTo=='Object'" class="document-list-add-wrapper flex-general-column-wrapper-center">
+
+                  <div class="list-boolean-add-btn flex-general-column-wrapper-center">                   
+                    <button type="button" ng-click="addListItem()" class="add-relation-btn">Add</button>                   
+                  </div>                                 
+
+              </div>
+              <!--/Boolean-->
+
+              <!--File-->
+              <div ng-if="editableColumn.relatedTo=='File'" class="document-list-add-wrapper">
+
+                  <div class="list-boolean-add-btn">                   
+                     <button type="button" ng-click="addListFileModal()" class="add-relation-btn">Add File</button>                   
+                  </div>                                 
+
+              </div>
+              <!--/File-->
+
+              <!--Geopoint-->
+              <div ng-if="editableColumn.relatedTo=='GeoPoint'" class="document-list-add-wrapper">
+
+                  <div class="list-boolean-add-btn">                   
+                     <button type="button" ng-click="addListGeopointModal()" class="add-relation-btn">Add Geopoint</button>                   
+                  </div>                                 
+
+              </div>
+              <!--Geopoint-->
+
+              <!--Relation-->
+              <div ng-if="editableColumn.relatedTo!='Text' && editableColumn.relatedTo!='Email' && editableColumn.relatedTo!='URL' && editableColumn.relatedTo!='Number' && editableColumn.relatedTo!='DateTime' && editableColumn.relatedTo!='Object' && editableColumn.relatedTo!='Boolean' && editableColumn.relatedTo!='File' && editableColumn.relatedTo!='GeoPoint'" class="document-list-add-wrapper">
+                  
+                  <button type="button"  ng-click="listSearchRelationDocs()" class="add-relation-btn">Add Relation</button>
+
+              </div>
+
+              <!--Error Message-->
+              <div>
+                <span style="color:red;margin-left:7px;">{{addListItemError}}</span>
+              </div>           
+
+            </div> 
+
+            <!--Roll List of Text-->
+            <div ng-if="editableColumn.relatedTo=='Text'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
+
+                <div ng-repeat="eachText in editableList | orderBy:predicate:reverse track by $index">
+                  <div class="document-list-txt-wrapper flex-general-row-wrapper-center cf">
+                    
+                    <div  class="list-text-aura">
+
+                        <input type="text" ng-model="eachText" ng-blur="modifyListItem(eachText,$index)" class="list-modal-text">
+
+                    </div>
+                  
+
+                    <div class="m-remove-document list-text-remv-show">
+                      <div ng-click="deleteListItem($index)">
+                       <i class="fa fa-trash-o fa-lg"></i>
+                      </div>
+                    </div>                    
+                  </div>
+                  <!--Modify Error-->
+                  <div>
+                    <span style="color:red;margin-left:5px;">{{modifyListItemError[$index]}}</span>
+                  </div>
+                </div>
+
+            </div>            
+
+            <!--Roll List of Email-->
+            <div ng-if="editableColumn.relatedTo=='Email'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
+
+                <div ng-repeat="eachEmail in editableList | orderBy:predicate:reverse track by $index">
+                  <div class="document-list-txt-wrapper flex-general-row-wrapper-center cf">
+                    
+                    <div  class="list-text-aura">
+                        <input type="email" ng-model="eachEmail" ng-blur="modifyListItem(eachEmail,$index)" class="list-modal-text">         
+                    </div>                  
+
+                    <div class="m-remove-document list-text-remv-show">
+                      <div ng-click="deleteListItem($index)">
+                       <i class="fa fa-trash-o fa-lg"></i>
+                      </div>
+                    </div>                   
+                  </div>
+                  <!--Modify Error-->
+                  <div>
+                    <span style="color:red;margin-left:5px;">{{modifyListItemError[$index]}}</span>
+                  </div>
+                </div>
+
+            </div>
+
+            <!--Roll List of URL-->
+            <div ng-if="editableColumn.relatedTo=='URL'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
+
+                <div ng-repeat="eachURL in editableList | orderBy:predicate:reverse track by $index">
+                  <div class="document-list-txt-wrapper flex-general-row-wrapper-center cf">
+                    
+                    <div  class="list-text-aura">
+                      <input type="text" ng-model="eachURL" ng-blur="modifyListItem(eachURL,$index)" class="list-modal-text">
+                    </div>                  
+
+                    <div class="m-remove-document list-text-remv-show">
+                      <div ng-click="deleteListItem($index)">
+                       <i class="fa fa-trash-o fa-lg"></i>
+                      </div>
+                    </div>  
+                  </div>
+                  <!--Modify Error-->
+                  <div>
+                    <span style="color:red;margin-left:5px;">{{modifyListItemError[$index]}}</span>
+                  </div>
+                </div>
+
+            </div>
+
+
+            <!--Roll List of Number-->
+            <div ng-if="editableColumn.relatedTo=='Number'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
+
+                <div ng-repeat="eachNumber in editableList | orderBy:predicate:reverse track by $index">
+                  <div class="document-list-txt-wrapper flex-general-row-wrapper-center cf">
+                    
+                    <div  class="list-text-aura">
+                        <input type="text" ng-model="eachNumber" class="list-modal-text" ng-blur="modifyListItem(eachNumber,$index)">
+                    </div>
+                  
+
+                    <div class="m-remove-document list-text-remv-show">
+                      <div ng-click="deleteListItem($index)">
+                       <i class="fa fa-trash-o fa-lg"></i>
+                      </div>
+                    </div>  
+                  </div>
+                  <!--Modify Error-->
+                  <div>
+                    <span style="color:red;margin-left:5px;">{{modifyListItemError[$index]}}</span>
+                  </div>
+                </div>
+
+            </div>
+
+            <!--Roll List of DateTime-->
+            <div ng-if="editableColumn.relatedTo=='DateTime'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
+
+                <div  ng-repeat="eachDate in editableList | orderBy:predicate:reverse track by $index" class="document-list-datetime-wrapper flex-general-row-wrapper cf">        
+
+                  <div class="list-datetime-aura-list">
+
+                    <input kendo-date-time-picker value="{{eachDate | ISO2DateObject}}" k-ng-model="eachDate"  class="list-m-datetime-list" ng-blur="modifyListItem(eachDate,$index)"/>   
+
+                  </div>
+
+                  <div class="m-remove-document list-datetime-remv-show">
+                    <div ng-click="deleteListItem($index)">
+                      <i class="fa fa-trash-o fa-lg"></i>
+                    </div>
+                  </div>
+                    
+                </div>
+
+            </div>
+
+            <!--Roll List of Boolean-->
+            <div ng-if="editableColumn.relatedTo=='Boolean'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
+
+                <div  ng-repeat="eachBoolean in editableList | orderBy:predicate:reverse track by $index" class="document-list-datetime-wrapper flex-general-row-wrapper-center cf">        
+
+                  <div class="flex-general-row-wrapper">
+                    <div class="list-boolean-aura-list flex-general-row-wrapper-center">            
+
+                      <checkbox class="btn-default list-m-boolean-list"  ng-model="eachBoolean" ng-change="modifyListItem(eachBoolean,$index)"></checkbox>  
+
+                    </div>
+
+                    <div class="m-remove-document list-datetime-remv-show">
+                      <div ng-click="deleteListItem($index)">
+                        <i class="fa fa-trash-o fa-lg"></i>
+                      </div>
+                    </div>
+                  </div>
+                    
+                </div>
+
+            </div>
+
+            <!--Role List of JSON-Object-->
+            <div ng-if="editableColumn.relatedTo=='Object'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
+
+              <div  ng-repeat="eachJSON in editableList | orderBy:predicate:reverse track by $index">
+                <div  class="document-list-datetime-wrapper flex-general-column-wrapper-center cf">   
+
+                  <div class="flex-general-row-wrapper">  
+                    <div class="list-boolean-aura-list flex-general-row-wrapper-center">                  
+                      <p ng-click="showListJsonObject(eachJSON,$index)" class="list-m-json-list">{{eachJSON || "null"}}</p>                   
+
+                    </div>
+
+                    <div class="m-remove-document list-datetime-remv-show">
+                      <div ng-click="deleteListItem($index)">
+                        <i class="fa fa-trash-o fa-lg"></i>
+                      </div>
+                    </div>
+                  </div>
+                    
+                </div>
+                <!--Modify Error-->
+                <div>
+                  <span style="color:red;margin-left:5px;">{{modifyListItemError[$index]}}</span>
+                </div>
+
+              </div>
+
+            </div>
+
+             <!--Roll List of File-->
+            <div ng-if="editableColumn.relatedTo=='File'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
+
+              <div class="flex-general-row-wrapper document-list-file-wrapper">        
+
+                <div ng-repeat="eachFile in editableList | orderBy:predicate:reverse track by $index">                    
+                  <!--Images-->
+                  <div ng-if="eachFile && eachFile.document.url && ((eachFile.document.name | extension)=='jpeg' || (eachFile.document.name | extension)=='jpg' || (eachFile.document.name | extension)=='png' || (eachFile.document.name | extension)=='tif' || (eachFile .document.name | extension)=='gif')" class="flex-general-row-wrapper list-file-display" style="margin-left:4px;">                      
+
+                      <div ng-if="!listFileSpinner[$index] && !listFileError[$index]" class="list-file-aura-list flex-general-row-wrapper-center">               
+                        <img ng-click="showListFile(editableRow,editableColumn,$index)" src="{{eachFile.document.url}}" class="list-m-file-list list-file-display-item" />
+                      </div>
+
+                      <div ng-if="!listFileSpinner[$index] && !listFileError[$index]" class="list-images-remove-cross">
+                        <div ng-click="deleteListItem($index)">
+                          X
+                        </div>
+                      </div>
+                  </div>
+
+                  <!--Other Files-->
+                  <div  ng-if="eachFile && eachFile.document.url && ((eachFile.document.name | extension)!='jpeg' && (eachFile.document.name | extension)!='jpg' && (eachFile.document.name | extension)!='png' && (eachFile.document.name | extension)!='tif' && (eachFile .document.name | extension)!='gif')" class="flex-general-row-wrapper" style="margin-left:4px;">
+
+                      <div ng-if="!listFileSpinner[$index] && !listFileError[$index]" class="list-file-aura-list flex-general-row-wrapper-center">               
+                        <img ng-click="showListFile(editableRow,editableColumn,$index)" src="assets/images/file2.png" class="list-m-file2-list" />
+                      </div>
+
+                      <div ng-if="!listFileSpinner[$index] && !listFileError[$index]" class="m-remove-document list-datetime-remv-show">
+                        <div ng-click="deleteListItem($index)">
+                          <i class="fa fa-trash-o fa-lg"></i>
+                        </div>
+                      </div>
+                  </div>
+
+                  <!--Spinner && Error-->
+                  <div  ng-if="listFileSpinner[$index] || listFileError[$index]" class="flex-general-row-wrapper list-file-display" style="margin-left:4px;">
+                      <div  class="list-file-aura-list flex-general-row-wrapper-center"> 
+                        <!--Spinner-->             
+                        <i ng-if="listFileSpinner[$index]" class="fa fa-spinner fa-spin fa-lg"></i>
+                        <!--Error-->  
+                        <span style="color:red;overflow:hide;word-wrap: break-word;" ng-if="listFileError[$index]">{{listFileError[$index]}}</span>
+                      </div>                      
+                  </div>
+
+                </div>                  
+                    
+              </div>
+
+            </div>
+
+
+            <!--Roll List of GeoPoint-->
+            <div ng-if="editableColumn.relatedTo=='GeoPoint'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
+
+                <div ng-repeat="eachGeopoint in editableList | orderBy:predicate:reverse track by $index" class="relationid-list flex-general-row-wrapper-center cf">
+
+                  <div class="m-relationid id-show" >
+                    <div ng-click="editListGeoPoint($index)">
+                      { <span>{{eachGeopoint.latitude}}</span>,&nbsp;
+                      <span>{{eachGeopoint.longitude}}</span> }
+                    </div>  
+                  </div>
+
+                  <div class="m-remove-relation remv-show">
+                    <div ng-click="deleteListItem($index)">
+                     <i class="fa fa-times"></i>
+                    </div>
+                  </div>
+
+                </div>
+                
+            </div>
+
+            <!--Roll List of Relation-->
+            <div ng-if="editableColumn.relatedTo!='Text' &&editableColumn.relatedTo!='Email' && editableColumn.relatedTo!='URL' && editableColumn.relatedTo!='Number' && editableColumn.relatedTo!='DateTime' && editableColumn.relatedTo!='Object' && editableColumn.relatedTo!='Boolean' && editableColumn.relatedTo!='File' && editableColumn.relatedTo!='GeoPoint'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
+
+                <div ng-repeat="eachRelation in editableList | orderBy:predicate:reverse track by $index" class="relationid-list flex-general-row-wrapper-center cf">
+                  <div class="m-relationid id-show" ng-click="listViewRelationData(editableRow,editableColumn,$index)">
+                    <a>
+                     {{eachRelation.document._id}}
+                    </a>  
+                  </div>
+                  <div class="m-remove-relation remv-show">
+                    <div ng-click="deleteListItem($index)">
+                     <i class="fa fa-times"></i>
+                    </div>
+                  </div>  
+                </div>
+                
+            </div>
+
+          </div> 
+
+          <!--Save-->
+          <div ng-if="!isRelationalList" class="flex-general-row-wrapper-center modalF" style="margin-top:10px;">        
+              <button  ng-click="setAndSaveList()" type="button" class="btn btn-primary btn-flat" style="width:400px;">Save List</button>
+          </div>
+
+          <!--Relational List Save-->
+          <div ng-if="isRelationalList" class="flex-general-row-wrapper-center modalF" style="margin-top:10px;">        
+              <button  ng-click="setRelationData(editableRow,editableColumn,editableList)" type="button" class="btn btn-primary btn-flat" style="width:400px;">Save List</button>
+          </div>
+
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /Add-View List common types Modal -->
+
+
+<!-- LIST EditJSON Modal -->
+  <div class="modal fade colored-header danger" id="md-list-objectviewer" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <h3>Object Viewer</h3>        
+        </div>      
+        <div class="modal-body">
+
+          <div ui-ace="{ mode: 'json', theme: 'monokai' }" ng-model="listEditableRow">
+          </div>      
+
+        </div>
+
+        <div class="flex-general-row-wrapper-center modalF">        
+            <button type="button" ng-click="modifyListItem(listEditableRow,listIndex)" class="btn btn-primary btn-flat" style="width:400px;">Modify</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /LIST EditJSON Modal -->
+
+
+<!--LIST EditFile Modal -->
+  <div class="modal fade colored-header danger" id="md-list-fileviewer" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" ng-click="removeSelectdFile()" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <h3>Files</h3>        
+        </div>      
+        <div class="modal-body">
+
+          <div class="flex-general-row-wrapper-center">
+
+              <!--Add file-->
+              <div ng-if="!listEditableRow && !selectedFile">
+                <div class="modal-add-file">
+                  <input filechange type="file" id="notification-file" class="form-control">
+                </div>                
+              </div>
+
+            <div  ng-if="selectedFile && selectedFileExtension">  
+              <!--View File for Images-->
+              <div ng-if="selectedFile  && (selectedFileExtension=='jpeg' || selectedFileExtension=='jpg' || selectedFileExtension=='png' || selectedFileExtension=='tif' || selectedFileExtension=='gif')" class="modal-view-file flex-general-column-wrapper-center">  
+
+                <!--Image-->
+                <div class="">
+                  <a class="modal-anchor">
+                    <img src="{{selectedFile}}">                  
+                  </a>                  
+                </div>
+
+                <div class="flex-general-row-wrapper-center">
+                  <span style="margin-top:12px;">{{selectedfileName}}</span> 
+                </div>
+
+                <!--Image Edit tools--> 
+                <div ng-if="isFileSelected" class="moda-img-tools2 flex-general-row-wrapper-center">
+                  <div class="modal-img-option2">
+                    <a ng-click="addListFile()">
+                     <i class="fa fa-plus-circle"></i>
+                    </a>
+                  </div>
+                  <div class="modal-img-option2" style="margin-left:5px;">
+                    <a ng-click="removeSelectdFile()">
+                    <i class="fa fa-times-circle-o"  style="color:red"></i>
+                    </a>
+                  </div>                  
+                </div>
+
+              </div> 
+
+              <!--View File for Other Files-->
+              <div ng-if="selectedFile  && (selectedFileExtension!='jpeg' && selectedFileExtension!='jpg' && selectedFileExtension!='png' && selectedFileExtension!='tif' && selectedFileExtension!='gif')" class="modal-view-other-file flex-general-column-wrapper-center">
+
+                  <!--Image-->
+                  <div>
+                    <a class="modal-anchor flex-general-row-wrapper-center">
+                      <img src="assets/images/file2.png">                  
+                    </a>                  
+                  </div> 
+
+                  <div class="flex-general-row-wrapper-center">
+                    <span style="margin-top:12px;">{{selectedfileName}}</span> 
+                  </div>
+
+                  <!--Image Edit tools--> 
+                  <div class="moda-img-tools2 flex-general-row-wrapper-center">
+                    <div class="modal-img-option2">
+                      <a ng-click="addListFile()">
+                       <i class="fa fa-plus-circle"></i>
+                      </a>
+                    </div>
+                    <div class="modal-img-option2" style="margin-left:5px;">
+                      <a ng-click="removeSelectdFile()">
+                        <i class="fa fa-times-circle-o"  style="color:red"></i>
+                      </a>
+                    </div>                  
+                  </div>
+
+                </div>
+              
+            </div>
+
+            <div  ng-if="!selectedFile">  
+              <!--View File for Images-->
+              <div ng-if="listEditableRow.document[listEditableColumn.name][listIndex] && listEditableRow.document[listEditableColumn.name][listIndex].document.url && ((listEditableRow.document[listEditableColumn.name][listIndex].document.name | extension)=='jpeg' || (listEditableRow.document[listEditableColumn.name][listIndex].document.name | extension)=='jpg' || (listEditableRow.document[listEditableColumn.name][listIndex].document.name | extension)=='png' || (listEditableRow.document[listEditableColumn.name][listIndex].document.name | extension)=='tif' || (listEditableRow.document[listEditableColumn.name][listIndex].document.name | extension)=='gif')" class="modal-view-file">
+
+                <!--Image-->
+                <div>
+                  <a class="modal-anchor flex-general-row-wrapper-center">
+                    <img src="{{listEditableRow.document[listEditableColumn.name][listIndex].document.url}}">                  
+                  </a>                  
+                </div>
+                <div class="flex-general-row-wrapper-center">
+                  <span style="margin-top:14px;">{{listEditableRow.document[listEditableColumn.name][listIndex].document.name}}</span> 
+                </div>               
+
+                <!--Image Edit tools--> 
+                <div class="moda-img-tools2 flex-general-row-wrapper-center">
+                  <div class="modal-img-option2">
+                    <a href="{{listEditableRow.document[listEditableColumn.name][listIndex].document.url}}" target="_blank">
+                     <i class="fa fa-download"></i>
+                    </a>
+                  </div>
+                  <div class="modal-img-option2" style="margin-left:5px;">
+                    <a ng-click="deleteListItem(listIndex)">
+                    <i class="fa fa-times-circle-o"  style="color:red"></i>
+                    </a>
+                  </div>                  
+                </div>
+
+              </div> 
+              
+              <!--View File for Other Files-->
+              <div ng-if="listEditableRow.document[listEditableColumn.name][listIndex] && listEditableRow.document[listEditableColumn.name][listIndex].document.url && ((listEditableRow.document[listEditableColumn.name][listIndex].document.name | extension)!='jpeg' && (listEditableRow.document[listEditableColumn.name][listIndex].document.name | extension)!='jpg' && (listEditableRow.document[listEditableColumn.name][listIndex].document.name | extension)!='png' && (listEditableRow.document[listEditableColumn.name][listIndex].document.name | extension)!='tif' && (listEditableRow.document[listEditableColumn.name][listIndex].document.name | extension)!='gif')" class="modal-view-other-file">
+
+                  <!--Image-->
+                  <div>
+                    <a class="modal-anchor flex-general-row-wrapper-center">
+                      <img src="assets/images/file2.png">                  
+                    </a>                  
+                  </div> 
+
+                  <div class="flex-general-row-wrapper-center">
+                    <span style="margin-top:14px;">{{listEditableRow.document[listEditableColumn.name][listIndex].document.name}}</span>  
+                  </div>                             
+
+                  <!--Image Edit tools--> 
+                  <div class="moda-img-tools2 flex-general-row-wrapper-center">
+                    <div class="modal-img-option2">
+                      <a href="{{listEditableRow.document[listEditableColumn.name][listIndex].document.url}}" target="_blank">
+                       <i class="fa fa-download"></i>
+                      </a>
+                    </div>
+                    <div class="modal-img-option2" style="margin-left:5px;">
+                      <a ng-click="deleteListItem(listIndex)">
+                      <i class="fa fa-times-circle-o"  style="color:red"></i>
+                      </a>
+                    </div>                  
+                  </div>
+
+                </div>  
+            </div>     
+
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- LIST EditFile Modal -->
+
+<!--List Search Relation Documents Modal -->
+  <div class="modal fade colored-header danger" id="md-searchlistdocument" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <h3>Search Relation Documents</h3>        
+        </div>      
+        <div class="modal-body">
+
+          <div ng-if="!searchRelDocsError" class="md-search-relation-wrapper">
+            <div ng-show="listRelationTableData.length>1" class="search-rel-wrapper">
+                <div class="rel-search-btn-wrapper flex-general-row-wrapper">
+                  <div class="rel-searchBx">
+                    <input type="text" ng-model="searchRelListDoc">
+                  </div>
+                  <div class="rel-searchIcon">
+                    <i class="fa fa-search"></i>
+                  </div>
+                </div>
+                  
+            </div>
+            <div class="relationid-list-wrapper" malihuscrollbar-for-popup>
+                <!--show list-->
+                <div ng-show="listRelationTableData.length>0" ng-repeat="eachRelRow in listRelationTableData | filter:searchRelListDoc" class="relationid-list flex-general-column-wrapper-center">
+                  <div class="m-relationid" ng-click="addListItem(eachRelRow)">
+                    <a>
+                      {{eachRelRow.document._id}}
+                    </a>  
+                  </div>  
+                </div>
+
+                <!--no records-->
+                <div ng-show="!listRelationTableData || listRelationTableData.length==0" class="relationid-list-empty flex-general-column-wrapper-center">
+                  <div class="flex-general-column-wrapper-center">                  
+                      <p>No records found </p>
+                      <p ng-click="goToDataBrowser(tableDef)" style="cursor:pointer; color:blue;">(go to table {{tableDef.name}})</p>                  
+                  </div>                 
+                   
+                </div>               
+                
+            </div>  
+          </div>
+          <!--Error-->
+          <div class="flex-general-column-wrapper-center" ng-if="searchRelDocsError">
+            <div class="flex-general-column-wrapper-center">
+              <p style="color:red;">{{searchRelDocsError}}</p>
+            </div> 
+          </div> 
+
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /List Search Relation Documents Modal -->
+
+
+<!-- Add/Remove List GeoPoint -->
+  <div class="modal fade colored-header danger" id="md-list-geodocumentviewer" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <h3>Geo Point</h3>        
+        </div>      
+        <div class="modal-body">
+          <form role="form" name="listGeoPointForm" ng-submit="listAddGeopoint(listGeoPointForm.$valid)">
+
+            <div class="madd-relation-wrapper">            
+              <div class="geopoint-list-wrapper">
+
+                  <div class="geo-point-add-remv flex-general-row-wrapper-center">
+                    <div class="flex-general-row-wrapper">
+
+                      <!--Latitude-->
+                      <div>
+
+                        <div class="geopoint-name">
+                          <h4>Latitude</h4>                          
+                        </div>  
+                        
+                        <input type="text" ng-model="listEditableGeopoint.latitude" class="geopoint-inputz"  ng-blur="geoPointValidation('latitude',listEditableGeopoint.latitude)" minlength="-90" maxlength="90" required>
+
+                        <div ng-if="geopointEditError && (geopointEditError.type=='latitude')" class="geopoint-error">
+                          <span>{{geopointEditError.msg}}</span>                          
+                        </div>
+                      </div>
+
+                      <!--Longitude-->
+                      <div style="margin-left:4px;">
+                        
+                        <div class="geopoint-name">
+                          <h4>Longitude</h4>
+                        </div>
+
+                        <input type="text" ng-model="listEditableGeopoint.longitude" class="geopoint-inputz" ng-blur="geoPointValidation('longitude',listEditableGeopoint.longitude)" minlength="-180" maxlength="180" required>
+
+                        <div ng-if="geopointEditError && (geopointEditError.type=='longitude')" class="geopoint-error">
+                          <span>{{geopointEditError.msg}}</span>                          
+                        </div>
+                      </div>
+
+                    </div> 
+                  </div>
+                  
+              </div> 
+            </div> 
+
+            <div ng-show="!geopointEditError" class="flex-general-row-wrapper-center modalF">        
+              <button  type="submit" class="btn btn-primary btn-flat" style="width:400px;">Add</button>
+            </div>
+        </form>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /Add/Remove List GeoPoint -->
+
+<!-- Edit List GeoPoint -->
+  <div class="modal fade colored-header danger" id="md-list-edit-geodocumentviewer" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          <h3>Geo Point</h3>        
+        </div>      
+        <div class="modal-body">
+          <form role="form" name="listEditGeoPointForm" ng-submit="modifyListGeoPoint(listEditGeoPointForm.$valid)">
+
+            <div class="madd-relation-wrapper">            
+              <div class="geopoint-list-wrapper">
+
+                  <div class="geo-point-add-remv flex-general-row-wrapper-center">
+                    <div class="flex-general-row-wrapper">
+
+                      <!--Latitude-->
+                      <div>
+
+                        <div class="geopoint-name">
+                          <h4>Latitude</h4>                          
+                        </div>  
+                        
+                        <input type="text" ng-model="listEditableGeopoint.latitude" class="geopoint-inputz"  ng-blur="geoPointValidation('latitude',listEditableGeopoint.latitude)" minlength="-90" maxlength="90" required>
+
+                        <div ng-if="geopointEditError && (geopointEditError.type=='latitude')" class="geopoint-error">
+                          <span>{{geopointEditError.msg}}</span>                          
+                        </div>
+                      </div>
+
+                      <!--Longitude-->
+                      <div style="margin-left:4px;">
+                        
+                        <div class="geopoint-name">
+                          <h4>Longitude</h4>
+                        </div>
+
+                        <input type="text" ng-model="listEditableGeopoint.longitude" class="geopoint-inputz" ng-blur="geoPointValidation('longitude',listEditableGeopoint.longitude)" minlength="-180" maxlength="180" required>
+
+                        <div ng-if="geopointEditError && (geopointEditError.type=='longitude')" class="geopoint-error">
+                          <span>{{geopointEditError.msg}}</span>                          
+                        </div>
+                      </div>
+
+                    </div> 
+                  </div>
+                  
+              </div> 
+            </div> 
+
+            <div ng-show="!geopointEditError" class="flex-general-row-wrapper-center modalF">        
+              <button  type="submit" class="btn btn-primary btn-flat" style="width:400px;">Modify</button>
+            </div>
+        </form>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /Edit List GeoPoint -->
+
+

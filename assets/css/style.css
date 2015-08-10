@@ -8467,6 +8467,14 @@ ul.timeline li > .date {
   top:29%;
   left:12%;
 }
+.create-app-beacon{
+  width: 0px;
+  height: 0px;
+  margin-top: 0px;
+  margin-left: 0px;
+  top:31%;
+  left:9%;
+}
 .spinner-signup{  
   height:300px;
 }

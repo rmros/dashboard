@@ -14,13 +14,13 @@ app.config([
     }); 
 
    $stateProvider.state('tableDesigner', {
-      url: '/:appId/data/designer/table/:tableId',
+      url: '/:appId/table',
       templateUrl: 'app/views/table-designer.html',
       controller: 'tableDesignerController'
     });
 
     $stateProvider.state('dataBrowser', {
-        url: '/:appId/data/browser/table/:tableId',
+        url: '/:appId/table/:tableName',
         templateUrl: 'app/views/data-browser.html',
         controller: 'dataBrowserController'
     });
@@ -36,19 +36,6 @@ app.config([
         templateUrl: 'app/views/pricing.html',
         controller: 'pricingController'
     });
-
-    $stateProvider.state('data', {
-        url: '/:appId/data',
-        templateUrl: 'app/views/data.html',
-        controller: 'dataController'
-    });
-
-    $stateProvider.state('dataView', {
-        url: '/:appId/data/table/:tableName',
-        templateUrl: 'app/views/data-view.html',
-        controller: 'dataViewController'
-    });
-  
 
 //cors.
    $httpProvider.defaults.withCredentials = true;

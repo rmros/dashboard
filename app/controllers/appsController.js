@@ -31,30 +31,21 @@ app.controller('appsController',
           javascriptKey:"Copy"
         }; 
 
-        // Intercom integration   
+        //Intercom integration   
         integrateIntercom();
         //listing start
-        var listPromise=projectService.projectList();
-          listPromise
-          .then(function(data){
-               $rootScope.dataLoading=false; 
-               $scope.projectListObj=data;                    
-          },function(error){
-              $rootScope.dataLoading=false; 
-              errorNotify('Cannot connect to server. Please try again.');
-          });
+        projectService.projectList()         
+        .then(function(data){
+          $rootScope.dataLoading=false; 
+          $scope.projectListObj=data;                    
+        },function(error){
+          $rootScope.dataLoading=false; 
+          errorNotify('Cannot connect to server. Please try again.');
+        });
          //listing ends
 
         //Start the beacon
-        var x = 0;
-        addCircle(x);
-        setInterval(function () {
-            if (x === 0) {
-                x = 1;
-            }
-            addCircle(x);
-            x++;
-        }, 1200);             
+        initBeacons();                     
   };
 
   $scope.deleteAppModal=function(project, index){
@@ -75,24 +66,22 @@ app.controller('appsController',
 
           $scope.isLoading[$scope.projectToBeDeletedIndex] = true;
 
-           var promise=projectService.deleteProject($scope.projectToBeDeleted.appId);
-              promise.then(
-                function(){
-                  $scope.isLoading[$scope.projectToBeDeletedIndex] = false;
-                  $scope.confirmAppName=null;
-                  $('#deleteappmodal').modal("hide");  
-                  //project is deleted.
-                  $scope.projectListObj.splice($scope.projectListObj.indexOf($scope.projectToBeDeleted),1);
-                  successNotify('The project is successfully deleted.');                
+          projectService.deleteProject($scope.projectToBeDeleted.appId)
+          .then(function(){
+            $scope.isLoading[$scope.projectToBeDeletedIndex] = false;
+            $scope.confirmAppName=null;
+            $('#deleteappmodal').modal("hide");  
+            //project is deleted.
+            $scope.projectListObj.splice($scope.projectListObj.indexOf($scope.projectToBeDeleted),1);
+            successNotify('The project is successfully deleted.');                
 
-                },
-                function(error){
-                  $scope.confirmAppName=null;
-                  $('#deleteappmodal').modal("hide");  
-                  $scope.isLoading[$scope.projectToBeDeletedIndex] = false; 
-                  errorNotify('Cannot delete this project at this point in time. Please try again later.');
-                   
-                });
+          },function(error){
+            $scope.confirmAppName=null;
+            $('#deleteappmodal').modal("hide");  
+            $scope.isLoading[$scope.projectToBeDeletedIndex] = false; 
+            errorNotify('Cannot delete this project at this point in time. Please try again later.');
+             
+          });
 
         } else{  
           $scope.confirmAppName=null;
@@ -103,40 +92,38 @@ app.controller('appsController',
   };
 
   $scope.createProject=function(isValid){        
-        $scope.appValidationError=null;
-        if(isValid){
-          $scope.showSaveBtn = false;               
-          $scope.appValidationError=null;
+    $scope.appValidationError=null;
+    if(isValid && $scope.newApp.name && $scope.newApp.appId){
+      $scope.showSaveBtn = false;               
+      $scope.appValidationError=null;
 
-          var createProjectPromise=projectService.createProject($scope.newApp.name, $scope.newApp.appId);
-          createProjectPromise
-          .then(function(data){
-              $scope.showSaveBtn = true;
-              if($scope.projectListObj.length>0){
-                $scope.projectListObj.push(data);
-              }else{
-                $scope.projectListObj=[];
-                $scope.projectListObj.push(data);
-              }
-              
-              successNotify('The project is successfully created.');           
+      var createProjectPromise=projectService.createProject($scope.newApp.name, $scope.newApp.appId);
+      createProjectPromise
+      .then(function(data){
+          $scope.showSaveBtn = true;
+          $scope.isAppCreated = true;
 
-              $scope.newApp.name="";
-              $scope.newApp.appId = "";
+          if($scope.projectListObj.length>0){
+            $scope.projectListObj.push(data);
+          }else{
+            $scope.projectListObj=[];
+            $scope.projectListObj.push(data);
+          }                         
 
-                           
-            },function(error){
-              $scope.showSaveBtn = true;
-              if(error === 400){           
-                errorNotify('App ID already exists. Please choose a different App ID.');
-              }
-
-              if(error === 500){           
-                errorNotify('Cannot connect to server. Please try again.');  
-              }
-               
-            });
-        }
+          $scope.newApp.name="";
+          $scope.newApp.appId = "";
+                       
+        },function(error){
+          $scope.showSaveBtn = true;
+          if(error === 400){           
+            errorNotify('App ID already exists. Please choose a different App ID.');
+          }
+          if(error === 500){           
+            errorNotify('Cannot connect to server. Please try again.');  
+          }
+           
+        });
+    }
   }
 
   $scope.editProject=function(isValid,index,appId,name){
@@ -168,10 +155,10 @@ app.controller('appsController',
      $rootScope.currentProject=projectObj;
 
      /*Collapse sidebar*/           
-      toggleSideBar();
+      //toggleSideBar();
 
      //Redirect to Table designer
-     window.location.href="/#/"+projectObj.appId+"/data/designer/table/";
+     window.location.href="/#/"+projectObj.appId+"/table";
      
   };
 
@@ -213,7 +200,7 @@ app.controller('appsController',
     }else if(!$scope.showProject[index] || $scope.showProject[index]==false){
       $scope.showProject[index]=true;
     }    
-  };    
+  };
 
   function integrateIntercom(){
     var user = {
@@ -238,8 +225,37 @@ app.controller('appsController',
     //updateHeight();
   } 
 
-  function addCircle(id) {
+  function initBeacons(){
+    var x = 0;
+    addCircleToFirstApp(x);
+    addCircleToCreateApp(x);
+    setInterval(function () {
+        if (x === 0) {
+            x = 1;
+        }
+        addCircleToFirstApp(x);
+        addCircleToCreateApp(x);
+        x++;
+    }, 1200);
+  }
+
+  function addCircleToFirstApp(id) {
       $('.first-app-beacon-container').append('<div  id="' + id + '" class="circlepulse first-app-beacon"></div>');
+
+      $('#' + id).animate({
+          'width': '50px',
+          'height': '50px',
+          'margin-top': '-20px',
+          'margin-left': '-20px',
+          'opacity': '0'
+      }, 4000, 'easeOutCirc');
+
+      setInterval(function () {
+          $('#' + id).remove();
+      }, 4000);
+  }
+  function addCircleToCreateApp(id) {
+      $('.create-app-beacon-container').append('<div  id="' + id + '" class="circlepulse create-app-beacon"></div>');
 
       $('#' + id).animate({
           'width': '50px',

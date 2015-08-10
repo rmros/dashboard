@@ -20,18 +20,25 @@
                   <div>
                       <!--<span style="color:red">{{appIdValidationError}}</span>-->
                   </div>
-                </div>                                 
+                </div> 
+                                              
                   <center class="create-app-wrapper">
                     <!--Create App-->
-                    <button  id="create-app-btn" ng-disabled="!showSaveBtn" data-ng-show="showSaveBtn" type="submit" class="btn btn-info btn-rad btn-trans">
-                      <i class="fa fa-plus"></i>&nbsp;Create new app                    
+                    <button style="position:relative;" id="create-app-btn" ng-disabled="!showSaveBtn" data-ng-show="showSaveBtn" type="submit" class="btn btn-info btn-rad btn-trans">
+                      <i class="fa fa-plus"></i>&nbsp;Create new app
+
+                    <!--Beacon-->
+                    <div ng-show="showSaveBtn" class="create-app-beacon-container" style="cursor:pointer;"></div> 
+
                     </button>
                     
                     <!--While Creating App-->
                     <button data-ng-show="!showSaveBtn" type="submit" class="btn btn-info btn-rad btn-trans">
-                      <i class="fa fa-spinner fa-spin fa-2x"></i>&nbsp;&nbsp;Creating app..                    
-                    </button>                    
-                  </center>
+                      <i class="fa fa-spinner fa-spin fa-2x"></i>&nbsp;&nbsp;Creating app..         
+                    </button>
+                                        
+                  </center>          
+
               </form>
             </div>
           </div>
@@ -39,10 +46,10 @@
         
 
       <!--App List Loaded--> 
-       <div class="col-sm-12 col-md-6 col-lg-3" ng-repeat="list in projectListObj">       
+      <div class="col-sm-12 col-md-6 col-lg-3" ng-repeat="list in projectListObj | orderBy:'_id':true">       
 
           <!-- Details --> 
-          <div class="block block-color" data-ng-class="{success : list.status.status === 'online', danger : list.status.status === 'offline' }" ng-hide="showProject[$index]" style="height:330px;">
+          <div class="block block-color" data-ng-class="{success : list.status.status === 'online', danger : list.status.status === 'offline',animated:$index==0 && isAppCreated==true,bounce:$index==0 }" ng-hide="showProject[$index]" style="height:330px;"> 
             <div class="header">
              <div class="actions">
                 <a ng-click="toggleAppEdit($index)"><i class="fa fa-pencil" style="font-size:1.3em"></i></a>
