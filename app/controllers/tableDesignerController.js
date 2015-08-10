@@ -174,11 +174,11 @@ app.controller('tableDesignerController',
           $scope.newTableName = null;
           $scope.isCreatingTable=false;
           $scope.addTablePopup=true;
-          $scope.tableErrorForCreate="Error in adding table..please try again";    
+          $scope.tableErrorForCreate="Oops, We can't create your table. Please try again.";    
 
         });
       }else{
-        $scope.tableErrorForCreate="Table Shoudn't be empty";
+        $scope.tableErrorForCreate="Name cannot be empty.";
       }
                      
     };      
@@ -224,12 +224,7 @@ app.controller('tableDesignerController',
               };                   
               
               $scope.newtables.push(t);
-              $rootScope.currentProject.tables.push(t);                    
-
-              if($rootScope.currentProject.tables.length==1){
-                successNotify('Your first table is created. See our docs to build apps.');                       
-              }                                            
-                       
+              $rootScope.currentProject.tables.push(t);                                           
           }
       //End of creating table  
         
