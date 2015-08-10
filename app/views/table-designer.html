@@ -17,7 +17,7 @@
 
                     <!--loop-->
                     <div class="tableBx" ng-repeat="t in currentProject.tables">
-                        <div class="tableApp cf " style="background-color:#3A5795" ng-click="goToDataBrowser(t)">
+                        <div class="tableApp cf " style="background-color:#1476ff" ng-click="goToDataBrowser(t)">
 
                           <div class="cf">
                             <span class="table-delete pull-right">
@@ -75,7 +75,7 @@
                             </div>
 
                             <div style="margin-top:10px;" data-ng-show="!tableErrorForCreate">
-                              <span  style="word-break: break-all;">click here to create table</span>
+                              <span  style="word-break: break-all;">&nbsp;</span>
                             </div>
                             <div style="margin-top:10px;" data-ng-show="tableErrorForCreate">
                               <span  style="word-break: break-all;color:red;">{{tableErrorForCreate}}</span>
