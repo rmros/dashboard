@@ -8171,9 +8171,9 @@ CB.CloudObject.prototype.delete = function(callback) { //delete an object matchi
 
     CB._request('POST',url,params).then(function(response){
         if (callback) {
-            callback.success(thisObj);
+            callback.success(response);
         } else {
-            def.resolve(thisObj);
+            def.resolve(response);
         }
     },function(err){
         if(callback){
@@ -10471,15 +10471,20 @@ CB.CloudTable = function(tableName){  //new table constructor
   this.name = tableName;
   this.appId = CB.appId;
 
-  if(tableName.toLowerCase() == "user")
-    this.type = "user";
-  else if(tableName.toLowerCase() == "role")
-    this.type = "role";
-  else
-    this.type = "custom";
-
+  if(tableName.toLowerCase() == "user") {
+      this.type = "user";
+      this.maxCount = 1;
+  }
+  else if(tableName.toLowerCase() == "role") {
+      this.type = "role";
+      this.maxCount = 1;
+  }
+  else {
+      this.type = "custom";
+      this.maxCount = 9999;
+  }
   this.columns = CB._defaultColumns(this.type);
-}
+};
 
 CB.CloudTable.prototype.addColumn = function(column){
   if (Object.prototype.toString.call(column) === '[object Object]') {
@@ -10563,11 +10568,7 @@ CB.CloudTable.getAll = function(callback){
 
 CB.CloudTable.get = function(table, callback){
   if (Object.prototype.toString.call(table) === '[object Object]') {
-    if(table.type == "user"){
-      throw "cannot delete user table";
-    }else if(table.type == "role"){
-      throw "cannot delete role table";
-    }else{
+    {
       if (!CB.appId) {
           throw "CB.appId is null.";
       }
@@ -10617,7 +10618,11 @@ CB.CloudTable.get = function(table, callback){
 
 CB.CloudTable.delete = function(table, callback){
   if (Object.prototype.toString.call(table) === '[object Object]') {
-      if (!CB.appId) {
+      if(table.type == "user"){
+          throw "cannot delete user table";
+      }else if(table.type == "role"){
+          throw "cannot delete role table";
+      }else if (!CB.appId) {
           throw "CB.appId is null.";
       }
 
@@ -10662,6 +10667,7 @@ CB.CloudTable.prototype.save = function(callback){
   CB._validate();
   var thisObj = this;
   var params=JSON.stringify({
+      maxCount:thisObj.maxCount,
       columns:thisObj.columns,
       name: thisObj.name,
       type: thisObj.type,
@@ -11197,7 +11203,7 @@ CB._defaultColumns = function(type) {
             {
                 name: 'roles',
                 dataType: 'List',
-                relatedTo: null,
+                relatedTo: 'Role',
                 relatedToType: 'role',
                 relationType: 'table',
                 required: false,

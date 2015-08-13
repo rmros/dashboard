@@ -1,14 +1,15 @@
 'use strict';
 
 app.controller('appsController',
-  ['$scope', 'projectService', '$http', '$rootScope', '$cookies', '$intercom','$timeout',
+  ['$scope', 'projectService', '$http', '$rootScope', '$cookies', '$intercom','$timeout','tableService',
   function ($scope,
   projectService,
   $http,
   $rootScope,
   $cookies,
   $intercom,
-  $timeout) {
+  $timeout,
+  tableService) {
 
   $rootScope.isFullScreen=false;
   $scope.showProject=[];
@@ -97,21 +98,21 @@ app.controller('appsController',
       $scope.showSaveBtn = false;               
       $scope.appValidationError=null;
 
-      var createProjectPromise=projectService.createProject($scope.newApp.name, $scope.newApp.appId);
-      createProjectPromise
+      projectService.createProject($scope.newApp.name, $scope.newApp.appId)     
       .then(function(data){
+
+          if($scope.projectListObj.length==0){
+            $scope.projectListObj=[];            
+          }
+          $scope.projectListObj.push(data); 
+
           $scope.showSaveBtn = true;
           $scope.isAppCreated = true;
-
-          if($scope.projectListObj.length>0){
-            $scope.projectListObj.push(data);
-          }else{
-            $scope.projectListObj=[];
-            $scope.projectListObj.push(data);
-          }                         
-
           $scope.newApp.name="";
           $scope.newApp.appId = "";
+
+          //Add default tables
+          addDefaultTables(data);         
                        
         },function(error){
           $scope.showSaveBtn = true;
@@ -132,19 +133,16 @@ app.controller('appsController',
 
         $scope.isLoading[index] = true;
 
-        var editProjectPromise=projectService.editProject(appId,name);
-            editProjectPromise.then(
-              function(data){
-                $scope.isLoading[index] = false;
-                $scope.projectListObj[index]=data;           
-                successNotify('The project is successfully modified.');
-              },
-              function(error){
-                $scope.isLoading[index] = false;
-                $scope.editprojectError=error;  
-                errorNotify(error);                     
-              }
-            );
+        projectService.editProject(appId,name)     
+        .then(function(data){
+          $scope.isLoading[index] = false;
+          $scope.projectListObj[index]=data;           
+          successNotify('The project is successfully modified.');
+        },function(error){
+          $scope.isLoading[index] = false;
+          $scope.editprojectError=error;  
+          errorNotify(error);                     
+        });
 
       }
 
@@ -201,6 +199,25 @@ app.controller('appsController',
       $scope.showProject[index]=true;
     }    
   };
+
+  function addDefaultTables(project){
+    CB.CloudApp.init(project.appId, project.keys.master);
+
+    var roleTable = new CB.CloudTable("Role"); 
+
+    tableService.saveTable(roleTable)
+    .then(function(data){
+      
+      var userTable = new CB.CloudTable("User");          
+      tableService.saveTable(userTable); 
+    },function(error){
+      errorNotify('Error in creating App. Try again');
+      //delete the app
+      $scope.projectListObj.splice($scope.projectListObj.indexOf(project),1);
+      projectService.deleteProject(project.appId);                
+    });
+    
+  }
 
   function integrateIntercom(){
     var user = {

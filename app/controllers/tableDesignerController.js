@@ -15,92 +15,77 @@ app.controller('tableDesignerController',
      $timeout,
      $state) {
     
-      var id;      
-      $scope.newtables=[];
-      $scope.addTablePopup=false;
-      $rootScope.isFullScreen=false;    
+    var id;      
+    $scope.newtables=[];
+    $scope.addTablePopup=false;
+    $rootScope.isFullScreen=false;    
       
-      $scope.initialize = function() {
-          $rootScope.page='tableDesigner';
-          $rootScope.dataLoading=true;                                 
-          $scope.colDataTypes=columnDataTypeService.getcolumnDataTypes();       
-          id = $stateParams.appId;
+    $scope.initialize = function() {
+        $rootScope.page='tableDesigner';
+        $rootScope.dataLoading=true;                                 
+        $scope.colDataTypes=columnDataTypeService.getcolumnDataTypes();       
+        id = $stateParams.appId;
 
-          if($rootScope.currentProject && $rootScope.currentProject.appId === id){
-            //if the same project is already in the rootScope, then dont load it.
-            initCB(); 
-            getProjectTables();              
-          }else{
-            loadProject(id);              
-          }
+        if($rootScope.currentProject && $rootScope.currentProject.appId === id){
+          //if the same project is already in the rootScope, then dont load it.
+          initCB(); 
+          getProjectTables();              
+        }else{
+          loadProject(id);              
+        }
 
-          //Start the beacon
-          initBeacon();   
+        //Start the beacon
+        initBeacon();   
 
-      };
+    };
 
-      $scope.goToDataBrowser=function(t){
-        window.location.href="#/"+id+"/table/"+t.name;        
-      };
-     
-      $scope.deleteTableModal=function(t){
-        $scope.selectedTable = t;
-        $scope.confirmTableName=null;
-        $('#md-deleteTable').modal('show');
-      }
+    $scope.goToDataBrowser=function(t){
+      window.location.href="#/"+id+"/table/"+t.name;        
+    };
+   
+    $scope.deleteTableModal=function(t){
+      $scope.selectedTable = t;
+      $scope.confirmTableName=null;
+      $('#md-deleteTable').modal('show');
+    }
 
-      $scope.deleteTable = function(t) {
-         if ($scope.confirmTableName === null) {
+    $scope.deleteTable = function(t) {
+      if(t.type!='user' && t.type!='role'){
+        
+        if ($scope.confirmTableName === null) {
 
-            $scope.confirmTableName=null; 
-            $('#md-deleteTable').modal("hide");              
-            errorNotify('Table name you entered was empty.');            
-                      
-          } else if($scope.confirmTableName === t.name){            
-            $scope.isDeletingTable=true;
-            tableService.deleteTable($rootScope.currentProject.appId, t)             
-            .then(function(tables){        
-                if($scope.selectedTable == t)
-                $scope.selectedTable = undefined;
-                
-                var i = $rootScope.currentProject.tables.indexOf(t);
-                $rootScope.currentProject.tables.splice(i, 1);                             
+          $scope.confirmTableName=null; 
+          $('#md-deleteTable').modal("hide");              
+          errorNotify('Table name you entered was empty.');            
+                    
+        } else if($scope.confirmTableName === t.name){            
+          $scope.isDeletingTable=true;
+          tableService.deleteTable(t)             
+          .then(function(tables){        
+              if($scope.selectedTable == t)
+              $scope.selectedTable = undefined;
+              
+              var i = $rootScope.currentProject.tables.indexOf(t);
+              $rootScope.currentProject.tables.splice(i, 1);                             
 
-                $('#md-deleteTable').modal("hide");               
-                $scope.confirmTableName=null;
-                successNotify("Successfully table is deleted");
-                $scope.isDeletingTable=false;                                
-            },
-            function(error){ 
-                errorNotify('We cannot delete table right now.');
-                $scope.isDeletingTable=false;                                
-            });              
+              $('#md-deleteTable').modal("hide");               
+              $scope.confirmTableName=null;
+              successNotify("Successfully table is deleted");
+              $scope.isDeletingTable=false;                                
+          },
+          function(error){ 
+              errorNotify('We cannot delete table right now.');
+              $scope.isDeletingTable=false;                                
+          });              
 
-          }else{  
-            $scope.confirmTableName=null;
-            $('#md-deleteTable').modal("hide");         
-            errorNotify('Table name doesn\'t match');                         
-          }        
-                      
-      };
-
-
-      $scope.checkMaxCount=function(tableType){
-          //this is a filter.
-          var count = 0;
-
-          for(var i=0;i<$rootScope.currentProject.tables.length; i++){
-              if($rootScope.currentProject.tables[i].type.type === tableType.type){
-                count++;
-              }
-          }
-
-          if(count < tableType.maxCount){
-            return tableType;
-          }
-
-          return null;
-      };
+        }else{  
+          $scope.confirmTableName=null;
+          $('#md-deleteTable').modal("hide");         
+          errorNotify('Table name doesn\'t match');                         
+        }  
+      }             
+                    
+    };
 
     $scope.initiateTableSettings=function(){
         $scope.tableTypes = tableTypeService.getTableTypes();
@@ -120,7 +105,7 @@ app.controller('tableDesignerController',
         })(0);
         $scope.newTableName = tableName;*/        
 
-        //$('.table-wrapper').animate({scrollTop: $('.tableNewApp').offset().top+180},500); //smooth scroll animation.
+        
         $scope.addTablePopup=true;
         $scope.newTableName=null;
 
@@ -153,83 +138,43 @@ app.controller('tableDesignerController',
       $scope.newTableName=angular.copy(newTableName);
       if($scope.newTableName){
         $scope.isCreatingTable=true;
-        var tableTypeObj=_.first(_.where($scope.tableTypes, {type:$scope.newTableType}));
-        getRelatedTables(tableTypeObj); 
-        $scope.addTablePopup=false;
+        $scope.addTablePopup=false;      
+        
+        var table = new CB.CloudTable($scope.newTableName);       
+        $rootScope.currentProject.tables.push(table);        
 
-        $scope.saveTables($scope.newtables)
-        .then(function(tables){
-            $scope.goToDataBrowser($scope.newtables[0]);          
-            $scope.newtables=[];
-            $scope.newTableName =null; 
-            $scope.isCreatingTable=false;
-        },
-        function(error){                 
-
-          for(var i=0;i<$scope.newtables.length;++i){           
-            var removableTable=_.first(_.where($rootScope.currentProject.tables, {id:$scope.newtables[i].id}));
-            var index=$rootScope.currentProject.tables.indexOf(removableTable);
-            $rootScope.currentProject.tables.splice(index,1);
-          }
-          $scope.newtables=[];
-          $scope.newTableName = null;
+        tableService.saveTable(table)
+        .then(function(respTable){
+          $scope.goToDataBrowser(respTable);           
+          $scope.newTableName =null; 
           $scope.isCreatingTable=false;
+        },
+        function(error){  
+          //Remove               
+          var index=$rootScope.currentProject.tables.indexOf(table);          
+          $rootScope.currentProject.tables.splice(index,1);
+
+          $scope.newTableName = null;
+          $scope.isCreatingTable=false;          
+          $scope.tableErrorForCreate="Oops,Please try again."; 
           $scope.addTablePopup=true;
-          $scope.tableErrorForCreate="Oops,Please try again.";    
+          $(".tableNewApp").stackbox({
+            closeButton: false,
+            animOpen:"fadeIn",
+            width:"250px",
+            marginY:9,
+            position: 'top',
+            autoAdjust:false,
+            content: "#add-new-table-popup",
+            autoScroll:true
+          });   
 
         });
       }else{
         $scope.tableErrorForCreate="Name cannot be empty.";
       }
                      
-    };      
-    
-
-  function getRelatedTables(table){  
-
-        for(var i=0;i<table.columns.length;++i){
-          if(table.columns[i].relatedToType){
-            var relatedToTypeObj=_.first(_.where($scope.tableTypes, {type:table.columns[i].relatedToType})); 
-            getRelatedTables(relatedToTypeObj);
-          }      
-        }
-
-        var tableName;
-        var alreadyExist;
-        if(table.isRenamable){
-              tableName=$scope.newTableName;
-              alreadyExist=_.first(_.where($rootScope.currentProject.tables, {name:tableName}));
-        }else{
-              tableName=table.name;
-              alreadyExist=_.first(_.where($rootScope.currentProject.tables, {name:table.name}));
-        } 
-        
-         //creating table             
-          if(!alreadyExist){
-
-              for(var i=0;i<table.columns.length;++i){
-                  if(table.columns[i].relatedToType){
-                    var getTable=_.first(_.where($scope.tableTypes, {type:table.columns[i].relatedToType})); 
-                    var relTable=_.first(_.where($rootScope.currentProject.tables, {name:getTable.name})); 
-                    table.columns[i].relatedTo=relTable.name;                       
-                  }      
-              }
-              
-              var columnArray=angular.copy(table.columns);
-              var uniqueId=utilityService.makeId();
-              var t = {
-                         id: uniqueId,
-                       name: tableName,
-                       type: table,
-                    columns: columnArray
-              };                   
-              
-              $scope.newtables.push(t);
-              $rootScope.currentProject.tables.push(t);                                           
-          }
-      //End of creating table  
-        
-    } 
+  };
 
   //Table Errors
   $scope.checkErrorsForCreate=function(name,arrayList,type){
@@ -248,31 +193,6 @@ app.controller('tableDesignerController',
     }
 
   }
-
-         
-  //Saving Array of Tables
-  $scope.saveTables=function(tables){
-    var q=$q.defer();
-
-    $scope.showSaveBtn=false;
-
-    var promises = [];
-
-    if(tables.length>0){
-        promises.push(tableService.saveTables($rootScope.currentProject.appId, tables));
-    }        
-
-    $q.all(promises)
-    .then(function(tables){
-        q.resolve(tables);              
-     },
-     function(error){
-        errorNotify("We're sorry, We cant save your tables at this point in time. Please try again later.");             
-        q.reject(error);
-     });
-
-     return  q.promise;
-  };
   
   $scope.filterDataType=function(dataTypeObj){
     if(dataTypeObj.type!="List" && dataTypeObj.type!="Relation"){
@@ -284,18 +204,16 @@ app.controller('tableDesignerController',
 
   function loadProject(id){
 
-      projectService.getProject(id).then(
-       function(currentProject){
-            if(currentProject){
-              $rootScope.currentProject=currentProject;
-              initCB();
-              getProjectTables();
-            }                              
-       },
-       function(error){ 
-          errorNotify('We cannot load your project at this point in time. Please try again later.');               
-          
-       });
+      projectService.getProject(id)
+      .then(function(currentProject){
+        if(currentProject){
+          $rootScope.currentProject=currentProject;
+          initCB();
+          getProjectTables();
+        }                              
+      }, function(error){ 
+        errorNotify('We cannot load your project at this point in time. Please try again later.');    
+      });
   }
 
   function getProjectTables(){

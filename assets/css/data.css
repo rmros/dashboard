@@ -148,7 +148,7 @@
 }
 .innerpop{
     padding: 12px;
-    height: 183px;
+    height: 138px;
 }
 
 .effect1{
@@ -347,7 +347,15 @@
 .tableNameDiv{   
    position: relative;
 }
-.wyl-table-loading{   
+.wyl-records-loading{     
+    position: absolute !important;
+    z-index: 9999; 
+    top: 0;   
+    width:98.99vw;
+    height:78vh;   
+}
+
+.wyl-table-first-loading{   
     height:80vh;
     width:99.6vw;   
 }
@@ -395,8 +403,8 @@
 
 .data-table-design{ 
     width:100vw;
-    height:81.5vh; 
-    overflow: auto;         
+    height:81vh; 
+    overflow: auto;          
 }
 .smoothTable { 
    width:94.6vw; 
@@ -1470,7 +1478,7 @@
     padding-left: 8px;
     padding-top: 10px;
     padding-bottom: 6px;
-    padding-right: 8px;
+    padding-right: 8px;    
 } 
 .table-strip-wrapper{
     width: 100%;

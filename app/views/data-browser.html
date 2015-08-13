@@ -1,4 +1,4 @@
-<div class="cl-mcont2" style="background-color:#F4F6F7;" ng-init="init()"> 
+<div class="cl-mcont2" style="background-color:#F4F6F7;position:relative;" ng-init="init()"> 
 
   <!--Table Header-->
   <div class="row data-row" style="background-color:#3A5795">
@@ -26,7 +26,7 @@
                   <div style="background-color:white;width:99.99%; height:210px;" malihuscrollbar-for-popup>
 
                   <div  ng-repeat="t in currentProject.tables" style="width:240px !important;">
-                    <a href="" ng-click="goToDataBrowser(t)">
+                    <a href="" ng-click="showTableList=!showTableList; goToDataBrowser(t);">
                     <div class="selectTableList cf" style="padding:5px;height:30px;width:100%;">
 
                       <div class="pull-left">
@@ -93,7 +93,8 @@
   </div>
   <!--/Table Header--> 
 
-  <div class="table-tools-strip">
+  <!--Strip--> 
+  <div ng-show="isTableLoaded && !tableLoadedError" class="table-tools-strip">
     <div class="table-strip-wrapper cf">
 
       <div class="table-strip-tools flex-general-row-wrapper pull-left">
@@ -195,9 +196,10 @@
       </div>  
     </div>  
   </div> 
+  <!--/Strip-->  
 
   <!--Table-->
-  <div ng-show="isTableLoaded" class="row data-table-def">
+  <div ng-show="isTableLoaded && !tableLoadedError" class="row data-table-def">
      <div class="col-md-12">
         
         <div id="scrollbar-wrapper" class="data-table-design" infinite-scroll="addMoreRecords()">
@@ -1003,18 +1005,26 @@
 
           </tbody>
 
-         </table>       
+         </table>
+
+        <!--Load spinner for Records-->
+        <div ng-if="loadingRecords"class="wyl-records-loading flex-general-column-wrapper-center">
+          <div>
+            <i class="fa fa-spinner fa-spin fa-3x"></i>
+          </div> 
+        </div> 
+        <!--/Load spinner for Records-->       
        
         </div> 
         
      </div> 
   </div>  
   <!--/Table-->
-
+    
   <!--While Loading FirstTime-->
-  <div ng-show="!isTableLoaded" class="wyl-table-loading">
+  <div ng-show="!isTableLoaded || tableLoadedError" class="wyl-table-first-loading">
     <div id="table-spinner" class="flex-general-column-wrapper-center">
-        <div>
+        <div ng-show="!isTableLoaded">
           <!--Animated Circle-->
           <div class="cssload-bell">
             <div class="cssload-circle">
@@ -1034,9 +1044,14 @@
             </div>
           </div>
           <!--/Animated Circle-->
-        </div>  
-        <div style="margin-top:63px;">
+        </div>           
+        <div ng-show="!isTableLoaded"style="margin-top:63px;">
          <span style="font-size:20px;">Loading</span>
+        </div>
+
+        <!--Error in loading records-->
+        <div ng-show="tableLoadedError"style="margin-top:63px;">
+         <span style="font-size:18px;color:red;">{{tableLoadedError}}</span>
         </div>
 
     </div>

@@ -1449,7 +1449,7 @@ function getProjectTables(){
     }else if(data){                        
         $rootScope.currentProject.tables=data;
 
-        getProjectTableByName($rootScope.currentProject.appId,tableName)
+        getProjectTableByName(tableName)
         .then(function(table){
             if(table){
               $rootScope.currentProject.currentTable=table;
@@ -1464,9 +1464,9 @@ function getProjectTables(){
                   //Fixed Header Re-run                 
                   //$(".smoothTable").floatThead('reflow')
                                                                                  
-              },
-              function(error){
-                errorNotify('Error in loading table records');                 
+              },function(error){
+                $scope.isTableLoaded=true; 
+                $scope.tableLoadedError="Error in loading table records";                                
               });
               //end of loafing data                 
             }                              
@@ -1476,7 +1476,7 @@ function getProjectTables(){
         });
 
     }else{                                                                   
-       $rootScope.currentProject.tables=[];
+      $rootScope.currentProject.tables=[];
     }          
          
   }, function(error){  
@@ -1484,10 +1484,10 @@ function getProjectTables(){
   });
 } 
 
-function getProjectTableByName(appId,tableDefName){
+function getProjectTableByName(tableDefName){
   var q=$q.defer();
 
-  tableService.getProjectTableByName(appId,tableDefName)
+  tableService.getProjectTableByName(tableDefName)
   .then(function(table){
       q.resolve(table);
   }, function(error){ 
@@ -1504,7 +1504,7 @@ function initCbApp(){
 $scope.addMoreRecords=function(){
   console.log("sjdbsdhbh");
   if($scope.currentTableData && $rootScope.currentProject && $rootScope.currentProject.currentTable){
-
+    $scope.loadingRecords=true;
     //load more data
     $scope.loadTableData($rootScope.currentProject.currentTable,orderBy,orderByType,5,$scope.totalRecords)
     .then(function(list){
@@ -1515,12 +1515,14 @@ $scope.addMoreRecords=function(){
           $scope.currentTableData=list;
         }
         $scope.totalRecords=$scope.totalRecords+list.length;
-      }          
+      } 
+      $scope.loadingRecords=false;         
       
       //$scope.$digest();  
                                       
     },
-    function(error){       
+    function(error){ 
+    $scope.loadingRecords=false;      
     });
     //end of load more data
   }     
@@ -1533,7 +1535,7 @@ $scope.goToTables=function(){
   window.location.href="#/"+id+"/table";
 };
 
-$scope.goToDataBrowser=function(t){
+$scope.goToDataBrowser=function(t){  
   window.location.href="#/"+id+"/table/"+t.name;
 };
 
@@ -1581,7 +1583,11 @@ $scope.addColumn = function(valid) {
   if(valid){
     $scope.showAddColPopUp=false; 
     $scope.saveSpinner=true;
-    $rootScope.currentProject.currentTable.columns.push($scope.newColumnObj);
+
+    var column = new CB.Column($scope.newColumnObj.name, $scope.newColumnObj.dataType, $scope.newColumnObj.required, $scope.newColumnObj.unique);
+    $rootScope.currentProject.currentTable.addColumn(column);
+
+    //$rootScope.currentProject.currentTable.columns.push($scope.newColumnObj);
     /*$("#scrollbar-wrapper").mCustomScrollbar("update");
     $(".data-table-design").css("height","84.2vh");
     $timeout(function(){ 
@@ -1589,14 +1595,14 @@ $scope.addColumn = function(valid) {
     }, 2000);*/
     
 
-    tableService.saveTable($rootScope.currentProject.appId, $rootScope.currentProject.currentTable)
+    tableService.saveTable($rootScope.currentProject.currentTable)
     .then(function(table){        
       $scope.newColumnObj=null;
       $scope.saveSpinner=false;
       $('#scrollbar-wrapper').scrollTo('#extra-col-th',400,{axis:'x'});                                             
     },
     function(error){ 
-      errorNotify(error);
+      errorNotify("Unable to add the column right now");
       $scope.saveSpinner=false;
       var index=$rootScope.currentProject.currentTable.columns.indexOf($scope.newColumnObj);
       $rootScope.currentProject.currentTable.columns.splice(index,1)            
@@ -1618,12 +1624,19 @@ $scope.toggleColOptions=function(index){
 
 $scope.deleteColumn=function(column){
   if(column.isDeletable){
-    var i = $scope.currentProject.currentTable.columns.indexOf(column);
-    $scope.currentProject.currentTable.columns.splice(i, 1);
-    $scope.showColOptions[i]=false;
-    $scope.saveSpinner=true;
 
-    tableService.saveTable(id,$scope.currentProject.currentTable)
+    //Hold
+    var tempTable=angular.copy($scope.currentProject.currentTable);    
+    var index = tempTable.columns.indexOf(column);   
+
+    //Delete
+    var column = new CB.Column(column.name, column.dataType);
+    $scope.currentProject.currentTable.deleteColumn(column);
+
+    $scope.showColOptions[index]=false;
+    $scope.saveSpinner=true;    
+
+    tableService.saveTable($scope.currentProject.currentTable)
     .then(function(table){        
 
         //load more data
@@ -1644,8 +1657,10 @@ $scope.deleteColumn=function(column){
 
     },function(error){
       $scope.saveSpinner=false;
-      errorNotify(error);     
-    });      
+      errorNotify("Unable to delete the column right now");     
+      //ReAssign
+      $rootScope.currentProject.currentTable=tempTable;
+    });    
   }
 };
 
@@ -1759,23 +1774,27 @@ $scope.addRow=function(){
 $scope.sortASC=function(column){  
 
   if($scope.currentTableData && $rootScope.currentProject && $rootScope.currentProject.currentTable){
-    $scope.isTableLoaded=false;
+    //$scope.isTableLoaded=false;
+    $scope.loadingRecords=true;
 
-    var i = $scope.currentProject.currentTable.columns.indexOf(column);   
+    var i = $scope.currentProject.currentTable.columns.indexOf(column); 
+    $scope.showColOptions[i]=false;  
 
     orderBy=column.name;
-    orderByType="asc";
+    orderByType="asc";    
 
     $scope.loadTableData($rootScope.currentProject.currentTable,orderBy,orderByType,10,0)
     .then(function(list){ 
 
        $scope.currentTableData=list; 
        $scope.showColOptions[i]=false;        
-       $scope.isTableLoaded=true;
+       //$scope.isTableLoaded=true;
+       $scope.loadingRecords=false;
        $scope.totalRecords=10;
 
     },function(error){ 
-      errorNotify(error);        
+      errorNotify(error); 
+      $scope.loadingRecords=false;       
     });
     
   }
@@ -1783,9 +1802,11 @@ $scope.sortASC=function(column){
 
 $scope.sortDESC=function(column){
   if($scope.currentTableData && $rootScope.currentProject && $rootScope.currentProject.currentTable){
-    $scope.isTableLoaded=false;
+    //$scope.isTableLoaded=false;
+    $scope.loadingRecords=true;
 
-    var i = $scope.currentProject.currentTable.columns.indexOf(column);   
+    var i = $scope.currentProject.currentTable.columns.indexOf(column);  
+    $scope.showColOptions[i]=false; 
 
     orderBy=column.name;
     orderByType="desc";
@@ -1794,11 +1815,13 @@ $scope.sortDESC=function(column){
 
        $scope.currentTableData=list; 
        $scope.showColOptions[i]=false;        
-       $scope.isTableLoaded=true;
+       //$scope.isTableLoaded=true;
+       $scope.loadingRecords=false;
        $scope.totalRecords=10;
 
     },function(error){
-      errorNotify(error);         
+      errorNotify(error); 
+      $scope.loadingRecords=false;        
     });
     
   }
