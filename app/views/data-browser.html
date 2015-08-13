@@ -154,40 +154,45 @@
         </div>
 
       </div>
-      <div class="table-strip-info flex-general-row-wrapper pull-right cf">
+      <div class="table-strip-info flex-general-row-wrapper pull-right cf">          
+        <div class="pull-right;" style="width:99.99%;">       
+
           <!--Row selection info-->
-          <div class="data-info-div"  ng-if="selectedRowsCount>0">
+          <div class="data-info-div row-info"  ng-if="selectedRowsCount>0 && !saveSpinner">
             <p>{{selectedRowsCount}} rows selected</p>
           </div>
 
-          <!--Row info-->
-          <div class="data-info-div" ng-if="!saveSpinner">
-            <!--Warning-->
-            <p ng-repeat="rowWar in rowWarningMode" class="sno-warninginfo" style="margin-right:30px;" ng-if="rowWar==true" infotooltipleft="rowInfo">
+          <!--Warning-->
+          <div class="data-info-div-icons" ng-if="!saveSpinner && rowWar==true" ng-repeat="rowWar in rowWarningMode">           
+            <p class="sno-warninginfo" style="margin-right:25px;" infotooltipleft="rowInfo">
               <i class="fa fa-exclamation-triangle fa-lg"></i>
             </p>
+          </div> 
 
-            <!--Error-->
-            <p ng-repeat="rowErr in rowErrorMode" class="sno-errorinfo" style="margin-right:30px;" ng-if="rowErr==true" infotooltipleft="rowInfo">
+          <!--Error-->
+          <div class="data-info-div-icons" ng-if="!saveSpinner && rowErr==true" ng-repeat="rowErr in rowErrorMode">         
+            <p  class="sno-errorinfo" style="margin-right:25px;" infotooltipleft="rowInfo">
               <i class="fa fa-exclamation-triangle fa-lg"></i>
-            </p>
+            </p>         
 
-            <!--Saving-->
-            <p ng-repeat="rowSaved in rowSavedMode" class="sno-saved" style="margin-right:30px;" ng-if="rowSaved==true">             
+          </div>
+
+          <!--Saving-->
+          <div class="data-info-div-icons" ng-if="!saveSpinner && rowSaved==true" ng-repeat="rowSaved in rowSavedMode">      
+            <p  class="sno-saved" style="margin-right:25px;">             
               <i class="fa fa-check fa-lg"></i>
             </p>
-
-          </div>        
+          </div>               
 
           <!--General Saving Spinner-->
           <div ng-show="saveSpinner" class="data-info-div">
-            <p class="sno-savingSpin" style="margin-right:30px;">            
+            <p class="sno-savingSpin" style="margin-right:25px;">            
               <i class="fa fa-spinner fa-spin fa-2x"></i>
             </p>            
-          </div>        
+          </div> 
 
+        </div>     
       </div>  
-
     </div>  
   </div> 
 
@@ -493,10 +498,10 @@
               </td>  
               <!--/default checkbox-->
 
-              <td ng-repeat="column in currentProject.currentTable.columns" ng-if="!hideColumn[$index]" ng-class="{true: 'fix-collective-id'}[column.dataType==='Id']" class="dataTd">   
+              <td ng-repeat="column in currentProject.currentTable.columns" ng-if="!hideColumn[$index]"  class="dataTd">   
                 
                 <!--Id-->             
-                <div ng-if="column.dataType==='Id'" class="tdDiv cf" style="min-width: 175px">         
+                <div ng-if="column.dataType==='Id'" class="tdDiv cf" style="min-width: 175px; cursor:not-allowed;">         
                   <div class="real-content pull-left">
                     {{eachRow.get(column.name)}}                 
                   </div>            
@@ -529,7 +534,7 @@
                 <!--/DateTime-->
 
                 <!--ACL-->
-                <div ng-if="column.dataType=='ACL'" class="tdDiv cf" style="min-width: 260px"> 
+                <div ng-if="column.dataType=='ACL'" class="tdDiv cf" style="min-width: 260px" ng-dblclick="showCommonTypes(eachRow,column); $event.stopPropagation()"> 
 
                   <div class="real-content pull-left"> 
                     <div class="objectSpan">
@@ -549,7 +554,7 @@
                 <!--/ACL-->
 
                 <!--JsonObject-->
-                <div ng-if="column.dataType=='Object'" class="tdDiv cf" style="min-width: 260px"> 
+                <div ng-if="column.dataType=='Object'" class="tdDiv cf" style="min-width: 260px" ng-dblclick="showCommonTypes(eachRow,column); $event.stopPropagation()"> 
 
                   <div class="real-content pull-left"> 
                     <div class="objectSpan">
@@ -569,7 +574,7 @@
                 <!--/JsonObject-->
 
                 <!--Text-->
-                <div ng-if="column.dataType=='Text'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
+                <div ng-if="column.dataType=='Text'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">              
                       {{eachRow.get(column.name)}}                                
@@ -583,7 +588,7 @@
                 <!--/Text-->
 
                 <!--Encrypted Text-->
-                <div ng-if="column.dataType=='Password'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
+                <div ng-if="column.dataType=='Password'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
                       <span ng-if="eachRow.get(column.name)">********</span>                    
@@ -605,7 +610,7 @@
                 <!--/Encrypted Text-->
 
                 <!--Email-->
-                <div ng-if="column.dataType=='Email'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
+                <div ng-if="column.dataType=='Email'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
                     <a class="emailSpan" href="{{eachRow.get(column.name) }}" target="_blank">
@@ -614,14 +619,14 @@
                   </div>
 
                   <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">                             
-                    <input type="email"  focus-on="{{column.id}}column" ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput"  ng-blur="setAndSave()" />               
+                    <input type="text"  focus-on="{{column.id}}column" ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput"  ng-blur="setAndSave()" />               
                   </div> 
 
                 </div>
                 <!--/Email-->
 
                 <!--URL-->
-                <div ng-if="column.dataType=='URL'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
+                <div ng-if="column.dataType=='URL'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
                     <a class="emailSpan" href="{{eachRow.get(column.name) }}" target="_blank">
@@ -630,14 +635,14 @@
                   </div>
 
                    <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">                             
-                    <input type="url"  focus-on="{{column.id}}column" ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput"  ng-blur="setAndSave()" />               
+                    <input type="text"  focus-on="{{column.id}}column" ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput"  ng-blur="setAndSave()" />               
                   </div> 
 
                 </div>
                 <!--/URL-->
 
                 <!--Number-->
-                <div ng-if="column.dataType=='Number'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
+                <div ng-if="column.dataType=='Number'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">                    
                       {{eachRow.get(column.name)}}                                   
@@ -680,7 +685,7 @@
                 <div ng-if="column.dataType=='Relation'"  class="tdDiv cf" style="min-width: 240px"> 
 
                   <div class="real-content pull-left"> 
-                    <div ng-click="viewRelationData(eachRow,column)" ng-if="eachRow.document[column.name]" class="relation-id-wrapper">
+                    <div ng-click="viewRelationData(eachRow,column,null)" ng-if="eachRow.document[column.name]" class="relation-id-wrapper">
                       {{eachRow.get(column.name).document._id}}
                     </div>                                    
                   </div>
@@ -791,14 +796,14 @@
                          
                          <div ng-repeat="eachGeo in eachRow.document[column.name] track by $index">
                             <div class="list-geopoint">
-                              <div ng-click="listToggleGoogleMap($event,eachRow,column,$index)">
+                              <div>
                                 { <span>{{eachGeo.latitude}}</span>,&nbsp;
                                 <span>{{eachGeo.longitude}}</span> }
                               </div>
                             </div>                         
 
                             <!--google map-->
-                            <div id="{{$parent.$parent.$index}}{{column.name}}listmap" class="googlemap-popup-wrapper hidden">
+                            <!--<div id="{{$parent.$parent.$index}}{{column.name}}listmap" class="googlemap-popup-wrapper hidden">
                               <div class="googlemap-popup-header">
                               </div>
                               <div class="googlemap-popup-content"> 
@@ -806,7 +811,7 @@
                                     <ui-gmap-marker idkey='marker.id' coords='marker.coords'></ui-gmap-marker>
                                 </ui-gmap-google-map>
                               </div> 
-                            </div>
+                            </div>-->
                             <!--google map--> 
                           </div>                      
 
@@ -842,17 +847,18 @@
 
 
                 <!--Geo Point-->
-                <div ng-if="column.dataType=='GeoPoint'" class="tdDiv cf geopoint-container"> 
+                <div ng-if="column.dataType=='GeoPoint'" class="tdDiv cf geopoint-container" ng-dblclick="showCommonTypes(eachRow,column); $event.stopPropagation()"> 
 
                   <div ng-show="eachRow.document[column.name]" class="real-content geopoint-wrapper pull-left flex-general-row-wrapper-center"> 
 
-                    <div  class="geopoint"  ng-click="toggleGoogleMap($event,eachRow,column)">
+                    <div  class="geopoint">
                       { <span>{{eachRow.get(column.name).latitude}}</span>,&nbsp;
                       <span>{{eachRow.get(column.name).longitude}}</span> }
                     </div> 
+                   
 
                     <!--google map-->
-                    <div id="{{$parent.$parent.$index}}{{column.name}}map" class="googlemap-popup-wrapper hidden">
+                    <!--<div id="{{$parent.$parent.$parent.$index}}{{column.name}}map" class="googlemap-popup-wrapper hidden">
                       <div class="googlemap-popup-header">
                       </div>
                       <div class="googlemap-popup-content"> 
@@ -860,7 +866,7 @@
                             <ui-gmap-marker idkey='marker.id' coords='marker.coords'></ui-gmap-marker>
                         </ui-gmap-google-map>
                       </div> 
-                    </div>
+                    </div>-->
                     <!--google map-->
 
                   </div>
@@ -1005,7 +1011,7 @@
   </div>  
   <!--/Table-->
 
-  <!--While Loading-->
+  <!--While Loading FirstTime-->
   <div ng-show="!isTableLoaded" class="wyl-table-loading">
     <div id="table-spinner" class="flex-general-column-wrapper-center">
         <div>
@@ -1035,7 +1041,7 @@
 
     </div>
   </div>  
-  <!--/While Loading-->
+  <!--/While Loading FirstTime-->
 
 </div>
 
@@ -1602,7 +1608,7 @@
                   </div>
 
                   <!--ACL-->
-                  <div ng-if="relCol.dataType=='ACL'" class="m-value">
+                  <div ng-if="relCol.dataType=='ACL'" class="m-value" ng-dblclick="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol); $event.stopPropagation()">
                       <div class="m-data-container cf m-acl-cust">
 
                         <div class="m-real-content-acl pull-left">
@@ -1620,7 +1626,7 @@
                   </div>
 
                   <!--JsonObject-->
-                  <div ng-if="relCol.dataType=='Object'" class="m-value">
+                  <div ng-if="relCol.dataType=='Object'" class="m-value" ng-dblclick="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol); $event.stopPropagation()">
                       <div class="m-data-container m-acl-cust cf">
 
                         <div class="m-real-content-acl pull-left">
@@ -1755,11 +1761,11 @@
                   </div>
 
                   <!--Geo Point-->
-                  <div ng-if="relCol.dataType=='GeoPoint'" class="m-value">
+                  <div ng-if="relCol.dataType=='GeoPoint'" class="m-value" ng-dblclick="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol); $event.stopPropagation()">
                       <div class="m-data-container cf" style="height:37px;">
 
                         <div class="m-real-geopoint pull-left">
-                          <div class="m-geopoint" ng-click="relToggleGoogleMap($event,relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)">
+                          <div class="m-geopoint">
                             { <span>{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).latitude}}</span>,&nbsp;
                             <span>{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).longitude}}</span> }
                           </div>                           
@@ -2598,7 +2604,7 @@
             <div ng-if="editableColumn.relatedTo!='Text' &&editableColumn.relatedTo!='Email' && editableColumn.relatedTo!='URL' && editableColumn.relatedTo!='Number' && editableColumn.relatedTo!='DateTime' && editableColumn.relatedTo!='Object' && editableColumn.relatedTo!='Boolean' && editableColumn.relatedTo!='File' && editableColumn.relatedTo!='GeoPoint'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
 
                 <div ng-repeat="eachRelation in editableList | orderBy:predicate:reverse track by $index" class="relationid-list flex-general-row-wrapper-center cf">
-                  <div class="m-relationid id-show" ng-click="listViewRelationData(editableRow,editableColumn,$index)">
+                  <div class="m-relationid id-show" ng-click="viewRelationData(editableRow,editableColumn,$index)">
                     <a>
                      {{eachRelation.document._id}}
                     </a>  
@@ -2645,6 +2651,11 @@
         <div class="modal-body">
 
           <div ui-ace="{ mode: 'json', theme: 'monokai' }" ng-model="listEditableRow">
+          </div>
+
+          <!--Error-->
+          <div>
+            <p style="color:red;">{{modifyListItemError[listIndex]}}</p>
           </div>      
 
         </div>
@@ -2812,7 +2823,7 @@
 <!-- LIST EditFile Modal -->
 
 <!--List Search Relation Documents Modal -->
-  <div class="modal fade colored-header danger" id="md-searchlistdocument" tabindex="-1" role="dialog">
+<div class="modal fade colored-header danger" id="md-searchlistdocument" tabindex="-1" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
 

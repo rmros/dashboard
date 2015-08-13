@@ -24,10 +24,11 @@ app.controller('tableDesignerController',
           $rootScope.page='tableDesigner';
           $rootScope.dataLoading=true;                                 
           $scope.colDataTypes=columnDataTypeService.getcolumnDataTypes();       
-          id = $stateParams.appId;                       
+          id = $stateParams.appId;
 
           if($rootScope.currentProject && $rootScope.currentProject.appId === id){
-            //if the same project is already in the rootScope, then dont load it. 
+            //if the same project is already in the rootScope, then dont load it.
+            initCB(); 
             getProjectTables();              
           }else{
             loadProject(id);              
@@ -174,7 +175,7 @@ app.controller('tableDesignerController',
           $scope.newTableName = null;
           $scope.isCreatingTable=false;
           $scope.addTablePopup=true;
-          $scope.tableErrorForCreate="Oops, We can't create your table. Please try again.";    
+          $scope.tableErrorForCreate="Oops,Please try again.";    
 
         });
       }else{
@@ -287,6 +288,7 @@ app.controller('tableDesignerController',
        function(currentProject){
             if(currentProject){
               $rootScope.currentProject=currentProject;
+              initCB();
               getProjectTables();
             }                              
        },
@@ -298,7 +300,7 @@ app.controller('tableDesignerController',
 
   function getProjectTables(){
 
-    tableService.getProjectTables($rootScope.currentProject)
+    tableService.getProjectTables()
     .then(function(data){
         $rootScope.dataLoading=false;
 
@@ -312,6 +314,9 @@ app.controller('tableDesignerController',
       $scope.loadingTablesError="We cannot load your tables at this point of time. Please try again later";  
     });
   } 
+  function initCB(){
+    CB.CloudApp.init($rootScope.currentProject.appId, $rootScope.currentProject.keys.master);
+  }
 
   function initBeacon(){
     var x = 0;

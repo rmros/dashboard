@@ -66,66 +66,74 @@ app.factory('tableService',
     global.saveTable = function(appId, table){
         var q=$q.defer();
 
+        var tableObj = new CB.CloudTable(table.name); 
+
+        tableObj.save()
+        .then(function(obj){
+          q.resolve(obj);
+        }, function(err){
+          q.reject(err);
+        });             
+
+        /*for(var i=0;i<table.columns.length;++i){
+          var column = new CB.Column(table.columns[i].name, table.columns[i].dataType, table.columns[i].required, table.columns[i].unique);
+          tableObj.addColumn(column);
+        }*/        
+
         //serialze
-        var obj = {
+        /*tableObj = {
           columns : table.columns,
           name    : table.name, 
           type    : table.type.type,
           appId   : appId,
           id      : table.id          
-        };
+        };*/       
 
-        if(table && table._id){
-          obj._id=table._id;
-        }
-
-        $http.put(serverURL+'/table/create/'+appId,obj).
+        /*$http.put(serverURL+'/table/create/'+appId,obj).
         success(function(data, status, headers, config) {
             q.resolve(data);
 
             /****Tracking*********/            
-             mixpanel.track('Save Table', { "Table name": table.name,"appId": appId});
+             //mixpanel.track('Save Table', { "Table name": table.name,"appId": appId});
             /****End of Tracking*****/
-        }).
+        /*}).
         error(function(data, status, headers, config) {
             q.reject(status);
             if(status===401){
               $rootScope.logOut();
             }
-        });
+        });*/
         return  q.promise;
      };
      
-    global.getProjectTables = function(currentProject){
+    global.getProjectTables = function(){
         var q=$q.defer();
-      
-        $http.put(serverURL+'/table/get/'+currentProject.appId).
-          success(function(data, status, headers, config) {
-            if(data.length>0){
-              var tempData = data;
-              data = [];
-              for(var i=0;i<tempData.length;i++){
-                var table = {
-                  _id     : tempData[i]._id,
-                  id      : tempData[i].id,
-                  name    : tempData[i].name,
-                  columns : tempData[i].columns,
-                  type    : _.first(_.where(tableTypeService.getTableTypes(), {type : tempData[i].type}))
-                };
 
-                data.push(table);
-              }
-            }
-            q.resolve(data);
-          }).
-          error(function(data, status, headers, config) {
-            q.reject(status);
-            if(status===401){
-              $rootScope.logOut();
-            }
-          });
+        CB.CloudTable.getAll()
+        .then(function(tableArray){
 
-          return  q.promise;
+          if(tableArray.length>0){
+            var tempData = tableArray;
+            data = [];
+            for(var i=0;i<tempData.length;i++){
+              var table = {
+                _id     : tempData[i]._id,
+                id      : tempData[i].id,
+                name    : tempData[i].name,
+                columns : tempData[i].columns,
+                type    : _.first(_.where(tableTypeService.getTableTypes(), {type : tempData[i].type}))
+              };
+
+              data.push(table);
+            }
+          }
+          q.resolve(data);
+
+        }, function(err){
+          q.reject(err);          
+        });      
+
+        return  q.promise;
       };
 
       global.getProjectTableByName = function(appId,Name){

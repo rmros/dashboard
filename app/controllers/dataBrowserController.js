@@ -16,8 +16,7 @@ $resource,
 $timeout,
 $filter,
 cloudObjectService,
-focus,
-uiGmapGoogleMapApi) {
+focus) {
 
 //Init
 var id;
@@ -55,7 +54,7 @@ $scope.relatedTableDefArray=[];
 $scope.relatedTableRecordArray=[];
 $scope.relationError=[];
 $scope.relationHoldData=[];
-$scope.relationShowInput=[];    
+$scope.relationShowInput=[];  
 
 //Random
 $scope.isFileSelected=false;  
@@ -183,8 +182,7 @@ $scope.showCommonTypes=function(row,column){
     $scope.editableField[index][column.name]=null;
 
   }else if(column.dataType=="DateTime"){
-    $scope.editableField[index][column.name]=angular.copy(new Date(row.get(column.name)));
-     
+    $scope.editableField[index][column.name]=angular.copy(new Date(row.get(column.name)));     
   }else if(column.dataType=="Object" || column.dataType=="ACL"){
 
     $scope.editableJsonObj=angular.copy(row.get(column.name));   
@@ -254,7 +252,7 @@ $scope.deleteData=function(row,column){
 
  
 $scope.setAndSaveJsonObject=function(){
- 
+    $("#md-objectviewer").modal("hide"); 
     //Check if previous value is not equal to modified value
     if($scope.editableRow.get($scope.editableColumnName)!=JSON.parse($scope.editableJsonObj)){
       rowEditMode($scope.editableIndex);
@@ -268,20 +266,17 @@ $scope.setAndSaveJsonObject=function(){
       });
 
       $scope.editableRow.set($scope.editableColumnName,JSON.parse($scope.editableJsonObj));
-      if(requiredField){  
-        $("#md-objectviewer").modal("hide");    
+      if(requiredField){           
         rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);
       }else{
         rowSpinnerMode($scope.editableIndex);        
     
         //Save Cloud Object
         $scope.saveCloudObject($scope.editableRow)
-        .then(function(obj){  
-          $("#md-objectviewer").modal("hide");
+        .then(function(obj){           
           $scope.editableJsonObj=null;
           showSaveIconInSecond($scope.editableIndex);
-        }, function(error){ 
-          $("#md-objectviewer").modal("hide");
+        }, function(error){          
           $scope.editableJsonObj=null;          
           rowErrordMode($scope.editableIndex,error);     
         });
@@ -303,7 +298,8 @@ $scope.fileSelected=function(selectedFile,fileName,fileObj){
   $scope.selectedFileExtension=fileName.split(".")[fileName.split(".").length-1]; 
 };
 
-$scope.setAndSaveFile=function(){    
+$scope.setAndSaveFile=function(){ 
+  $("#md-fileviewer").modal("hide");   
   if($scope.selectedFileObj) {
 
       getCBFile($scope.selectedFileObj)
@@ -320,7 +316,7 @@ $scope.setAndSaveFile=function(){
 
           $scope.editableRow.set($scope.editableColumnName,cloudBoostFile);
           if(requiredField){
-            $("#md-fileviewer").modal("hide");      
+                  
             rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);
           }else{
             rowSpinnerMode($scope.editableIndex); 
@@ -328,12 +324,10 @@ $scope.setAndSaveFile=function(){
               $scope.editableRow.set($scope.editableColumnName,cloudBoostFile);            
               //Save Cloud Object
               $scope.saveCloudObject($scope.editableRow)
-              .then(function(obj){  
-                $("#md-fileviewer").modal("hide");
+              .then(function(obj){                 
                 $scope.removeSelectdFile();
                 showSaveIconInSecond($scope.editableIndex);
-              }, function(error){ 
-                $("#md-fileviewer").modal("hide");
+              }, function(error){                 
                 $scope.removeSelectdFile();                   
                 rowErrorMode($scope.editableIndex,error);
               }); 
@@ -361,6 +355,7 @@ $scope.removeSelectdFile=function(){
 };
 
 $scope.deleteFile=function(){
+    $("#md-fileviewer").modal("hide");
     rowEditMode($scope.editableIndex);
        
     var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
@@ -383,13 +378,11 @@ $scope.deleteFile=function(){
         $scope.editableFile=null;
         $scope.removeSelectdFile();
         showSaveIconInSecond($scope.editableIndex);
-        $("#md-fileviewer").modal("hide");
+        
       }, function(error){ 
         $scope.editableFile=null;
         $scope.removeSelectdFile();
-        rowErrorMode($scope.editableIndex,error);
-
-        $("#md-fileviewer").modal("hide");     
+        rowErrorMode($scope.editableIndex,error);            
       });
 
     }
@@ -418,7 +411,7 @@ function getCBFile(fileObj){
 
 
 //Geo Point
-$scope.toggleGoogleMap=function(event,row,column){     
+/*$scope.toggleGoogleMap=function(event,row,column){     
     var geoPointJson=row.get(column.name);
     var index=$scope.currentTableData.indexOf(row);
         
@@ -457,7 +450,7 @@ $scope.toggleGoogleMap=function(event,row,column){
       });
       
     });      
-};
+};*/
 
 $scope.setAndSaveGeopoint=function(valid){
   if(valid  && !$scope.geopointEditError){
@@ -471,8 +464,8 @@ $scope.setAndSaveGeopoint=function(valid){
         saveGeopoint(); 
 
       }else{
-      $("#md-geodocumentviewer").modal("hide");
-      $scope.editableGeopoint=null;
+        $("#md-geodocumentviewer").modal("hide");
+        $scope.editableGeopoint=null;
       }
 
     }else{//else empty
@@ -484,6 +477,7 @@ $scope.setAndSaveGeopoint=function(valid){
 };
 
 function saveGeopoint(){
+  $("#md-geodocumentviewer").modal("hide");
   rowEditMode($scope.editableIndex);
  
   var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
@@ -495,19 +489,17 @@ function saveGeopoint(){
   });
   
   if(requiredField){  
-    $("#md-geodocumentviewer").modal("hide");    
+        
     rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);
   }else{
     rowSpinnerMode($scope.editableIndex);
 
     //Save Cloud Object
     $scope.saveCloudObject($scope.editableRow)
-    .then(function(obj){  
-      $("#md-geodocumentviewer").modal("hide");
+    .then(function(obj){       
       $scope.editableGeopoint=null;
       showSaveIconInSecond($scope.editableIndex);
-    }, function(error){ 
-      $("#md-geodocumentviewer").modal("hide");
+    }, function(error){       
       $scope.editableGeopoint=null;
       rowErrorMode($scope.editableIndex,error);    
     });
@@ -615,16 +607,22 @@ $scope.linkRecord=function(relationCBRecord){
     }      
 };
 
-$scope.viewRelationData=function(row,column){
+$scope.viewRelationData=function(row,column,index){
     nullifyEditable();
     //$scope.editableRow=row;//row
     //$scope.editableColumn=column;
     //$scope.editableColumnName=column.name;//column name 
-    //$scope.editableIndex=$scope.currentTableData.indexOf(row);//index
+    //$scope.editableIndex=$scope.currentTableData.indexOf(row);//index    
 
-    var tableName=row.get(column.name).document._tableName;
-    var rowId=row.get(column.name).document._id;
-    var tableDef=_.first(_.where($rootScope.currentProject.tables, {name: tableName}));   
+    if(row.get(column.name) instanceof Array){
+      $("#md-list-commontypes").modal("hide")
+      var tableName=row.get(column.name)[index].document._tableName;
+      var rowId=row.get(column.name)[index].document._id;
+    }else{
+      var tableName=row.get(column.name).document._tableName;
+      var rowId=row.get(column.name).document._id;
+    } 
+    var tableDef=_.first(_.where($rootScope.currentProject.tables, {name: tableName})); 
 
     //get Table data
     $scope.queryTableById(tableName,rowId)
@@ -637,7 +635,7 @@ $scope.viewRelationData=function(row,column){
         $scope.relatedTableRecordArray.push(record);
 
         //Nullify errors
-        clearRelationErrors();        
+        //clearRelationErrors();        
       }     
     
       $("#md-relationviewer").modal();
@@ -650,6 +648,7 @@ $scope.viewRelationData=function(row,column){
 }; 
 
 $scope.goToPrevRel=function(){
+  //Simple relation
   if($scope.relatedTableDefArray && $scope.relatedTableDefArray.length>1){
     var lastIndex=$scope.relatedTableDefArray.length-1;
     $scope.relatedTableDefArray.splice(lastIndex,1);
@@ -657,10 +656,10 @@ $scope.goToPrevRel=function(){
   
     $("#md-relationviewer").modal();      
   }
-  
 };
 
 $scope.closeRelModal=function(){  
+  //Simple Relation
   if($scope.relatedTableDefArray && $scope.relatedTableDefArray.length>1){
     var lastIndex=$scope.relatedTableDefArray.length-1;
     $scope.relatedTableDefArray.splice(lastIndex,1);
@@ -672,6 +671,7 @@ $scope.closeRelModal=function(){
     $scope.relatedTableRecordArray=[];
     $("#md-relationviewer").modal("hide");
   }
+
 };
 
 function convertISO2DateObj(table,cloudObject){
@@ -874,8 +874,9 @@ $scope.setRelFile=function(){
             
   }
 };
+//End of Relation File
 
-//Relation File
+
 $scope.relSetAndSaveGeopoint=function(valid){
   if(valid  && !$scope.geopointEditError){
 
@@ -908,7 +909,8 @@ function clearRelationErrors(){
   var columns=$scope.relatedTableDefArray[$scope.relatedTableDefArray.length-1].columns;
   for(var i=0;i<columns.length;++i){
     var colname=columns[i].name;
-    $scope.relationError[colname]=null;      
+    $scope.relationError[colname]=null;
+    $scope.relationShowInput[colname]=false;       
   }
   
 }
@@ -946,11 +948,9 @@ $scope.showRelationList=function(cloudObject,column){
   if(column.relatedTo=="DateTime"){    
     convertFieldsISO2DateObj(); 
   } 
-
   $scope.isRelationalList=true; 
   $("#md-list-commontypes").modal();
 };
-
 //End of relation
 
 function convertFieldsISO2DateObj(){
@@ -1049,12 +1049,12 @@ $scope.modifyListItem=function(data,index){
 };
 
 $scope.deleteListItem=function(index){
+  $("#md-list-fileviewer").modal("hide");
   $scope.editableList.splice(index,1);
   if($scope.editableList.length==0){
     $scope.editableList=null;
   }
-  if($scope.editableColumn.relatedTo=="File"){
-    $("#md-list-fileviewer").modal("hide"); 
+  if($scope.editableColumn.relatedTo=="File"){     
     $scope.listEditableRow=null;//row
     $scope.listEditableColumn=null;//row
     $scope.listIndex=null;
@@ -1115,9 +1115,9 @@ $scope.showListJsonObject=function(row,index){
 $scope.addListFileModal=function(){  
   $("#md-list-fileviewer").modal("show");
 };
-$scope.addListFile=function(){    
+$scope.addListFile=function(){   
+  $("#md-list-fileviewer").modal("hide"); 
   if($scope.selectedFileObj) {     
-    $("#md-list-fileviewer").modal("hide");
     if(!$scope.editableList || $scope.editableList.length==0){
       $scope.editableList=[];
     }
@@ -1163,31 +1163,10 @@ $scope.listSearchRelationDocs=function(){
   //List Relations records   
 };
 
-$scope.listViewRelationData=function(row,column,index){
-   
-  var tableName=row.get(column.name)[index].document._tableName;
-  var rowId=row.get(column.name)[index].document._id;
 
-  $scope.tableDef=_.first(_.where($rootScope.currentProject.tables, {name: tableName}));
-
-  //get Table data
-  $scope.queryTableById($scope.tableDef.name,rowId)
-  .then(function(record){ 
-
-    //Convert ISODate 2 DateObject
-    convertISO2DateObj($scope.tableDef,record);           
-
-    $scope.relatedTableDefArray.push($scope.tableDef);
-    $scope.relatedTableRecordArray.push(record);
-    $("#md-relationviewer").modal();
-
-  }, function(error){ 
-         
-  });
-           
-};
 
 //List Geopoint
+/*
 $scope.listToggleGoogleMap=function(event,row,column,listIndex){     
     var geoPointJson=row.get(column.name)[listIndex];
     var index=$scope.currentTableData.indexOf(row);
@@ -1227,7 +1206,7 @@ $scope.listToggleGoogleMap=function(event,row,column,listIndex){
       });
       
     });      
-};
+};*/
 
 //List Geopoint
 $scope.addListGeopointModal=function(){ 
@@ -1338,44 +1317,40 @@ $scope.setAndSave=function(){
 
 function save(){
     //Check if previous value is not equal to modified value
-      if($scope.editableRow.get($scope.editableColumnName)!=$scope.editableField[$scope.editableIndex][$scope.editableColumnName]){
-          rowEditMode($scope.editableIndex);       
+    $scope.showInputForEdit[$scope.editableIndex][$scope.editableColumnName]=false;
+    if($scope.editableRow.get($scope.editableColumnName)!=$scope.editableField[$scope.editableIndex][$scope.editableColumnName]){
+        rowEditMode($scope.editableIndex);       
 
-          var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
-            if(everyCol.name!=$scope.editableColumnName && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
-              if(!$scope.editableRow.get(everyCol.name)){
-                return everyCol;
-              }          
-            }
+        var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
+          if(everyCol.name!=$scope.editableColumnName && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
+            if(!$scope.editableRow.get(everyCol.name)){
+              return everyCol;
+            }          
+          }
+        });
+
+        if($scope.editableColumn.dataType=="Number"){
+          var tempValue=angular.copy($scope.editableField[$scope.editableIndex][$scope.editableColumnName]);
+          $scope.editableField[$scope.editableIndex][$scope.editableColumnName]=parseInt($scope.editableField[$scope.editableIndex][$scope.editableColumnName]);
+          if(isNaN($scope.editableField[$scope.editableIndex][$scope.editableColumnName])){
+            $scope.editableField[$scope.editableIndex][$scope.editableColumnName]=tempValue;
+          }
+        }
+        $scope.editableRow.set($scope.editableColumnName,$scope.editableField[$scope.editableIndex][$scope.editableColumnName]);
+        if(requiredField){      
+          rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);          
+        }else{
+          rowSpinnerMode($scope.editableIndex);          
+        
+          //Save Cloud Object
+          $scope.saveCloudObject($scope.editableRow)
+          .then(function(obj){               
+            showSaveIconInSecond($scope.editableIndex);
+          }, function(error){                         
+            rowErrorMode($scope.editableIndex,error);   
           });
-
-          if($scope.editableColumn.dataType=="Number"){
-            var tempValue=angular.copy($scope.editableField[$scope.editableIndex][$scope.editableColumnName]);
-            $scope.editableField[$scope.editableIndex][$scope.editableColumnName]=parseInt($scope.editableField[$scope.editableIndex][$scope.editableColumnName]);
-            if(isNaN($scope.editableField[$scope.editableIndex][$scope.editableColumnName])){
-              $scope.editableField[$scope.editableIndex][$scope.editableColumnName]=tempValue;
-            }
-          }
-          $scope.editableRow.set($scope.editableColumnName,$scope.editableField[$scope.editableIndex][$scope.editableColumnName]);
-          if(requiredField){      
-            rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);          
-          }else{
-            rowSpinnerMode($scope.editableIndex);          
-          
-            //Save Cloud Object
-            $scope.saveCloudObject($scope.editableRow)
-            .then(function(obj){  
-              $scope.showInputForEdit[$scope.editableIndex][$scope.editableColumnName]=false;
-              showSaveIconInSecond($scope.editableIndex);
-            }, function(error){ 
-              $scope.showInputForEdit[$scope.editableIndex][$scope.editableColumnName]=false;           
-              rowErrorMode($scope.editableIndex,error);   
-            });
-          }
-
-      }else{
-        $scope.showInputForEdit[$scope.editableIndex][$scope.editableColumnName]=false;
-      }
+        }
+    }
 }
 //End of Save 
 
@@ -1383,10 +1358,10 @@ function save(){
 $scope.saveRelationObj=function(relCloudObject){
   if(!checkRelationErrors()){  
 
-    $scope.relationSpinnerMode=true;
-
+    $scope.relationSpinnerMode=true;   
+   
     var index=$scope.relatedTableDefArray.length-1;
-    var table=$scope.relatedTableDefArray[index];    
+    var table=$scope.relatedTableDefArray[index];            
 
     //check for rquired columns
     var colNames=null;
@@ -1417,6 +1392,9 @@ $scope.saveRelationObj=function(relCloudObject){
         $timeout(function(){ 
           $scope.relationSaveTickMode=false;          
         }, 1000); 
+
+        //Nullify errors
+        clearRelationErrors();
 
       }, function(error){ 
         $scope.relationSpinnerMode=false;   
@@ -1456,17 +1434,8 @@ function loadProject(id){
             getProjectTables();                                        
           }                                           
       },
-      function(error){                         
-          $.amaran({
-              'theme'     :'colorful',
-              'content'   :{
-                 bgcolor:'#EE364E',
-                 color:'#fff',
-                 message:'We cannot load your project at this point in time. Please try again later.'
-              },
-              'position'  :'bottom right',
-              'outEffect' :'slideBottom'
-          }); 
+      function(error){ 
+        errorNotify('We cannot load your project at this point in time. Please try again later.');        
       });
 }
 
@@ -1496,50 +1465,22 @@ function getProjectTables(){
                   //$(".smoothTable").floatThead('reflow')
                                                                                  
               },
-              function(error){  
-                $.amaran({
-                    'theme'     :'colorful',
-                    'content'   :{
-                       bgcolor:'#EE364E',
-                       color:'#fff',
-                       message:'Error in loading table records'
-                    },
-                    'position'  :'bottom right',
-                    'outEffect' :'slideBottom'
-                });
-
+              function(error){
+                errorNotify('Error in loading table records');                 
               });
               //end of loafing data                 
             }                              
         },
         function(error){ 
-          $.amaran({
-              'theme'     :'colorful',
-              'content'   :{
-                 bgcolor:'#EE364E',
-                 color:'#fff',
-                 message:'Error getting table'
-              },
-              'position'  :'bottom right',
-              'outEffect' :'slideBottom'
-          });      
+          errorNotify('Error getting table');              
         });
 
     }else{                                                                   
        $rootScope.currentProject.tables=[];
     }          
          
-  }, function(error){                                    
-      $.amaran({
-            'theme'     :'colorful',
-            'content'   :{
-               bgcolor:'#EE364E',
-               color:'#fff',
-               message:'We cannot load your tables at this point in time. Please try again later.'
-            },
-            'position'  :'bottom right',
-            'outEffect' :'slideBottom'
-      }); 
+  }, function(error){  
+    errorNotify('We cannot load your tables at this point in time. Please try again later.');      
   });
 } 
 
@@ -1639,6 +1580,7 @@ $scope.initiateColumnSettings = function() {
 $scope.addColumn = function(valid) {
   if(valid){
     $scope.showAddColPopUp=false; 
+    $scope.saveSpinner=true;
     $rootScope.currentProject.currentTable.columns.push($scope.newColumnObj);
     /*$("#scrollbar-wrapper").mCustomScrollbar("update");
     $(".data-table-design").css("height","84.2vh");
@@ -1650,9 +1592,12 @@ $scope.addColumn = function(valid) {
     tableService.saveTable($rootScope.currentProject.appId, $rootScope.currentProject.currentTable)
     .then(function(table){        
       $scope.newColumnObj=null;
+      $scope.saveSpinner=false;
       $('#scrollbar-wrapper').scrollTo('#extra-col-th',400,{axis:'x'});                                             
     },
     function(error){ 
+      errorNotify(error);
+      $scope.saveSpinner=false;
       var index=$rootScope.currentProject.currentTable.columns.indexOf($scope.newColumnObj);
       $rootScope.currentProject.currentTable.columns.splice(index,1)            
     });                        
@@ -1676,6 +1621,7 @@ $scope.deleteColumn=function(column){
     var i = $scope.currentProject.currentTable.columns.indexOf(column);
     $scope.currentProject.currentTable.columns.splice(i, 1);
     $scope.showColOptions[i]=false;
+    $scope.saveSpinner=true;
 
     tableService.saveTable(id,$scope.currentProject.currentTable)
     .then(function(table){        
@@ -1685,16 +1631,20 @@ $scope.deleteColumn=function(column){
         .then(function(list){
           if(list && list.length>0){              
             $scope.currentTableData=list;        
-          }            
+          } 
+          $scope.saveSpinner=false;           
           //$scope.$digest();  
                                           
         },
-        function(error){       
+        function(error){ 
+         $scope.saveSpinner=false;
+         errorNotify(error);        
         });
         //end of load more data
 
     },function(error){
-     
+      $scope.saveSpinner=false;
+      errorNotify(error);     
     });      
   }
 };
@@ -1731,7 +1681,7 @@ $scope.selectThisRow=function(index){
 
 $scope.deleteSelectedRows=function(){
   deleteUnsavedRows();//delete rows which doesn't have Id
-
+  $scope.saveSpinner=true;
   var promises=[];
   for(var i=0;i<$scope.rowsSelected.length;++i){
     if($scope.rowsSelected[i]==true){        
@@ -1745,11 +1695,14 @@ $scope.deleteSelectedRows=function(){
      var ndex=$scope.currentTableData.indexOf(list[i]);
      $scope.currentTableData.splice(ndex,1);
      $scope.rowsSelected.splice(ndex,1); 
+     --$scope.selectedRowsCount;
     } 
-    $scope.areSelectAllRows=false;                             
+    $scope.areSelectAllRows=false; 
+    $scope.saveSpinner=false;                            
   }, function(err){                
-    console.log(err); 
+    errorNotify(err);
     $scope.areSelectAllRows=false;
+    $scope.saveSpinner=false;
   });
  
 };
@@ -1759,7 +1712,8 @@ function deleteUnsavedRows(){
 
     if(($scope.rowsSelected[i]==true) && (!$scope.currentTableData[i].get("id"))){
       $scope.currentTableData.splice(i,1); 
-      $scope.rowsSelected.splice(i,1);       
+      $scope.rowsSelected.splice(i,1); 
+      --$scope.selectedRowsCount;      
     }
 
   }      
@@ -1820,7 +1774,8 @@ $scope.sortASC=function(column){
        $scope.isTableLoaded=true;
        $scope.totalRecords=10;
 
-    },function(error){       
+    },function(error){ 
+      errorNotify(error);        
     });
     
   }
@@ -1842,7 +1797,8 @@ $scope.sortDESC=function(column){
        $scope.isTableLoaded=true;
        $scope.totalRecords=10;
 
-    },function(error){       
+    },function(error){
+      errorNotify(error);         
     });
     
   }
@@ -1908,13 +1864,16 @@ $scope.cancelConfigCol=function(column){
 $scope.saveConfigCol=function(column){
   if(column.isEditable){
     var i = $scope.currentProject.currentTable.columns.indexOf(column);      
+    $scope.saveSpinner=true;
 
     tableService.saveTable(id,$scope.currentProject.currentTable)
     .then(function(table){ 
       $scope.editColumn[i]=false;      
-      $scope.showColOptions[i]=false;                              
+      $scope.showColOptions[i]=false; 
+      $scope.saveSpinner=false;                             
     },function(error){
-     
+      $scope.saveSpinner=false;
+      errorNotify(error);  
     });      
   }
 };

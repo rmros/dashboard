@@ -350,7 +350,7 @@
 .wyl-table-loading{   
     height:80vh;
     width:99.6vw;   
-} 
+}
 
 #table-spinner{   
     color: black;    
@@ -561,7 +561,14 @@
     padding-bottom: 6px; 
     padding-right: 6px;     
 }
-
+.tdDiv-fields{
+    height:40px;
+    overflow: hidden; 
+    padding-top: 3px;
+    padding-left: 3px; 
+    padding-bottom: 3px; 
+    padding-right: 3px;  
+}
 .addColTh{
     position: relative;   
 }
@@ -712,8 +719,8 @@
 }
 
 .commonInput{
-    width:247.8px;
-    height:25px;
+    width:252px;
+    height:32px;
     margin-top: -3.5px;    
 }
 .commonInput:focus{
@@ -1413,8 +1420,7 @@
 }
 .geopoint-wrapper{
     padding: 3px;
-    background-color: #EBEBEB;
-    cursor: pointer;
+    background-color: #EBEBEB;   
 }
 .googlemap-popup-wrapper{
     padding: 9px;
@@ -1454,8 +1460,7 @@
     padding-left: 4px;
     padding-right: 4px;
     padding-top:3px;
-    height: 25px;
-    cursor: pointer;
+    height: 25px;    
 }
 
 .table-tools-strip{
@@ -1477,7 +1482,7 @@
 }
 .table-strip-info{
     width: 29.99%;  
-    height: 28px;
+    height: 28px;   
 }
 .table-tool-btn{
     background-color: white;
@@ -1489,12 +1494,20 @@
   outline: none;
 }
 .data-info-div{  
-    height: 28px;   
-    width: 100%; 
+    height: 27px;   
     margin-top: 3px;   
+    float: right;      
 }
 .data-info-div p{ 
     float: right;                   
+}
+.data-info-div-icons{
+    height: 27px;   
+    margin-top: 3px;   
+    float: right;    
+}
+.row-info{
+    margin-right: 23px;
 }
 
 .hide-col-btn{

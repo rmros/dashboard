@@ -28,7 +28,6 @@ var app=angular.module('CloudBoostDashboard',
     'stripe',
     'chart.js',
     'focusOn',
-    'uiGmapgoogle-maps',
     'infinite-scroll',
     'ui.ace'
     ]);
@@ -47,6 +46,7 @@ if(__isVM){
 	    landingURL = "http://localhost:1444";
 	    CB.serverUrl ='http://localhost:4730';
 	    CB.apiUrl = CB.serverUrl+'/api';
+        CB.serviceUrl=serverURL;
 	}else{
 	    serverURL = "https://service.cloudboost.io";
 	    landingURL = "https://www.cloudboost.io";
@@ -66,10 +66,4 @@ app.config(function() {
 	
 });
 
-app.config(function(uiGmapGoogleMapApiProvider) {
-    uiGmapGoogleMapApiProvider.configure({
-        //    key: 'your api key',
-        v: '3.17',
-        libraries: 'weather,geometry,visualization'
-    });
-})
+
