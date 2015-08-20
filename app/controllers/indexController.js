@@ -14,8 +14,7 @@ app.controller('indexController',
     });  
 
     $rootScope.logOut=function(){
-      var logOutPromise=userService.logOut();
-      logOutPromise
+      userService.logOut()      
       .then(function(data){           
 
         $.removeCookie('userId', { path: '/' });

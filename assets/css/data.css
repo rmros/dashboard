@@ -402,9 +402,8 @@
 }
 
 .data-table-design{ 
-    width:100vw;
-    height:81vh; 
-    overflow: auto;          
+    width:97.5vw;
+    height:76vh;             
 }
 .smoothTable { 
    width:94.6vw; 
@@ -619,6 +618,7 @@
 .lTdDiv{
     width:20.2px;
     height:28px; 
+    position: relative;
 }
 
 .lTdDiv span{
@@ -1652,11 +1652,31 @@
   left:2%;
 }
 
+.first-column-beacon{
+  width: 0px;
+  height: 0px;
+  margin-top: 0px;
+  margin-left:0px;
+  top:40%;
+  left:46.2%;
+  position: absolute;
+}
+
+.first-row-beacon{
+  width: 0px;
+  height: 0px;
+  margin-top: 0px;
+  margin-left:0px;
+  top:32%;
+  left:58%;
+  position: absolute;
+}
+
 .tableIcon{
-    color:white;
-    font-size : 30px;
-    padding:12px;
-    padding-right:0px;
+   color:white;
+   font-size : 30px;
+   padding:12px;
+   padding-right:0px;
 }
 
 .tableText{

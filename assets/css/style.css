@@ -8455,6 +8455,16 @@ ul.timeline li > .date {
     position: absolute;    
     z-index: 1;
 }
+.circlepulse3 {    
+    border: 4px solid #7596C6;
+    -webkit-border-radius: 300px;
+    -moz-border-radius: 300px;    
+    border-radius: 300px;
+    background: #3968AD;
+    opacity: 1;
+    position: absolute;    
+    z-index: 1;
+}
 .data-brwsr-wrapper{
   position: relative;
 }

@@ -68,7 +68,7 @@
 
                 <!--Documentation link-->
                 <div>
-                  <a href="https://docs.cloudboost.io" target="blank" style="color:white;">
+                  <a ng-click="goToDocumentation()" style="color:white;cursor:pointer;">
 
                     <div class="flex-general-row-wrapper pull-right" style="cursor:pointer;position:relative;">     
 
@@ -80,7 +80,7 @@
                       </div>
 
                       <!--Beacon-->
-                      <div class="first-data-beacon-container" style="cursor:pointer;"></div> 
+                      <div ng-if="beacon && !beacon.documentationLink" class="first-data-beacon-container" style="cursor:pointer;"></div> 
                     </div>               
 
                   </a>  
@@ -202,7 +202,7 @@
   <div ng-show="isTableLoaded && !tableLoadedError" class="row data-table-def">
      <div class="col-md-12">
         
-        <div id="scrollbar-wrapper" class="data-table-design" infinite-scroll="addMoreRecords()">
+        <div id="scrollbar-wrapper" class="data-table-design" malihuscrollbar >
        
          <table  class="smoothTable" >
           <thead>            
@@ -262,7 +262,16 @@
                   </div> 
 
                   <div ng-if="column.dataType!='Id'" class="cust-cell-dropdwn" ng-click="toggleColOptions($index)">
-                      <i class="fa fa-angle-down dropdown-icon-size" style="padding-top: 4.6px;"></i>
+                      <!--Active Column-->
+                      <!--ASC-->
+                      <i ng-if="orderBy==column.name && orderByType=='asc'" class="fa fa-angle-up dropdown-icon-size" style="padding-top: 4.6px;"></i>
+
+                      <!--DESC-->
+                      <i ng-if="orderBy==column.name && orderByType=='desc'" class="fa fa-angle-down dropdown-icon-size" style="padding-top: 4.6px;"></i>
+
+                      <!--Passive Columns-->
+                      <!--DESC-->
+                      <i ng-if="orderBy!=column.name" class="fa fa-angle-down dropdown-icon-size" style="padding-top: 4.6px;"></i>
                   </div>
                 </div>
 
@@ -446,6 +455,9 @@
                   </form>
                 </div>  
                 <!--/Add Column PopUp-->
+
+                <!--Beacon-->
+                <div ng-if="beacon && !beacon.firstColumn && !showAddColPopUp" ng-click="initiateColumnSettings()" class="first-column-beacon-container" style="cursor:pointer;"></div>
               </th>
               <!--/Extra Add Column--> 
 
@@ -918,8 +930,12 @@
                   <div class="lTdDiv">
                       <div class="flex-general-row-wrapper-center">
                         <span>+</span>
-                      </div>  
-                  </div>              
+                      </div>
+                      
+                      <!--Beacon-->
+                      <div ng-if="beacon && !beacon.firstRow" ng-click="addRow()" class="first-row-beacon-container" style="cursor:pointer;"></div>  
+                  </div> 
+                            
               </td>
                <td  class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="!hideColumn[$index]">
                 <div class="tdDiv cf" ng-click="addRow()" style="cursor:cell;"> 

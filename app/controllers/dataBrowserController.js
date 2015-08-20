@@ -16,7 +16,8 @@ $resource,
 $timeout,
 $filter,
 cloudObjectService,
-focus) {
+focus,
+beaconService) {
 
 //Init
 var id;
@@ -62,9 +63,8 @@ $scope.currentTableData=[];
 $scope.modifyListItemError=[];
 $scope.listFileSpinner=[];
 $scope.listFileError=[];
-var orderBy="createdAt"; 
-var orderByType="asc"; 
-
+$scope.orderBy="createdAt"; 
+$scope.orderByType="asc";
 
 $scope.init = function() { 
   id = $stateParams.appId;
@@ -74,8 +74,8 @@ $scope.init = function() {
     loadProject(id);                   
   }
 
-  //Start the beacon
-  initBeacon();     
+  //get beacon
+  getBeacon();     
 };
 
 $scope.loadTableData = function(t,orderBy,orderByType,limit,skip) {          
@@ -94,9 +94,9 @@ $scope.loadTableData = function(t,orderBy,orderByType,limit,skip) {
       query.setSkip(skip); 
 
       query.find({success : function(list){ 
-          q.resolve(list);
+        q.resolve(list);
       }, error : function(error){ 
-          q.reject(error);             
+        q.reject(error);             
       }});       
   }                  
   return  q.promise;     
@@ -1455,7 +1455,7 @@ function getProjectTables(){
               $rootScope.currentProject.currentTable=table;
 
               //Load data 
-              $scope.loadTableData(table,orderBy,orderByType,10,0)
+              $scope.loadTableData(table,$scope.orderBy,$scope.orderByType,10,0)
               .then(function(list){              
                   $scope.currentTableData=list;
                   $scope.totalRecords=10;
@@ -1506,7 +1506,7 @@ $scope.addMoreRecords=function(){
   if($scope.currentTableData && $rootScope.currentProject && $rootScope.currentProject.currentTable){
     $scope.loadingRecords=true;
     //load more data
-    $scope.loadTableData($rootScope.currentProject.currentTable,orderBy,orderByType,5,$scope.totalRecords)
+    $scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,5,$scope.totalRecords)
     .then(function(list){
       if(list && list.length>0){
         if($scope.currentTableData.length>0){
@@ -1574,11 +1574,11 @@ $scope.initiateColumnSettings = function() {
 
   $scope.newColumnObj=newcol; 
   $scope.showAddColPopUp=true;   
-  //$("#scrollbar-wrapper").mCustomScrollbar("scrollTo",['top','right']); 
-  $('#scrollbar-wrapper').scrollTo('#extra-col-th',400,{axis:'x'});   
+  $("#scrollbar-wrapper").mCustomScrollbar("scrollTo",['top','right']); 
+  //$('#scrollbar-wrapper').scrollTo('#extra-col-th',400,{axis:'x'});   
   
 };
-
+//infinite-scroll="addMoreRecords()"
 $scope.addColumn = function(valid) {
   if(valid){
     $scope.showAddColPopUp=false; 
@@ -1606,7 +1606,14 @@ $scope.addColumn = function(valid) {
       $scope.saveSpinner=false;
       var index=$rootScope.currentProject.currentTable.columns.indexOf($scope.newColumnObj);
       $rootScope.currentProject.currentTable.columns.splice(index,1)            
-    });                        
+    });
+
+    //Update Beacon
+    if($scope.beacon && !$scope.beacon.firstColumn){
+      $scope.beacon.firstColumn=true;
+      updateBeacon();   
+    }
+
   }            
 };
 
@@ -1640,7 +1647,7 @@ $scope.deleteColumn=function(column){
     .then(function(table){        
 
         //load more data
-        $scope.loadTableData($rootScope.currentProject.currentTable,orderBy,orderByType,$scope.totalRecords,0)
+        /*$scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,orderByType,$scope.totalRecords,0)
         .then(function(list){
           if(list && list.length>0){              
             $scope.currentTableData=list;        
@@ -1652,7 +1659,7 @@ $scope.deleteColumn=function(column){
         function(error){ 
          $scope.saveSpinner=false;
          errorNotify(error);        
-        });
+        });*/
         //end of load more data
 
     },function(error){
@@ -1768,7 +1775,13 @@ $scope.addRow=function(){
   var obj = new CB.CloudObject($rootScope.currentProject.currentTable.name);
   obj.set('createdAt', new Date());
   obj.set('updatedAt', new Date());     
-  $scope.currentTableData.push(obj);                                         
+  $scope.currentTableData.push(obj);
+
+  //Update Beacon
+  if($scope.beacon && !$scope.beacon.firstRow){
+    $scope.beacon.firstRow=true;
+    updateBeacon();   
+  }                                         
 };
 
 $scope.sortASC=function(column){  
@@ -1780,10 +1793,10 @@ $scope.sortASC=function(column){
     var i = $scope.currentProject.currentTable.columns.indexOf(column); 
     $scope.showColOptions[i]=false;  
 
-    orderBy=column.name;
-    orderByType="asc";    
+    $scope.orderBy=column.name;
+    $scope.orderByType="asc";    
 
-    $scope.loadTableData($rootScope.currentProject.currentTable,orderBy,orderByType,10,0)
+    $scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0)
     .then(function(list){ 
 
        $scope.currentTableData=list; 
@@ -1808,9 +1821,9 @@ $scope.sortDESC=function(column){
     var i = $scope.currentProject.currentTable.columns.indexOf(column);  
     $scope.showColOptions[i]=false; 
 
-    orderBy=column.name;
-    orderByType="desc";
-    $scope.loadTableData($rootScope.currentProject.currentTable,orderBy,orderByType,10,0)
+    $scope.orderBy=column.name;
+    $scope.orderByType="desc";
+    $scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0)
     .then(function(list){ 
 
        $scope.currentTableData=list; 
@@ -2017,20 +2030,86 @@ function showSaveIconInSecond(index){
 }
 
 /*------/Partial & Table Definition Functions---------------*/ 
+
+$scope.goToDocumentation=function(){
+  //Update Beacon
+  if($scope.beacon && !$scope.beacon.documentationLink){
+    $scope.beacon.documentationLink=true;
+    updateBeacon();   
+  }
+
+  //Redirect to documentation  
+  window.open("https://docs.cloudboost.io", "_blank");
+};
+
+//get Beacon Obj from backend
+function getBeacon(){
+  beaconService.getBeacon()         
+  .then(function(beaconObj){
+      $scope.beacon=beaconObj;
+      //Start the beacon
+      initBeacon();                            
+  },function(error){      
+  });
+}
+
+//update Beacon
+function updateBeacon(){   
+  beaconService.updateBeacon($scope.beacon)         
+  .then(function(beaconObj){
+      //$scope.beacon=beaconObj;                            
+  },function(error){      
+  });
+}
+
 function initBeacon(){
   var x = 0;
-  addCircle(x);
+  addCircleToDoc(x);
+  addCircleToCol(x);
+  addCircleToRow(x);
   setInterval(function () {
       if (x === 0) {
           x = 1;
       }
-      addCircle(x);
+      addCircleToDoc(x);
+      addCircleToCol(x);
+      addCircleToRow(x);
       x++;
   }, 1200);
 } 
 
-function addCircle(id) {
+function addCircleToDoc(id) {
   $('.first-data-beacon-container').append('<div  id="' + id + '" class="circlepulse2 first-data-beacon"></div>');
+
+  $('#' + id).animate({
+      'width': '50px',
+      'height': '50px',
+      'margin-top': '-20px',
+      'margin-left': '-20px',
+      'opacity': '0'
+  }, 4000, 'easeOutCirc');
+
+  setInterval(function () {
+      $('#' + id).remove();
+  }, 4000);
+}
+function addCircleToCol(id) {
+  $('.first-column-beacon-container').append('<div  id="' + id + '" class="circlepulse3 first-column-beacon"></div>');
+
+  $('#' + id).animate({
+      'width': '50px',
+      'height': '50px',
+      'margin-top': '-20px',
+      'margin-left': '-20px',
+      'opacity': '0'
+  }, 4000, 'easeOutCirc');
+
+  setInterval(function () {
+      $('#' + id).remove();
+  }, 4000);
+}
+function addCircleToRow(id) {
+  $('.first-row-beacon-container').append('<div  id="' + id + '" class="circlepulse3 first-row-beacon"></div>');
 
   $('#' + id).animate({
       'width': '50px',

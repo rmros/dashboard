@@ -13,7 +13,8 @@ app.controller('tableDesignerController',
      projectService,
      tableService,
      $timeout,
-     $state) {
+     $state,
+     beaconService) {
     
     var id;      
     $scope.newtables=[];
@@ -34,8 +35,8 @@ app.controller('tableDesignerController',
           loadProject(id);              
         }
 
-        //Start the beacon
-        initBeacon();   
+        //getBeacon
+        getBeacon(); 
 
     };
 
@@ -170,6 +171,13 @@ app.controller('tableDesignerController',
           });   
 
         });
+
+        //Update Beacon
+        if($scope.beacon && !$scope.beacon.firstTable){
+          $scope.beacon.firstTable=true;
+          updateBeacon();   
+        }
+        
       }else{
         $scope.tableErrorForCreate="Name cannot be empty.";
       }
@@ -234,6 +242,26 @@ app.controller('tableDesignerController',
   } 
   function initCB(){
     CB.CloudApp.init($rootScope.currentProject.appId, $rootScope.currentProject.keys.master);
+  }
+
+  //get Beacon Obj from backend
+  function getBeacon(){
+    beaconService.getBeacon()         
+    .then(function(beaconObj){
+        $scope.beacon=beaconObj;
+        //Start the beacon
+        initBeacon();                            
+    },function(error){      
+    });
+  }
+
+  //update Beacon
+  function updateBeacon(){   
+    beaconService.updateBeacon($scope.beacon)         
+    .then(function(beaconObj){
+        //$scope.beacon=beaconObj;                            
+    },function(error){      
+    });
   }
 
   function initBeacon(){

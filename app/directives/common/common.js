@@ -138,8 +138,20 @@ app.directive('malihuscrollbar', function(){
                 scrollButtons:{enable:true,
                     scrollAmount: 20,
                     scrollType: "stepless"
+                },callbacks:{
+                  onTotalScroll: function(){
+                    var pos=$(".smoothTable").scrollTop();
+                    console.log("Hey buddy I got totally scrolled: "+pos);
+                    scope.addMoreRecords();
+                  }
                 }
             });
+            /*$(element).mCustomScrollbar("scrollTo","bottom",{
+                callbacks:false,
+                function(){
+                  console.log("hellowooo");
+                }
+            });*/
         }
     };
 });

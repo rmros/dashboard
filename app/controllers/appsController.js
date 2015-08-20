@@ -1,7 +1,15 @@
 'use strict';
 
 app.controller('appsController',
-  ['$scope', 'projectService', '$http', '$rootScope', '$cookies', '$intercom','$timeout','tableService',
+  ['$scope',
+   'projectService', 
+   '$http',
+   '$rootScope',
+   '$cookies', 
+   '$intercom',
+   '$timeout',
+   'tableService',
+   'beaconService',
   function ($scope,
   projectService,
   $http,
@@ -9,7 +17,8 @@ app.controller('appsController',
   $cookies,
   $intercom,
   $timeout,
-  tableService) {
+  tableService,
+  beaconService) {
 
   $rootScope.isFullScreen=false;
   $scope.showProject=[];
@@ -17,6 +26,8 @@ app.controller('appsController',
     name:null,
     appId:null
   };
+  /*Collapse sidebar*/           
+  toggleSideBar();
   
   $scope.init=function(){
         //Hiding the Menu
@@ -38,15 +49,15 @@ app.controller('appsController',
         projectService.projectList()         
         .then(function(data){
           $rootScope.dataLoading=false; 
-          $scope.projectListObj=data;                    
+          $scope.projectListObj=data;
+
+          //getBeacon
+          getBeacon();                              
         },function(error){
           $rootScope.dataLoading=false; 
           errorNotify('Cannot connect to server. Please try again.');
         });
-         //listing ends
-
-        //Start the beacon
-        initBeacons();                     
+         //listing ends                           
   };
 
   $scope.deleteAppModal=function(project, index){
@@ -112,7 +123,13 @@ app.controller('appsController',
           $scope.newApp.appId = "";
 
           //Add default tables
-          addDefaultTables(data);         
+          addDefaultTables(data);
+
+          //Update Beacon
+          if($scope.beacon && !$scope.beacon.firstApp){
+            $scope.beacon.firstApp=true;
+            updateBeacon();   
+          }                
                        
         },function(error){
           $scope.showSaveBtn = true;
@@ -155,9 +172,14 @@ app.controller('appsController',
      /*Collapse sidebar*/           
       //toggleSideBar();
 
+    //Update Beacon
+    if($scope.beacon && !$scope.beacon.tableDesignerLink){
+      $scope.beacon.tableDesignerLink=true;
+      updateBeacon();   
+    }
+
      //Redirect to Table designer
-     window.location.href="/#/"+projectObj.appId+"/table";
-     
+     window.location.href="/#/"+projectObj.appId+"/table";     
   };
 
   $scope.viewKeys=function(list){
@@ -240,6 +262,26 @@ app.controller('appsController',
     w.addClass("sb-collapsed");
     $.cookie('FLATDREAM_sidebar','closed',{expires:365, path:'/'});         
     //updateHeight();
+  }
+
+  //get Beacon Obj from backend
+  function getBeacon(){
+    beaconService.getBeacon()         
+    .then(function(beaconObj){
+        $scope.beacon=beaconObj; 
+        //Start the beacon
+        initBeacons();                           
+    },function(error){      
+    });
+  }
+
+  //update Beacon
+  function updateBeacon(){   
+    beaconService.updateBeacon($scope.beacon)         
+    .then(function(beaconObj){
+        //$scope.beacon=beaconObj;                            
+    },function(error){      
+    });
   } 
 
   function initBeacons(){

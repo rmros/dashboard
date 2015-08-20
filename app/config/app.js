@@ -15,14 +15,8 @@ var app=angular.module('CloudBoostDashboard',
     'ngCookies',
     'angular-intercom',
     'ngClipboard',
-    'ngResource',
-    'ui.grid',
-    'ngTouch',
-    'ui.grid.pagination',
-    'ui.grid.resizeColumns',
-    'ui.grid.edit',
-    'ui.grid.selection',  
-    'ui.grid.resizeColumns',    
+    'ngResource',    
+    'ngTouch',     
     'uiSwitch',
     'ui.checkbox',
     'stripe',
@@ -31,7 +25,8 @@ var app=angular.module('CloudBoostDashboard',
     'infinite-scroll',
     'ui.ace'
     ]);
-app.value('THROTTLE_MILLISECONDS', 1250)
+
+app.value('THROTTLE_MILLISECONDS', 1250);
 
 var serverURL = null; 
 var landingURL = null;

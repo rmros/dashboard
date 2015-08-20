@@ -63,7 +63,7 @@ app.service('userService', function($q,$http){
 
       if(newPass !== confirmPass){
         q.reject('New password and confirm password do not match');
-         return q.promise;
+        return q.promise;
       }
 
        $http.post(serverURL+'/auth/resetPassword', {code:code, password:newPass}).

@@ -6,8 +6,9 @@ app.controller('forgotPasswordController',
           if($location.search().code){
             $scope.showNewPasswordForm = true;
           }else{
-              $scope.showNewPasswordForm = false;
+            $scope.showNewPasswordForm = false;
           }
+
       };
 
       $scope.requestResetPassword = function(isValid){
@@ -24,17 +25,21 @@ app.controller('forgotPasswordController',
         }
       };
 
-      $scope.changePassword = function(isValid){
-      
+      $scope.changePassword = function(isValid){      
         if(isValid){
-          $scope.showSpinner = true;
-          userService.changePassword($location.search().code, $scope.password, $scope.confirmPassword).then(function(){
-            $scope.showSpinner = false;
-            window.location.href="#/login";
-          }, function(error){
-            $scope.showSpinner = false;
-            $scope.err = error;
-          })
+          if($scope.password==$scope.confirmPassword){
+                $scope.showSpinner = true;
+                userService.changePassword($location.search().code, $scope.password, $scope.confirmPassword)
+                .then(function(){
+                  $scope.showSpinner = false;
+                   window.location.href="/accounts";
+                }, function(error){
+                  $scope.showSpinner = false;
+                  $scope.err = error;
+                });
+          }else{
+            $scope.err = "password doesn't match with confirm password";
+          }          
         }
       };
      
