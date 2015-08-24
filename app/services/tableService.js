@@ -73,8 +73,8 @@ app.factory('tableService',
         table.save()
         .then(function(obj){
           q.resolve(obj);
-
-          if(create){
+      
+          if(create && !__isDevelopment){
             /****Tracking*********/            
              mixpanel.track('Create Table', { "Table name": table.name,"appId": $rootScope.currentProject.appId});
             /****End of Tracking*****/

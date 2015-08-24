@@ -1,7 +1,7 @@
 
   
 <div class="cl-mcont app-page" ng-init="init()">
-    <div class="row" ng-if="!dataLoading">   
+    <div class="row" ng-if="!dataLoading && !loadingError">   
 
         <div class="col-sm-12 col-md-6 col-lg-3">
           <div class="block block-color info" style="height:330px;">
@@ -46,7 +46,7 @@
         
 
       <!--App List Loaded--> 
-      <div class="col-sm-12 col-md-6 col-lg-3" ng-repeat="list in projectListObj | orderBy:'_id':true">       
+      <div ng-if="!dataLoading && !loadingError" class="col-sm-12 col-md-6 col-lg-3" ng-repeat="list in projectListObj | orderBy:'_id':true">       
 
           <!-- Details --> 
           <div class="block block-color" data-ng-class="{success : list.status.status === 'online', danger : list.status.status === 'offline',animated:$index==0 && isAppCreated==true,bounce:$index==0 }" ng-hide="showProject[$index]" style="height:330px;"> 
@@ -92,8 +92,6 @@
             </div>
           </div>
 
-
-
           <!-- Edit -->
           <div ng-hide="!showProject[$index]" class="block block-color fadedPrimary" style="height:330px">
             <div class="header">
@@ -122,14 +120,26 @@
                               </center>
                            </div>
                         </div>
-                    </form>
+                  </form>
             </div>
           </div>
 
         </div>         
     </div>
+
+    <!--Apps Loading Error-->
+    <div ng-show="!dataLoading && loadingError" class="row flex-general-column-wrapper-center" style="height:64vh;">
+        <div>
+          <h4 style="color:gray;">
+            <i class="fa fa-exclamation-triangle"></i>
+            {{loadingError}}
+          </h4>
+        </div>
+    </div>
+    <!--/Apps Loading Error-->
+
     <!--While Loading-->
-    <div ng-show="dataLoading" class="row flex-general-column-wrapper-center" style="height:78vh;">
+    <div ng-show="dataLoading && !loadingError" class="row flex-general-column-wrapper-center" style="height:78vh;">
       <div style="margin-top:-10px;">
           <!--Animated Circle-->
           <div class="cssload-bell">
@@ -150,10 +160,7 @@
             </div>
           </div>
           <!--/Animated Circle-->
-      </div>
-      <div style="margin-top:63px;">
-        <span style="font-size:20px;">Loading your apps</span>
-      </div>  
+      </div>     
     </div>
     <!--/While Loading-->
 </div>
@@ -217,7 +224,7 @@
       <div class="modal-content">
       <div class="modal-header">
         <h3>Delete App</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <button ng-show="!deleteSpinner" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
       <div class="modal-body">
         <div class="text-center">
@@ -229,8 +236,14 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-danger btn-flat" ng-click="deleteProject()">Continue</button>
+        <button ng-show="!deleteSpinner" type="button" class="btn btn-default btn-flat" data-dismiss="modal">Cancel</button>
+
+        <!--continue btn-->
+        <button ng-show="!deleteSpinner" type="button" class="btn btn-danger btn-flat" ng-click="deleteProject()">Continue</button>
+
+        <!--while deleting-->
+        <button ng-show="deleteSpinner" type="button" class="btn btn-danger btn-flat">
+          <i class="fa fa-spinner fa-spin"></i>&nbsp;deleting..</button>
       </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

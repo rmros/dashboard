@@ -45,6 +45,7 @@ app.controller('appsController',
 
         //Intercom integration   
         integrateIntercom();
+        
         //listing start
         projectService.projectList()         
         .then(function(data){
@@ -55,7 +56,7 @@ app.controller('appsController',
           getBeacon();                              
         },function(error){
           $rootScope.dataLoading=false; 
-          errorNotify('Cannot connect to server. Please try again.');
+          $scope.loadingError='Cannot connect to server. Please try again.';
         });
          //listing ends                           
   };
@@ -77,11 +78,11 @@ app.controller('appsController',
       } else {
         if($scope.confirmAppName === $scope.projectToBeDeleted.name){
 
-          $scope.isLoading[$scope.appIndex] = true;
+          $scope.deleteSpinner=true;
 
           projectService.deleteProject($scope.projectToBeDeleted.appId)
           .then(function(){
-            $scope.isLoading[$scope.appIndex] = false;
+            $scope.deleteSpinner=false;
             $scope.toggleAppEdit($scope.appIndex);
             $scope.confirmAppName=null;
             $('#deleteappmodal').modal("hide");  
@@ -92,7 +93,7 @@ app.controller('appsController',
           },function(error){
             $scope.confirmAppName=null;
             $('#deleteappmodal').modal("hide");  
-            $scope.isLoading[$scope.appIndex] = false; 
+            $scope.deleteSpinner=false;
             errorNotify('Cannot delete this project at this point in time. Please try again later.');
              
           });
@@ -135,11 +136,11 @@ app.controller('appsController',
                        
         },function(error){
           $scope.showSaveBtn = true;
-          if(error === 400){           
-            errorNotify('App ID already exists. Please choose a different App ID.');
+          if(error.status === 400){           
+            errorNotify('App ID AppName already exists. Please choose a different App ID.');
           }
-          if(error === 500){           
-            errorNotify('Cannot connect to server. Please try again.');  
+          if(error.status === 500){           
+            errorNotify(error.data);  
           }
            
         });

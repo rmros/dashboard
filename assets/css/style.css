@@ -8419,6 +8419,10 @@ ul.timeline li > .date {
   width:50%;  
   height: auto;
 }
+.login-image-container2{
+  width:45%;  
+  height: auto;
+}
 .login-image-container img{
   width:100%;
   height: auto;  

@@ -38,9 +38,11 @@ app.factory('paymentService', ['$q','$http','$rootScope',function ($q,$http,$roo
                  success(function(data, status, headers, config) {                  
                     q.resolve(data);
 
-                    /****Tracking************/            
-                     mixpanel.track('add Or Edit Card', {"cardHolderName":data.stripeCardObject.name});
-                    /****End of Tracking*****/
+                    if(!__isDevelopment){
+                      /****Tracking************/            
+                       mixpanel.track('add Or Edit Card', {"cardHolderName":data.stripeCardObject.name});
+                      /****End of Tracking*****/
+                    }                     
                 }).
                 error(function(data, status, headers, config) {                  
                     q.reject(status);

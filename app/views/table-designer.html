@@ -1,6 +1,6 @@
 <div class="cl-mcont table-wrapper" style="background-color:#F4F6F7;" ng-init="initialize()"> 
 
-    <div ng-if="!dataLoading && !loadingTablesError" class="row">  
+    <div ng-if="!dataLoading && !loadingError" class="row">  
       <div class="col-md-12"> 
           <div class="tablename-header">
               <h1>Tables</h1>
@@ -8,7 +8,7 @@
       </div>  
     </div>
 
-    <div ng-if="!dataLoading && !loadingTablesError" class="row table-items" style="margin-top:15px;">  
+    <div ng-if="!dataLoading && !loadingError" class="row table-items" style="margin-top:15px;">  
       <div class="col-md-12">  
           <div class="table-apps-div">
               <div class="row">
@@ -77,7 +77,7 @@
                           <div class="innerpop">
                             <div class="new-table-name">
                               <span>Enter new table name</span>
-                              <input class="newtable" type="text" ng-disabled="!selectedTableType.isRenamable" ng-keyup="checkErrorsForCreate(newTableName,currentProject.tables,'table')" ng-model="newTableName" placeholder="New Table Name" required style="margin-top:6px;">
+                              <input class="newtable" type="text" ng-disabled="!selectedTableType.isRenamable" ng-keyup="checkErrorsForCreate(newTableName,currentProject.tables,'table')" ng-model="$parent.newTableName" placeholder="New Table Name" required style="margin-top:6px;">
                             </div>                            
 
                             <div style="margin-top:10px;" data-ng-show="!tableErrorForCreate">
@@ -91,7 +91,7 @@
 
                               <button ng-disabled="isCreatingTable" type="button" ng-click="cancelAddtable()" data-close-stackbox="true" class="custmBtn tableCancelBtn">Cancel</button>
 
-                              <button ng-show="!isCreatingTable" type="button" class="custmBtn tableCreateBtn" ng-disabled="tableErrorForCreate" data-close-stackbox="{{!addTablePopup}}" ng-click="addNewTable(newTableName)">Create</button>
+                              <button ng-show="!isCreatingTable" type="button" class="custmBtn tableCreateBtn" ng-disabled="tableErrorForCreate" data-close-stackbox="{{!addTablePopup}}" ng-click="addNewTable()">Create</button>
 
                               <!--While Saving-->
                               <button ng-show="isCreatingTable" type="button" class="custmBtn tableCreateBtn" ng-disabled="tableErrorForCreate">
@@ -112,15 +112,18 @@
       </div>  
     </div>
     <!--Tables Loading Error-->
-    <div ng-show="!dataLoading && loadingTablesError" class="row flex-general-column-wrapper-center" style="height:64vh;">
+    <div ng-show="!dataLoading && loadingError" class="row flex-general-column-wrapper-center" style="height:64vh;">
         <div>
-          <h4 style="color:red;">{{loadingTablesError}}</h4>
+          <h4 style="color:gray;">
+            <i class="fa fa-exclamation-triangle"></i>
+            {{loadingError}}
+          </h4>
         </div>
     </div>
     <!--/Tables Loading Error-->   
 
     <!--While Loading-->
-    <div ng-show="dataLoading && !loadingTablesError" class="row flex-general-column-wrapper-center" style="height:68vh;">
+    <div ng-show="dataLoading && !loadingError" class="row flex-general-column-wrapper-center" style="height:68vh;">
         <div>
           <!--Animated Circle-->
           <div class="cssload-bell">
@@ -141,10 +144,7 @@
             </div>
           </div>
           <!--/Animated Circle-->
-        </div>  
-        <div style="margin-top:63px;">
-         <span style="font-size:20px;">Your tables on the way</span>
-        </div>
+        </div>       
     </div>
     <!--/While Loading-->
 </div>
@@ -173,7 +173,7 @@
 
             <!--While Deleting-->
             <button ng-show="isDeletingTable" type="button" class="btn btn-danger btn-flat" style="width:400px;">
-              <i class="fa fa-spinner fa-spin"></i>&nbsp;DELETING TABLE</button>
+              <i class="fa fa-spinner fa-spin"></i>&nbsp;DELETING TABLE..</button>
             <!--/While Deleting-->
           </div>         
         </div>

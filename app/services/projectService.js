@@ -25,12 +25,19 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
          success(function(data, status, headers, config) {
            q.resolve(data);
 
-          /****Tracking*********/              
-           mixpanel.track('Create App', {"App id": data.appId,"App Name": data.name});
-          /****End of Tracking*****/
+           if(!__isDevelopment){
+            /****Tracking*********/              
+             mixpanel.track('Create App', {"App id": data.appId,"App Name": data.name});
+            /****End of Tracking*****/
+           } 
+          
          }).
          error(function(data, status, headers, config) {
-            q.reject(status);
+            var erroObj={
+              data:data,
+              status:status
+            };
+            q.reject(erroObj);
             if(status===401){
               $rootScope.logOut();
             }
@@ -40,26 +47,29 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
     };
 
     global.deleteProject = function(appId){
-       var q=$q.defer();
-       $http.delete(serverURL+'/app/'+appId).
-         success(function(data, status, headers, config) {
-              if(status===200)
-               q.resolve(status);
-             else 
-               q.reject(status);
+        var q=$q.defer();
+        $http.delete(serverURL+'/app/'+appId).
+        success(function(data, status, headers, config) {
+            if(status===200)
+              q.resolve(status);
+            else 
+              q.reject(status);
 
-               /****Tracking*********/              
-                 mixpanel.track('Delete App', {"App id": appId});
+              if(!__isDevelopment){
+                 /****Tracking*********/              
+                  mixpanel.track('Delete App', {"App id": appId});
                 /****End of Tracking*****/
-         }).
-         error(function(data, status, headers, config) {
-               q.reject(status);
-               if(status===401){
-                $rootScope.logOut();
-              }
-         });
+              }  
+             
+        }).
+        error(function(data, status, headers, config) {
+            q.reject(status);
+            if(status===401){
+              $rootScope.logOut();
+            }
+        });
 
-         return  q.promise;
+        return  q.promise;
     };
 
 
@@ -70,7 +80,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
           q.resolve(data);
         }).
         error(function(data, status, headers, config) {
-          q.reject(status);
+          q.reject(data);
           if(status===401){
             $rootScope.logOut();
           }

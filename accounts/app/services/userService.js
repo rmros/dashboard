@@ -7,15 +7,18 @@ app.service('userService', function($q,$http){
         success(function(data, status, headers, config) {
               q.resolve(data);
 
-              /****Tracking*********/                
-               mixpanel.alias(data._id);
+              if(!__isDevelopment){
+                /****Tracking*********/                
+                 mixpanel.alias(data._id);
 
-               mixpanel.people.set({ "Name": data.name,"$email": data.email});
-               //mixpanel.identify(data._id);
+                 mixpanel.people.set({ "Name": data.name,"$email": data.email});
+                 //mixpanel.identify(data._id);
 
-               mixpanel.register({ "Name": data.name,"Email": data.email});
-               mixpanel.track('Signup', { "Name": data.name,"Email": data.email});
-              /****End of Tracking*****/
+                 mixpanel.register({ "Name": data.name,"Email": data.email});
+                 mixpanel.track('Signup', { "Name": data.name,"Email": data.email});
+                /****End of Tracking*****/
+              }
+              
         }).
         error(function(data, status, headers, config) {
               q.reject(data);
@@ -30,11 +33,13 @@ app.service('userService', function($q,$http){
          success(function(data, status, headers, config) {          
            q.resolve(data);
 
-            /****Tracking*********/
-             mixpanel.identify(data._id);
-             mixpanel.register({ "Name": data.name,"Email": data.email});
-             mixpanel.track('LogIn', { "Name": data.name,"Email": data.email});
-            /****End of Tracking*****/
+            if(!__isDevelopment){
+               /****Tracking*********/
+               mixpanel.identify(data._id);
+               mixpanel.register({ "Name": data.name,"Email": data.email});
+               mixpanel.track('LogIn', { "Name": data.name,"Email": data.email});
+              /****End of Tracking*****/
+            }           
 
          }).
          error(function(data, status, headers, config) {
@@ -68,7 +73,7 @@ app.service('userService', function($q,$http){
 
       $http.post(serverURL+'/user/updatePassword', {code:code, password:newPass}).
       success(function(data, status, headers, config) {
-       q.resolve();
+          q.resolve();
       }).
       error(function(data, status, headers, config) {
            q.reject(data);

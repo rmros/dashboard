@@ -30,7 +30,7 @@ app.directive('appIdValidation', function(){
         link: function(scope, element, attrs){
             $(element).keyup(function(){
                
-              var error=appIdValidation(scope.appId);
+              var error=appIdValidation(scope.newApp.appId);
               if(error){
                 $(element)[0].setCustomValidity(error);
               }else{
@@ -192,33 +192,31 @@ app.directive('filechange', function(){
 });
 
 
- function appIdValidation(appId){
-      var appIdValidationError=null;
-      var response=true;
-      //LowerCase
-      if((appId) && (appId!= appId.toLowerCase()))
-      {
-        response=false;
-        appIdValidationError="App Id must be in lowercase."; 
-                              
-      }
+function appIdValidation(appId){
+    var appIdValidationError=null;
+    var response=true;
+    //LowerCase
+    if((appId) && (appId!= appId.toLowerCase())){
+      response=false;
+      appIdValidationError="App Id must be in lowercase.";                             
+    }
 
-      //Shouldn't Start with number
-      if((appId) && (!isNaN(appId[0]))){
-        response=false;
-        appIdValidationError="App Id Shouldn't start with number.";
-           
-      } 
+    //Shouldn't Start with number
+    if((appId) && (!isNaN(appId[0]))){
+      response=false;
+      appIdValidationError="App Id Shouldn't start with number.";
+         
+    } 
 
-      //No Special characters
-      var pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/);
-      if((appId) && (pattern.test(appId))){
-        response=false;
-        appIdValidationError="App Id shoudn't contain special characters";         
-      }                 
+    //No Special characters
+    var pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/);
+    if((appId) && (pattern.test(appId))){
+      response=false;
+      appIdValidationError="App Id shoudn't contain special characters";         
+    }                 
 
-      return appIdValidationError;
-   }
+    return appIdValidationError;
+}
 
 
     

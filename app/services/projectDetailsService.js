@@ -26,11 +26,14 @@ app.factory('projectDetailsService', ['$q','$http','$rootScope',function ($q,$ht
          success(function(data, status, headers, config) {
                q.resolve(data);
 
-              /****Tracking*********/            
-               mixpanel.track('Project Settings', {"appId": data.appId,
-                "isReleasedInProduction": data.isReleasedInProduction
-              });
-              /****End of Tracking*****/
+              if(!__isDevelopment){
+                /****Tracking*********/            
+                 mixpanel.track('Project Settings', {"appId": data.appId,
+                  "isReleasedInProduction": data.isReleasedInProduction
+                });
+                /****End of Tracking*****/
+              }  
+              
          }).
          error(function(data, status, headers, config) {
                q.reject(status);

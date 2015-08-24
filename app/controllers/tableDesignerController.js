@@ -36,8 +36,7 @@ app.controller('tableDesignerController',
         }
 
         //getBeacon
-        getBeacon(); 
-
+        getBeacon();
     };
 
     $scope.goToDataBrowser=function(t){
@@ -133,10 +132,9 @@ app.controller('tableDesignerController',
       $scope.newTableName = angular.copy($scope.selectedTableType.name);
     };
 
-    $scope.addNewTable = function(newTableName) {
+    $scope.addNewTable = function() {
       $scope.tableErrorForCreate=null;
-
-      $scope.newTableName=angular.copy(newTableName);
+     
       if($scope.newTableName){
         $scope.isCreatingTable=true;
         $scope.addTablePopup=false;      
@@ -211,7 +209,7 @@ app.controller('tableDesignerController',
   /* PRIVATE FUNCTIONS */
 
   function loadProject(id){
-
+   
       projectService.getProject(id)
       .then(function(currentProject){
         if(currentProject){
@@ -220,7 +218,7 @@ app.controller('tableDesignerController',
           getProjectTables();
         }                              
       }, function(error){ 
-        errorNotify('We cannot load your project at this point in time. Please try again later.');    
+       $scope.loadingError="We cannot load your project at this point of time. Please try again later.";    
       });
   }
 
@@ -237,7 +235,7 @@ app.controller('tableDesignerController',
         }         
        
     }, function(error){       
-      $scope.loadingTablesError="We cannot load your tables at this point of time. Please try again later";  
+      $scope.loadingError="We cannot load your tables at this point of time. Please try again later";  
     });
   } 
   function initCB(){
