@@ -1,21 +1,21 @@
 app.factory('paymentService', ['$q','$http','$rootScope',function ($q,$http,$rootScope) {
 
     var global = {};
-       global.getCrediCardInfo = function(){
-         var q=$q.defer();
+      global.getCrediCardInfo = function(){
+        var q=$q.defer();
 
-         $http.get(serverURL+'/payment/get/cardinfo').
+         $http.get(serverURL+'/user/card').
            success(function(data, status, headers, config) {
-                 q.resolve(data);
+              q.resolve(data);
            }).
            error(function(data, status, headers, config) {
-                  q.reject(data);
-                  if(status===401){
-                    $rootScope.logOut();
-                  }
+              q.reject(data);
+              if(status===401){
+                $rootScope.logOut();
+              }
            });
 
-           return  q.promise;
+        return  q.promise;
 
       };
 
@@ -34,15 +34,15 @@ app.factory('paymentService', ['$q','$http','$rootScope',function ($q,$http,$roo
                 }
                   
                 //Hit Server
-                $http.post(serverURL+'/payment/upsert/card',serverObj).
+                $http.put(serverURL+'/user/card',serverObj).
                  success(function(data, status, headers, config) {                  
                     q.resolve(data);
 
                     /****Tracking************/            
                      mixpanel.track('add Or Edit Card', {"cardHolderName":data.stripeCardObject.name});
                     /****End of Tracking*****/
-                 }).
-                 error(function(data, status, headers, config) {                  
+                }).
+                error(function(data, status, headers, config) {                  
                     q.reject(status);
                     if(status===401){
                       $rootScope.logOut();
@@ -53,8 +53,7 @@ app.factory('paymentService', ['$q','$http','$rootScope',function ($q,$http,$roo
           });             
 
         return  q.promise;
-      };
-      
+      };      
    
     return global;
 

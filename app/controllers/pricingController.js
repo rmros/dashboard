@@ -1,6 +1,18 @@
 app.controller('pricingController',
-	['$scope','$rootScope','$stateParams','projectService','paymentService','invoiceService','$timeout',
-	function($scope,$rootScope,$stateParams,projectService,paymentService,invoiceService,$timeout){
+	['$scope',
+	'$rootScope',
+	'$stateParams',
+	'projectService',
+	'paymentService',
+	'invoiceService',
+	'$timeout',
+	function($scope,
+	$rootScope,
+	$stateParams,
+	projectService,
+	paymentService,
+	invoiceService,
+	$timeout){
 		
 	var id;
 
@@ -27,8 +39,7 @@ app.controller('pricingController',
 	$scope.spendingLimitBtn="Add Spending Limit";
 	$scope.autoScale=false;
 	$scope.isCardAdded=false;
-	$rootScope.isFullScreen=false;
-	
+	$rootScope.isFullScreen=false;	
 
 	$scope.init = function(){
 		$rootScope.page='pricing';
@@ -244,31 +255,22 @@ app.controller('pricingController',
 	/* PRIVATE FUNCTIONS */
 
         function loadProject(id){
-
-            projectService.getProject(id).then(
-             function(currentProject){
-                  if(currentProject){
-                    $rootScope.currentProject=currentProject; 
-                    getinvoiceSettings();                               			                          
-                  }                              
-             },
-             function(error){
-                 
-                $.gritter.add({
-                    position: 'top-right',
-                    title: 'Opps! something went wrong',
-                    text: "We cannot load your project at this point in time. Please try again later.",
-                    class_name: 'danger'
-                });
-             }
-           );
+            projectService.getProject(id)
+            .then(function(currentProject){
+                if(currentProject){
+	                $rootScope.currentProject=currentProject; 
+	                getinvoiceSettings();                               			                          
+                }                              
+            },function(error){              
+                errorNotify("We cannot load your project at this point in time. Please try again later.");
+            });
         } 	
 
 
         function getCrediCardInfo(){
 
-           paymentService.getCrediCardInfo().then(
-               function(data){
+           paymentService.getCrediCardInfo()
+           .then(function(data){
                 if(data){               	
                 		
                   	var number="************"+data.stripeCardObject.last4;
@@ -322,8 +324,8 @@ app.controller('pricingController',
         }     
 
         function getinvoiceSettings(){
-        	invoiceService.getinvoiceSettings($rootScope.currentProject.appId).then(
-               function(data){
+        	invoiceService.getinvoiceSettings($rootScope.currentProject.appId)
+        	.then(function(data){
                 if(data){
                   	$scope.invoiceSettings=data;
                   	$scope.tempSpendingLimit=angular.copy(data.spendingLimit);
@@ -341,23 +343,17 @@ app.controller('pricingController',
                   		}                  		
                   	}  
                   	getinvoice();//Get Invoice 	                 	               	
-                } 
-                
+                }                
 
-               }, function(error){                                             
-                    $.gritter.add({
-                      position: 'top-right',
-                      title: 'Opps! something went wrong',
-                      text: 'We cannot get your payment info at this point in time. Please try again later.',
-                      class_name: 'danger'
-                  });
-               });
+            }, function(error){                
+                errorNotify('We cannot get your payment info at this point in time. Please try again later.');
+            });
           
         }
 
         function getinvoice(){
-        	invoiceService.getinvoice($rootScope.currentProject.appId).then(
-               function(data){
+        	invoiceService.getinvoice($rootScope.currentProject.appId)
+        	.then(function(data){
                 if(data){
                   	$scope.invoice=data;
                   	$scope.currentInvoice=data.currentInvoice;
@@ -366,14 +362,9 @@ app.controller('pricingController',
                   	spendingLimitCircle();//Spending Limit Cicle Graph
                   	getCrediCardInfo();//Get Card Info                	
                 } 	                   
-               }, function(error){                                             
-                    $.gritter.add({
-                      position: 'top-right',
-                      title: 'Opps! something went wrong',
-                      text: 'We cannot get your payment info at this point in time. Please try again later.',
-                      class_name: 'danger'
-                  });
-               });
+            }, function(error){  
+            	errorNotify('We cannot get your payment info at this point in time. Please try again later.');                 
+            });
 
           
         }
@@ -479,6 +470,43 @@ app.controller('pricingController',
         	}        	      	
 	        
 		}
+
+		//Notification
+		function errorNotify(errorMsg){
+		  $.amaran({
+		      'theme'     :'colorful',
+		      'content'   :{
+		         bgcolor:'#EE364E',
+		         color:'#fff',
+		         message:errorMsg
+		      },
+		      'position'  :'top right'
+		  });
+		}
+
+		function successNotify(successMsg){
+		  $.amaran({
+		      'theme'     :'colorful',
+		      'content'   :{
+		         bgcolor:'#149600',
+		         color:'#fff',
+		         message:successMsg
+		      },
+		      'position'  :'top right'
+		  });
+		}
+
+		function WarningNotify(WarningMsg){
+		  $.amaran({
+		      'theme'     :'colorful',
+		      'content'   :{
+		         bgcolor:'#EAC004',
+		         color:'#fff',
+		         message:WarningMsg
+		      },
+		      'position'  :'top right'
+		  });
+		}    
 
 		
 }]);

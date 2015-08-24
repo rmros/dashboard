@@ -1,32 +1,32 @@
 
 app.service('userService', function($q,$http){
 
-     this.signUp=function(name,email,password){
-        var q=$q.defer();
-        $http.post(serverURL+'/auth/register', {name:name,email:email,password:password}).
-          success(function(data, status, headers, config) {
-                q.resolve(data);
+    this.signUp=function(name,email,password){
+      var q=$q.defer();
+      $http.post(serverURL+'/user/signup', {name:name,email:email,password:password}).
+        success(function(data, status, headers, config) {
+              q.resolve(data);
 
-                /****Tracking*********/                
-                 mixpanel.alias(data._id);
+              /****Tracking*********/                
+               mixpanel.alias(data._id);
 
-                 mixpanel.people.set({ "Name": data.name,"$email": data.email});
-                 //mixpanel.identify(data._id);
+               mixpanel.people.set({ "Name": data.name,"$email": data.email});
+               //mixpanel.identify(data._id);
 
-                 mixpanel.register({ "Name": data.name,"Email": data.email});
-                 mixpanel.track('Signup', { "Name": data.name,"Email": data.email});
-                /****End of Tracking*****/
-          }).
-          error(function(data, status, headers, config) {
-                q.reject(data);
-          });
-        return q.promise;
+               mixpanel.register({ "Name": data.name,"Email": data.email});
+               mixpanel.track('Signup', { "Name": data.name,"Email": data.email});
+              /****End of Tracking*****/
+        }).
+        error(function(data, status, headers, config) {
+              q.reject(data);
+        });
+      return q.promise;
     }
 
     this.logIn=function(email,password){
        var q=$q.defer();
 
-       $http.post(serverURL+'/auth/signin', {email:email,password:password}).
+       $http.post(serverURL+'/user/signin', {email:email,password:password}).
          success(function(data, status, headers, config) {          
            q.resolve(data);
 
@@ -47,7 +47,7 @@ app.service('userService', function($q,$http){
    this.requestResetPassword = function(email){
       var q=$q.defer();
 
-       $http.post(serverURL+'/auth/requestResetPassword', {email:email}).
+       $http.post(serverURL+'/user/ResetPassword', {email:email}).
          success(function(data, status, headers, config) {
            q.resolve();
          }).
@@ -66,13 +66,13 @@ app.service('userService', function($q,$http){
         return q.promise;
       }
 
-       $http.post(serverURL+'/auth/resetPassword', {code:code, password:newPass}).
-         success(function(data, status, headers, config) {
-           q.resolve();
-         }).
-         error(function(data, status, headers, config) {
-               q.reject(data);
-         });
+      $http.post(serverURL+'/user/updatePassword', {code:code, password:newPass}).
+      success(function(data, status, headers, config) {
+       q.resolve();
+      }).
+      error(function(data, status, headers, config) {
+           q.reject(data);
+      });
 
       return q.promise;
       
@@ -81,7 +81,7 @@ app.service('userService', function($q,$http){
   this.activate=function(code){
        var q=$q.defer();
 
-       $http.post(serverURL+'/auth/activate', {code:code}).
+       $http.post(serverURL+'/user/activate', {code:code}).
          success(function(data, status, headers, config) {
            console.log(data);
            q.resolve(data);

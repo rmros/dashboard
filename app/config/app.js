@@ -51,8 +51,7 @@ app.config(['ngClipProvider', function(ngClipProvider) {
     ngClipProvider.setPath("bower_components/zeroclipboard/dist/ZeroClipboard.swf");
 }]);
 
-app.config(function() {
-	
+app.config(function() {	
 	if(__isDevelopment){
         Stripe.setPublishableKey('pk_test_ZLrh0BYVlddBmEPKUGalN8uQ');
 	}else{

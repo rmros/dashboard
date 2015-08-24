@@ -11,9 +11,8 @@ app.controller('loginController',
     if(isValid){
       $scope.showSpinner=true;
 
-      var logInPromise=userService.logIn($scope.email,$scope.password);
-
-      logInPromise.then(function(data){               
+      userService.logIn($scope.email,$scope.password)
+      .then(function(data){               
 
         $.cookie('userId', data._id, { path: '/' });
         $.cookie('userFullname', data.name, { path: '/' });
@@ -23,8 +22,8 @@ app.controller('loginController',
         window.location.href=dashboardURL;
         //$scope.showSpinner=false;
       }, function(error){
-          $scope.showSpinner=false;
-          $scope.err=error.message;
+        $scope.showSpinner=false;
+        $scope.err=error.message;
       });
     }
   };

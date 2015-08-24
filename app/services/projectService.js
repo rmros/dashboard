@@ -3,38 +3,37 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
     var global = {};
 
     global.projectList = function(){
-         var q=$q.defer();
+      var q=$q.defer();
 
-         $http.get(serverURL+'/project/list').
-           success(function(data, status, headers, config) {
-              q.resolve(data);
-           }).
-           error(function(data, status, headers, config) {
-              q.reject(data);
-              if(status===401){
-                $rootScope.logOut();
-              }              
-           });
+      $http.get(serverURL+'/app').
+      success(function(data, status, headers, config) {
+        q.resolve(data);
+      }).
+      error(function(data, status, headers, config) {
+        q.reject(data);
+        if(status===401){
+          $rootScope.logOut();
+        }              
+      });
 
-           return  q.promise;
-
+      return  q.promise;
     };
 
     global.createProject = function(name,appId){
        var q=$q.defer();
-       $http.post(serverURL+'/project/create', {name:name,appId:appId}).
+       $http.post(serverURL+'/app/create', {name:name,appId:appId}).
          success(function(data, status, headers, config) {
-               q.resolve(data);
+           q.resolve(data);
 
-              /****Tracking*********/              
-               mixpanel.track('Create App', {"App id": data.appId,"App Name": data.name});
-              /****End of Tracking*****/
+          /****Tracking*********/              
+           mixpanel.track('Create App', {"App id": data.appId,"App Name": data.name});
+          /****End of Tracking*****/
          }).
          error(function(data, status, headers, config) {
-               q.reject(status);
-               if(status===401){
-                $rootScope.logOut();
-              }
+            q.reject(status);
+            if(status===401){
+              $rootScope.logOut();
+            }
          });
 
          return  q.promise;
@@ -42,7 +41,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
     global.deleteProject = function(appId){
        var q=$q.defer();
-       $http.post(serverURL+'/project/delete/'+appId, null).
+       $http.delete(serverURL+'/app/'+appId).
          success(function(data, status, headers, config) {
               if(status===200)
                q.resolve(status);
@@ -66,34 +65,33 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
     global.editProject = function(id,name){
         var q=$q.defer();
-        $http.put(serverURL+'/project/edit/'+id, {name:name}).
-          success(function(data, status, headers, config) {
-                q.resolve(data);
-          }).
-          error(function(data, status, headers, config) {
-                q.reject(status);
-                if(status===401){
-                  $rootScope.logOut();
-                }
-          });
+        $http.put(serverURL+'/app/'+id, {name:name}).
+        success(function(data, status, headers, config) {
+          q.resolve(data);
+        }).
+        error(function(data, status, headers, config) {
+          q.reject(status);
+          if(status===401){
+            $rootScope.logOut();
+          }
+        });
 
-          return  q.promise;
+        return  q.promise;
      };
 
      global.getProject = function(id){
         var q=$q.defer();
-        $http.get(serverURL+'/project/get/'+id).
-          success(function(data, status, headers, config) {
-                q.resolve(data);
-          }).
-          error(function(data, status, headers, config) {
-                q.reject(status);
-                if(status===401){
-                  $rootScope.logOut();
-                }
-          });
-
-          return  q.promise;
+        $http.get(serverURL+'/app/'+id).
+        success(function(data, status, headers, config) {
+              q.resolve(data);
+        }).
+        error(function(data, status, headers, config) {
+              q.reject(status);
+              if(status===401){
+                $rootScope.logOut();
+              }
+        });
+        return  q.promise;
      };
     return global;
 

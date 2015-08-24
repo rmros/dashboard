@@ -4,19 +4,20 @@ angular.module('CloudBoostDashboard')
     var global = {};
 
      global.logOut = function(){
-         var q=$q.defer();
+        var q=$q.defer();
 
-         $http.get(serverURL+'/auth/signout').
-           success(function(data, status, headers, config) {
-                 q.resolve(data);
-           }).
-           error(function(data, status, headers, config) {
-                 q.reject(data);
-           });
+        $http.post(serverURL+'/user/logout').
+         success(function(data, status, headers, config) {
+            q.resolve(data);
+         }).
+         error(function(data, status, headers, config) {
+            q.reject(data);
+         });
 
-           return  q.promise;
+        return  q.promise;
 
-      };     
+      }; 
+
     return global;
 
 }]);

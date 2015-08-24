@@ -62,7 +62,8 @@ app.controller('appsController',
 
   $scope.deleteAppModal=function(project, index){
       $scope.projectToBeDeleted=project;
-      $scope.projectToBeDeletedIndex=index;
+      $scope.appIndex=index;
+      $scope.projectToBeDeletedIndex=$scope.projectListObj.indexOf($scope.projectToBeDeleted);
       $scope.confirmAppName=null;
       $('#deleteappmodal').modal();
   };
@@ -76,21 +77,22 @@ app.controller('appsController',
       } else {
         if($scope.confirmAppName === $scope.projectToBeDeleted.name){
 
-          $scope.isLoading[$scope.projectToBeDeletedIndex] = true;
+          $scope.isLoading[$scope.appIndex] = true;
 
           projectService.deleteProject($scope.projectToBeDeleted.appId)
           .then(function(){
-            $scope.isLoading[$scope.projectToBeDeletedIndex] = false;
+            $scope.isLoading[$scope.appIndex] = false;
+            $scope.toggleAppEdit($scope.appIndex);
             $scope.confirmAppName=null;
             $('#deleteappmodal').modal("hide");  
             //project is deleted.
-            $scope.projectListObj.splice($scope.projectListObj.indexOf($scope.projectToBeDeleted),1);
+            $scope.projectListObj.splice($scope.projectToBeDeletedIndex,1);
             successNotify('The project is successfully deleted.');                
 
           },function(error){
             $scope.confirmAppName=null;
             $('#deleteappmodal').modal("hide");  
-            $scope.isLoading[$scope.projectToBeDeletedIndex] = false; 
+            $scope.isLoading[$scope.appIndex] = false; 
             errorNotify('Cannot delete this project at this point in time. Please try again later.');
              
           });
@@ -144,16 +146,19 @@ app.controller('appsController',
     }
   }
 
-  $scope.editProject=function(isValid,index,appId,name){
+  $scope.editProject=function(isValid,index,appObj,newName){
 
       if(isValid){
 
         $scope.isLoading[index] = true;
 
-        projectService.editProject(appId,name)     
+        var originalAppIndex=$scope.projectListObj.indexOf(appObj);        
+        projectService.editProject(appObj.appId,newName)     
         .then(function(data){
           $scope.isLoading[index] = false;
-          $scope.projectListObj[index]=data;           
+          $scope.toggleAppEdit(index);
+
+          $scope.projectListObj[originalAppIndex]=data;           
           successNotify('The project is successfully modified.');
         },function(error){
           $scope.isLoading[index] = false;

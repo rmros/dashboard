@@ -5,12 +5,12 @@ app.factory('invoiceService', ['$q','$http','$rootScope',function ($q,$http,$roo
       global.getinvoiceSettings = function(appId){
          var q=$q.defer();
 
-         $http.get(serverURL+'/invoice/get/settings/'+appId).
+         $http.get(serverURL+'/'+appId+'/invoice/settings').
            success(function(data, status, headers, config) {
-                 q.resolve(data);
+                q.resolve(data);
            }).
            error(function(data, status, headers, config) {
-                 q.reject(data);
+                q.reject(data);
                  if(status===401){
                   $rootScope.logOut();
                 } 
@@ -23,36 +23,35 @@ app.factory('invoiceService', ['$q','$http','$rootScope',function ($q,$http,$roo
       global.getinvoice = function(appId){
          var q=$q.defer();
 
-         $http.get(serverURL+'/invoice/get/'+appId).
-           success(function(data, status, headers, config) {
-                 q.resolve(data);
-           }).
-           error(function(data, status, headers, config) {
-                 q.reject(data);
-                 if(status===401){
-                  $rootScope.logOut();
-                }
-           });
+          $http.get(serverURL+'/'+appId+'/invoice').
+          success(function(data, status, headers, config) {
+              q.resolve(data);
+          }).
+          error(function(data, status, headers, config) {
+              q.reject(data);
+              if(status===401){
+                $rootScope.logOut();
+              }
+          });
 
-           return  q.promise;
-
+          return  q.promise;
       }; 
 
       global.addOrRemoveSpendingLimit = function(appId,spendingLimit){
-         var q=$q.defer();
+        var q=$q.defer();
 
-         $http.put(serverURL+'/invoice/update/settings/'+appId, {spendingLimit:spendingLimit}).
+          $http.put(serverURL+'/'+appId+'/invoice/settings', {spendingLimit:spendingLimit}).
            success(function(data, status, headers, config) {
-                 q.resolve(data);
-           }).
-           error(function(data, status, headers, config) {
-                 q.reject(data);
-                 if(status===401){
-                  $rootScope.logOut();
-                }
-           });
+              q.resolve(data);
+          }).
+          error(function(data, status, headers, config) {
+            q.reject(data);
+            if(status===401){
+              $rootScope.logOut();
+            }
+          });
 
-           return  q.promise;
+        return  q.promise;
 
       };     
       
