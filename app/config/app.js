@@ -34,13 +34,13 @@ if(__isVM){
 	serverURL = window.location.host + ":3000";
 	landingURL = "https://www.cloudboost.io";
 	CB.serverUrl = window.location.host + ":4730";
-	CB.apiUrl = CB.serverUrl+'/api';
+	CB.apiUrl = CB.serverUrl;
 }else{
 	if(__isDevelopment){
 	    serverURL="http://localhost:3000";
 	    landingURL = "http://localhost:1444";
 	    CB.serverUrl ='http://localhost:4730';
-	    CB.apiUrl = CB.serverUrl+'/api';
+	    CB.apiUrl = CB.serverUrl;
         CB.serviceUrl=serverURL;
 	}else{
 	    serverURL = "https://service.cloudboost.io";

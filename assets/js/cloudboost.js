@@ -10507,7 +10507,27 @@ CB.CloudTable = function(tableName){  //new table constructor
   this.document.columns = CB._defaultColumns(this.document.type);
 };
 
+Object.defineProperty(CB.CloudTable.prototype,'columns',{
+    get: function(){
+        return this.document.columns;
+    }
+});
+
+Object.defineProperty(CB.CloudTable.prototype,'name',{
+    get: function(){
+        return this.document.name;
+    },
+    set: function(){
+        throw "You can not rename a table";
+    }
+});
+
+
 CB.CloudTable.prototype.addColumn = function(column){
+    if(Object.prototype.toString.call(column) === '[object String]') {
+        var obj = new CB.Column(column);
+        column = obj;
+    }
   if (Object.prototype.toString.call(column) === '[object Object]') {
     if(CB._columnValidation(column, this))
       this.document.columns.push(column);
@@ -10518,23 +10538,36 @@ CB.CloudTable.prototype.addColumn = function(column){
           this.document.columns.push(column[i]);
       }
   }
-}
+};
 
 CB.CloudTable.prototype.deleteColumn = function(column){
+    if(Object.prototype.toString.call(column) === '[object String]') {
+        var obj = new CB.Column(column);
+        column = obj;
+    }
   if (Object.prototype.toString.call(column) === '[object Object]') {
         if(CB._columnValidation(column, this)){
-          this.document.columns = this.document.columns.filter(function(index){return index.name != column.name });
+            var arr = [];
+            for(var i=0;i<this.columns.length;i++){
+                if(this.columns[i].name !== column.name)
+                    arr.push(this.columns[i]);
+            }
+          this.document.columns = arr;
         }
 
   } else if (Object.prototype.toString.call(column) === '[object Array]') {
-      //yet to test
+      var arr = [];
       for(var i=0; i<column.length; i++){
         if(CB._columnValidation(column[i], this)){
-          this.document.columns = this.document.columns.filter(function(index){return index.name != column[i].name });
+            for(var i=0;i<this.columns.length;i++){
+                if(this.columns[i].name !== column[i].name)
+                    arr.push(this.columns[i]);
+            }
+            this.document.columns = arr;
         }
       }
   }
-}
+};
 
 /**
  * Gets All the Tables from an App
@@ -10737,50 +10770,117 @@ CB.CloudTable.prototype.save = function(callback){
  */
 
  CB.Column = function(columnName, dataType, required, unique){
+   this.document = {};
    if(columnName){
      CB._columnNameValidation(columnName);
-     this.name = columnName;
-     this._type = 'column';
+     this.document.name = columnName;
+     this.document._type = 'column';
    }
 
    if(dataType){
      CB._columnDataTypeValidation(dataType);
-     this.dataType = dataType;
+     this.document.dataType = dataType;
    }else{
-     this.dataType = "Text";
+     this.document.dataType = "Text";
    }
 
    if(typeof(required) === 'boolean')
-     this.required = required;
+     this.document.required = required;
    else
-     this.required = false;
+     this.document.required = false;
 
    if(typeof(unique) === 'boolean')
-     this.unique = unique;
+     this.document.unique = unique;
    else
-     this.unique = false;
-   this.relatedTo = null;
-   this.relationType = null;
-   this.isDeletable = true;
-   this.isEditable = true;
-   this.isRenamable = true;
-}
+     this.document.unique = false;
+   this.document.relatedTo = null;
+   this.document.relationType = null;
+
+   this.document.isDeletable = true;
+   this.document.isEditable = true;
+   this.document.isRenamable = false;
+
+};
+
+Object.defineProperty(CB.Column.prototype,'name',{
+    get: function() {
+        return this.document.name;
+    },
+    set: function(name) {
+        this.document.name = name;
+    }
+});
+
+Object.defineProperty(CB.Column.prototype,'dataType',{
+    get: function() {
+        return this.document.dataType;
+    },
+    set: function(dataType) {
+        this.document.dataType = dataType;
+    }
+});
+
+
+Object.defineProperty(CB.Column.prototype,'unique',{
+    get: function() {
+        return this.document.unique;
+    },
+    set: function(unique) {
+        this.document.unique = unique;
+    }
+});
+
+
+Object.defineProperty(CB.Column.prototype,'relatedTo',{
+    get: function() {
+        return this.document.relatedTo;
+    },
+    set: function(relatedTo) {
+        this.document.relatedTo = relatedTo;
+    }
+});
+
+Object.defineProperty(CB.Column.prototype,'required',{
+    get: function() {
+        return this.document.required;
+    },
+    set: function(required) {
+        this.document.required = required;
+    }
+});
 
 /* PRIVATE METHODS */
 CB.toJSON = function(thisObj) {
 
-    var url=null;
-    if(thisObj instanceof  CB.CloudFile)
+    var url = null;
+    var columnName = null;
+    var tableName = null;
+    var latitude = null;
+    var longitude = null;
+
+    if(thisObj instanceof CB.CloudGeoPoint){
+        latitude = thisObj.document.longitude;
+        longitude = document.latitude;
+    }
+
+    if(thisObj instanceof CB.CloudFile)
         url=thisObj.document.url;
 
+    if(thisObj instanceof CB.Column)
+        columnName=thisObj.document.name;
+
     if(thisObj instanceof CB.CloudTable)
-        return thisObj.document;
+        tableName=thisObj.document.name;
 
-    var obj= CB._clone(thisObj,url);
+    var obj= CB._clone(thisObj,url,latitude,longitude,tableName,columnName);
 
-    if (!obj instanceof CB.CloudObject || !obj instanceof CB.CloudFile || !obj instanceof CB.CloudGeoPoint) {
+    if (!obj instanceof CB.CloudObject || !obj instanceof CB.CloudFile || !obj instanceof CB.CloudGeoPoint
+        || !obj instanceof CB.CloudTable || !obj instanceof CB.Column) {
         throw "Data passed is not an instance of CloudObject or CloudFile or CloudGeoPoint";
     }
+
+    if(obj instanceof CB.Column)
+        return obj.document;
 
     if(obj instanceof CB.CloudFile)
         return obj.document;
@@ -10791,7 +10891,8 @@ CB.toJSON = function(thisObj) {
     var doc = obj.document;
 
     for (var key in doc) {
-        if (doc[key] instanceof CB.CloudObject || doc[key] instanceof CB.CloudFile || doc[key] instanceof CB.CloudGeoPoint) {
+        if (doc[key] instanceof CB.CloudObject || doc[key] instanceof CB.CloudFile
+            || doc[key] instanceof CB.CloudGeoPoint  || doc[key] instanceof CB.Column) {
             //if something is a relation.
             doc[key] = CB.toJSON(doc[key]); //serialize this object.
         } else if (key === 'ACL') {
@@ -10804,7 +10905,8 @@ CB.toJSON = function(thisObj) {
         } else if (doc[key] instanceof Array) {
             //if this is an array.
             //then check if this is an array of CloudObjects, if yes, then serialize every CloudObject.
-            if (doc[key][0] && (doc[key][0] instanceof CB.CloudObject || doc[key][0] instanceof CB.CloudFile || doc[key][0] instanceof CB.CloudGeoPoint )) {
+            if (doc[key][0] && (doc[key][0] instanceof CB.CloudObject || doc[key][0] instanceof CB.CloudFile
+                || doc[key][0] instanceof CB.CloudGeoPoint || doc[key][0] instanceof CB.Column )) {
                 var arr = [];
                 for (var i = 0; i < doc[key].length; i++) {
                     arr.push(CB.toJSON(doc[key][i]));
@@ -10824,9 +10926,6 @@ CB.fromJSON = function(data, thisObj) {
     //if data is a list it will return a list of Cl oudObjects.
     if (!data)
         return null;
-
-    if(data instanceof Object && data._type === 'column')
-        return data;
 
     if (data instanceof Array) {
 
@@ -10879,6 +10978,7 @@ CB.fromJSON = function(data, thisObj) {
             var latitude = null;
             var longitude = null;
             var tableName = null;
+            var columnName = null;
             if(document._type === "file")
                 url=document.url;
             if(document._type === "point"){
@@ -10888,12 +10988,11 @@ CB.fromJSON = function(data, thisObj) {
             if(document._type === "table"){
                 tableName = document.name;
             }
-            var obj = CB._getObjectByType(document._type,url,latitude,longitude,tableName);
-            if(document._type === 'table') {
-                obj.document = document;
-            }else{
-                obj.columns = document.columns;
+            if(document._type === "column"){
+                columnName = document.name;
             }
+            var obj = CB._getObjectByType(document._type,url,latitude,longitude,tableName,columnName);
+            obj.document = document;
             return obj;
         }else{
             thisObj.document = document;
@@ -10906,7 +11005,7 @@ CB.fromJSON = function(data, thisObj) {
     }
 };
 
-CB._getObjectByType = function(type,url,latitude,longitude,tableName){
+CB._getObjectByType = function(type,url,latitude,longitude,tableName,columnName){
 
     var obj = null;
 
@@ -10932,6 +11031,10 @@ CB._getObjectByType = function(type,url,latitude,longitude,tableName){
 
     if(type === 'table'){
         obj = new CB.CloudTable(tableName);
+    }
+
+    if(type === 'column'){
+        obj = new CB.Column(columnName);
     }
     return obj;
 };
@@ -10969,10 +11072,10 @@ if(CB._isNode){
 }
 
 
-CB._clone=function(obj,url){
+CB._clone=function(obj,url,latitude,longitude,tableName,columnName){
     var n_obj = null;
     if(obj.document._type && obj.document._type != 'point') {
-        n_obj = CB._getObjectByType(obj.document._type,url);
+        n_obj = CB._getObjectByType(obj.document._type,url,latitude,longitude,tableName,columnName);
         var doc=obj.document;
         var doc2={};
         for (var key in doc) {
@@ -11050,14 +11153,14 @@ CB._getSessionId = function() {
 
 CB._columnValidation = function(column, cloudtable){
   var defaultColumn = ['id', 'createdAt', 'updatedAt', 'ACL'];
-  if(cloudtable.type == 'user'){
+  if(cloudtable.document.type == 'user'){
     defaultColumn.concat(['username', 'email', 'password', 'roles']);
-  }else if(cloudtable.type == 'role'){
+  }else if(cloudtable.document.type == 'role'){
     defaultColumn.push('name');
   }
 
   var index = defaultColumn.indexOf(column.name.toLowerCase());
-  if(index < 0)
+  if(index === -1)
     return true;
   else
     return false;
@@ -11105,15 +11208,15 @@ function trimStart(character, string) {
 
 CB._columnNameValidation = function(columnName){
 
-  var defaultColumn = ['id','createdAt', 'updatedAt', 'ACL'];
+///  var defaultColumn = ['id','createdAt', 'updatedAt', 'ACL'];
 
   if(!columnName) //if table name is empty
     throw "table name cannot be empty";
 
-  var index = defaultColumn.indexOf(columnName.toLowerCase());
+  /*var index = defaultColumn.indexOf(columnName.toLowerCase());
   if(index >= 0)
     throw "this column name is already in use";
-
+*/
   if(!isNaN(columnName[0]))
     throw "column name should not start with a number";
 
@@ -11138,252 +11241,71 @@ CB._columnDataTypeValidation = function(dataType){
 };
 
 CB._defaultColumns = function(type) {
+    var id = new CB.Column('id');
+    id.dataType = 'Id';
+    id.required = true;
+    id.unique = true;
+    id.document.isDeletable = false;
+    id.document.isEditable = false;
+    var expires = new CB.Column('expires');
+    expires.dataType = 'Number';
+    expires.document.isDeletable = false;
+    expires.document.isEditable = false;
+    var createdAt = new CB.Column('createdAt');
+    createdAt.dataType = 'DateTime';
+    createdAt.required = true;
+    createdAt.document.isDeletable = false;
+    createdAt.document.isEditable = false;
+    var updatedAt = new CB.Column('updatedAt');
+    updatedAt.dataType = 'DateTime';
+    updatedAt.required = true;
+    updatedAt.document.isDeletable = false;
+    updatedAt.document.isEditable = false;
+    var ACL = new CB.Column('ACL');
+    ACL.dataType = 'ACL';
+    ACL.required = true;
+    ACL.document.isDeletable = false;
+    ACL.document.isEditable = false;
+    var col = [id,expires,updatedAt,createdAt,ACL];
     if (type === "custom") {
-        return [{
-            name: 'id',
-            dataType: 'Id',
-            relatedTo: null,
-            relatedToType: null,
-            relationType: null,
-            required: true,
-            unique: true,
-            isRenamable: false,
-            isEditable: false,
-            isDeletable: false
-        },
-            {
-                name: 'expires',
-                dataType: 'Number',
-                relatedTo: null,
-                relatedToType: null,
-                relationType: null,
-                required: false,
-                unique: false,
-                isRenamable: false,
-                isEditable: false,
-                isDeletable: false
-            },
-            {
-                name: 'createdAt',
-                dataType: 'DateTime',
-                relatedTo: null,
-                relatedToType: null,
-                relationType: null,
-                required: true,
-                unique: false,
-                isRenamable: false,
-                isEditable: false,
-                isDeletable: false
-            },
-            {
-                name: 'updatedAt',
-                dataType: 'DateTime',
-                relatedTo: null,
-                relatedToType: null,
-                relationType: null,
-                required: true,
-                unique: false,
-                isRenamable: false,
-                isEditable: false,
-                isDeletable: false
-            },
-            {
-                name: 'ACL',
-                dataType: 'ACL',
-                relatedTo: null,
-                relatedToType: null,
-                relationType: null,
-                required: true,
-                unique: false,
-                isRenamable: false,
-                isEditable: false,
-                isDeletable: false
-            }];
-    }
-
-    if (type === "user"){
-        return [{
-            name: 'id',
-            dataType: 'Id',
-            relatedTo: null,
-            relatedToType: null,
-            relationType: null,
-            required: true,
-            unique: true,
-            isRenamable: false,
-            isEditable: false,
-            isDeletable: false
-        },
-            {
-                name: 'username',
-                dataType: 'Text',
-                relatedTo: null,
-                relatedToType: null,
-                relationType: null,
-                required: true,
-                unique: true,
-                isRenamable: false,
-                isEditable: false,
-                isDeletable: false
-            },
-            {
-                name: 'email',
-                dataType: 'Email',
-                relatedTo: null,
-                relatedToType: null,
-                relationType: null,
-                required: false,
-                unique: true,
-                isRenamable: false,
-                isEditable: false,
-                isDeletable: false
-            },
-            {
-                name: 'password',
-                dataType: 'Password',
-                relatedTo: null,
-                relatedToType: null,
-                relationType: null,
-                required: true,
-                unique: false,
-                isRenamable: false,
-                isEditable: false,
-                isDeletable: false
-            },
-            {
-                name: 'roles',
-                dataType: 'List',
-                relatedTo: 'Role',
-                relatedToType: 'role',
-                relationType: 'table',
-                required: false,
-                unique: false,
-                isRenamable: false,
-                isEditable: false,
-                isDeletable: false
-            },
-            {
-                name: 'expires',
-                dataType: 'Number',
-                relatedTo: null,
-                relatedToType: null,
-                relationType: null,
-                required: false,
-                unique: false,
-                isRenamable: false,
-                isEditable: false,
-                isDeletable: false
-            },
-            {
-                name: 'createdAt',
-                dataType: 'DateTime',
-                relatedTo: null,
-                relatedToType: null,
-                relationType: null,
-                required: true,
-                unique: false,
-                isRenamable: false,
-                isEditable: false,
-                isDeletable: false
-            },
-            {
-                name: 'updatedAt',
-                dataType: 'DateTime',
-                relatedTo: null,
-                relatedToType: null,
-                relationType: null,
-                required: true,
-                unique: false,
-                isRenamable: false,
-                isEditable: false,
-                isDeletable: false
-            },
-            {
-                name: 'ACL',
-                dataType: 'ACL',
-                relatedTo: null,
-                relatedToType: null,
-                relationType: null,
-                required: true,
-                unique: false,
-                isRenamable: false,
-                isEditable: false,
-                isDeletable: false
-            }];
-    }
-
-   if(type === "role") {
-       return [{
-           name: 'id',
-           dataType: 'Id',
-           relatedTo: null,
-           relatedToType: null,
-           relationType: null,
-           required: true,
-           unique: true,
-           isRenamable: false,
-           isEditable: false,
-           isDeletable: false
-       },
-           {
-               name: 'name',
-               dataType: 'Text',
-               relatedTo: null,
-               relatedToType: null,
-               relationType: null,
-               required: true,
-               unique: true,
-               isRenamable: false,
-               isEditable: false,
-               isDeletable: false
-           },
-           {
-               name: 'expires',
-               dataType: 'Number',
-               relatedTo: null,
-               relatedToType: null,
-               relationType: null,
-               required: false,
-               unique: false,
-               isRenamable: false,
-               isEditable: false,
-               isDeletable: false
-           },
-           {
-               name: 'createdAt',
-               dataType: 'DateTime',
-               relatedTo: null,
-               relatedToType: null,
-               relationType: null,
-               required: true,
-               unique: false,
-               isRenamable: false,
-               isEditable: false,
-               isDeletable: false
-           },
-           {
-               name: 'updatedAt',
-               dataType: 'DateTime',
-               relatedTo: null,
-               relatedToType: null,
-               relationType: null,
-               required: true,
-               unique: false,
-               isRenamable: false,
-               isEditable: false,
-               isDeletable: false
-           },
-           {
-               name: 'ACL',
-               dataType: 'ACL',
-               relatedTo: null,
-               relatedToType: null,
-               relationType: null,
-               required: true,
-               unique: false,
-               isRenamable: false,
-               isEditable: false,
-               isDeletable: false
-           }];
+        return col;
+    }else if (type === "user"){
+        var username = new CB.Column('username');
+        username.dataType = 'Text';
+        username.required = true;
+        username.unique = true;
+        username.document.isDeletable = false;
+        username.document.isEditable = false;
+        var email = new CB.Column('email');
+        email.dataType = 'Email';
+        email.unique = true;
+        email.document.isDeletable = false;
+        email.document.isEditable = false;
+        var password = new CB.Column('password');
+        password.dataType = 'Password';
+        password.required = true;
+        password.document.isDeletable = false;
+        password.document.isEditable = false;
+        var roles = new CB.Column('roles');
+        roles.dataType = 'List';
+        roles.relatedTo = 'Role';
+        roles.relatedToType = 'role';
+        roles.document.relationType = 'table';
+        roles.document.isDeletable = false;
+        roles.document.isEditable = false;
+        col.push(username);
+        col.push(roles);
+        col.push(password);
+        col.push(email);
+        return col;
+    }else if(type === "role") {
+        var name = new CB.Column('name');
+        name.dataType = 'Text';
+        name.unique = true;
+        name.required = true;
+        name.document.isDeletable = false;
+        name.document.isEditable = false;
+        col.push(name);
+        return col;
    }
 };

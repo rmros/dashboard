@@ -50,9 +50,9 @@ app.controller('tableDesignerController',
     }
 
     $scope.deleteTable = function(t) {
-      if(t.type!='user' && t.type!='role'){
+      if(t.document.type!='user' && t.document.type!='role'){
         
-        if ($scope.confirmTableName === null) {
+        if($scope.confirmTableName === null) {
 
           $scope.confirmTableName=null; 
           $('#md-deleteTable').modal("hide");              

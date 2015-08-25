@@ -22,12 +22,12 @@
                           <div class="cf">
                             <span class="table-delete pull-right">
                               <!--Delete x-->
-                              <span ng-show="t.type!='user' && t.type!='role'" class="cross tableOptionIcon" ng-click="deleteTableModal(t); $event.stopPropagation()">
+                              <span ng-show="t.document.type!='user' && t.document.type!='role'" class="cross tableOptionIcon" ng-click="deleteTableModal(t); $event.stopPropagation()">
                               <i class="icon ion-close"></i>
                               </span>
 
                               <!--Dummy-->
-                              <span ng-show="t.type=='user' || t.type=='role'" class="cross tableOptionIcon" >
+                              <span ng-show="t.document.type=='user' || t.document.type=='role'" class="cross tableOptionIcon" >
                               &nbsp;
                               </span>
                               
@@ -37,11 +37,11 @@
                           <center>                            
                              <div>  
                                <!--User-->                        
-                               <i ng-if="t.type=='user'" class="icon ion-person-stalker tableIcon"></i>
+                               <i ng-if="t.document.type=='user'" class="icon ion-person-stalker tableIcon"></i>
                                <!--Role-->                        
-                               <i ng-if="t.type=='role'" class="icon ion-unlocked tableIcon"></i>
+                               <i ng-if="t.document.type=='role'" class="icon ion-unlocked tableIcon"></i>
                                <!--Custom-->                        
-                               <i ng-if="t.type=='custom'" class="icon ion-ios-list tableIcon"></i>
+                               <i ng-if="t.document.type=='custom'" class="icon ion-ios-list tableIcon"></i>
                              </div>
 
                              <div>
@@ -61,7 +61,7 @@
                           <div ng-if="beacon && !beacon.firstTable" class="first-table-beacon-container"></div>
 
                           <center>  
-                            <div >                         
+                             <div >                         
                              <i class="icon ion-plus-round"></i>
                              </div>
                              <div>

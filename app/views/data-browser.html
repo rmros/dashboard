@@ -1060,14 +1060,12 @@
             </div>
           </div>
           <!--/Animated Circle-->
-        </div>           
-        <div ng-show="!isTableLoaded"style="margin-top:63px;">
-         <span style="font-size:20px;">Loading</span>
-        </div>
+        </div>     
 
         <!--Error in loading records-->
         <div ng-show="tableLoadedError"style="margin-top:63px;">
-         <span style="font-size:18px;color:red;">{{tableLoadedError}}</span>
+         <span style="font-size:18px;color:gray;">
+          <i class="fa fa-exclamation-triangle"></i>&nbsp;{{tableLoadedError}}</span>
         </div>
 
     </div>

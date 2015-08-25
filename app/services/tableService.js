@@ -66,7 +66,7 @@ app.factory('tableService',
 
         var create=true;      
 
-        if(table && table._id){
+        if(table && table.document._id){
          create=false;         
         }       
 
