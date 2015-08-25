@@ -19,7 +19,9 @@ app.controller('tableDesignerController',
     var id;      
     $scope.newtables=[];
     $scope.addTablePopup=false;
-    $rootScope.isFullScreen=false;    
+    $rootScope.isFullScreen=false;  
+    $scope.tableCreateSpinner=[];
+    $scope.tableCreatedTick=[];  
       
     $scope.initialize = function() {
         $rootScope.page='tableDesigner';
@@ -140,18 +142,34 @@ app.controller('tableDesignerController',
         $scope.addTablePopup=false;      
         
         var table = new CB.CloudTable($scope.newTableName);       
-        $rootScope.currentProject.tables.push(table);        
+        $rootScope.currentProject.tables.push(table);
+        var index=$rootScope.currentProject.tables.indexOf(table);               
+
+        //Start Spinner
+        $scope.tableCreateSpinner[index]=true;
 
         tableService.saveTable(table)
         .then(function(respTable){
-          $scope.goToDataBrowser(respTable);           
+          //$scope.goToDataBrowser(respTable);           
           $scope.newTableName =null; 
           $scope.isCreatingTable=false;
+
+          //Stop Spinner and Show Tickmark for sec
+          $scope.tableCreateSpinner[index]=false;
+          $scope.tableCreatedTick[index]=true;
+          $scope.newTableAdded=true;
+          $timeout(function(){ 
+            $scope.tableCreatedTick[index]=false;
+          }, 1300);
+
+          $timeout(function(){ 
+            $scope.newTableAdded=false;
+          }, 2000);
         },
-        function(error){  
-          //Remove               
-          var index=$rootScope.currentProject.tables.indexOf(table);          
-          $rootScope.currentProject.tables.splice(index,1);
+        function(error){            
+          //Remove              
+          $scope.tableCreateSpinner[index]=false;         
+          $rootScope.currentProject.tables.splice(index,1);          
 
           $scope.newTableName = null;
           $scope.isCreatingTable=false;          
@@ -308,7 +326,7 @@ function successNotify(successMsg){
   $.amaran({
       'theme'     :'colorful',
       'content'   :{
-         bgcolor:'#149600',
+         bgcolor:'#19B698',
          color:'#fff',
          message:successMsg
       },

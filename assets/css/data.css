@@ -238,6 +238,14 @@
     padding-right:6px;
     cursor: pointer;
 }
+.tableAppCreation{
+    height:89px;
+    border-radius: 4px;   
+    width:100%;    
+    padding-bottom:6px;
+    padding-left:6px;
+    padding-right:6px;    
+}
 
 .tableName-wrap{
     padding: 6px;

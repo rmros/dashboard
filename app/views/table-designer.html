@@ -17,10 +17,11 @@
 
                     <!--loop-->
                     <div class="tableBx" ng-repeat="t in currentProject.tables">
-                        <div class="tableApp cf " style="background-color:#1476ff" ng-click="goToDataBrowser(t)">
+                        <!--Table Display-->
+                        <div class="tableApp cf " ng-show="!tableCreateSpinner[$index] && !tableCreatedTick[$index]" style="background-color:#1476ff" ng-click="goToDataBrowser(t)" data-ng-class="{animated:$index==currentProject.tables.length-1 && newTableAdded,bounce:$index==currentProject.tables.length-1 }">
 
                           <div class="cf">
-                            <span class="table-delete pull-right">
+                            <span class="table-delete pull-right">                           
                               <!--Delete x-->
                               <span ng-show="t.document.type!='user' && t.document.type!='role'" class="cross tableOptionIcon" ng-click="deleteTableModal(t); $event.stopPropagation()">
                               <i class="icon ion-close"></i>
@@ -45,13 +46,53 @@
                              </div>
 
                              <div>
-                              <span infotooltipleft="tableErrorForCreate" class="tableText">{{t.name}}</span>
+                              <span class="tableText">{{t.name}}</span>
                             </div>
                           </center> 
 
                         </div>
-                        
-                    </div> 
+
+                        <!--While Creating-->                    
+                        <div class="tableAppCreation cf " ng-show="tableCreateSpinner[$index] || tableCreatedTick[$index]" style="background-color:#6D6D6D">
+
+                          <div class="cf">
+                            <span class="table-delete pull-right">
+
+                              <!--Spinner-->
+                              <span ng-show="tableCreateSpinner[$index] && !tableCreatedTick[$index]" class="tableOptionIcon">
+                              <i class="fa fa-spinner fa-spin" style="font-size: 14px;color:white;cursor:default;"></i>
+                              </span>
+
+                              <!--Created Tick-->
+                              <span  ng-show="!tableCreateSpinner[$index] && tableCreatedTick[$index]" class="tableOptionIcon">
+                              <i class="icon ion-checkmark" style="font-size: 14px;color:white;cursor:default;"></i>
+                              </span>
+
+                              <!--Dummy-->
+                              <span ng-show="t.document.type=='user' || t.document.type=='role'" class="cross tableOptionIcon" >
+                              &nbsp;
+                              </span>
+                              
+                            </span>
+                          </div>
+
+                          <center>                            
+                             <div>  
+                               <!--User-->                        
+                               <i ng-if="t.document.type=='user'" class="icon ion-person-stalker tableIcon" style="cursor:default;"></i>
+                               <!--Role-->                        
+                               <i ng-if="t.document.type=='role'" class="icon ion-unlocked tableIcon" style="cursor:default;"></i>
+                               <!--Custom-->                        
+                               <i ng-if="t.document.type=='custom'" class="icon ion-ios-list tableIcon" style="cursor:default;"></i>
+                             </div>
+
+                             <div>
+                              <span class="tableText">{{t.name}}</span>
+                            </div>
+                          </center> 
+                        </div> 
+                    
+                    </div>                    
                     <!--/loop-->
 
                     <!--New table-->

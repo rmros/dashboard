@@ -2153,7 +2153,7 @@ function successNotify(successMsg){
   $.amaran({
       'theme'     :'colorful',
       'content'   :{
-         bgcolor:'#149600',
+         bgcolor:'#19B698',
          color:'#fff',
          message:successMsg
       },
