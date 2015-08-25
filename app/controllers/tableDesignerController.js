@@ -227,7 +227,7 @@ app.controller('tableDesignerController',
   /* PRIVATE FUNCTIONS */
 
   function loadProject(id){
-   
+    
       projectService.getProject(id)
       .then(function(currentProject){
         if(currentProject){
@@ -236,6 +236,7 @@ app.controller('tableDesignerController',
           getProjectTables();
         }                              
       }, function(error){ 
+       $rootScope.dataLoading=false;
        $scope.loadingError="We cannot load your project at this point of time. Please try again later.";    
       });
   }
@@ -252,7 +253,8 @@ app.controller('tableDesignerController',
           $rootScope.currentProject.tables=data;     
         }         
        
-    }, function(error){       
+    }, function(error){  
+      $rootScope.dataLoading=false;     
       $scope.loadingError="We cannot load your tables at this point of time. Please try again later";  
     });
   } 
