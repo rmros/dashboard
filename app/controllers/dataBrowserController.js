@@ -1585,6 +1585,9 @@ $scope.addColumn = function(valid) {
     $scope.saveSpinner=true;
 
     var column = new CB.Column($scope.newColumnObj.name, $scope.newColumnObj.dataType, $scope.newColumnObj.required, $scope.newColumnObj.unique);
+    if($scope.newColumnObj.relatedTo){
+      column.relatedTo=$scope.newColumnObj.relatedTo;
+    }
     $rootScope.currentProject.currentTable.addColumn(column);
 
     //$rootScope.currentProject.currentTable.columns.push($scope.newColumnObj);
