@@ -1589,7 +1589,7 @@ $scope.addColumn = function(valid) {
 
     //$rootScope.currentProject.currentTable.columns.push($scope.newColumnObj);
     $("#scrollbar-wrapper").mCustomScrollbar("update");
-    $(".data-table-design").css("height","75.98vh");
+    $(".data-table-design").css("height","75.90vh");
     $timeout(function(){ 
       $(".data-table-design").css("height","76vh");
     }, 2000);
