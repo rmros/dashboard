@@ -1588,11 +1588,11 @@ $scope.addColumn = function(valid) {
     $rootScope.currentProject.currentTable.addColumn(column);
 
     //$rootScope.currentProject.currentTable.columns.push($scope.newColumnObj);
-    /*$("#scrollbar-wrapper").mCustomScrollbar("update");
-    $(".data-table-design").css("height","84.2vh");
+    $("#scrollbar-wrapper").mCustomScrollbar("update");
+    $(".data-table-design").css("height","75.98vh");
     $timeout(function(){ 
-      $(".data-table-design").css("height","84.4vh");
-    }, 2000);*/
+      $(".data-table-design").css("height","76vh");
+    }, 2000);
     
 
     tableService.saveTable($rootScope.currentProject.currentTable)
