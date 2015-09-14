@@ -220,48 +220,48 @@
                     <div class="col-name">
                        <span style="display:inline">
                         <!--Id-->
-                        <i ng-if="column.dataType==='Id'" class="fa fa-shield col-icon-size"></i>
+                        <i ng-if="column.document.dataType==='Id'" class="fa fa-shield col-icon-size"></i>
 
                         <!--Boolean-->
-                        <i ng-if="column.dataType=='Boolean'"  class="fa fa-check col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='Boolean'"  class="fa fa-check col-icon-size"></i>
 
                          <!--DateTime-->
-                        <i ng-if="column.dataType=='DateTime'" class="fa fa-calendar-o col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='DateTime'" class="fa fa-calendar-o col-icon-size"></i>
                         <!--ACL or Object-->
-                        <i ng-if="column.dataType=='ACL' || column.dataType=='Object'" class="fa fa-bullseye col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='ACL' || column.document.dataType=='Object'" class="fa fa-bullseye col-icon-size"></i>
 
                         <!--Text-->
-                        <i ng-if="column.dataType=='Text'" class="fa fa-text-height col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='Text'" class="fa fa-text-height col-icon-size"></i>
                         <!--Encrypted Text-->
-                        <i ng-if="column.dataType=='Password'" class="fa fa-lock col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='Password'" class="fa fa-lock col-icon-size"></i>
 
                         <!--Email-->
-                        <i ng-if="column.dataType=='Email'" class="fa fa-envelope-o col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='Email'" class="fa fa-envelope-o col-icon-size"></i>
 
                         <!--URL-->
-                        <i ng-if="column.dataType=='URL'" class="fa fa-globe col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='URL'" class="fa fa-globe col-icon-size"></i>
 
                         <!--Number-->
-                        <i ng-if="column.dataType=='Number'" class="fa fa-th col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='Number'" class="fa fa-th col-icon-size"></i>
 
                         <!--File-->
-                        <i ng-if="column.dataType=='File'" class="fa fa-paperclip col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='File'" class="fa fa-paperclip col-icon-size"></i>
 
                         <!--Relation-->
-                        <i ng-if="column.dataType=='Relation'" class="fa fa-external-link col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='Relation'" class="fa fa-external-link col-icon-size"></i>
 
                         <!--List-->
-                        <i ng-if="column.dataType=='List'" class="fa fa-bars col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='List'" class="fa fa-bars col-icon-size"></i>
 
                         <!--GeoPoint-->
-                        <i ng-if="column.dataType=='GeoPoint'" class="fa fa-map-marker col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='GeoPoint'" class="fa fa-map-marker col-icon-size"></i>
 
                         {{column.name}}
                       </span>
                     </div>
                   </div> 
 
-                  <div ng-if="column.dataType!='Id'" class="cust-cell-dropdwn" ng-click="toggleColOptions($index)">
+                  <div ng-if="column.document.dataType!='Id'" class="cust-cell-dropdwn" ng-click="toggleColOptions($index)">
                       <!--Active Column-->
                       <!--ASC-->
                       <i ng-if="orderBy==column.name && orderByType=='asc'" class="fa fa-angle-up dropdown-icon-size" style="padding-top: 4.6px;"></i>
@@ -276,39 +276,39 @@
                 </div>
 
                   <!--col dropdown-->
-                  <div ng-if="showColOptions[$index] && column.dataType!='Id'" class="col-dropdown">
+                  <div ng-if="showColOptions[$index] && column.document.dataType!='Id'" class="col-dropdown">
                     <!--Column options-->
                     <div ng-show="!editColumn[$index]" class="flex-general-column-wrapper">          
 
-                      <div ng-if="column.isDeletable" ng-click="deleteColumn(column)" class="col-optionz">
+                      <div ng-if="column.document.isDeletable" ng-click="deleteColumn(column)" class="col-optionz">
                         <span class="col-options-span">
                           <i class="fa fa-minus-circle" style="padding-top: 5px;padding-right: 6px;"></i>
                           Delete Column
                         </span>
                       </div>
 
-                      <div ng-if="column.isEditable" ng-click="editThisColumn(column)" class="col-optionz">
+                      <div ng-if="column.document.isEditable" ng-click="editThisColumn(column)" class="col-optionz">
                         <span class="col-options-span">
                           <i class="fa fa-wrench" style="padding-top: 5px;padding-right: 6px;"></i>
                           Configure Column
                         </span>
                       </div>
 
-                      <div ng-if="column.dataType!='Id' && column.dataType!='Object' && column.dataType!='ACL' && column.dataType!='File' && column.dataType!='Relation' && column.dataType!='List' && column.dataType!='Password'" ng-click="sortASC(column)" class="col-optionz">
+                      <div ng-if="column.document.dataType!='Id' && column.document.dataType!='Object' && column.document.dataType!='ACL' && column.document.dataType!='File' && column.document.dataType!='Relation' && column.document.dataType!='List' && column.document.dataType!='Password'" ng-click="sortASC(column)" class="col-optionz">
                         <span class="col-options-span">
                           <i class="fa fa-sort-alpha-asc" style="padding-top: 5px;padding-right: 6px;"></i>
                           Sort Ascending
                         </span>
                       </div>
 
-                      <div ng-if="column.dataType!='Id' && column.dataType!='Object' && column.dataType!='ACL' && column.dataType!='File' && column.dataType!='Relation' && column.dataType!='List' && column.dataType!='Password'" ng-click="sortDESC(column)" class="col-optionz">
+                      <div ng-if="column.document.dataType!='Id' && column.document.dataType!='Object' && column.document.dataType!='ACL' && column.document.dataType!='File' && column.document.dataType!='Relation' && column.document.dataType!='List' && column.document.dataType!='Password'" ng-click="sortDESC(column)" class="col-optionz">
                         <span class="col-options-span">
                           <i class="fa fa-sort-alpha-desc" style="padding-top: 5px;padding-right: 6px;"></i>
                           Sort Descending
                         </span>
                       </div>
 
-                      <div ng-if="column.dataType!='Id'" ng-click="hideThisColumn(column)" class="col-optionz">
+                      <div ng-if="column.document.dataType!='Id'" ng-click="hideThisColumn(column)" class="col-optionz">
                         <span class="col-options-span">
                           <i class="fa fa-eye-slash" style="padding-top: 5px;padding-right: 6px;"></i>
                           Hide Column
@@ -356,7 +356,7 @@
                         <div class="flex-general-row-wrapper">
                           <button ng-click="cancelConfigCol(column)" type="button" class="config-save-btn-cancel" style="color:black; background-color:white;border:1px solid #DBDCDD;">cancel</button>
 
-                          <button ng-click="saveConfigCol(column)" type="button" class="config-save-btn-save" style="margin-left:2px; background-color:{{currentProject.currentTable.tableColor || '#3A5795'}}; color:white; border:1px solid {{currentProject.currentTable.tableColor || '#3A5795'}}" >save</button>
+                          <button ng-click="saveConfigCol(column)" type="button" class="config-save-btn-save" style="margin-left:2px; background-color:#3A5795; color:white; border:1px solid #3A5795" >save</button>
                           
                         </div>                         
                       </div> 
@@ -515,7 +515,7 @@
               <td ng-repeat="column in currentProject.currentTable.columns" ng-if="!hideColumn[$index]"  class="dataTd">   
                 
                 <!--Id-->             
-                <div ng-if="column.dataType==='Id'" class="tdDiv cf" style="min-width: 175px; cursor:not-allowed;">         
+                <div ng-if="column.document.dataType==='Id'" class="tdDiv cf" style="min-width: 175px; cursor:not-allowed;">         
                   <div class="real-content pull-left">
                     {{eachRow.get(column.name)}}                 
                   </div>            
@@ -523,7 +523,7 @@
                 <!--/Id-->          
 
                 <!--Boolean-->
-                <div ng-if="column.dataType=='Boolean'"  class="tdDiv boolean-div cf" style="min-width: 165px">     
+                <div ng-if="column.document.dataType=='Boolean'"  class="tdDiv boolean-div cf" style="min-width: 165px">     
                   <div class="real-content-center flex-general-row-wrapper-center">  
                       <checkbox  class="btn-default checkBxDflt2 data-checkbx"  ng-model="eachRow.document[column.name]" ng-click="setAndSaveBoolean(eachRow,column)">
                       </checkbox>                     
@@ -532,7 +532,7 @@
                 <!--/Boolean-->
 
                 <!--DateTime-->
-                <div ng-if="column.dataType=='DateTime'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='DateTime'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
                     <span class="timeSpan">                      
@@ -548,7 +548,7 @@
                 <!--/DateTime-->
 
                 <!--ACL-->
-                <div ng-if="column.dataType=='ACL'" class="tdDiv cf" style="min-width: 260px" ng-dblclick="showCommonTypes(eachRow,column); $event.stopPropagation()"> 
+                <div ng-if="column.document.dataType=='ACL'" class="tdDiv cf" style="min-width: 260px" ng-dblclick="showCommonTypes(eachRow,column); $event.stopPropagation()"> 
 
                   <div class="real-content pull-left"> 
                     <div class="objectSpan">
@@ -559,7 +559,7 @@
                   <!--Popup Edit Button-->
                   <div class="modal-wrapper pull-right">
                       <a class="round-btn" ng-click="showCommonTypes(eachRow,column)">
-                        <i class="fa fa-expand" style="color:{{currentProject.currentTable.tableColor || '#3A5795'}};"></i>&nbsp;
+                        <i class="fa fa-expand" style="color:#3A5795;"></i>&nbsp;
                       </a>  
                   </div>
                   <!--/Popup Edit Button--> 
@@ -568,7 +568,7 @@
                 <!--/ACL-->
 
                 <!--JsonObject-->
-                <div ng-if="column.dataType=='Object'" class="tdDiv cf" style="min-width: 260px" ng-dblclick="showCommonTypes(eachRow,column); $event.stopPropagation()"> 
+                <div ng-if="column.document.dataType=='Object'" class="tdDiv cf" style="min-width: 260px" ng-dblclick="showCommonTypes(eachRow,column); $event.stopPropagation()"> 
 
                   <div class="real-content pull-left"> 
                     <div class="objectSpan">
@@ -579,7 +579,7 @@
                   <!--Popup Edit Button-->
                   <div class="modal-wrapper pull-right">
                       <a class="round-btn" ng-click="showCommonTypes(eachRow,column)">
-                        <i class="fa fa-expand" style="color:{{currentProject.currentTable.tableColor || '#3A5795'}};"></i>&nbsp;
+                        <i class="fa fa-expand" style="color:#3A5795;"></i>&nbsp;
                       </a>  
                   </div>
                   <!--/Popup Edit Button--> 
@@ -588,7 +588,7 @@
                 <!--/JsonObject-->
 
                 <!--Text-->
-                <div ng-if="column.dataType=='Text'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='Text'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">              
                       {{eachRow.get(column.name)}}                                
@@ -602,7 +602,7 @@
                 <!--/Text-->
 
                 <!--Encrypted Text-->
-                <div ng-if="column.dataType=='Password'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='Password'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
                       <span ng-if="eachRow.get(column.name)">********</span>                    
@@ -624,7 +624,7 @@
                 <!--/Encrypted Text-->
 
                 <!--Email-->
-                <div ng-if="column.dataType=='Email'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='Email'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
                     <a class="emailSpan" href="{{eachRow.get(column.name) }}" target="_blank">
@@ -640,7 +640,7 @@
                 <!--/Email-->
 
                 <!--URL-->
-                <div ng-if="column.dataType=='URL'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='URL'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
                     <a class="emailSpan" href="{{eachRow.get(column.name) }}" target="_blank">
@@ -656,7 +656,7 @@
                 <!--/URL-->
 
                 <!--Number-->
-                <div ng-if="column.dataType=='Number'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='Number'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">                    
                       {{eachRow.get(column.name)}}                                   
@@ -670,7 +670,7 @@
                 <!--/Number-->
                
                 <!--File-->
-                <div ng-if="column.dataType=='File'" class="tdDivFile cf" style="min-width: 190px"> 
+                <div ng-if="column.document.dataType=='File'" class="tdDivFile cf" style="min-width: 190px"> 
 
                   <div class="real-content-file pull-left">
                     <div class="flex-general-row-wrapper-center"> 
@@ -696,7 +696,7 @@
                 <!--/File-->
 
                 <!--Relation-->
-                <div ng-if="column.dataType=='Relation'"  class="tdDiv cf" style="min-width: 240px"> 
+                <div ng-if="column.document.dataType=='Relation'"  class="tdDiv cf" style="min-width: 240px"> 
 
                   <div class="real-content pull-left"> 
                     <div ng-click="viewRelationData(eachRow,column,null)" ng-if="eachRow.document[column.name]" class="relation-id-wrapper">
@@ -716,17 +716,17 @@
                 <!--/Relation-->
 
                 <!--List-->
-                <div ng-if="column.dataType=='List'" class="tdDiv cf" style="min-width:325px"> 
+                <div ng-if="column.document.dataType=='List'" class="tdDiv cf" style="min-width:325px"> 
 
                   <div class="real-content-list-text pull-left"> 
                       <!--TextText,Email,Number,URL--> 
-                      <div ng-show="eachRow.document[column.name]" ng-if="column.relatedTo=='Text' || column.relatedTo=='Email' || column.relatedTo=='Number' || column.relatedTo=='URL'" class="cf list-text-wrapper">
+                      <div ng-show="eachRow.document[column.name]" ng-if="column.document.relatedTo=='Text' || column.document.relatedTo=='Email' || column.document.relatedTo=='Number' || column.document.relatedTo=='URL'" class="cf list-text-wrapper">
 
                         <div class="pull-left text-list-torrent flex-general-row-wrapper">
                          
                           <div ng-repeat="eachText in eachRow.document[column.name] track by $index" class="list-text">
-                            <span ng-if="column.relatedTo!='Password'">{{eachText}}</span>
-                            <span ng-if="column.relatedTo=='Password'" style="font-size:14px;">*****</span>
+                            <span ng-if="column.document.relatedTo!='Password'">{{eachText}}</span>
+                            <span ng-if="column.document.relatedTo=='Password'" style="font-size:14px;">*****</span>
                           </div>                        
 
                         </div>           
@@ -734,7 +734,7 @@
                       </div>
 
                       <!--DateTime--> 
-                      <div ng-show="column.relatedTo=='DateTime'" class="cf list-text-wrapper">
+                      <div ng-show="column.document.relatedTo=='DateTime'" class="cf list-text-wrapper">
 
                         <div class="pull-left text-list-torrent flex-general-row-wrapper">
                          
@@ -747,7 +747,7 @@
                       </div> 
 
                      <!--Boolean--> 
-                     <div ng-show="column.relatedTo=='Boolean'" class="cf list-text-wrapper">
+                     <div ng-show="column.document.relatedTo=='Boolean'" class="cf list-text-wrapper">
 
                         <div class="pull-left text-list-torrent flex-general-row-wrapper">
                          
@@ -767,7 +767,7 @@
                       </div>
 
                       <!--JSON-Object--> 
-                      <div ng-show="column.relatedTo=='Object'" class="cf list-text-wrapper">
+                      <div ng-show="column.document.relatedTo=='Object'" class="cf list-text-wrapper">
 
                         <div class="pull-left text-list-torrent flex-general-row-wrapper">
                          
@@ -784,7 +784,7 @@
                       </div>
 
                       <!--File--> 
-                      <div ng-show="column.relatedTo=='File'" class="cf list-text-wrapper">
+                      <div ng-show="column.document.relatedTo=='File'" class="cf list-text-wrapper">
 
                         <div class="pull-left text-list-torrent flex-general-row-wrapper">
                          
@@ -804,7 +804,7 @@
                       </div>
 
                       <!--Geo Point--> 
-                      <div  ng-if="column.relatedTo=='GeoPoint'" class="cf list-text-wrapper">
+                      <div  ng-if="column.document.relatedTo=='GeoPoint'" class="cf list-text-wrapper">
 
                         <div class="pull-left text-list-torrent flex-general-row-wrapper">
                          
@@ -834,7 +834,7 @@
                       </div>
 
                       <!--Relation--> 
-                      <div ng-show="eachRow.document[column.name]" ng-if="column.relatedTo!='Text' && column.relatedTo!='Email' && column.relatedTo!='Number' && column.relatedTo!='URL' && column.relatedTo!='DateTime' && column.relatedTo!='Boolean' && column.relatedTo!='File' && column.relatedTo!='Object' && column.relatedTo!='Geo Point'" class="cf list-text-wrapper">
+                      <div ng-show="eachRow.document[column.name]" ng-if="column.document.relatedTo!='Text' && column.document.relatedTo!='Email' && column.document.relatedTo!='Number' && column.document.relatedTo!='URL' && column.document.relatedTo!='DateTime' && column.document.relatedTo!='Boolean' && column.document.relatedTo!='File' && column.document.relatedTo!='Object' && column.document.relatedTo!='Geo Point'" class="cf list-text-wrapper">
 
                         <div class="pull-left text-list-torrent flex-general-row-wrapper">
                          
@@ -851,7 +851,7 @@
                   <!--Popup Edit Button-->
                   <div class="modal-wrapper pull-right">
                       <a class="round-btn" ng-click="showCommonTypes(eachRow,column)">
-                        <i class="fa fa-expand" style="color:{{currentProject.currentTable.tableColor || '#3A5795'}};"></i>&nbsp;
+                        <i class="fa fa-expand" style="color:#3A5795;"></i>&nbsp;
                       </a>  
                   </div>
                   <!--/Popup Edit Button--> 
@@ -861,7 +861,7 @@
 
 
                 <!--Geo Point-->
-                <div ng-if="column.dataType=='GeoPoint'" class="tdDiv cf geopoint-container" ng-dblclick="showCommonTypes(eachRow,column); $event.stopPropagation()"> 
+                <div ng-if="column.document.dataType=='GeoPoint'" class="tdDiv cf geopoint-container" ng-dblclick="showCommonTypes(eachRow,column); $event.stopPropagation()"> 
 
                   <div ng-show="eachRow.document[column.name]" class="real-content geopoint-wrapper pull-left flex-general-row-wrapper-center"> 
 
@@ -888,7 +888,7 @@
                   <!--Popup Edit Button-->
                   <div class="modal-wrapper pull-right">
                       <a class="round-btn" ng-click="showCommonTypes(eachRow,column)">
-                        <i class="fa fa-expand" style="color:{{currentProject.currentTable.tableColor || '#3A5795'}};"></i>&nbsp;
+                        <i class="fa fa-expand" style="color:#3A5795;"></i>&nbsp;
                       </a>  
                   </div>
                   <!--/Popup Edit Button--> 
@@ -897,7 +897,7 @@
                 <!--/Geo Point-->
 
                 <!--Others-->
-                <div ng-if="column.dataType!='Id' && column.dataType!='Boolean' && column.dataType!='DateTime' && column.dataType!='ACL' && column.dataType!='Text' && column.dataType!='Password' && column.dataType!='Email' && column.dataType!='URL' && column.dataType!='Number' && column.dataType!='Object' && column.dataType!='File' && column.dataType!='Relation' && column.dataType!='List' && column.dataType!='GeoPoint'" class="tdDiv cf" style="min-width: 210px"> 
+                <div ng-if="column.document.dataType!='Id' && column.document.dataType!='Boolean' && column.document.dataType!='DateTime' && column.document.dataType!='ACL' && column.document.dataType!='Text' && column.document.dataType!='Password' && column.document.dataType!='Email' && column.document.dataType!='URL' && column.document.dataType!='Number' && column.document.dataType!='Object' && column.document.dataType!='File' && column.document.dataType!='Relation' && column.document.dataType!='List' && column.document.dataType!='GeoPoint'" class="tdDiv cf" style="min-width: 210px"> 
 
                   <div class="real-content pull-left">  
                     {{eachRow.get(column.name)}}              
@@ -906,7 +906,7 @@
                   <!--Popup Edit Button-->
                   <div class="modal-wrapper pull-right">
                       <a class="round-btn">
-                        <i class="fa fa-expand" style="color:{{currentProject.currentTable.tableColor || '#3A5795'}};"></i>&nbsp;
+                        <i class="fa fa-expand" style="color:#3A5795;"></i>&nbsp;
                       </a>  
                   </div>
                   <!--/Popup Edit Button--> 
@@ -1556,43 +1556,43 @@
                     
                     <div class="pull-left m-col-icon">
                       <!--Id-->
-                      <i ng-if="relCol.dataType==='Id'" class="fa fa-shield col-icon-size"></i>
+                      <i ng-if="relCol.document.dataType==='Id'" class="fa fa-shield col-icon-size"></i>
 
                       <!--Boolean-->
-                      <i ng-if="relCol.dataType=='Boolean'" class="fa fa-check col-icon-size"></i>
+                      <i ng-if="relCol.document.dataType=='Boolean'" class="fa fa-check col-icon-size"></i>
 
                        <!--DateTime-->
-                      <i ng-if="relCol.dataType=='DateTime'" class="fa fa-calendar-o col-icon-size"></i>
+                      <i ng-if="relCol.document.dataType=='DateTime'" class="fa fa-calendar-o col-icon-size"></i>
 
                       <!--ACL or Object-->
-                      <i ng-if="relCol.dataType=='ACL' || column.dataType=='Object'" class="fa fa-bullseye col-icon-size"></i>
+                      <i ng-if="relCol.document.dataType=='ACL' || column.document.dataType=='Object'" class="fa fa-bullseye col-icon-size"></i>
 
                       <!--Text-->
-                      <i ng-if="relCol.dataType=='Text'" class="fa fa-text-height col-icon-size"></i>
+                      <i ng-if="relCol.document.dataType=='Text'" class="fa fa-text-height col-icon-size"></i>
 
                       <!--Encrypted Text-->
-                      <i ng-if="relCol.dataType=='Password'" class="fa fa-lock col-icon-size"></i>
+                      <i ng-if="relCol.document.dataType=='Password'" class="fa fa-lock col-icon-size"></i>
 
                       <!--Email-->
-                      <i ng-if="relCol.dataType=='Email'" class="fa fa-envelope-o col-icon-size"></i>
+                      <i ng-if="relCol.document.dataType=='Email'" class="fa fa-envelope-o col-icon-size"></i>
 
                       <!--URL-->
-                      <i ng-if="relCol.dataType=='URL'" class="fa fa-globe col-icon-size"></i>
+                      <i ng-if="relCol.document.dataType=='URL'" class="fa fa-globe col-icon-size"></i>
 
                       <!--Number-->
-                      <i ng-if="relCol.dataType=='Number'" class="fa fa-th col-icon-size"></i>
+                      <i ng-if="relCol.document.dataType=='Number'" class="fa fa-th col-icon-size"></i>
 
                       <!--File-->
-                      <i ng-if="relCol.dataType=='File'" class="fa fa-paperclip col-icon-size"></i>
+                      <i ng-if="relCol.document.dataType=='File'" class="fa fa-paperclip col-icon-size"></i>
 
                       <!--Relation-->
-                      <i ng-if="relCol.dataType=='Relation'" class="fa fa-external-link col-icon-size"></i>
+                      <i ng-if="relCol.document.dataType=='Relation'" class="fa fa-external-link col-icon-size"></i>
 
                       <!--List-->
-                      <i ng-if="relCol.dataType=='List'" class="fa fa-bars col-icon-size"></i>
+                      <i ng-if="relCol.document.dataType=='List'" class="fa fa-bars col-icon-size"></i>
 
                       <!--GeoPoint-->
-                      <i ng-if="relCol.dataType=='GeoPoint'" class="fa fa-map-marker col-icon-size"></i>
+                      <i ng-if="relCol.document.dataType=='GeoPoint'" class="fa fa-map-marker col-icon-size"></i>
                     </div>
                     <div class="pull-left m-col-name">
                       {{relCol.name}}
@@ -1602,7 +1602,7 @@
                
 
                   <!--Id-->
-                  <div ng-if="relCol.dataType=='Id'" class="m-value">
+                  <div ng-if="relCol.document.dataType=='Id'" class="m-value">
                       <div class="m-data-container cf" style="height:37px;">
 
                         <div class="m-real-content pull-left"> 
@@ -1614,7 +1614,7 @@
                   </div>                 
 
                   <!--Boolean-->
-                  <div ng-if="relCol.dataType=='Boolean'" class="m-value">
+                  <div ng-if="relCol.document.dataType=='Boolean'" class="m-value">
                       <div class="m-data-container-chk cf" style="height:10px !important;">
 
                         <div class="m-real-content-chk pull-left">
@@ -1626,7 +1626,7 @@
                   </div>
 
                   <!--DateTime-->
-                  <div ng-if="relCol.dataType=='DateTime'" class="m-value">
+                  <div ng-if="relCol.document.dataType=='DateTime'" class="m-value">
                       <div class="m-data-container-datetime cf" style="height:30px;">
 
                         <div class="m-real-contentent-datetime pull-left">
@@ -1637,7 +1637,7 @@
                   </div>
 
                   <!--ACL-->
-                  <div ng-if="relCol.dataType=='ACL'" class="m-value" ng-dblclick="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol); $event.stopPropagation()">
+                  <div ng-if="relCol.document.dataType=='ACL'" class="m-value" ng-dblclick="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol); $event.stopPropagation()">
                       <div class="m-data-container cf m-acl-cust">
 
                         <div class="m-real-content-acl pull-left">
@@ -1655,7 +1655,7 @@
                   </div>
 
                   <!--JsonObject-->
-                  <div ng-if="relCol.dataType=='Object'" class="m-value" ng-dblclick="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol); $event.stopPropagation()">
+                  <div ng-if="relCol.document.dataType=='Object'" class="m-value" ng-dblclick="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol); $event.stopPropagation()">
                       <div class="m-data-container m-acl-cust cf">
 
                         <div class="m-real-content-acl pull-left">
@@ -1673,7 +1673,7 @@
                   </div>
 
                   <!--Text-->
-                  <div ng-if="relCol.dataType=='Text'" class="m-value">
+                  <div ng-if="relCol.document.dataType=='Text'" class="m-value">
                       <div class="m-data-container cf" style="height:35px;">
 
                         <div class="m-real-content-cmn-types pull-left">                          
@@ -1684,7 +1684,7 @@
                   </div> 
                    
                   <!--Encrypted Text-->
-                  <div ng-if="relCol.dataType=='Password'" class="m-value">
+                  <div ng-if="relCol.document.dataType=='Password'" class="m-value">
                       <div class="m-data-container cf" style="height:35px;">
 
                         <div class="m-real-content-cmn-types pull-left"> 
@@ -1707,7 +1707,7 @@
                   </div>
 
                   <!--Email-->
-                  <div ng-if="relCol.dataType=='Email'" class="m-value">
+                  <div ng-if="relCol.document.dataType=='Email'" class="m-value">
                       <div class="m-data-container cf" style="height:35px;">
 
                         <div class="m-real-content-cmn-types pull-left">                          
@@ -1721,7 +1721,7 @@
                   </div>
 
                   <!--URL-->
-                  <div ng-if="relCol.dataType=='URL'" class="m-value">
+                  <div ng-if="relCol.document.dataType=='URL'" class="m-value">
                       <div class="m-data-container cf" style="height:35px;">
 
                         <div class="m-real-content-cmn-types pull-left">                          
@@ -1735,7 +1735,7 @@
                   </div>
 
                   <!--Number-->
-                  <div ng-if="relCol.dataType=='Number'" class="m-value">
+                  <div ng-if="relCol.document.dataType=='Number'" class="m-value">
                       <div class="m-data-container cf" style="height:35px;">
 
                         <div class="m-real-content-cmn-types pull-left">                          
@@ -1749,7 +1749,7 @@
                   </div>
 
                   <!--Files-->
-                  <div ng-if="relCol.dataType=='File'"  class="m-value">
+                  <div ng-if="relCol.document.dataType=='File'"  class="m-value">
                       <div class="m-data-container-file cf">
 
                         <div class="m-real-content-file pull-left">
@@ -1790,7 +1790,7 @@
                   </div>
 
                   <!--Geo Point-->
-                  <div ng-if="relCol.dataType=='GeoPoint'" class="m-value" ng-dblclick="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol); $event.stopPropagation()">
+                  <div ng-if="relCol.document.dataType=='GeoPoint'" class="m-value" ng-dblclick="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol); $event.stopPropagation()">
                       <div class="m-data-container cf" style="height:37px;">
 
                         <div class="m-real-geopoint pull-left">
@@ -1810,7 +1810,7 @@
                   </div>
 
                   <!--Relation-->
-                  <div ng-if="relCol.dataType=='Relation'" class="m-value">
+                  <div ng-if="relCol.document.dataType=='Relation'" class="m-value">
                       <div class="m-data-container cf" style="height:37px;">
 
                         <div class="m-real-content-rel pull-left">
@@ -1830,11 +1830,11 @@
 
 
                   <!--List-->
-                  <div ng-if="relCol.dataType=='List'" class="m-value">
+                  <div ng-if="relCol.document.dataType=='List'" class="m-value">
                       <div class="m-data-container cf" style="height:37px;">
 
                         <!--Text,Encrypted Text,Email,Number,URL-->
-                        <div ng-if="relCol.relatedTo=='Text' || relCol.relatedTo=='Password' || relCol.relatedTo=='Email' || relCol.relatedTo=='Number' || relCol.relatedTo=='URL'" class="m-real-content pull-left">                           
+                        <div ng-if="relCol.document.relatedTo=='Text' || relCol.document.relatedTo=='Password' || relCol.document.relatedTo=='Email' || relCol.document.relatedTo=='Number' || relCol.document.relatedTo=='URL'" class="m-real-content pull-left">                           
                           <div  class="m-list-condition flex-general-row-wrapper">
                              
                               <div ng-repeat="eachText in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
@@ -1847,7 +1847,7 @@
                         </div>  
 
                         <!--DateTime-->
-                        <div ng-if="relCol.relatedTo=='DateTime'" class="m-real-content pull-left">                           
+                        <div ng-if="relCol.document.relatedTo=='DateTime'" class="m-real-content pull-left">                           
                           <div  class="m-list-condition flex-general-row-wrapper">
                              
                               <div ng-repeat="eachDateTime in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
@@ -1860,7 +1860,7 @@
                         </div>  
 
                          <!--Boolean-->
-                        <div ng-if="relCol.relatedTo=='Boolean'" class="m-real-content pull-left">                          
+                        <div ng-if="relCol.document.relatedTo=='Boolean'" class="m-real-content pull-left">                          
                           <div  class="m-list-condition flex-general-row-wrapper">
                              
                               <div ng-repeat="eachBoolean in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
@@ -1879,7 +1879,7 @@
                         </div>  
 
                         <!--Object-->
-                        <div ng-if="relCol.relatedTo=='Object'" class="m-real-content pull-left">    
+                        <div ng-if="relCol.document.relatedTo=='Object'" class="m-real-content pull-left">    
                           <div  class="m-list-condition flex-general-row-wrapper">
                              
                               <div ng-repeat="eachObj in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
@@ -1894,7 +1894,7 @@
                         </div>  
 
                         <!--File--> 
-                        <div ng-if="relCol.relatedTo=='File'" class="m-real-content-list-file pull-left">  
+                        <div ng-if="relCol.document.relatedTo=='File'" class="m-real-content-list-file pull-left">  
                           <div  class="m-list-condition flex-general-row-wrapper cf">
                              
                               <div ng-repeat="eachFile in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper pull-left">
@@ -1918,7 +1918,7 @@
                         </div>
 
                         <!--GeoPoint-->
-                        <div ng-if="relCol.relatedTo=='GeoPoint'" class="m-real-geopoint pull-left">                           
+                        <div ng-if="relCol.document.relatedTo=='GeoPoint'" class="m-real-geopoint pull-left">                           
                           <div  class="m-list-condition flex-general-row-wrapper">
                              
                               <div class="m-list-loop flex-general-row-wrapper">
@@ -1935,7 +1935,7 @@
                         </div>
 
                         <!--Relation--> 
-                        <div ng-if="relCol.relatedTo!='Text' && relCol.relatedTo!='Password' && relCol.relatedTo!='Email' && relCol.relatedTo!='Number' && relCol.relatedTo!='URL' && relCol.relatedTo!='DateTime' && relCol.relatedTo!='Boolean' && relCol.relatedTo!='File' && relCol.relatedTo!='Object' && relCol.relatedTo!='GeoPoint'" class="m-real-content pull-left">  
+                        <div ng-if="relCol.document.relatedTo!='Text' && relCol.document.relatedTo!='Password' && relCol.document.relatedTo!='Email' && relCol.document.relatedTo!='Number' && relCol.document.relatedTo!='URL' && relCol.document.relatedTo!='DateTime' && relCol.document.relatedTo!='Boolean' && relCol.document.relatedTo!='File' && relCol.document.relatedTo!='Object' && relCol.document.relatedTo!='GeoPoint'" class="m-real-content pull-left">  
                           <div  class="m-list-condition flex-general-row-wrapper">
                              
                               <div ng-repeat="eachRel in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
@@ -1960,7 +1960,7 @@
                   </div>
 
                   <!--Others-->
-                  <div ng-if="relCol.dataType!='Id' && relCol.dataType!='Boolean' && relCol.dataType!='DateTime' && relCol.dataType!='File'  && relCol.dataType!='Text' &&  relCol.dataType!='Password' && relCol.dataType!='ACL' && relCol.dataType!='Object' && relCol.dataType!='Email' && relCol.dataType!='URL' && relCol.dataType!='Number' && relCol.dataType!='File' && relCol.dataType!='Relation' && relCol.dataType!='List' && relCol.dataType!='GeoPoint'" class="m-value">
+                  <div ng-if="relCol.document.dataType!='Id' && relCol.document.dataType!='Boolean' && relCol.document.dataType!='DateTime' && relCol.document.dataType!='File'  && relCol.document.dataType!='Text' &&  relCol.document.dataType!='Password' && relCol.document.dataType!='ACL' && relCol.document.dataType!='Object' && relCol.document.dataType!='Email' && relCol.document.dataType!='URL' && relCol.document.dataType!='Number' && relCol.document.dataType!='File' && relCol.document.dataType!='Relation' && relCol.document.dataType!='List' && relCol.document.dataType!='GeoPoint'" class="m-value">
                       <div class="m-data-container cf" style="height:37px;">
 
                         <div class="m-real-content pull-left">
@@ -1968,7 +1968,7 @@
                         </div>
                         <div class="m-popup-btn pull-right">
                           <a class="m-round-btn">
-                            <i class="fa fa-expand" style="color:{{relatedTableDefArray[relatedTableDefArray.length-1].tableColor || '#3A5795'}};"></i>&nbsp;
+                            <i class="fa fa-expand" style="color:#3A5795;"></i>&nbsp;
                           </a>
                         </div>
 
@@ -2257,7 +2257,7 @@
             <div  class="add-list-btn-wrapper">            
 
               <!--Text-->
-              <div ng-if="editableColumn.relatedTo=='Text'" class="document-list-add-wrapper flex-general-row-wrapper">
+              <div ng-if="editableColumn.document.relatedTo=='Text'" class="document-list-add-wrapper flex-general-row-wrapper">
                   <div class="document-list-txt-add-wrapper flex-general-row-wrapper-center cf">
                   
                     <div  class="list-text-aura">
