@@ -46,7 +46,7 @@ app.factory('tableService',
         var q=$q.defer();
 
         //var tableObj = new CB.CloudTable(table.name);
-        CB.CloudTable.delete(table)
+        table.delete()
         .then(function(status){
           q.resolve(status);
 
