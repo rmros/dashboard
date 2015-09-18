@@ -162,7 +162,7 @@ $scope.showCommonTypes=function(row,column){
   $scope.editableIndex=$scope.currentTableData.indexOf(row);//index      
 
   //Show INPUT Box to Edit for Commong DataTypes
-  if(column.dataType!="Object" && column.dataType!="ACL" && column.dataType!="File" && column.dataType!="GeoPoint" && column.dataType!="List"){
+  if(column.document.dataType!="Object" && column.document.dataType!="ACL" && column.document.dataType!="File" && column.document.dataType!="GeoPoint" && column.document.dataType!="List"){
     var arry=[column.name];
     var arry2=[column.name];
     var arry3=[column.name];
@@ -177,11 +177,11 @@ $scope.showCommonTypes=function(row,column){
   }
 
   //Set Field or value      
-  if(column.dataType=="Password"){ 
+  if(column.document.dataType=="Password"){ 
     $scope.holdFieldData[index][column.name]=angular.copy(row.get(column.name));     
     $scope.editableField[index][column.name]=null;
 
-  }else if(column.dataType=="DateTime"){
+  }else if(column.document.dataType=="DateTime"){
     $scope.editableField[index][column.name]=angular.copy(new Date(row.get(column.name)));     
   }else if(column.dataType=="Object" || column.dataType=="ACL"){
 
@@ -192,12 +192,12 @@ $scope.showCommonTypes=function(row,column){
     $scope.editableJsonObj =JSON.stringify($scope.editableJsonObj,null,2);
     $("#md-objectviewer").modal();
 
-  }else if(column.dataType=="File"){
+  }else if(column.document.dataType=="File"){
 
     $scope.editableFile=angular.copy(row.get(column.name));
     $("#md-fileviewer").modal();
 
-  }else if(column.dataType=="GeoPoint"){
+  }else if(column.document.dataType=="GeoPoint"){
 
     $scope.editableGeopoint=angular.copy(row.get(column.name));   
     if(!row.get(column.name)){
@@ -207,7 +207,7 @@ $scope.showCommonTypes=function(row,column){
     }
     $("#md-geodocumentviewer").modal();
 
-  }else if(column.dataType=="List"){ 
+  }else if(column.document.dataType=="List"){ 
     $scope.newListItem=null;
     $scope.addListItemError=null; 
     clearListErrors();   
@@ -222,7 +222,7 @@ $scope.showCommonTypes=function(row,column){
   }
 
   //Focus INPUT Box to Edit for Commong DataTypes
-  if(column.dataType!="Object" && column.dataType!="ACL" && column.dataType!="File" && column.dataType!="GeoPoint" && column.dataType!="List"){
+  if(column.document.dataType!="Object" && column.document.dataType!="ACL" && column.document.dataType!="File" && column.document.dataType!="GeoPoint" && column.document.dataType!="List"){
     focus(column.id+"column"); 
   }             
 };
@@ -237,7 +237,7 @@ $scope.deleteData=function(row,column){
       $scope.editableIndex=$scope.currentTableData.indexOf(row);//index
    
       //Show INPUT Box to Edit for Commong DataTypes
-      if(column.dataType!="Object" && column.dataType!="ACL" && column.dataType!="File" && column.dataType!="GeoPoint" && column.dataType!="List"){
+      if(column.document.dataType!="Object" && column.document.dataType!="ACL" && column.document.dataType!="File" && column.document.dataType!="GeoPoint" && column.document.dataType!="List"){
         $scope.nullAccepted=true;
         var arry2=[column.name];
         var index=angular.copy($scope.editableIndex);       
@@ -676,7 +676,7 @@ $scope.closeRelModal=function(){
 
 function convertISO2DateObj(table,cloudObject){
   for(var i=0;i<table.columns.length;++i){
-    if(table.columns[i].dataType=="DateTime"){
+    if(table.columns[i].document.dataType=="DateTime"){
       var isoDate=cloudObject.get(table.columns[i].name);
       cloudObject.set(table.columns[i].name,new Date(isoDate));
     }
@@ -743,11 +743,11 @@ $scope.setRelationData=function(cloudObject,column,data){
   $scope.relationError[column.name]=null;
 
   //DateTime
-  if(column.dataType=="DateTime"){
+  if(column.document.dataType=="DateTime"){
     data=new Date(data);
   }
   //ACL or Object
-  if(column.dataType=="ACL" || column.dataType=="Object"){      
+  if(column.document.dataType=="ACL" || column.document.dataType=="Object"){      
     try {
       data=JSON.parse(data);
       if(typeof data!="object"){
@@ -761,16 +761,16 @@ $scope.setRelationData=function(cloudObject,column,data){
     }
   }
   //Email
-  if(column.dataType=="Email" && !validateEmail(data)){
+  if(column.document.dataType=="Email" && !validateEmail(data)){
     $scope.relationError[column.name]="Invalid Email";
   }
   //URL
-  if(column.dataType=="URL" && !validateURL(data)){
+  if(column.document.dataType=="URL" && !validateURL(data)){
     $scope.relationError[column.name]="Invalid URL";
   }       
 
   //Number
-  if(column.dataType=="Number"){
+  if(column.document.dataType=="Number"){
     var tempData=data;
     data=parseInt(data);
     if(data.toString()==tempData){
@@ -781,11 +781,11 @@ $scope.setRelationData=function(cloudObject,column,data){
     }
   }
   //File
-  if(column.dataType=="File"){
+  if(column.document.dataType=="File"){
     $("#md-rel-fileviewer").modal("hide");
   }
   //Relation
-  if(column.dataType=="Relation"){
+  if(column.document.dataType=="Relation"){
     if(data){
       $("#md-searchreldocument").modal("hide");
     }else{
@@ -795,14 +795,14 @@ $scope.setRelationData=function(cloudObject,column,data){
   }
 
   //Password
-  if(column.dataType=="Password"){
+  if(column.document.dataType=="Password"){
     if(!$scope.nullAccepted && !data){
       $scope.relationShowInput[column.name]=false;
     }else if(!$scope.relationError[column.name]){
       cloudObject.set(column.name,data);
     }
     $scope.nullAccepted=true;      
-  }else if(column.dataType=="List"){//List
+  }else if(column.document.dataType=="List"){//List
     if(!checkListErrors()){
       cloudObject.set(column.name,data);
       $("#md-list-commontypes").modal("hide");
@@ -819,7 +819,7 @@ $scope.showRelationModals=function(cloudObject,column){
   $scope.relEditableColumnName=column.name;
 
   //ACL or Object
-  if(column.dataType=="ACL" || column.dataType=="Object"){
+  if(column.document.dataType=="ACL" || column.document.dataType=="Object"){
     
     $scope.relEditableJsonObj=angular.copy(cloudObject.get(column.name));   
     if(!cloudObject.get(column.name)){
@@ -829,7 +829,7 @@ $scope.showRelationModals=function(cloudObject,column){
     $("#md-rel-objectviewer").modal("show");
   }
   //GeoPoint
-  if(column.dataType=="GeoPoint"){
+  if(column.document.dataType=="GeoPoint"){
     $scope.relEditableGeopoint=angular.copy(cloudObject.get(column.name));   
     if(!cloudObject.get(column.name)){
        $scope.relEditableGeopoint={};     
@@ -839,12 +839,12 @@ $scope.showRelationModals=function(cloudObject,column){
     $("#md-rel-geodocumentviewer").modal();
   }
   //File
-  if(column.dataType=="File"){
+  if(column.document.dataType=="File"){
     $scope.relEditableFile=angular.copy(cloudObject.get(column.name));
     $("#md-rel-fileviewer").modal();
   }
   //List
-  if(column.dataType=="List"){
+  if(column.document.dataType=="List"){
     
   }
     
@@ -1306,7 +1306,7 @@ $scope.setAndSave=function(){
   var data=$scope.editableField[$scope.editableIndex][$scope.editableColumnName];
   var holdData=$scope.holdFieldData[$scope.editableIndex][$scope.editableColumnName];
 
-  if(!$scope.nullAccepted && $scope.editableColumn.dataType=="Password" && (!data || data==null)){
+  if(!$scope.nullAccepted && $scope.editableColumn.document.dataType=="Password" && (!data || data==null)){
     $scope.editableField[$scope.editableIndex][$scope.editableColumnName]=holdData;
     $scope.showInputForEdit[$scope.editableIndex][$scope.editableColumnName]=false;
   }else{         
@@ -1502,7 +1502,7 @@ function initCbApp(){
 }
 
 $scope.addMoreRecords=function(){
-  console.log("sjdbsdhbh");
+  
   if($scope.currentTableData && $rootScope.currentProject && $rootScope.currentProject.currentTable){
     $scope.loadingRecords=true;
     //load more data
@@ -1595,6 +1595,7 @@ $scope.addColumn = function(valid) {
     $(".data-table-design").css("height","75.90vh");
     $timeout(function(){ 
       $(".data-table-design").css("height","76vh");
+      $("#scrollbar-wrapper").mCustomScrollbar("scrollTo",['top','right']); 
     }, 2000);
     
 
@@ -1633,7 +1634,7 @@ $scope.toggleColOptions=function(index){
 };
 
 $scope.deleteColumn=function(column){
-  if(column.isDeletable){
+  if(column.document.isDeletable){
 
     //Hold
     var tempTable=angular.copy($scope.currentProject.currentTable);    
@@ -1901,7 +1902,7 @@ $scope.cancelConfigCol=function(column){
 };
 
 $scope.saveConfigCol=function(column){
-  if(column.isEditable){
+  if(column.document.isEditable){
     var i = $scope.currentProject.currentTable.columns.indexOf(column);      
     $scope.saveSpinner=true;
 
