@@ -39,7 +39,8 @@ app.controller('loginController',
       if(entries.length>0){
         for(var i=0;i<entries.length;++i){
           if(entries[i].categories.length>0 && getAnnouncement(entries[i].categories)){          
-            $scope.feed=entries[i];            
+            $scope.feed=entries[i];
+            $scope.feed.link=$scope.feed.link.replace("http://cbblog.azurewebsites.net", "http://blog.cloudboost.io");                        
             break;        
           }
         }

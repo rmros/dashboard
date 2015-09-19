@@ -179,7 +179,7 @@ app.directive('filechange', function(){
             $(element).change(function(){
                 var fileUploadControl = $(element)[0];
                 if(fileUploadControl && fileUploadControl.files.length > 0) {
-                    console.log(fileUploadControl.files[0]);
+                    //console.log(fileUploadControl.files[0]);
                     var reader = new FileReader();
                     reader.onload = function (e) {                       
                         scope.fileSelected(reader.result,fileUploadControl.files[0].name,fileUploadControl.files[0]);
