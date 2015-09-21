@@ -1649,7 +1649,7 @@ $scope.deleteColumn=function(column){
 
     tableService.saveTable($scope.currentProject.currentTable)
     .then(function(table){        
-
+        $scope.saveSpinner=false;
         //load more data
         /*$scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,orderByType,$scope.totalRecords,0)
         .then(function(list){
