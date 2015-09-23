@@ -72,7 +72,7 @@ app.controller('tableDesignerController',
 
               $('#md-deleteTable').modal("hide");               
               $scope.confirmTableName=null;
-              successNotify("Successfully table is deleted");
+              successNotify("Your table deleted successfully");
               $scope.isDeletingTable=false;                                
           },
           function(error){ 

@@ -18,7 +18,7 @@
                     <!--loop-->
                     <div class="tableBx" ng-repeat="t in currentProject.tables">
                         <!--Table Display-->
-                        <div class="tableApp cf " ng-show="!tableCreateSpinner[$index] && !tableCreatedTick[$index]" style="background-color:#1476ff" ng-click="goToDataBrowser(t)" data-ng-class="{animated:$index==currentProject.tables.length-1 && newTableAdded,bounce:$index==currentProject.tables.length-1 }">
+                        <div class="tableApp cf " ng-show="!tableCreateSpinner[$index] && !tableCreatedTick[$index]" style="background-color:#1476ff" ng-click="goToDataBrowser(t)">
 
                           <div class="cf">
                             <span class="table-delete pull-right">                           
