@@ -145,7 +145,9 @@ app.directive('malihuscrollbar', function(){
                     scope.addMoreRecords();
                   }
                 }
-            });           
+            });
+           
+        }
     };
 });
 
