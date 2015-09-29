@@ -396,8 +396,8 @@
 }
 
 .selectTableList:hover{
-    background-color: #383737; 
-    color: white !important;   
+    background-color: #EEF1F1; 
+    color: black !important;   
 }
 
 .back-arrow{
@@ -410,8 +410,9 @@
 }
 
 .data-table-design{ 
-    width:97.5vw;
-    height:76vh;             
+    width:99.99vw;
+    height:83.40vh; 
+    overflow: auto;            
 }
 .smoothTable { 
    width:94.6vw; 

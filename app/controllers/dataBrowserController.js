@@ -65,6 +65,7 @@ $scope.listFileSpinner=[];
 $scope.listFileError=[];
 $scope.orderBy="createdAt"; 
 $scope.orderByType="asc";
+$scope.lastLeftScrolled=0;
 
 $scope.init = function() { 
   id = $stateParams.appId;
@@ -1501,8 +1502,8 @@ function initCbApp(){
   CB.CloudApp.init($rootScope.currentProject.appId,$rootScope.currentProject.keys.master);    
 }
 
-$scope.addMoreRecords=function(){
-  
+$scope.addMoreRecords=function(){  
+
   if($scope.currentTableData && $rootScope.currentProject && $rootScope.currentProject.currentTable){
     $scope.loadingRecords=true;
     //load more data
@@ -1516,10 +1517,8 @@ $scope.addMoreRecords=function(){
         }
         $scope.totalRecords=$scope.totalRecords+list.length;
       } 
-      $scope.loadingRecords=false;         
-      
-      //$scope.$digest();  
-                                      
+      $scope.loadingRecords=false;       
+      //$scope.$digest();                                      
     },
     function(error){ 
     $scope.loadingRecords=false;      
@@ -1574,8 +1573,8 @@ $scope.initiateColumnSettings = function() {
 
   $scope.newColumnObj=newcol; 
   $scope.showAddColPopUp=true;   
-  $("#scrollbar-wrapper").mCustomScrollbar("scrollTo",['top','right']); 
-  //$('#scrollbar-wrapper').scrollTo('#extra-col-th',400,{axis:'x'});   
+  //$("#scrollbar-wrapper").mCustomScrollbar("scrollTo",['top','right']); 
+  $('#scrollbar-wrapper').scrollTo('#extra-col-th',400,{axis:'x',duration:5000});   
   
 };
 //infinite-scroll="addMoreRecords()"
@@ -1590,20 +1589,19 @@ $scope.addColumn = function(valid) {
     }
     $rootScope.currentProject.currentTable.addColumn(column);
 
-    //$rootScope.currentProject.currentTable.columns.push($scope.newColumnObj);
+    /*$rootScope.currentProject.currentTable.columns.push($scope.newColumnObj);
     $("#scrollbar-wrapper").mCustomScrollbar("update");
     $(".data-table-design").css("height","75.90vh");
     $timeout(function(){ 
       $(".data-table-design").css("height","76vh");
       $("#scrollbar-wrapper").mCustomScrollbar("scrollTo",['top','right']); 
-    }, 2000);
-    
+    }, 2000);*/
+    $('#scrollbar-wrapper').scrollTo('#extra-col-th',400,{axis:'x',duration:5000}); 
 
     tableService.saveTable($rootScope.currentProject.currentTable)
     .then(function(table){        
       $scope.newColumnObj=null;
-      $scope.saveSpinner=false;
-      $('#scrollbar-wrapper').scrollTo('#extra-col-th',400,{axis:'x'});                                             
+      $scope.saveSpinner=false;                                                  
     },
     function(error){ 
       errorNotify("Unable to add the column right now");
@@ -1633,45 +1631,56 @@ $scope.toggleColOptions=function(index){
   }    
 };
 
-$scope.deleteColumn=function(column){
-  if(column.document.isDeletable){
+$scope.confirmDeleteColumn=function(column){
+  if(column.document.isDeletable){    
+    var tempTable=angular.copy($scope.currentProject.currentTable);  
+    for(var i=0;i<tempTable.columns.length;++i){
+      if(tempTable.columns[i].name==column.name){
+        var index=i;
+        break;
+      }
+    }    
+    $scope.showColOptions[index]=false;
 
+    $scope.requestedColumn=column;
+    $scope.confirmDeleteColumnName=null;
+    $scope.columnDeleteModalSpinner=false;    
+    $("#md-deleteColumn").modal();     
+  }
+};
+
+$scope.deleteColumn=function(){
+  if($scope.requestedColumn.name==$scope.confirmDeleteColumnName){
     //Hold
-    var tempTable=angular.copy($scope.currentProject.currentTable);    
-    var index = tempTable.columns.indexOf(column);   
+    var tempTable=angular.copy($scope.currentProject.currentTable); 
 
     //Delete
-    var column = new CB.Column(column.name, column.dataType);
+    var column = new CB.Column($scope.requestedColumn.name, $scope.requestedColumn.dataType);
     $scope.currentProject.currentTable.deleteColumn(column);
 
-    $scope.showColOptions[index]=false;
-    $scope.saveSpinner=true;    
+    $scope.columnDeleteModalSpinner=true;  
 
     tableService.saveTable($scope.currentProject.currentTable)
     .then(function(table){        
-        $scope.saveSpinner=false;
-        //load more data
-        /*$scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,orderByType,$scope.totalRecords,0)
-        .then(function(list){
-          if(list && list.length>0){              
-            $scope.currentTableData=list;        
-          } 
-          $scope.saveSpinner=false;           
-          //$scope.$digest();  
-                                          
-        },
-        function(error){ 
-         $scope.saveSpinner=false;
-         errorNotify(error);        
-        });*/
-        //end of load more data
-
+      $scope.confirmDeleteColumnName=null;
+      $scope.columnDeleteModalSpinner=false;
+      $scope.requestedColumn=null; 
+      $("#md-deleteColumn").modal("hide"); 
     },function(error){
-      $scope.saveSpinner=false;
+      $("#md-deleteColumn").modal("hide"); 
+      $scope.confirmDeleteColumnName=null;
+      $scope.columnDeleteModalSpinner=false;
+      $scope.requestedColumn=null;
       errorNotify("Unable to delete the column right now");     
       //ReAssign
       $rootScope.currentProject.currentTable=tempTable;
     });    
+  }else{
+    $("#md-deleteColumn").modal("hide"); 
+    $scope.confirmDeleteColumnName=null;
+    $scope.columnDeleteModalSpinner=false;
+    $scope.requestedColumn=null;
+    warningNotify("Column name doesn\'t match"); 
   }
 };
 
@@ -2165,7 +2174,7 @@ function successNotify(successMsg){
   });
 }
 
-function WarningNotify(WarningMsg){
+function warningNotify(WarningMsg){
   $.amaran({
       'theme'     :'colorful',
       'content'   :{

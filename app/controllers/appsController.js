@@ -111,6 +111,11 @@ app.controller('appsController',
     if(isValid && $scope.newApp.name && $scope.newApp.appId){
       $scope.showSaveBtn = false;               
       $scope.appValidationError=null;
+      if($scope.showProject && $scope.showProject.length>0){
+        for(var i=0;i<$scope.showProject.length;++i){       
+          $scope.showProject[i]=false;        
+        }
+      }     
 
       projectService.createProject($scope.newApp.name, $scope.newApp.appId)     
       .then(function(data){
@@ -256,7 +261,6 @@ app.controller('appsController',
       };
 
     $intercom.boot(user);
-
   }
 
   function toggleSideBar(_this){

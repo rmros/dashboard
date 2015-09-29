@@ -18,21 +18,30 @@
             <div class="headerC flex-general-row-wrapper-center">
 
               <div ng-show="isTableLoaded" class="tableNameDiv flex-general-row-wrapper">              
-                <h3 ng-click="showTableList=!showTableList">{{currentProject.currentTable.name}}</h3> 
+                <h3 ng-click="showTableList=!showTableList">                
+                  {{currentProject.currentTable.name}}
+                </h3> 
                 <i class="fa fa-angle-down fa-2x" ng-click="showTableList=!showTableList"></i>        
 
                 <!--DropDown for TableList-->
                 <div class="tableList-wrapper" ng-show="showTableList">
                   <div style="background-color:white;width:99.99%; height:210px;" malihuscrollbar-for-popup>
 
-                  <div  ng-repeat="t in currentProject.tables" style="width:240px !important;">
+                  <div  ng-repeat="t in currentProject.tables" style="width:259px !important;">
                     <a href="" ng-click="showTableList=!showTableList; goToDataBrowser(t);">
                     <div class="selectTableList cf" style="padding:5px;height:30px;width:100%;">
 
                       <div class="pull-left">
                         <i class="fa fa-{{t.type.icon}}" style="margin-top:-10px;"></i>
                       </div>
-                      <div class="pull-left" style="margin-left:6px;">
+                      <div class="pull-left" style="margin-left:1px;">
+                        <!--User-->                        
+                        <i ng-if="t.document.type=='user'" class="icon ion-person-stalker" style="font-size:16px;"></i>
+                        <!--Role-->                        
+                        <i ng-if="t.document.type=='role'" class="icon ion-unlocked" style="font-size:16px;"></i>
+                        <!--Custom-->                        
+                        <i ng-if="t.document.type=='custom'" class="icon ion-ios-list" style="font-size:16px;"></i>
+                        &nbsp;
                         <span>{{t.name}}</span>
                       </div>
                         
@@ -201,7 +210,7 @@
   <div ng-show="isTableLoaded && !tableLoadedError" class="row data-table-def">
      <div class="col-md-12">
         
-        <div id="scrollbar-wrapper" class="data-table-design" malihuscrollbar >
+        <div id="scrollbar-wrapper" class="data-table-design" lr-infinite-scroll="addMoreRecords">
        
          <table  class="smoothTable" >
           <thead>            
@@ -227,12 +236,12 @@
                          <!--DateTime-->
                         <i ng-if="column.document.dataType=='DateTime'" class="fa fa-calendar-o col-icon-size"></i>
                         <!--ACL or Object-->
-                        <i ng-if="column.document.dataType=='ACL' || column.document.dataType=='Object'" class="fa fa-bullseye col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='ACL' || column.document.dataType=='Object'" class="fa fa-lock col-icon-size"></i>
 
                         <!--Text-->
                         <i ng-if="column.document.dataType=='Text'" class="fa fa-text-height col-icon-size"></i>
                         <!--Encrypted Text-->
-                        <i ng-if="column.document.dataType=='Password'" class="fa fa-lock col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='Password'" class="fa fa-asterisk col-icon-size"></i>
 
                         <!--Email-->
                         <i ng-if="column.document.dataType=='Email'" class="fa fa-envelope-o col-icon-size"></i>
@@ -279,7 +288,7 @@
                     <!--Column options-->
                     <div ng-show="!editColumn[$index]" class="flex-general-column-wrapper">          
 
-                      <div ng-if="column.document.isDeletable" ng-click="deleteColumn(column)" class="col-optionz">
+                      <div ng-if="column.document.isDeletable" ng-click="confirmDeleteColumn(column)" class="col-optionz">
                         <span class="col-options-span">
                           <i class="fa fa-minus-circle" style="padding-top: 5px;padding-right: 6px;"></i>
                           Delete Column
@@ -514,7 +523,7 @@
               <td ng-repeat="column in currentProject.currentTable.columns" ng-if="!hideColumn[$index]"  class="dataTd">   
                 
                 <!--Id-->             
-                <div ng-if="column.document.dataType==='Id'" class="tdDiv cf" style="min-width: 175px; cursor:not-allowed;">         
+                <div ng-if="column.document.dataType==='Id'" class="tdDiv cf" style="min-width: 175px; cursor:default;">         
                   <div class="real-content pull-left">
                     {{eachRow.get(column.name)}}                 
                   </div>            
@@ -3038,4 +3047,38 @@
 </div>
 <!-- /Edit List GeoPoint -->
 
+
+
+<!--delete column modal-->
+  <div class="modal fade colored-header danger" id="md-deleteColumn" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+      <div class="pull-right modalX">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>  
+      <div class="flex-general-row-wrapper-center modalH">
+        <h3>Delete Column</h3>        
+      </div>
+      
+      <div class="modal-body">
+        <div class="text-center">
+                 
+          <p>To delete, type in the column name.</p>
+          <center>
+            <input type="text" class="form-control" ng-model="confirmDeleteColumnName" required style="width:400px;"/>
+          </center> 
+          <div class="flex-general-row-wrapper-center modalF">        
+            <button  type="button" ng-show="!columnDeleteModalSpinner" class="btn btn-danger btn-flat" style="width:400px;" ng-click="deleteColumn()">DELETE COLUMN</button>
+
+            <!--While Deleting-->
+            <button  type="button" ng-show="columnDeleteModalSpinner" class="btn btn-danger btn-flat" style="width:400px;">
+              <i class="fa fa-spinner fa-spin"></i>&nbsp;DELETING COLUMN..</button>
+            <!--/While Deleting-->
+          </div>         
+        </div>
+      </div>      
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 

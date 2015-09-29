@@ -22,7 +22,7 @@ var app=angular.module('CloudBoostDashboard',
     'stripe',
     'chart.js',
     'focusOn',
-    'infinite-scroll',
+    'lrInfiniteScroll',
     'ui.ace'
     ]);
 

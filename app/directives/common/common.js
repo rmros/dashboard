@@ -141,7 +141,7 @@ app.directive('malihuscrollbar', function(){
                 },callbacks:{
                   onTotalScroll: function(){
                     var pos=$(".smoothTable").scrollTop();
-                    console.log("Hey buddy I got totally scrolled: "+pos);
+                    //console.log("Hey buddy I got totally scrolled: "+pos);
                     scope.addMoreRecords();
                   }
                 }
@@ -163,7 +163,7 @@ app.directive('malihuscrollbarForPopup', function(){
         restrict: 'A',
         link: function(scope, element, attrs){       
             $(element).mCustomScrollbar({
-                axis:"yx",               
+                axis:"y",               
                 advanced:{autoExpandHorizontalScroll:true},
                 scrollbarPosition:"outside",
                 theme:"minimal-dark"
