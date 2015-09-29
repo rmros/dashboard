@@ -116,8 +116,9 @@
         <div class="hide-col-btn-group">
           <button type="button" class="hide-col-btn" ng-click="toggleHiddenColShow()">
             <div class="pull-left">
-              <div style="margin-left:10px;">
-                <i class="fa fa-columns"></i>
+              <div style="margin-left:10px;" ng-class='{hiddencolindicator : hiddenColumnCount>0}'>
+                <i class="fa fa-columns"></i>&nbsp;
+                <span ng-if="hiddenColumnCount>0">{{hiddenColumnCount}}</span> &nbsp;               
                 Hide Columns 
               </div>           
             </div>
@@ -143,20 +144,20 @@
               <!--columns which are hidden-->
               <div  class="list-hidden-col-wrapper" malihuscrollbar-for-popup>
 
-                <div ng-repeat="hcol in hideColumn track by $index" ng-if="hcol==true" class="list-hidden-col-container">
+                <div ng-repeat="vcol in currentProject.currentTable.columns track by $index"  class="list-hidden-col-container">
 
-                  <div class="flex-general-row-wrapper">
+                  <div ng-if="vcol.dataType!='Id'" class="flex-general-row-wrapper">
                     <div class="hidden-col-chbx-div">
-                      <checkbox  class="hidden-col-chbx"  ng-model="hcol" ng-click="showThisColFromHidden($index)"></checkbox>
+                      <checkbox  class="hidden-col-chbx"  ng-model="!hideColumn[$index]" ng-click="toggleHideColumn($index)"></checkbox>
                     </div>
                     <div class="hidden-col-name-div">
-                      <span>{{currentProject.currentTable.columns[$index].name}}</span>
+                      <span>{{vcol.name}}</span>
                     </div>
-                  </div> 
+                  </div>                                    
 
-                </div>
-              </div>
-                
+                </div>             
+
+              </div>                
             </div>
           </div>            
           

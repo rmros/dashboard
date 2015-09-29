@@ -65,7 +65,7 @@ $scope.listFileSpinner=[];
 $scope.listFileError=[];
 $scope.orderBy="createdAt"; 
 $scope.orderByType="asc";
-$scope.lastLeftScrolled=0;
+$scope.hiddenColumnCount=0;
 
 $scope.init = function() { 
   id = $stateParams.appId;
@@ -1852,32 +1852,32 @@ $scope.sortDESC=function(column){
     
   }
 };
-
+/****Hide Columns******/
 $scope.hideThisColumn=function(column){
   var i = $scope.currentProject.currentTable.columns.indexOf(column);
   $scope.showColOptions[i]=false;
   $scope.hideColumn[i]=true;
+  ++$scope.hiddenColumnCount;
 };
 
-$scope.showThisColFromHidden=function(index){
-  $scope.hideColumn[index]=false;
+$scope.toggleHideColumn=function(index){
+  var status=$scope.hideColumn[index];
 
-  var count=0; 
-  for(var i=0; i<$scope.hideColumn.length;++i){
-    if($scope.hideColumn[i]==true){
-      ++count;
-    }
-  }
-  if(count==0){
-    $scope.showHiddenColList=false;
-  }      
+  if(!status){
+    $scope.hideColumn[index]=true;
+    ++$scope.hiddenColumnCount;
+  }else if(status==true){
+    $scope.hideColumn[index]=false;
+    --$scope.hiddenColumnCount;
+  }     
   
 };
 
 $scope.showallHiddenCols=function(){
   for(var i=0; i<$scope.currentProject.currentTable.columns.length;++i){
     if($scope.currentProject.currentTable.columns[i].dataType!="Id"){
-      $scope.hideColumn[i]=false;  
+      $scope.hideColumn[i]=false; 
+      --$scope.hiddenColumnCount; 
     }           
   }
 };
@@ -1885,11 +1885,12 @@ $scope.showallHiddenCols=function(){
 $scope.hideallHiddenCols=function(){
   for(var i=0; i<$scope.currentProject.currentTable.columns.length;++i){
     if($scope.currentProject.currentTable.columns[i].dataType!="Id"){
-      $scope.hideColumn[i]=true;  
+      $scope.hideColumn[i]=true; 
+      ++$scope.hiddenColumnCount; 
     }           
   }
 };
-
+/****End Hide Columns******/
 $scope.toggleHiddenColShow=function(){
   if($scope.showHiddenColList==true){
     $scope.showHiddenColList=false;
