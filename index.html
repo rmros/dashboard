@@ -69,21 +69,24 @@
           </a>        
 
           <ul class="cl-vnavigation">
-            <li  ng-class="{active:page=='apps','menu-active':page=='apps'}" data-toggle="tooltip" data-placement="right" title="Apps" tooltip><a href="#/"><i class="fa fa-th-large "></i><span>Apps</span></a>             
+            <li  ng-class="{active:page=='apps','menu-active':page=='apps'}" data-toggle="tooltip" data-placement="right" title="Apps" tooltip><a href="#/"><i class="fa fa-th-large "></i><span>Apps</span></a>           
             </li>
 
              <li ng-class="{active:page=='tableDesigner','menu-active':page=='tableDesigner'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Table Designer" tooltip><a href="#/{{currentProject.appId}}/table"  ng-click="toggleSideMenu()"><i class="fa fa-table"></i><span>Table Designer</span></a>   
             </li>
 
-            <li data-toggle="tooltip" data-placement="right" title="Documentation" tooltip><a href="https://docs.cloudboost.io" target="blank"><i class="fa fa-book" ></i><span>Docs</span></a>
-            </li>
+            <li data-toggle="tooltip" data-placement="right" title="Quickstart" tooltip>
+              <a href="https://tutorials.cloudboost.io" target="blank">
+                <i class="fa fa-book" ></i>
+                <span>Quickstart</span>
+              </a>
+            </li>           
 
             <li ng-class="{active:page=='pricing','menu-active':page=='pricing'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Billing" tooltip><a  href="#/{{currentProject.appId}}/pricing"><i class="fa fa-credit-card"></i><span>Billing</span></a>
             </li>
 
             <li ng-class="{active:page=='appSettings','menu-active':page=='appSettings'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Settings" tooltip><a href="#/{{currentProject.appId}}/settings" ng-click="toggleSideMenu()"><i class="fa fa-cog"></i><span>Settings</span></a>   
-            </li>       
-
+            </li>
           </ul>
 
         </div>

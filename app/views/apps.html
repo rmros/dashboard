@@ -26,10 +26,8 @@
                     <!--Create App-->
                     <button style="position:relative;" id="create-app-btn" ng-disabled="!showSaveBtn" data-ng-show="showSaveBtn" type="submit" class="btn btn-info btn-rad btn-trans">
                       <i class="fa fa-plus"></i>&nbsp;Create new app
-
                     <!--Beacon-->
                     <div ng-show="beacon && !beacon.firstApp && showSaveBtn" class="create-app-beacon-container" style="cursor:pointer;"></div> 
-
                     </button>
                     
                     <!--While Creating App-->
@@ -46,56 +44,64 @@
         
 
       <!--App List Loaded--> 
-      <div ng-if="!dataLoading && !loadingError" class="col-sm-12 col-md-6 col-lg-3" ng-repeat="list in projectListObj | orderBy:'_id':true">       
+      <div ng-if="!dataLoading && !loadingError" class="col-sm-12 col-md-6 col-lg-3" ng-repeat="list in projectListObj | orderBy:'_id':true"> 
 
           <!-- Details --> 
-          <div class="block block-color" data-ng-class="{success : list.status.status === 'online', danger : list.status.status === 'offline',animated:$index==0 && isAppCreated==true,bounce:$index==0 }" ng-hide="showProject[$index]" style="height:330px;"> 
-            <div class="header">
-             <div class="actions">
-                <a ng-click="toggleAppEdit($index)"><i class="fa fa-pencil" style="font-size:1.3em"></i></a>
-              </div>     
-              <h3><i class="fa fa-cloud "></i>&nbsp;&nbsp;{{list.name}}</h3>
-            </div>
-            <div class="content">
-               <div class="alert alert-success alert-white rounded">
-                <div class="icon"><i class="fa fa-check"></i></div>
-                Your app is <strong>Online</strong>
-               </div>
+          <div class="" data-ng-class="{success : list.status.status === 'online' && !animateApp[$index], danger : list.status.status === 'offline' && !animateApp[$index],block: !animateApp[$index],'block-color': !animateApp[$index]}" ng-hide="showProject[$index]" style="height:330px;">
 
-               <div data-ng-show="list.status.status === 'offline'" class="alert alert-danger alert-white rounded">
-                <div class="icon"><i class="fa fa-times-circle"></i></div>
-                Your app is <strong>Offline</strong>
-               </div>
+            <div ng-if="!animateApp[$index]" data-ng-class="{animated:isAppCreated==true,fadeIn:$index==0,slideInLeft:$index==1}"> 
+                <div class="header">
+                 <div class="actions">
+                    <a ng-click="toggleAppEdit($index)"><i class="fa fa-pencil" style="font-size:1.3em"></i></a>
+                  </div>     
+                  <h3><i class="fa fa-cloud "></i>&nbsp;&nbsp;{{list.name}}</h3>
+                </div>
+                <div class="content">
+                   <div class="alert alert-success alert-white rounded">
+                    <div class="icon"><i class="fa fa-check"></i></div>
+                    Your app is <strong>Online</strong>
+                   </div>
 
-               <div class="input-group">
-                  <span class="input-group-addon">App ID</span>
-                  <span class="form-control"><b>{{list.appId}}</b></span>
-               </div>
+                   <div data-ng-show="list.status.status === 'offline'" class="alert alert-danger alert-white rounded">
+                    <div class="icon"><i class="fa fa-times-circle"></i></div>
+                    Your app is <strong>Offline</strong>
+                   </div>
 
-               <br/><br/>
+                   <div class="input-group">
+                      <span class="input-group-addon">App ID</span>
+                      <span class="form-control"><b>{{list.appId}}</b></span>
+                   </div>
 
-                <div class="flex-general-row-wrapper-center">
-                  <div class="flex-general-row-wrapper">
+                   <br/><br/>
 
-                    <div class="data-brwsr-wrapper">
-                        <button type="button" class="btn btn-default" data-placement="top" ng-click="goToTableDesigner(list)"><i class="fa fa-table"></i> &nbsp; Tables</button>
+                    <div class="flex-general-row-wrapper-center">
+                      <div class="flex-general-row-wrapper">
 
-                        <!--Beacon-->
-                        <div ng-if="beacon && !beacon.tableDesignerLink && $index==0" ng-click="goToTableDesigner(list)" class="first-app-beacon-container" style="cursor:pointer;"></div>
+                        <div class="data-brwsr-wrapper">
+                            <button type="button" class="btn btn-default" data-placement="top" ng-click="goToTableDesigner(list)"><i class="fa fa-table"></i> &nbsp; Tables</button>
+
+                            <!--Beacon-->
+                            <div ng-if="beacon && !beacon.tableDesignerLink && $index==0" ng-click="goToTableDesigner(list)" class="first-app-beacon-container" style="cursor:pointer;"></div>
+                        </div>
+
+                        <button type="button" class="btn btn-default" ng-click="viewKeys(list)">
+                          <i class="fa fa-lock"></i> &nbsp; App Keys</button>
+                      </div>
                     </div>
 
-                    <button type="button" class="btn btn-default" ng-click="viewKeys(list)">
-                      <i class="fa fa-lock"></i> &nbsp; App Keys</button>
-                  </div>
                 </div>
-
             </div>
-          </div>
+
+            <!--Empty Div for a while-->
+            <div ng-if="animateApp[$index]">
+            </div> 
+            <!--Empty Div for a while--> 
+          </div>        
 
           <!-- Edit -->
           <div ng-hide="!showProject[$index]" class="block block-color fadedPrimary" style="height:330px">
             <div class="header">
-              <h3><i class="fa fa-pencil "></i>&nbsp;&nbsp;edit project</h3>
+              <h3><i class="fa fa-pencil "></i>&nbsp;&nbsp;edit app</h3>
             </div>
 
             <div class="content">
