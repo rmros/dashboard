@@ -1687,7 +1687,22 @@
    padding:12px;
    padding-right:0px;
 }
-
+.tableIcon2{
+   color:white;
+   font-size : 25px;   
+   padding-right:0px;
+   padding-top:2px;
+   padding-left:12px;   
+}
+.role-icon{    
+    height:30px;
+}
+.role-icon i,span{
+    margin-top: 8px !important;
+}
+.column-icons{
+    
+}
 .tableText{
     color:white;
     padding-left:6px;
