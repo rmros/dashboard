@@ -145,17 +145,9 @@ app.directive('malihuscrollbar', function(){
                     scope.addMoreRecords();
                   }
                 }
-            });
-            /*$(element).mCustomScrollbar("scrollTo","bottom",{
-                callbacks:false,
-                function(){
-                  console.log("hellowooo");
-                }
-            });*/
-        }
+            });           
     };
 });
-
 
 //A mini Scrollbar for both vertical and horizontal
 app.directive('malihuscrollbarForPopup', function(){
