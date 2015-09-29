@@ -410,9 +410,9 @@
 }
 
 .data-table-design{ 
-    width:99.99vw;
-    height:83.40vh; 
-    overflow: auto;            
+    width:99.90vw;
+    height:83vh; 
+    overflow: auto !important;            
 }
 .smoothTable { 
    width:94.6vw; 

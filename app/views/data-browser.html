@@ -226,43 +226,43 @@
                 <div class="cust-cell flex-general-row-wrapper" ng-class="{true: 'cust-cell-width'}[!currentTableData || currentTableData.length==0]">
                   <div class="cust-cell-name flex-general-row-wrapper">                    
                     <div class="col-name">
-                       <span style="display:inline">
+                       <span style="display:inline; cursor:default;">
                         <!--Id-->
-                        <i ng-if="column.document.dataType==='Id'" class="fa fa-shield col-icon-size"></i>
+                        <i ng-if="column.document.dataType==='Id'" class="fa fa-shield col-icon-size" style="cursor:default;"></i>
 
                         <!--Boolean-->
-                        <i ng-if="column.document.dataType=='Boolean'"  class="fa fa-check col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='Boolean'"  class="fa fa-check col-icon-size" style="cursor:default;"></i>
 
                          <!--DateTime-->
-                        <i ng-if="column.document.dataType=='DateTime'" class="fa fa-calendar-o col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='DateTime'" class="fa fa-calendar-o col-icon-size" style="cursor:default;"></i>
                         <!--ACL or Object-->
-                        <i ng-if="column.document.dataType=='ACL' || column.document.dataType=='Object'" class="fa fa-lock col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='ACL' || column.document.dataType=='Object'" class="fa fa-lock col-icon-size" style="cursor:default;"></i>
 
                         <!--Text-->
-                        <i ng-if="column.document.dataType=='Text'" class="fa fa-text-height col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='Text'" class="fa fa-text-height col-icon-size" style="cursor:default;"></i>
                         <!--Encrypted Text-->
-                        <i ng-if="column.document.dataType=='Password'" class="fa fa-asterisk col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='Password'" class="fa fa-asterisk col-icon-size" style="cursor:default;"></i>
 
                         <!--Email-->
-                        <i ng-if="column.document.dataType=='Email'" class="fa fa-envelope-o col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='Email'" class="fa fa-envelope-o col-icon-size" style="cursor:default;"></i>
 
                         <!--URL-->
-                        <i ng-if="column.document.dataType=='URL'" class="fa fa-globe col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='URL'" class="fa fa-globe col-icon-size" style="cursor:default;"></i>
 
                         <!--Number-->
-                        <i ng-if="column.document.dataType=='Number'" class="fa fa-th col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='Number'" class="fa fa-th col-icon-size" style="cursor:default;"></i>
 
                         <!--File-->
-                        <i ng-if="column.document.dataType=='File'" class="fa fa-paperclip col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='File'" class="fa fa-paperclip col-icon-size" style="cursor:default;"></i>
 
                         <!--Relation-->
-                        <i ng-if="column.document.dataType=='Relation'" class="fa fa-external-link col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='Relation'" class="fa fa-external-link col-icon-size" style="cursor:default;"></i>
 
                         <!--List-->
-                        <i ng-if="column.document.dataType=='List'" class="fa fa-bars col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='List'" class="fa fa-bars col-icon-size" style="cursor:default;"></i>
 
                         <!--GeoPoint-->
-                        <i ng-if="column.document.dataType=='GeoPoint'" class="fa fa-map-marker col-icon-size"></i>
+                        <i ng-if="column.document.dataType=='GeoPoint'" class="fa fa-map-marker col-icon-size" style="cursor:default;"></i>
 
                         {{column.name}}
                       </span>
