@@ -29,37 +29,23 @@
 
                   <div  ng-repeat="t in currentProject.tables" style="width:259px !important;">
                     <a href="" ng-click="showTableList=!showTableList; goToDataBrowser(t);">
-                    <!--User-->
-                    <div ng-if="t.document.type=='user'" class="selectTableList cf" style="padding-top:5px;padding-bottom:5px;padding-right:5px;height:30px;width:100%;">
-                     
-                      <div class="pull-left" style="margin-left:1px;">                                       
-                        <i class="icon ion-person-stalker" style="font-size:16px;"></i>                      
+                    <div class="selectTableList cf" style="padding:5px;height:30px;width:100%;">
+
+                      <div class="pull-left">
+                        <i class="fa fa-{{t.type.icon}}" style="margin-top:-10px;"></i>
+                      </div>
+                      <div class="pull-left" style="margin-left:1px;">
+                        <!--User-->                        
+                        <i ng-if="t.document.type=='user'" class="icon ion-person-stalker" style="font-size:16px;"></i>
+                        <!--Role-->                        
+                        <i ng-if="t.document.type=='role'" class="icon ion-unlocked" style="font-size:16px;"></i>
+                        <!--Custom-->                        
+                        <i ng-if="t.document.type=='custom'" class="icon ion-ios-list" style="font-size:16px;"></i>
                         &nbsp;
                         <span>{{t.name}}</span>
                       </div>
                         
                     </div> 
-
-                    <!--Role--> 
-                    <div ng-if="t.document.type=='role'" class="selectTableList cf" style="height:30px;width:100%;">                     
-                      <div class="pull-left role-icon" style="margin-left:3px;">                                             
-                        <i class="fa fa-shield" style="font-size:16px;"></i>                    
-                        &nbsp;
-                        <span>{{t.name}}</span>
-                      </div>
-                        
-                    </div>
-
-                    <!--Custom--> 
-                    <div ng-if="t.document.type=='custom'" class="selectTableList cf" style="height:30px;width:100%;padding-top:5px;padding-bottom:5px;padding-right:5px;">
-                     
-                      <div class="pull-left" style="margin-left:1px;">                                            
-                        <i class="icon ion-ios-list" style="font-size:16px;"></i>
-                        &nbsp;
-                        <span>{{t.name}}</span>
-                      </div>
-                        
-                    </div>
                     </a> 
                   </div>
 
@@ -241,44 +227,43 @@
                 <div class="cust-cell flex-general-row-wrapper" ng-class="{true: 'cust-cell-width'}[!currentTableData || currentTableData.length==0]">
                   <div class="cust-cell-name flex-general-row-wrapper">                    
                     <div class="col-name">
-                       <span class="column-icons" style="display:inline; cursor:default;">
+                       <span style="display:inline; cursor:default;">
                         <!--Id-->
-                        <i ng-if="column.document.dataType==='Id'" class="fa fa-circle col-icon-size" style="cursor:default;margin-top:-2px;"></i>                   
+                        <i ng-if="column.document.dataType==='Id'" class="fa fa-shield col-icon-size" style="cursor:default;"></i>
 
                         <!--Boolean-->
-                        <i ng-if="column.document.dataType=='Boolean'"  class="fa fa-check col-icon-size" style="cursor:default; margin-top:3px;"></i>
+                        <i ng-if="column.document.dataType=='Boolean'"  class="fa fa-check col-icon-size" style="cursor:default;"></i>
 
                          <!--DateTime-->
-                        <i ng-if="column.document.dataType=='DateTime'" class="fa fa-calendar-o col-icon-size" style="cursor:default;margin-top:6px !important;"></i>
-
+                        <i ng-if="column.document.dataType=='DateTime'" class="fa fa-calendar-o col-icon-size" style="cursor:default;"></i>
                         <!--ACL or Object-->
-                        <i ng-if="column.document.dataType=='ACL' || column.document.dataType=='Object'" class="fa fa-lock col-icon-size" style="cursor:default;margin-top:3px;"></i>
+                        <i ng-if="column.document.dataType=='ACL' || column.document.dataType=='Object'" class="fa fa-lock col-icon-size" style="cursor:default;"></i>
 
                         <!--Text-->
-                        <i ng-if="column.document.dataType=='Text'" class="fa fa-text-height col-icon-size" style="cursor:default;margin-top:3px;"></i>
+                        <i ng-if="column.document.dataType=='Text'" class="fa fa-text-height col-icon-size" style="cursor:default;"></i>
                         <!--Encrypted Text-->
-                        <i ng-if="column.document.dataType=='Password'" class="fa fa-asterisk col-icon-size" style="cursor:default;margin-top:3px;"></i>
+                        <i ng-if="column.document.dataType=='Password'" class="fa fa-asterisk col-icon-size" style="cursor:default;"></i>
 
                         <!--Email-->
-                        <i ng-if="column.document.dataType=='Email'" class="fa fa-envelope-o col-icon-size" style="cursor:default;margin-top:3px;"></i>
+                        <i ng-if="column.document.dataType=='Email'" class="fa fa-envelope-o col-icon-size" style="cursor:default;"></i>
 
                         <!--URL-->
-                        <i ng-if="column.document.dataType=='URL'" class="fa fa-globe col-icon-size" style="cursor:default;margin-top:3px;"></i>
+                        <i ng-if="column.document.dataType=='URL'" class="fa fa-globe col-icon-size" style="cursor:default;"></i>
 
                         <!--Number-->
-                        <i ng-if="column.document.dataType=='Number'" class="fa fa-th col-icon-size" style="cursor:default;margin-top:3px;"></i>
+                        <i ng-if="column.document.dataType=='Number'" class="fa fa-th col-icon-size" style="cursor:default;"></i>
 
                         <!--File-->
-                        <i ng-if="column.document.dataType=='File'" class="fa fa-paperclip col-icon-size" style="cursor:default;margin-top:3px;"></i>
+                        <i ng-if="column.document.dataType=='File'" class="fa fa-paperclip col-icon-size" style="cursor:default;"></i>
 
                         <!--Relation-->
-                        <i ng-if="column.document.dataType=='Relation'" class="fa fa-external-link col-icon-size" style="cursor:default;margin-top:3px;"></i>
+                        <i ng-if="column.document.dataType=='Relation'" class="fa fa-external-link col-icon-size" style="cursor:default;"></i>
 
                         <!--List-->
-                        <i ng-if="column.document.dataType=='List'" class="fa fa-bars col-icon-size" style="cursor:default;margin-top:3px;"></i>
+                        <i ng-if="column.document.dataType=='List'" class="fa fa-bars col-icon-size" style="cursor:default;"></i>
 
                         <!--GeoPoint-->
-                        <i ng-if="column.document.dataType=='GeoPoint'" class="fa fa-map-marker col-icon-size" style="cursor:default;margin-top:3px;"></i>
+                        <i ng-if="column.document.dataType=='GeoPoint'" class="fa fa-map-marker col-icon-size" style="cursor:default;"></i>
 
                         {{column.name}}
                       </span>

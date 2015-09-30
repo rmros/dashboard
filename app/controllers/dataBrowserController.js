@@ -1545,22 +1545,22 @@ $scope.filterDataType=function(dataTypeObj){
 };
 
 $scope.initiateColumnSettings = function() {
-  //var newColName="newColumn";
+  var newColName="newColumn";
   var incrementor=0;
-  /*(function iterator(i) {
+  (function iterator(i) {
           $scope.checkErrorsForCreate(newColName,$rootScope.currentProject.currentTable.columns,"column");
           if($scope.columnErrorForCreate){
             ++incrementor;
             newColName="newColumn"+incrementor;
             iterator(i+1);
           }
-  })(0); */         
+  })(0);          
 
   var uniqueId=utilityService.makeId(); 
 
   var newcol = {
       id:uniqueId,
-      name: null,
+      name: newColName,
       dataType: 'Text',
       relatedTo: null,
       relationType: null,
@@ -2053,7 +2053,7 @@ $scope.goToDocumentation=function(){
   }
 
   //Redirect to documentation  
-  window.open("https://tutorials.cloudboost.io", "_blank");
+  window.open("https://docs.cloudboost.io", "_blank");
 };
 
 //get Beacon Obj from backend

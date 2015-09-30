@@ -22,7 +22,6 @@ app.controller('appsController',
 
   $rootScope.isFullScreen=false;
   $scope.showProject=[];
-  $scope.animateApp=[];
   $scope.newApp={
     name:null,
     appId:null
@@ -110,8 +109,7 @@ app.controller('appsController',
   $scope.createProject=function(isValid){        
     $scope.appValidationError=null;
     if(isValid && $scope.newApp.name && $scope.newApp.appId){
-      $scope.showSaveBtn = false; 
-      $scope.isAppCreated = false;              
+      $scope.showSaveBtn = false;               
       $scope.appValidationError=null;
       if($scope.showProject && $scope.showProject.length>0){
         for(var i=0;i<$scope.showProject.length;++i){       
@@ -139,12 +137,7 @@ app.controller('appsController',
           if($scope.beacon && !$scope.beacon.firstApp){
             $scope.beacon.firstApp=true;
             updateBeacon();   
-          }
-
-          $scope.animateApp[0]=true;
-          $timeout(function(){           
-           $scope.animateApp[0]=false;
-          }, 1000);                
+          }                
                        
         },function(error){
           $scope.showSaveBtn = true;
