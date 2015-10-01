@@ -821,9 +821,16 @@
     background-color: #ECF0F5;
     border-radius: 2.4px;
     cursor: pointer;
-    margin-top:-2.5px;
+    margin-top:-2.5px;    
 }
-
+.relation-id-wrapper:hover .rel-del-times{   
+    visibility: visible;
+}
+.rel-del-times{
+    visibility: hidden;
+    margin-right: -4px;
+    font-size: 12px;
+}
 .relation-data-wrapper{
     width:100%;
     height: auto;
@@ -1227,7 +1234,17 @@
     margin-left: 5px;
     margin-top:4px;
     height:24px;
-    background-color: #E8E8E8;     
+    background-color: #E8E8E8;  
+    cursor: pointer;   
+}
+
+.list-rel-del-times{
+    visibility: hidden;
+    margin-right: -4px;
+    font-size: 12px;
+}
+.list-relation:hover .list-rel-del-times{
+    visibility: visible;    
 }
 
 .list-Json{

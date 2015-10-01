@@ -217,8 +217,9 @@ $scope.showCommonTypes=function(row,column){
     if(column.relatedTo=="DateTime"){    
       convertFieldsISO2DateObj(); 
     } 
-    if(column.relatedTo!='Text' && column.relatedTo!='Email' && column.relatedTo!='URL' && column.relatedTo!='Number' && column.relatedTo!='DateTime' && column.relatedTo!='Object' && column.relatedTo!='Boolean' && column.relatedTo!='File' && column.relatedTo!='GeoPoint'){
-      $("#md-searchlistdocument").modal("show");  
+    if((!$scope.editableList || $scope.editableList.length==0) && column.relatedTo!='Text' && column.relatedTo!='Email' && column.relatedTo!='URL' && column.relatedTo!='Number' && column.relatedTo!='DateTime' && column.relatedTo!='Object' && column.relatedTo!='Boolean' && column.relatedTo!='File' && column.relatedTo!='GeoPoint'){      
+      $("#md-list-commontypes").modal();
+      $scope.listSearchRelationDocs(); 
     }else{
       $("#md-list-commontypes").modal();
     }        
@@ -514,26 +515,27 @@ function saveGeopoint(){
 //End of Geo point
 
 //RELATION
-$scope.addRelation=function(row,column){
-  nullifyEditable();
-  $scope.editableRow=row;//row
-  $scope.editableColumn=column;//column
-  $scope.editableColumnName=column.name;//column name 
-  $scope.editableIndex=$scope.currentTableData.indexOf(row);//index
-
-  $scope.relColumn=_.first(_.where($rootScope.currentProject.currentTable.columns,{name:column.name}));
-  $scope.tableDef=_.first(_.where($rootScope.currentProject.tables, {name: $scope.relColumn.relatedTo}));
+$scope.addRelation=function(row,column){  
   
   if(row.get(column.name)){
     //var tableName=row.get(column.name).document._tableName;
     var rowId=row.get(column.name).document._id; 
     $scope.linkedRelatedDoc=rowId;
     $scope.relToRel=false;
-    $("#md-reldocumentviewer").modal();    
-    
+    //$("#md-reldocumentviewer").modal(); 
+    $scope.viewRelationData(row,column,null);   
   }else{
-    $scope.linkedRelatedDoc=null;
-    $("#md-searchreldocument").modal(); 
+    nullifyEditable();
+    $scope.editableRow=row;//row
+    $scope.editableColumn=column;//column
+    $scope.editableColumnName=column.name;//column name 
+    $scope.editableIndex=$scope.currentTableData.indexOf(row);//index
+
+    $scope.relColumn=_.first(_.where($rootScope.currentProject.currentTable.columns,{name:column.name}));
+    $scope.tableDef=_.first(_.where($rootScope.currentProject.tables, {name: $scope.relColumn.relatedTo}));
+
+    $scope.linkedRelatedDoc=null;    
+    $scope.searchRelationDocs();
   } 
 };
 
@@ -688,35 +690,35 @@ function convertISO2DateObj(table,cloudObject){
   }
 }
 
-$scope.deleteRelLink=function(){
-    var i=$scope.currentTableData.indexOf($scope.editableRow);   
+$scope.deleteRelLink=function(row,column){
+    var i=$scope.currentTableData.indexOf(row);   
     rowEditMode(i);
    
     var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
-       if(everyCol.name!=$scope.editableColumnName && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
+       if(everyCol.name!=column.name && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
          if(!$scope.editableRow.get(everyCol.name)){
           return everyCol;
          }          
        }
     });
-    $scope.editableRow.set($scope.editableColumnName,null);
+    row.set(column.name,null);
 
     if(requiredField){      
-      rowWarningMode(i,$scope.editableRow,$scope.editableColumnName);     
+      rowWarningMode(i,row,column.name);     
     }else{
       rowSpinnerMode(i);
                   
       //Save Cloud Object
-      $scope.saveCloudObject($scope.editableRow)
+      $scope.saveCloudObject(row)
       .then(function(obj){      
         $scope.relatedTableDefArray=[];
         $scope.relatedTableRecordArray=[];
         showSaveIconInSecond(i);
         $scope.linkedRelatedDoc=null;
-        $("#md-reldocumentviewer").modal("hide");
+        //$("#md-reldocumentviewer").modal("hide");
       }, function(error){ 
           rowErrorMode(i,error); 
-          $("#md-reldocumentviewer").modal("hide"); 
+          //$("#md-reldocumentviewer").modal("hide"); 
       });
 
     }
@@ -1065,6 +1067,17 @@ $scope.deleteListItem=function(index){
     $scope.listIndex=null;
   }   
 };
+$scope.deleteListItemFromTable=function(row,column,index){
+  nullifyFields();
+  $scope.editableRow=row;//row
+  $scope.editableColumnName=column.name;//column name 
+  $scope.editableColumn=column;
+  $scope.editableIndex=$scope.currentTableData.indexOf(row);//index
+
+  $scope.editableList=angular.copy(row.get(column.name));
+  $scope.editableList.splice(index,1);   
+  $scope.setAndSaveList();
+};
 
 $scope.setAndSaveList=function(){ 
   if(!checkListErrors()){
@@ -1158,11 +1171,10 @@ $scope.listSearchRelationDocs=function(){
   //List Relations records 
   $scope.loadTableData($scope.tableDef,"createdAt","asc",20,0)
   .then(function(list){ 
-     $scope.listRelationTableData=list; 
-     $("#md-searchlistdocument").modal("show");         
-     //$scope.$digest();                                       
-  },
-  function(error){ 
+    $scope.listRelationTableData=list; 
+    $("#md-searchlistdocument").modal("show");         
+    //$scope.$digest();                                       
+  },function(error){ 
     $scope.searchRelDocsError=error;      
   });
   //List Relations records   
@@ -1286,6 +1298,9 @@ function checkListErrors(){
   }  
 }
 //End of List
+$scope.closeListModal=function(){
+  nullifyEditable();
+};
 
 function nullifyFields(){
   //Disable column to edit
@@ -1539,6 +1554,8 @@ $scope.goToTables=function(){
 };
 
 $scope.goToDataBrowser=function(t){  
+  $("#md-searchreldocument").modal("hide"); 
+  $("#md-searchlistdocument").modal("hide");     
   window.location.href="#/"+id+"/table/"+t.name;
 };
 

@@ -710,8 +710,11 @@
                 <div ng-if="column.document.dataType=='Relation'"  class="tdDiv cf" style="min-width: 240px"> 
 
                   <div class="real-content pull-left"> 
-                    <div ng-click="viewRelationData(eachRow,column,null)" ng-if="eachRow.document[column.name]" class="relation-id-wrapper">
-                      {{eachRow.get(column.name).document._id}}
+                    <div ng-click="viewRelationData(eachRow,column,null)" ng-if="eachRow.document[column.name]" class="relation-id-wrapper cf">
+                      <span class="pull-left">{{eachRow.get(column.name).document._id}}</span>
+                      <span class="pull-right rel-del-times">
+                        <i class="fa fa-times" ng-click="deleteRelLink(eachRow,column); $event.stopPropagation()"></i>
+                      </span>
                     </div>                                    
                   </div>
 
@@ -849,8 +852,11 @@
 
                         <div class="pull-left text-list-torrent flex-general-row-wrapper">
                          
-                          <div ng-repeat="eachRelation in eachRow.document[column.name] track by $index" class="list-relation">
-                            <span>{{eachRelation.document._id}}</span>
+                          <div ng-repeat="eachRelation in eachRow.document[column.name] track by $index" class="list-relation" ng-click="viewRelationData(eachRow,column,$index)">
+                            <span class="pull-left">{{eachRelation.document._id}}</span>&nbsp;
+                            <span class="pull-right list-rel-del-times">
+                              <i class="fa fa-times" ng-click="deleteListItemFromTable(eachRow,column,$index); $event.stopPropagation()"></i>
+                            </span>
                           </div>                        
 
                         </div>           
@@ -2258,7 +2264,7 @@
       <div class="modal-content">
 
         <div class="pull-right modalX">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeListModal()">&times;</button>
         </div>  
         <div class="flex-general-row-wrapper-center modalH">
           <h3>Documents List</h3>        
@@ -2341,9 +2347,7 @@
                      <button ng-click="addListItem(newListItem)">Add</button>                   
                   </div>
                   <div class="list-datetime-aura flex-general-row-wrapper-center cf">
-
-                     <input kendo-date-time-picker  k-ng-model="$parent.newListItem"  class="list-m-datetime" />                
-
+                     <input kendo-date-time-picker  k-ng-model="$parent.newListItem"  class="list-m-datetime" />  
                   </div>                 
 
               </div>
@@ -2382,7 +2386,7 @@
               <!--Relation-->
               <div ng-if="editableColumn.relatedTo!='Text' && editableColumn.relatedTo!='Email' && editableColumn.relatedTo!='URL' && editableColumn.relatedTo!='Number' && editableColumn.relatedTo!='DateTime' && editableColumn.relatedTo!='Object' && editableColumn.relatedTo!='Boolean' && editableColumn.relatedTo!='File' && editableColumn.relatedTo!='GeoPoint'" class="document-list-add-wrapper">
                   
-                  <button type="button"  ng-click="listSearchRelationDocs()" class="add-relation-btn">Add Relation</button>
+                <button type="button"  ng-click="listSearchRelationDocs()" class="add-relation-btn">Add Relation</button>
 
               </div>
 
