@@ -142,13 +142,13 @@
               </div>
                 
               <!--columns which are hidden-->
-              <div  class="list-hidden-col-wrapper" malihuscrollbar-for-popup>
+              <div class="list-hidden-col-wrapper" malihuscrollbar-for-popup>
 
                 <div ng-repeat="vcol in currentProject.currentTable.columns track by $index"  class="list-hidden-col-container">
 
                   <div ng-if="vcol.dataType!='Id'" class="flex-general-row-wrapper">
                     <div class="hidden-col-chbx-div">
-                      <checkbox  class="hidden-col-chbx"  ng-model="!hideColumn[$index]" ng-click="toggleHideColumn($index)"></checkbox>
+                      <checkbox  class="hidden-col-chbx chckbx-fix"  ng-model="!hideColumn[$index]" ng-click="toggleHideColumn($index)"></checkbox>
                     </div>
                     <div class="hidden-col-name-div">
                       <span>{{vcol.name}}</span>
@@ -218,7 +218,7 @@
             <tr class="cust-head-tr fix-prime-thead">
               <th class="fTh cf">
                 <div class="fThDiv">
-                  <checkbox class="btn-default checkBxDflt" ng-model="areSelectAllRows" ng-click="selectAllRows()"></checkbox>
+                  <checkbox class="btn-default checkBxDflt chckbx-fix" ng-model="areSelectAllRows" ng-click="selectAllRows()"></checkbox>
                 </div>                  
               </th>
              
@@ -229,18 +229,20 @@
                     <div class="col-name">
                        <span style="display:inline; cursor:default;">
                         <!--Id-->
-                        <i ng-if="column.document.dataType==='Id'" class="fa fa-shield col-icon-size" style="cursor:default;"></i>
+                        <i ng-if="column.document.dataType==='Id'" class="fa fa-bullseye col-icon-size" style="cursor:default;"></i>
 
                         <!--Boolean-->
                         <i ng-if="column.document.dataType=='Boolean'"  class="fa fa-check col-icon-size" style="cursor:default;"></i>
 
                          <!--DateTime-->
                         <i ng-if="column.document.dataType=='DateTime'" class="fa fa-calendar-o col-icon-size" style="cursor:default;"></i>
+
                         <!--ACL or Object-->
                         <i ng-if="column.document.dataType=='ACL' || column.document.dataType=='Object'" class="fa fa-lock col-icon-size" style="cursor:default;"></i>
 
                         <!--Text-->
                         <i ng-if="column.document.dataType=='Text'" class="fa fa-text-height col-icon-size" style="cursor:default;"></i>
+
                         <!--Encrypted Text-->
                         <i ng-if="column.document.dataType=='Password'" class="fa fa-asterisk col-icon-size" style="cursor:default;"></i>
 
@@ -335,7 +337,7 @@
                           <div class="flex-general-row-wrapper">
 
                             <div>
-                             <checkbox  class="hidden-col-chbx"  ng-model="column.required" ></checkbox>
+                             <checkbox  class="hidden-col-chbx chckbx-fix"  ng-model="column.required" ></checkbox>
                             </div>
 
                              <div class="" style="margin-left:5px;">
@@ -349,7 +351,7 @@
                           <div class="flex-general-row-wrapper">
 
                             <div>
-                             <checkbox  class="hidden-col-chbx"  ng-model="column.unique" ></checkbox>
+                             <checkbox  class="hidden-col-chbx chckbx-fix"  ng-model="column.unique" ></checkbox>
                             </div>
 
                              <div class="" style="margin-left:5px;">
@@ -430,7 +432,7 @@
                                     <label class="addcollabel">Required</label>              
                                 </div>
                                 <div class="add-Bx" style="margin-left:18px;">                                   
-                                    <checkbox class="btn-default checkBxDflt" ng-model="newColumnObj.required" style="border: 1px solid #DBDCDD;"></checkbox>
+                                    <checkbox class="btn-default checkBxDflt chckbx-fix" ng-model="newColumnObj.required" style="border: 1px solid #DBDCDD;"></checkbox>
                                 </div>         
                             </div>
 
@@ -443,7 +445,7 @@
                                      <label class="addcollabel">Unique</label>              
                                 </div>
                                 <div class="add-Bx">                                   
-                                    <checkbox class="btn-default checkBxDflt" ng-hide="col.dataType === 'List'"  ng-model="newColumnObj.unique" style="border: 1px solid #DBDCDD;"></checkbox>
+                                    <checkbox class="btn-default checkBxDflt chckbx-fix" ng-hide="col.dataType === 'List'"  ng-model="newColumnObj.unique" style="border: 1px solid #DBDCDD;"></checkbox>
                                 </div>         
                             </div>
 
@@ -489,7 +491,7 @@
               <td  class="fdataTd fix-collective-chkbx">
                   <div class="fTdDiv flex-general-row-wrapper-center">
                     <!--Checkbox-->
-                    <checkbox  ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="btn-default checkBxDflt"  ng-model="rowsSelected[$index]" ng-click="selectThisRow($index)"></checkbox>
+                    <checkbox  ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="btn-default checkBxDflt chckbx-fix"  ng-model="rowsSelected[$index]" ng-click="selectThisRow($index)"></checkbox>
                     <!--<span ng-show="!showSerialNo[$index]" class="sno">{{$index+1}}</span>-->
 
                     <!--Edit mode-->

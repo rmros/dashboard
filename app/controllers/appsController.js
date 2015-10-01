@@ -22,6 +22,7 @@ app.controller('appsController',
 
   $rootScope.isFullScreen=false;
   $scope.showProject=[];
+  $scope.animateApp=[];
   $scope.newApp={
     name:null,
     appId:null
@@ -111,6 +112,7 @@ app.controller('appsController',
     if(isValid && $scope.newApp.name && $scope.newApp.appId){
       $scope.showSaveBtn = false;               
       $scope.appValidationError=null;
+      $scope.isAppCreated = false;  
       if($scope.showProject && $scope.showProject.length>0){
         for(var i=0;i<$scope.showProject.length;++i){       
           $scope.showProject[i]=false;        
@@ -130,6 +132,16 @@ app.controller('appsController',
           $scope.newApp.name="";
           $scope.newApp.appId = "";
 
+          $scope.animateApp[0]=true;
+          $timeout(function(){           
+            $scope.animateApp[0]=false;
+
+            $timeout(function(){           
+             $scope.isAppCreated = false;
+            }, 1000);
+            
+          }, 1000);
+          
           //Add default tables
           addDefaultTables(data);
 
