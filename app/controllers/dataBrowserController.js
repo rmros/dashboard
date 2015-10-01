@@ -216,8 +216,12 @@ $scope.showCommonTypes=function(row,column){
   
     if(column.relatedTo=="DateTime"){    
       convertFieldsISO2DateObj(); 
-    }  
-    $("#md-list-commontypes").modal();
+    } 
+    if(column.relatedTo!='Text' && column.relatedTo!='Email' && column.relatedTo!='URL' && column.relatedTo!='Number' && column.relatedTo!='DateTime' && column.relatedTo!='Object' && column.relatedTo!='Boolean' && column.relatedTo!='File' && column.relatedTo!='GeoPoint'){
+      $("#md-searchlistdocument").modal("show");  
+    }else{
+      $("#md-list-commontypes").modal();
+    }        
   }else{
     $scope.editableField[index][column.name]=angular.copy(row.get(column.name));      
   }
@@ -525,11 +529,11 @@ $scope.addRelation=function(row,column){
     var rowId=row.get(column.name).document._id; 
     $scope.linkedRelatedDoc=rowId;
     $scope.relToRel=false;
-    $("#md-reldocumentviewer").modal();
+    $("#md-reldocumentviewer").modal();    
     
   }else{
     $scope.linkedRelatedDoc=null;
-    $("#md-reldocumentviewer").modal();
+    $("#md-searchreldocument").modal(); 
   } 
 };
 
@@ -949,8 +953,8 @@ $scope.showRelationList=function(cloudObject,column){
   if(column.relatedTo=="DateTime"){    
     convertFieldsISO2DateObj(); 
   } 
-  $scope.isRelationalList=true; 
-  $("#md-list-commontypes").modal();
+  $scope.isRelationalList=true;
+  $("#md-list-commontypes").modal();  
 };
 //End of relation
 
