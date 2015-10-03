@@ -118,6 +118,21 @@ $scope.queryTableById = function(tableName,objectId) {
   return  q.promise;           
 }; 
 
+$scope.queryTableByName = function(tableName) {          
+  var q=$q.defer();
+    
+    var query = new CB.CloudQuery(tableName);       
+    query.find({
+    success : function(records){ 
+      q.resolve(records);                 
+
+    }, error : function(error){                
+      q.reject(error);
+    }}); 
+
+  return  q.promise;           
+};
+
 //Save Boolean
 $scope.setAndSaveBoolean=function(row,column){
   var i=$scope.currentTableData.indexOf(row);   
@@ -153,7 +168,6 @@ $scope.setAndSaveBoolean=function(row,column){
 };
 //End Boolean 
 
-//Text
 //Invoke Common Type Input enable
 $scope.showCommonTypes=function(row,column){
   nullifyFields();
@@ -184,14 +198,39 @@ $scope.showCommonTypes=function(row,column){
 
   }else if(column.document.dataType=="DateTime"){
     $scope.editableField[index][column.name]=angular.copy(new Date(row.get(column.name)));     
-  }else if(column.dataType=="Object" || column.dataType=="ACL"){
+  }else if(column.dataType=="Object"){
+
+    $scope.editableJsonObj=angular.copy(row.get(column.name));   
+    if(!row.get(column.name)){
+      $scope.editableJsonObj=null;
+    }          
+    $scope.editableJsonObj =JSON.stringify($scope.editableJsonObj,null,2);            
+    $("#md-objectviewer").modal();  
+
+  }else if(column.dataType=="ACL"){
 
     $scope.editableJsonObj=angular.copy(row.get(column.name));   
     if(!row.get(column.name)){
       $scope.editableJsonObj=null;
     }
-    $scope.editableJsonObj =JSON.stringify($scope.editableJsonObj,null,2);
-    $("#md-objectviewer").modal();
+    if($scope.editableJsonObj){      
+        //$scope.editableJsonObj =JSON.stringify($scope.editableJsonObj,null,2);
+
+        $scope.queryTableByName("User")
+        .then(function(userRecords){ 
+          $scope.userRecords=[];
+          for(var i=0;i<userRecords.length;i++){
+            $scope.userRecords.push(CB.toJSON( userRecords[i] ));
+          }
+          $scope.userRecords=userRecords;        
+          return $scope.queryTableByName("Role")
+        }).then(function(roleRecords){  
+          $scope.roleRecords=roleRecords;         
+          $("#md-aclviewer").modal();
+        },function(error){          
+          $("#md-aclviewer").modal();       
+        });       
+    }    
 
   }else if(column.document.dataType=="File"){
 

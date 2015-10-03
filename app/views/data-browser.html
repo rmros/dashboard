@@ -1091,6 +1091,100 @@
 
 </div>
 
+<!-- EditACL Modal -->
+<div class="modal fade colored-header danger" id="md-aclviewer" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="pull-right modalX">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>  
+        <div class="flex-general-row-wrapper-center modalH">
+          &nbsp;                 
+        </div>      
+        <div class="modal-body">        
+         
+          <div class="acl-wrapper">
+            <!--Head-->
+            <div class="acl-head flex-general-row-wrapper">
+              <div class="acl-player flex-general-row-wrapper">
+                <div class="acl-search-bx flex-general-row-wrapper" style="width:72%;margin-top:1px;">
+                  <div style="width:100%">
+                    <input type="text"  class="acl-search-input" style="width:100%" placeholder="User or Role">
+                    <!--<angucomplete-alt id="ex1"
+                    placeholder="User or Role"
+                    pause="100"
+                    selected-object="selectedCountry"
+                    local-data="userRecords"
+                    search-fields="name"                    
+                    minlength="1"
+                    input-class="" style="width:100%;color:black !important;"/>-->                   
+
+                  </div>                                   
+                </div>
+                <div style="width:5%; margin-left:2px;">
+                  <i class="fa fa-search" style="margin-top:5px;color:white;"></i>
+                </div>
+              </div>
+              <div class="acl-player-controll flex-general-row-wrapper">
+                <div class="flex-equal-ratio-items" style="margin-top:3.5px;color:white;">
+                  <span>Read</span>
+                </div> 
+                <div class="flex-equal-ratio-items" style="margin-top:3.5px;color:white;">
+                  <span>Write</span>
+                </div>
+                <div style="width:25px;">
+                  <i class="fa fa-cog" style="margin-top:5px;color:white;"></i>
+                </div> 
+              </div>
+            </div> 
+
+            <!--Content-->
+            <div ng-repeat="" class="acl-content flex-general-row-wrapper">
+              <div class="acl-player">
+                <p>User or Role</p>
+              </div>
+              <div class="acl-player-controll flex-general-row-wrapper">
+                <div class="flex-equal-ratio-items">
+                  <checkbox class="btn-default list-m-boolean-list"  ng-model="true"></checkbox>
+                </div> 
+                <div class="flex-equal-ratio-items">
+                  <checkbox class="btn-default list-m-boolean-list"  ng-model="true"></checkbox>
+                </div>
+                <div style="width:25px;">
+                  <i class="fa fa-times"></i>
+                </div> 
+              </div>
+            </div> 
+          
+
+            <!--Content-->
+            <div class="acl-content flex-general-row-wrapper">
+              <div class="acl-player">
+                <p>User or Role</p>
+              </div>
+              <div class="acl-player-controll flex-general-row-wrapper">
+                <div class="flex-equal-ratio-items">
+                  <checkbox class="btn-default list-m-boolean-list"  ng-model="true"></checkbox>
+                </div> 
+                <div class="flex-equal-ratio-items">
+                  <checkbox class="btn-default list-m-boolean-list"  ng-model="true"></checkbox>
+                </div>
+                <div style="width:25px;">
+                  <i class="fa fa-times"></i>
+                </div> 
+              </div>
+            </div>      
+          
+        </div>
+      </div>  
+      <div class="flex-general-row-wrapper-center modalF">        
+          <button type="button" ng-click="setAndSaveJsonObject()" class="btn btn-primary btn-flat" style="width:400px;">Save</button>
+        </div> 
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+<!-- EditACL Modal -->
 
 <!-- EditJSON Modal -->
   <div class="modal fade colored-header danger" id="md-objectviewer" tabindex="-1" role="dialog">
@@ -2042,7 +2136,7 @@
          
         <!--Set Button-->
         <div class="flex-general-row-wrapper-center modalF">        
-  <button type="button" ng-click="setRelationData(relEditableRow,relEditableColumn,relEditableJsonObj)" class="btn btn-primary btn-flat" style="width:400px;">Set</button>
+          <button type="button" ng-click="setRelationData(relEditableRow,relEditableColumn,relEditableJsonObj)" class="btn btn-primary btn-flat" style="width:400px;">Set</button>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

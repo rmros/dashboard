@@ -1822,3 +1822,60 @@
     background-color: #427fed;
 }
 
+.acl-wrapper{
+    width:100%;
+    height: auto;  
+    margin-bottom: 20px;   
+}
+.acl-head{
+    height: 34px;
+    width: 100%;
+    background-color: #3A5795;
+    padding: 4.3px;
+    color: white;
+    font-size: 14px;
+}
+.acl-content{
+    height: 30px;
+    width: 100%;
+    border-bottom: 1px solid #DBD9D9;
+    padding-right: 4.3px;
+    padding-left: 4.3px;
+    padding-top: 2px;
+    padding-bottom: 2.5px;
+    color: black;
+    font-size: 14px; 
+    margin-top: 5px;
+    margin-bottom: 0 !important;
+}
+.acl-search{
+    height: 23px;
+    width: 100%;    
+    padding-right: 4.3px;
+    padding-left: 4.3px;
+    
+    color: black;
+    font-size: 14px; 
+    margin-top: 5px;
+    margin-bottom: 0 !important; 
+}
+.acl-player{
+    width: 65%;
+}
+.acl-player-controll{
+    width:35%;
+}
+.acl-search-bx{
+    border:1px solid #E5E3E3;
+    height: 23px; 
+    border-radius: 1.9px;   
+}
+.acl-search-input{
+    border: none;
+    height: 22px;
+    color: black;    
+}
+
+.acl-search-input:focus{
+    outline: none;
+}
