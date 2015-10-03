@@ -118,6 +118,21 @@ $scope.queryTableById = function(tableName,objectId) {
   return  q.promise;           
 }; 
 
+$scope.queryTableByName = function(tableName) {          
+  var q=$q.defer();
+    
+    var query = new CB.CloudQuery(tableName);       
+    query.find({
+    success : function(records){ 
+      q.resolve(records);                 
+
+    }, error : function(error){                
+      q.reject(error);
+    }}); 
+
+  return  q.promise;           
+};
+
 //Save Boolean
 $scope.setAndSaveBoolean=function(row,column){
   var i=$scope.currentTableData.indexOf(row);   
@@ -153,7 +168,6 @@ $scope.setAndSaveBoolean=function(row,column){
 };
 //End Boolean 
 
-//Text
 //Invoke Common Type Input enable
 $scope.showCommonTypes=function(row,column){
   nullifyFields();
@@ -178,20 +192,44 @@ $scope.showCommonTypes=function(row,column){
   }
 
   //Set Field or value      
-  if(column.document.dataType=="Password"){ 
+  if(column.document.dataType=="EncryptedText"){ 
     $scope.holdFieldData[index][column.name]=angular.copy(row.get(column.name));     
     $scope.editableField[index][column.name]=null;
 
   }else if(column.document.dataType=="DateTime"){
     $scope.editableField[index][column.name]=angular.copy(new Date(row.get(column.name)));     
-  }else if(column.dataType=="Object" || column.dataType=="ACL"){
+  }else if(column.dataType=="Object"){
+
+    $scope.editableJsonObj=angular.copy(row.get(column.name));   
+    if(!row.get(column.name)){
+      $scope.editableJsonObj=null;
+    }          
+    $scope.editableJsonObj =JSON.stringify($scope.editableJsonObj,null,2);            
+    $("#md-objectviewer").modal();  
+
+  }else if(column.dataType=="ACL"){
 
     $scope.editableJsonObj=angular.copy(row.get(column.name));   
     if(!row.get(column.name)){
       $scope.editableJsonObj=null;
     }
-    $scope.editableJsonObj =JSON.stringify($scope.editableJsonObj,null,2);
-    $("#md-objectviewer").modal();
+    if($scope.editableJsonObj){      
+        //$scope.editableJsonObj =JSON.stringify($scope.editableJsonObj,null,2);
+
+        $scope.queryTableByName("User")
+        .then(function(userRecords){ 
+          for(var i=o;i<userRecords.length;i++){
+            
+          }
+          $scope.userRecords=userRecords;          
+          return $scope.queryTableByName("Role")
+        }).then(function(roleRecords){  
+          $scope.roleRecords=roleRecords;         
+          $("#md-aclviewer").modal();
+        },function(error){          
+          $("#md-aclviewer").modal();       
+        });       
+    }    
 
   }else if(column.document.dataType=="File"){
 
@@ -726,7 +764,7 @@ $scope.deleteRelLink=function(row,column){
 
 $scope.holdRelationData=function(cloudObject,column,data){
   if(!column.required){
-    if(column.dataType=="Password"){
+    if(column.dataType=="EncryptedText"){
       $scope.relationHoldData[column.name]=null;
       $scope.relationShowInput[column.name]=true;        
       $scope.nullAccepted=false;
@@ -739,7 +777,7 @@ $scope.holdRelationData=function(cloudObject,column,data){
 
 $scope.deleteRelationData=function(cloudObject,column,data){
   if(!column.required){
-    if(column.dataType=="Password"){    
+    if(column.dataType=="EncryptedText"){    
       cloudObject.set(column.name,null);
       $scope.nullAccepted=true;
     }
@@ -801,8 +839,8 @@ $scope.setRelationData=function(cloudObject,column,data){
     $("#md-reldocumentviewer").modal("hide");
   }
 
-  //Password
-  if(column.document.dataType=="Password"){
+  //EncryptedText
+  if(column.document.dataType=="EncryptedText"){
     if(!$scope.nullAccepted && !data){
       $scope.relationShowInput[column.name]=false;
     }else if(!$scope.relationError[column.name]){
@@ -1326,7 +1364,7 @@ $scope.setAndSave=function(){
   var data=$scope.editableField[$scope.editableIndex][$scope.editableColumnName];
   var holdData=$scope.holdFieldData[$scope.editableIndex][$scope.editableColumnName];
 
-  if(!$scope.nullAccepted && $scope.editableColumn.document.dataType=="Password" && (!data || data==null)){
+  if(!$scope.nullAccepted && $scope.editableColumn.document.dataType=="EncryptedText" && (!data || data==null)){
     $scope.editableField[$scope.editableIndex][$scope.editableColumnName]=holdData;
     $scope.showInputForEdit[$scope.editableIndex][$scope.editableColumnName]=false;
   }else{         
@@ -1560,7 +1598,7 @@ $scope.goToDataBrowser=function(t){
 };
 
 $scope.filterDataType=function(dataTypeObj){
-  if(dataTypeObj.type!="List" && dataTypeObj.type!="Relation" && dataTypeObj.name!="Password"){
+  if(dataTypeObj.type!="List" && dataTypeObj.type!="Relation" && dataTypeObj.name!="EncryptedText"){
     return dataTypeObj;
   }
 };

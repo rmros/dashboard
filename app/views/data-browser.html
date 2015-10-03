@@ -244,7 +244,7 @@
                         <i ng-if="column.document.dataType=='Text'" class="fa fa-text-height col-icon-size" style="cursor:default;"></i>
 
                         <!--Encrypted Text-->
-                        <i ng-if="column.document.dataType=='Password'" class="fa fa-asterisk col-icon-size" style="cursor:default;"></i>
+                        <i ng-if="column.document.dataType=='EncryptedText'" class="fa fa-asterisk col-icon-size" style="cursor:default;"></i>
 
                         <!--Email-->
                         <i ng-if="column.document.dataType=='Email'" class="fa fa-envelope-o col-icon-size" style="cursor:default;"></i>
@@ -305,14 +305,14 @@
                         </span>
                       </div>
 
-                      <div ng-if="column.document.dataType!='Id' && column.document.dataType!='Object' && column.document.dataType!='ACL' && column.document.dataType!='File' && column.document.dataType!='Relation' && column.document.dataType!='List' && column.document.dataType!='Password'" ng-click="sortASC(column)" class="col-optionz">
+                      <div ng-if="column.document.dataType!='Id' && column.document.dataType!='Object' && column.document.dataType!='ACL' && column.document.dataType!='File' && column.document.dataType!='Relation' && column.document.dataType!='List' && column.document.dataType!='EncryptedText'" ng-click="sortASC(column)" class="col-optionz">
                         <span class="col-options-span">
                           <i class="fa fa-sort-alpha-asc" style="padding-top: 5px;padding-right: 6px;"></i>
                           Sort Ascending
                         </span>
                       </div>
 
-                      <div ng-if="column.document.dataType!='Id' && column.document.dataType!='Object' && column.document.dataType!='ACL' && column.document.dataType!='File' && column.document.dataType!='Relation' && column.document.dataType!='List' && column.document.dataType!='Password'" ng-click="sortDESC(column)" class="col-optionz">
+                      <div ng-if="column.document.dataType!='Id' && column.document.dataType!='Object' && column.document.dataType!='ACL' && column.document.dataType!='File' && column.document.dataType!='Relation' && column.document.dataType!='List' && column.document.dataType!='EncryptedText'" ng-click="sortDESC(column)" class="col-optionz">
                         <span class="col-options-span">
                           <i class="fa fa-sort-alpha-desc" style="padding-top: 5px;padding-right: 6px;"></i>
                           Sort Descending
@@ -613,7 +613,7 @@
                 <!--/Text-->
 
                 <!--Encrypted Text-->
-                <div ng-if="column.document.dataType=='Password'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='EncryptedText'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
                       <span ng-if="eachRow.get(column.name)">********</span>                    
@@ -739,8 +739,8 @@
                         <div class="pull-left text-list-torrent flex-general-row-wrapper">
                          
                           <div ng-repeat="eachText in eachRow.document[column.name] track by $index" class="list-text">
-                            <span ng-if="column.document.relatedTo!='Password'">{{eachText}}</span>
-                            <span ng-if="column.document.relatedTo=='Password'" style="font-size:14px;">*****</span>
+                            <span ng-if="column.document.relatedTo!='EncryptedText'">{{eachText}}</span>
+                            <span ng-if="column.document.relatedTo=='EncryptedText'" style="font-size:14px;">*****</span>
                           </div>                        
 
                         </div>           
@@ -914,7 +914,7 @@
                 <!--/Geo Point-->
 
                 <!--Others-->
-                <div ng-if="column.document.dataType!='Id' && column.document.dataType!='Boolean' && column.document.dataType!='DateTime' && column.document.dataType!='ACL' && column.document.dataType!='Text' && column.document.dataType!='Password' && column.document.dataType!='Email' && column.document.dataType!='URL' && column.document.dataType!='Number' && column.document.dataType!='Object' && column.document.dataType!='File' && column.document.dataType!='Relation' && column.document.dataType!='List' && column.document.dataType!='GeoPoint'" class="tdDiv cf" style="min-width: 210px"> 
+                <div ng-if="column.document.dataType!='Id' && column.document.dataType!='Boolean' && column.document.dataType!='DateTime' && column.document.dataType!='ACL' && column.document.dataType!='Text' && column.document.dataType!='EncryptedText' && column.document.dataType!='Email' && column.document.dataType!='URL' && column.document.dataType!='Number' && column.document.dataType!='Object' && column.document.dataType!='File' && column.document.dataType!='Relation' && column.document.dataType!='List' && column.document.dataType!='GeoPoint'" class="tdDiv cf" style="min-width: 210px"> 
 
                   <div class="real-content pull-left">  
                     {{eachRow.get(column.name)}}              
@@ -1600,7 +1600,7 @@
                       <i ng-if="relCol.document.dataType=='Text'" class="fa fa-text-height col-icon-size"></i>
 
                       <!--Encrypted Text-->
-                      <i ng-if="relCol.document.dataType=='Password'" class="fa fa-asterisk col-icon-size"></i>
+                      <i ng-if="relCol.document.dataType=='EncryptedText'" class="fa fa-asterisk col-icon-size"></i>
 
                       <!--Email-->
                       <i ng-if="relCol.document.dataType=='Email'" class="fa fa-envelope-o col-icon-size"></i>
@@ -1713,7 +1713,7 @@
                   </div> 
                    
                   <!--Encrypted Text-->
-                  <div ng-if="relCol.document.dataType=='Password'" class="m-value">
+                  <div ng-if="relCol.document.dataType=='EncryptedText'" class="m-value">
                       <div class="m-data-container cf" style="height:35px;">
 
                         <div class="m-real-content-cmn-types pull-left"> 
@@ -1863,7 +1863,7 @@
                       <div class="m-data-container cf" style="height:37px;">
 
                         <!--Text,Encrypted Text,Email,Number,URL-->
-                        <div ng-if="relCol.document.relatedTo=='Text' || relCol.document.relatedTo=='Password' || relCol.document.relatedTo=='Email' || relCol.document.relatedTo=='Number' || relCol.document.relatedTo=='URL'" class="m-real-content pull-left">                           
+                        <div ng-if="relCol.document.relatedTo=='Text' || relCol.document.relatedTo=='EncryptedText' || relCol.document.relatedTo=='Email' || relCol.document.relatedTo=='Number' || relCol.document.relatedTo=='URL'" class="m-real-content pull-left">                           
                           <div  class="m-list-condition flex-general-row-wrapper">
                              
                               <div ng-repeat="eachText in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
@@ -1964,7 +1964,7 @@
                         </div>
 
                         <!--Relation--> 
-                        <div ng-if="relCol.document.relatedTo!='Text' && relCol.document.relatedTo!='Password' && relCol.document.relatedTo!='Email' && relCol.document.relatedTo!='Number' && relCol.document.relatedTo!='URL' && relCol.document.relatedTo!='DateTime' && relCol.document.relatedTo!='Boolean' && relCol.document.relatedTo!='File' && relCol.document.relatedTo!='Object' && relCol.document.relatedTo!='GeoPoint'" class="m-real-content pull-left">  
+                        <div ng-if="relCol.document.relatedTo!='Text' && relCol.document.relatedTo!='EncryptedText' && relCol.document.relatedTo!='Email' && relCol.document.relatedTo!='Number' && relCol.document.relatedTo!='URL' && relCol.document.relatedTo!='DateTime' && relCol.document.relatedTo!='Boolean' && relCol.document.relatedTo!='File' && relCol.document.relatedTo!='Object' && relCol.document.relatedTo!='GeoPoint'" class="m-real-content pull-left">  
                           <div  class="m-list-condition flex-general-row-wrapper">
                              
                               <div ng-repeat="eachRel in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
@@ -1989,7 +1989,7 @@
                   </div>
 
                   <!--Others-->
-                  <div ng-if="relCol.document.dataType!='Id' && relCol.document.dataType!='Boolean' && relCol.document.dataType!='DateTime' && relCol.document.dataType!='File'  && relCol.document.dataType!='Text' &&  relCol.document.dataType!='Password' && relCol.document.dataType!='ACL' && relCol.document.dataType!='Object' && relCol.document.dataType!='Email' && relCol.document.dataType!='URL' && relCol.document.dataType!='Number' && relCol.document.dataType!='File' && relCol.document.dataType!='Relation' && relCol.document.dataType!='List' && relCol.document.dataType!='GeoPoint'" class="m-value">
+                  <div ng-if="relCol.document.dataType!='Id' && relCol.document.dataType!='Boolean' && relCol.document.dataType!='DateTime' && relCol.document.dataType!='File'  && relCol.document.dataType!='Text' &&  relCol.document.dataType!='EncryptedText' && relCol.document.dataType!='ACL' && relCol.document.dataType!='Object' && relCol.document.dataType!='Email' && relCol.document.dataType!='URL' && relCol.document.dataType!='Number' && relCol.document.dataType!='File' && relCol.document.dataType!='Relation' && relCol.document.dataType!='List' && relCol.document.dataType!='GeoPoint'" class="m-value">
                       <div class="m-data-container cf" style="height:37px;">
 
                         <div class="m-real-content pull-left">

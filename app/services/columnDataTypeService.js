@@ -29,7 +29,7 @@ app.factory('columnDataTypeService', function () {
                visible: true
             },
             {
-              name : 'Password',
+              name : 'EncryptedText',
               text : 'Encrypted Text',
               type: 'static',
               visible: true
