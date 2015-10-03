@@ -697,7 +697,7 @@
                          
                       <!--Add File-->   
                       <a ng-if="!eachRow.get(column.name)" class="square-btn fileT-thumb-width3" ng-click="showCommonTypes(eachRow,column)">
-                        <div  style="color:{{currentProject.currentTable.tableColor || '#3A5795'}};">+</div>&nbsp;
+                        <div  style="color:#3A5795;">+</div>&nbsp;
                       </a>
                                                              
                     </div>         
@@ -721,7 +721,7 @@
                   <!--Popup Edit Button-->
                   <div class="modal-wrapper pull-right">
                       <a class="round-btn" ng-click="addRelation(eachRow,column)">
-                        <i class="fa fa-expand" style="color:{{currentProject.currentTable.tableColor || '#3A5795'}};"></i>&nbsp;
+                        <i class="fa fa-expand" style="color: #3A5795;"></i>&nbsp;
                       </a>  
                   </div>
                   <!--/Popup Edit Button--> 
@@ -1132,12 +1132,24 @@
         <div class="modal-body">
 
           <div class="flex-general-row-wrapper-center">
-              <!--Add file-->
-              <div ng-if="!editableFile && !selectedFile">
-                <div class="modal-add-file">
-                  <input filechange type="file" id="notification-file" class="form-control">
-                </div>                
+            <!--Add file-->
+            <!-- D&D Markup -->
+            <div ng-if="!editableFile && !selectedFile" class="uploader" dmuploader>
+              <div>Drag &amp; Drop Files Here</div>
+              <div class="or">-or-</div>
+              <div class="browser">
+                <label>
+                  <span>Choose files</span>
+                  <input type="file" name="files[]" multiple="multiple" title='Click to add Files'>
+                </label>
               </div>
+            </div>
+            <!-- /D&D Markup -->
+            <!--<div ng-if="!editableFile && !selectedFile">
+              <div class="modal-add-file">
+                <input filechange type="file" id="notification-file" class="form-control">
+              </div>                
+            </div>-->
 
             <div  ng-if="selectedFile && selectedFileExtension">  
               <!--View File for Images-->
@@ -1573,7 +1585,7 @@
                     
                     <div class="pull-left m-col-icon">
                       <!--Id-->
-                      <i ng-if="relCol.document.dataType==='Id'" class="fa fa-shield col-icon-size"></i>
+                      <i ng-if="relCol.document.dataType==='Id'" class="fa fa-bullseye col-icon-size"></i>
 
                       <!--Boolean-->
                       <i ng-if="relCol.document.dataType=='Boolean'" class="fa fa-check col-icon-size"></i>
@@ -1582,13 +1594,13 @@
                       <i ng-if="relCol.document.dataType=='DateTime'" class="fa fa-calendar-o col-icon-size"></i>
 
                       <!--ACL or Object-->
-                      <i ng-if="relCol.document.dataType=='ACL' || column.document.dataType=='Object'" class="fa fa-bullseye col-icon-size"></i>
+                      <i ng-if="relCol.document.dataType=='ACL' || column.document.dataType=='Object'" class="fa fa-lock col-icon-size"></i>
 
                       <!--Text-->
                       <i ng-if="relCol.document.dataType=='Text'" class="fa fa-text-height col-icon-size"></i>
 
                       <!--Encrypted Text-->
-                      <i ng-if="relCol.document.dataType=='Password'" class="fa fa-lock col-icon-size"></i>
+                      <i ng-if="relCol.document.dataType=='Password'" class="fa fa-asterisk col-icon-size"></i>
 
                       <!--Email-->
                       <i ng-if="relCol.document.dataType=='Email'" class="fa fa-envelope-o col-icon-size"></i>
@@ -2052,13 +2064,26 @@
         </div>      
         <div class="modal-body">
 
-          <div class="flex-general-row-wrapper-center">
+          <div class="flex-general-row-wrapper-center">            
               <!--Add file-->
-              <div ng-if="!relEditableFile && !selectedFile">
+              <!-- D&D Markup -->
+              <div ng-if="!relEditableFile && !selectedFile" class="uploader" dmuploader>
+                <div>Drag &amp; Drop Files Here</div>
+                <div class="or">-or-</div>
+                <div class="browser">
+                  <label>
+                    <span>Choose files</span>
+                    <input type="file" name="files[]" multiple="multiple" title='Click to add Files'>
+                  </label>
+                </div>
+              </div>
+              <!-- /D&D Markup -->
+
+              <!--<div ng-if="!relEditableFile && !selectedFile">
                 <div class="modal-add-file">
                   <input filechange type="file" id="notification-file" class="form-control">
                 </div>                
-              </div>
+              </div>-->
 
             <div  ng-if="selectedFile && selectedFileExtension">  
               <!--View File for Images-->
@@ -2729,11 +2754,24 @@
           <div class="flex-general-row-wrapper-center">
 
               <!--Add file-->
-              <div ng-if="!listEditableRow && !selectedFile">
+              <!-- D&D Markup -->
+              <div ng-if="!listEditableRow && !selectedFile" class="uploader" dmuploader>
+                <div>Drag &amp; Drop Files Here</div>
+                <div class="or">-or-</div>
+                <div class="browser">
+                  <label>
+                    <span>Choose files</span>
+                    <input type="file" name="files[]" multiple="multiple" title='Click to add Files'>
+                  </label>
+                </div>
+              </div>
+              <!-- /D&D Markup -->
+
+              <!--<div ng-if="!listEditableRow && !selectedFile">
                 <div class="modal-add-file">
                   <input filechange type="file" id="notification-file" class="form-control">
                 </div>                
-              </div>
+              </div>-->
 
             <div  ng-if="selectedFile && selectedFileExtension">  
               <!--View File for Images-->

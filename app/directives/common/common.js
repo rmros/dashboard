@@ -184,6 +184,24 @@ app.directive('filechange', function(){
     };
 });
 
+app.directive('dmuploader', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){        
+            $(element).dmUploader({               
+                onNewFile: function(id, file){                 
+                    
+                    var reader = new FileReader();
+                    reader.onload = function (e) {                       
+                        scope.fileSelected(reader.result,file.name,file);
+                    }
+                    reader.readAsDataURL(file);
+                    
+                }
+            });
+        }
+    };
+});
 
 function appIdValidation(appId){
     var appIdValidationError=null;

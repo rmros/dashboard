@@ -1897,8 +1897,10 @@ $scope.toggleHideColumn=function(index){
 $scope.showallHiddenCols=function(){
   for(var i=0; i<$scope.currentProject.currentTable.columns.length;++i){
     if($scope.currentProject.currentTable.columns[i].dataType!="Id"){
-      $scope.hideColumn[i]=false; 
-      --$scope.hiddenColumnCount; 
+      if($scope.hideColumn[i]!=false){
+          $scope.hideColumn[i]=false; 
+          --$scope.hiddenColumnCount;
+      }      
     }           
   }
 };
@@ -1906,8 +1908,10 @@ $scope.showallHiddenCols=function(){
 $scope.hideallHiddenCols=function(){
   for(var i=0; i<$scope.currentProject.currentTable.columns.length;++i){
     if($scope.currentProject.currentTable.columns[i].dataType!="Id"){
-      $scope.hideColumn[i]=true; 
-      ++$scope.hiddenColumnCount; 
+      if($scope.hideColumn[i]!=true){
+          $scope.hideColumn[i]=true; 
+          ++$scope.hiddenColumnCount;
+      }        
     }           
   }
 };

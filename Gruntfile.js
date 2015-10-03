@@ -1,6 +1,6 @@
 module.exports = function(grunt) {
   
-  grunt.initConfig({
+    grunt.initConfig({
 	  watch: {
 	    all: {
 	      options: { livereload: true },
