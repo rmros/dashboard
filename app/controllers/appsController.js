@@ -2,6 +2,7 @@
 
 app.controller('appsController',
   ['$scope',
+    '$q',
    'projectService', 
    '$http',
    '$rootScope',
@@ -11,6 +12,7 @@ app.controller('appsController',
    'tableService',
    'beaconService',
   function ($scope,
+  $q,
   projectService,
   $http,
   $rootScope,
@@ -120,36 +122,42 @@ app.controller('appsController',
       }     
 
       projectService.createProject($scope.newApp.name, $scope.newApp.appId)     
-      .then(function(data){
-
-          if($scope.projectListObj.length==0){
-            $scope.projectListObj=[];            
-          }
-          $scope.projectListObj.push(data); 
-
-          $scope.showSaveBtn = true;
-          $scope.isAppCreated = true;
-          $scope.newApp.name="";
-          $scope.newApp.appId = "";
-
-          $scope.animateApp[0]=true;
-          $timeout(function(){           
-            $scope.animateApp[0]=false;
-
-            $timeout(function(){           
-             $scope.isAppCreated = false;
-            }, 1000);
-            
-          }, 1000);
+      .then(function(data){          
           
           //Add default tables
-          addDefaultTables(data);
+          addDefaultTables(data)
+          .then(function(userdata){      
+            if($scope.projectListObj.length==0){
+              $scope.projectListObj=[];            
+            }
+            $scope.projectListObj.push(data); 
 
-          //Update Beacon
-          if($scope.beacon && !$scope.beacon.firstApp){
-            $scope.beacon.firstApp=true;
-            updateBeacon();   
-          }                
+            $scope.showSaveBtn = true;
+            $scope.isAppCreated = true;
+            $scope.newApp.name="";
+            $scope.newApp.appId = "";
+
+            $scope.animateApp[0]=true;
+            $timeout(function(){           
+              $scope.animateApp[0]=false;
+
+              $timeout(function(){           
+               $scope.isAppCreated = false;
+              }, 1000);
+              
+            }, 1000);
+
+            //Update Beacon
+            if($scope.beacon && !$scope.beacon.firstApp){
+              $scope.beacon.firstApp=true;
+              updateBeacon();   
+            }
+          },function(error){            
+            errorNotify('Error in creating App. Try again');
+            //delete the app
+            //$scope.projectListObj.splice($scope.projectListObj.indexOf(project),1);
+            //projectService.deleteProject(project.appId);                
+          });                         
                        
         },function(error){
           $scope.showSaveBtn = true;
@@ -246,22 +254,25 @@ app.controller('appsController',
   };
 
   function addDefaultTables(project){
-    CB.CloudApp.init(project.appId, project.keys.master);
+    var q=$q.defer();
 
-    var roleTable = new CB.CloudTable("Role"); 
+      CB.CloudApp.init(project.appId, project.keys.master);
 
-    tableService.saveTable(roleTable)
-    .then(function(data){
-      
-      var userTable = new CB.CloudTable("User");          
-      tableService.saveTable(userTable); 
-    },function(error){
-      errorNotify('Error in creating App. Try again');
-      //delete the app
-      $scope.projectListObj.splice($scope.projectListObj.indexOf(project),1);
-      projectService.deleteProject(project.appId);                
-    });
-    
+      var roleTable = new CB.CloudTable("Role"); 
+
+      tableService.saveTable(roleTable)
+      .then(function(roledata){      
+
+        var userTable = new CB.CloudTable("User");          
+        return tableService.saveTable(userTable);
+
+      }).then(function(userdata){      
+        q.resolve(userdata);
+      },function(error){
+        q.reject(error);                       
+      });
+
+    return q.promise;
   }
 
   function integrateIntercom(){
