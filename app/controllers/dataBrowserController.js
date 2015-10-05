@@ -94,6 +94,12 @@ $scope.loadTableData = function(t,orderBy,orderByType,limit,skip) {
       query.setLimit(limit);
       query.setSkip(skip); 
 
+      for(var i=0;i<t.columns.length;++i){
+        if(t.columns[i].dataType=="File"){
+          query.include(t.columns[i].name);
+        }
+      }
+
       query.find({success : function(list){ 
         q.resolve(list);
       }, error : function(error){ 
@@ -103,10 +109,17 @@ $scope.loadTableData = function(t,orderBy,orderByType,limit,skip) {
   return  q.promise;     
 };
 
-$scope.queryTableById = function(tableName,objectId) {          
+$scope.queryTableById = function(table,objectId) {          
   var q=$q.defer();
     
-    var query = new CB.CloudQuery(tableName);       
+    var query = new CB.CloudQuery(table.name); 
+
+    for(var i=0;i<table.columns.length;++i){
+      if(table.columns[i].dataType=="File"){
+        query.include(table.columns[i].name);
+      }
+    }      
+
     query.findById(objectId,{
     success : function(record){ 
        q.resolve(record);                 
@@ -698,7 +711,7 @@ $scope.viewRelationData=function(row,column,index){
     var tableDef=_.first(_.where($rootScope.currentProject.tables, {name: tableName})); 
 
     //get Table data
-    $scope.queryTableById(tableName,rowId)
+    $scope.queryTableById(tableDef,rowId)
     .then(function(record){       
 
       if(record){
@@ -709,7 +722,7 @@ $scope.viewRelationData=function(row,column,index){
 
         //Nullify errors
         //clearRelationErrors();        
-      }     
+      }     `
     
       $("#md-relationviewer").modal();
 
