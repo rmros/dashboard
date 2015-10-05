@@ -273,6 +273,33 @@ $scope.showCommonTypes=function(row,column){
 };
 //End Text
 
+$scope.labelDeviceAutoComplete = {
+    source: function (request, response) {
+
+        $scope.queryTableByName("User")
+        .then(function(userRecords){ 
+          $scope.userRecords=[];
+          for(var i=0;i<userRecords.length;i++){
+            $scope.userRecords.push(CB.toJSON( userRecords[i] ));
+          }          
+          
+          return $scope.userRecords;
+          $scope.$digest();
+
+        },function(error){          
+                
+        });
+
+        
+    },
+    minLength: 3,
+    select: function (event, ui) {
+        //this.value = ui.item.label;
+
+        return false;
+    }
+};
+
 $scope.deleteData=function(row,column){
     if(!column.required){
       nullifyFields();

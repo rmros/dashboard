@@ -24,7 +24,8 @@ var app=angular.module('CloudBoostDashboard',
     'focusOn',
     'lrInfiniteScroll',
     'ui.ace',
-    'angucomplete-alt'
+    'angucomplete-alt',
+    'angular-jquery-autocomplete'
     ]);
 
 app.value('THROTTLE_MILLISECONDS', 1250);
