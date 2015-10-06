@@ -24,6 +24,23 @@ app.directive('fixedthead', function(){
     };
 });
 
+app.directive('appNameValidation', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){
+            $(element).keyup(function(){
+              var error=scope.newApp.name.indexOf(".");               
+              if(error>-1){
+                $(element)[0].setCustomValidity("App Name Shoudn't have dots(.)");
+              }else{
+                $(element)[0].setCustomValidity("");
+              }                
+                                
+            });
+        }
+    };
+});
+
 app.directive('appIdValidation', function(){
     return {
         restrict: 'A',
@@ -215,8 +232,7 @@ function appIdValidation(appId){
     //Shouldn't Start with number
     if((appId) && (!isNaN(appId[0]))){
       response=false;
-      appIdValidationError="App Id Shouldn't start with number.";
-         
+      appIdValidationError="App Id Shouldn't start with number.";         
     } 
 
     //No Special characters
