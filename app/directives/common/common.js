@@ -203,7 +203,57 @@ app.directive('dmuploader', function(){
     };
 });
 
+app.directive('autokomplete', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){
+                    
+            $(element).autocomplete({
+                source:  function (request, response) {
+                    var arrayRecords=[];                    
 
+                    scope.queryTableByName("User")
+                    .then(function(userRecords){ 
+
+                        scope.queryTableByName("Role")
+                        .then(function(roleRecords){ 
+                            
+                            for(var i=0;i<userRecords.length;i++){
+                                arrayRecords.push(CB.toJSON( userRecords[i] ));
+                            }  
+                            for(var j=0;j<roleRecords.length;j++){
+                                arrayRecords.push(CB.toJSON( roleRecords[j] ));
+                            }               
+
+                           //data :: JSON list defined
+                            response($.map(arrayRecords, function (value, key) {                                                            
+                                var details= {
+                                    label   : value._id+" ("+value._tableName+")",
+                                    value   : value._id,                                   
+                                    player  : value._tableName
+                                };
+                                if(value._tableName=="User"){
+                                    details.name=value.username;
+                                }
+                                if(value._tableName=="Role"){
+                                    details.name=value.name;
+                                }
+                                return details;
+                            }));
+                        });                       
+                    }); 
+                  
+                },
+                select: function (event, ui) {
+                    scope.addACL.id=ui.item.value;
+                    scope.addACL.name=ui.item.name;
+                    scope.addACL.player=ui.item.player; 
+                    $("#acl-search-id").val(null);                                   
+                }
+            });
+        }
+    };
+});
 
 
 function appIdValidation(appId){

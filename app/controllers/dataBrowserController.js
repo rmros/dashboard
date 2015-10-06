@@ -66,6 +66,13 @@ $scope.listFileError=[];
 $scope.orderBy="createdAt"; 
 $scope.orderByType="asc";
 $scope.hiddenColumnCount=0;
+$scope.addACL={
+  id:null,
+  name:null,
+  read:false,
+  write:false,
+  player:null
+};
 
 $scope.init = function() { 
   id = $stateParams.appId;
@@ -94,12 +101,6 @@ $scope.loadTableData = function(t,orderBy,orderByType,limit,skip) {
       query.setLimit(limit);
       query.setSkip(skip); 
 
-      for(var i=0;i<t.columns.length;++i){
-        if(t.columns[i].dataType=="File"){
-          query.include(t.columns[i].name);
-        }
-      }
-
       query.find({success : function(list){ 
         q.resolve(list);
       }, error : function(error){ 
@@ -109,17 +110,10 @@ $scope.loadTableData = function(t,orderBy,orderByType,limit,skip) {
   return  q.promise;     
 };
 
-$scope.queryTableById = function(table,objectId) {          
+$scope.queryTableById = function(tableName,objectId) {          
   var q=$q.defer();
     
-    var query = new CB.CloudQuery(table.name); 
-
-    for(var i=0;i<table.columns.length;++i){
-      if(table.columns[i].dataType=="File"){
-        query.include(table.columns[i].name);
-      }
-    }      
-
+    var query = new CB.CloudQuery(tableName);       
     query.findById(objectId,{
     success : function(record){ 
        q.resolve(record);                 
@@ -230,11 +224,8 @@ $scope.showCommonTypes=function(row,column){
         //$scope.editableJsonObj =JSON.stringify($scope.editableJsonObj,null,2);
 
         $scope.queryTableByName("User")
-        .then(function(userRecords){ 
-          $scope.userRecords=[];
-          for(var i=0;i<userRecords.length;i++){
-            $scope.userRecords.push(CB.toJSON( userRecords[i] ));
-          }
+        .then(function(userRecords){
+         
           $scope.userRecords=userRecords;        
           return $scope.queryTableByName("Role")
         }).then(function(roleRecords){  
@@ -286,31 +277,57 @@ $scope.showCommonTypes=function(row,column){
 };
 //End Text
 
-$scope.labelDeviceAutoComplete = {
-    source: function (request, response) {
-
-        $scope.queryTableByName("User")
-        .then(function(userRecords){ 
-          $scope.userRecords=[];
-          for(var i=0;i<userRecords.length;i++){
-            $scope.userRecords.push(CB.toJSON( userRecords[i] ));
-          }          
-          
-          return $scope.userRecords;
-          $scope.$digest();
-
-        },function(error){          
-                
-        });
-
-        
-    },
-    minLength: 3,
-    select: function (event, ui) {
-        //this.value = ui.item.label;
-
-        return false;
+$scope.setACL=function(settingName){  
+  //User
+  if($scope.addACL && $scope.addACL.player=="User"){    
+    //$scope.editableRow.ACL = new CB.ACL(); 
+    if(settingName=="read"){
+      $scope.editableRow.ACL.setUserReadAccess($scope.addACL.id,$scope.addACL.read);
     }
+    if(settingName=="write"){
+      $scope.editableRow.ACL.setUserWriteAccess($scope.addACL.id,$scope.addACL.write);
+    }    
+  }  
+
+  //Role
+  if($scope.addACL && $scope.addACL.player=="Role"){
+    //$scope.editableRow.ACL = new CB.ACL();  
+    if(settingName=="read"){  
+      $scope.editableRow.ACL.setRoleReadAccess($scope.addACL.id,$scope.addACL.read);
+    }
+
+    if(settingName=="write"){
+      $scope.editableRow.ACL.setRoleWriteAccess($scope.addACL.id,$scope.addACL.write);
+    }
+  } 
+
+  /*$scope.addACL={
+    id:null,
+    name:null,
+    read:false,
+    write:false,
+    player:null
+  }; */
+};
+
+$scope.updateACL=function(id,bool,player,settingName){
+  $scope.editableRow.ACL = new CB.ACL();   
+  if(player=="User"){
+    if(settingName=="read"){
+      $scope.editableRow.ACL.setUserReadAccess(id,bool);
+    }else if(settingName=="write"){
+      $scope.editableRow.ACL.setUserWriteAccess(id,bool);
+    }
+  } 
+
+  if(player=="Role"){
+    if(settingName=="read"){
+      $scope.editableRow.ACL.setRoleReadAccess(id,bool);
+    }else if(settingName=="write"){
+      $scope.editableRow.ACL.setRoleWriteAccess(id,bool);
+    }
+  }
+  
 };
 
 $scope.deleteData=function(row,column){
@@ -337,7 +354,7 @@ $scope.deleteData=function(row,column){
 
  
 $scope.setAndSaveJsonObject=function(){
-    $("#md-objectviewer").modal("hide"); 
+    $("#md-objectviewer").modal("hide");      
     //Check if previous value is not equal to modified value
     if($scope.editableRow.get($scope.editableColumnName)!=JSON.parse($scope.editableJsonObj)){
       rowEditMode($scope.editableIndex);
@@ -368,12 +385,44 @@ $scope.setAndSaveJsonObject=function(){
       }  
 
     }else{
-      $("#md-objectviewer").modal("hide");
+      $("#md-objectviewer").modal("hide");      
       $scope.editableJsonObj=null;
     }     
     
 };  
-//End ACL && JsonObject 
+//End JsonObject 
+
+$scope.setAndSaveACLObject=function(){
+    
+  $("#md-aclviewer").modal("hide"); 
+  //Check if previous value is not equal to modified value
+  rowEditMode($scope.editableIndex);
+  var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
+      if(everyCol.name!=$scope.editableColumnName && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
+       if(!$scope.editableRow.get(everyCol.name)){
+        return everyCol;
+       }          
+      }
+  });
+
+  //$scope.editableRow.set($scope.editableColumnName,$scope.editableJsonObj);
+  if(requiredField){           
+    rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);
+  }else{
+    rowSpinnerMode($scope.editableIndex);        
+
+    //Save Cloud Object
+    $scope.saveCloudObject($scope.editableRow)
+    .then(function(obj){           
+      $scope.editableJsonObj=null;
+      showSaveIconInSecond($scope.editableIndex);
+    }, function(error){          
+      $scope.editableJsonObj=null;          
+      rowErrordMode($scope.editableIndex,error);     
+    });
+  }     
+};  
+//End ACL && JsonObject
 
 $scope.fileSelected=function(selectedFile,fileName,fileObj){
   $scope.isFileSelected=true;
@@ -711,7 +760,7 @@ $scope.viewRelationData=function(row,column,index){
     var tableDef=_.first(_.where($rootScope.currentProject.tables, {name: tableName})); 
 
     //get Table data
-    $scope.queryTableById(tableDef,rowId)
+    $scope.queryTableById(tableName,rowId)
     .then(function(record){       
 
       if(record){
@@ -722,7 +771,7 @@ $scope.viewRelationData=function(row,column,index){
 
         //Nullify errors
         //clearRelationErrors();        
-      }     `
+      }     
     
       $("#md-relationviewer").modal();
 

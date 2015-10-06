@@ -1110,17 +1110,7 @@
               <div class="acl-player flex-general-row-wrapper">
                 <div class="acl-search-bx flex-general-row-wrapper" style="width:72%;margin-top:1px;">
                   <div style="width:100%">
-                    <!--<input type="text"  class="acl-search-input" style="width:100%" placeholder="User or Role">
-                    <angucomplete-alt id="ex1"
-                    placeholder="User or Role"
-                    pause="100"
-                    selected-object="selectedCountry"
-                    local-data="userRecords"
-                    search-fields="name"                    
-                    minlength="1"
-                    input-class="" style="width:100%;color:black !important;"/>--> 
-                    <input  class="acl-search-input" style="width:100%" placeholder="User or Role" data-ng-model="ad" autocomplete autocompleteconfig="labelDeviceAutoComplete" />                  
-
+                   <input id="acl-search-id" type="text"  autokomplete class="acl-search-input" style="width:100%" placeholder="User or Role">
                   </div>                                   
                 </div>
                 <div style="width:5%; margin-left:2px;">
@@ -1138,49 +1128,138 @@
                   <i class="fa fa-cog" style="margin-top:5px;color:white;"></i>
                 </div> 
               </div>
-            </div> 
+            </div>              
 
-            <!--Content-->
-            <div ng-repeat="" class="acl-content flex-general-row-wrapper">
-              <div class="acl-player">
-                <p>User or Role</p>
+            <!--Add New-->
+            <div ng-if="addACL.id" class="acl-content flex-general-row-wrapper">            
+              <div  class="acl-player">
+                <p>{{addACL.name}} ({{addACL.id}})</p>
               </div>
+
               <div class="acl-player-controll flex-general-row-wrapper">
+                <!--Read-->               
                 <div class="flex-equal-ratio-items">
-                  <checkbox class="btn-default list-m-boolean-list"  ng-model="true"></checkbox>
-                </div> 
+                  <checkbox class="btn-default list-m-boolean-list"  ng-model="addACL.read" ng-change="setACL('read')"></checkbox>
+                </div>       
+
+                <!--Write-->            
                 <div class="flex-equal-ratio-items">
-                  <checkbox class="btn-default list-m-boolean-list"  ng-model="true"></checkbox>
-                </div>
+                  <checkbox class="btn-default list-m-boolean-list"  ng-model="addACL.write" ng-change="setACL('write')"></checkbox>
+                </div>             
+
+                <!--Remove-->
                 <div style="width:25px;">
                   <i class="fa fa-times"></i>
                 </div> 
               </div>
             </div> 
-          
 
-            <!--Content-->
-            <div class="acl-content flex-general-row-wrapper">
-              <div class="acl-player">
-                <p>User or Role</p>
-              </div>
-              <div class="acl-player-controll flex-general-row-wrapper">
-                <div class="flex-equal-ratio-items">
-                  <checkbox class="btn-default list-m-boolean-list"  ng-model="true"></checkbox>
-                </div> 
-                <div class="flex-equal-ratio-items">
-                  <checkbox class="btn-default list-m-boolean-list"  ng-model="true"></checkbox>
+            <!--User-->
+            <div ng-repeat="readallowuser in editableJsonObj.read.allow.user">
+              <div ng-repeat="writeallowuser in editableJsonObj.write.allow.user" class="acl-content flex-general-row-wrapper" ng-if="(readallowuser || writeallowuser) && (readallowuser!='all' && writeallowuser!='all') ">            
+                <div  class="acl-player">
+                  <p>{{readallowuser || writeallowuser}}</p>
                 </div>
-                <div style="width:25px;">
-                  <i class="fa fa-times"></i>
-                </div> 
-              </div>
-            </div>      
+
+                <div ng-repeat="user in userRecords" class="acl-player-controll flex-general-row-wrapper">
+                  <!--Read-->               
+                  <div ng-repeat="readdenyuser in editableJsonObj.read.deny.user" class="flex-equal-ratio-items">
+
+                    <div ng-if="user.get('id')==readallowuser && user.get('id')!=readdenyuser">
+                      <checkbox class="btn-default list-m-boolean-list"  ng-model="true" ng-change="updateACL(user.get('id'),'true','user','read')"></checkbox>
+                    </div>
+
+                    <div ng-if="user.get('id')==readallowuser && user.get('id')==readdenyuser">
+                      <checkbox class="btn-default list-m-boolean-list"  ng-model="false" ng-change="updateACL(user.get('id'),'false','user','read')"></checkbox>
+                    </div>
+
+                    <div ng-if="user.get('id')!=readallowuser && user.get('id')==readdenyuser">
+                      <checkbox class="btn-default list-m-boolean-list"  ng-model="false" ng-change="updateACL(user.get('id'),'false','user','read')"></checkbox>
+                    </div>
+
+                  </div>       
+
+                  <!--Write-->               
+                  <div ng-repeat="writedenyuser in editableJsonObj.write.deny.user" class="flex-equal-ratio-items">
+
+                    <div ng-if="user.get('id')==writeallowuser && user.get('id')!=writedenyuser">
+                      <checkbox class="btn-default list-m-boolean-list"  ng-model="true" ng-change="updateACL(user.get('id'),'true','user','write')"></checkbox>
+                    </div>
+
+                    <div ng-if="user.get('id')==writeallowuser && user.get('id')==writedenyuser">
+                      <checkbox class="btn-default list-m-boolean-list"  ng-model="false" ng-change="updateACL(user.get('id'),'false','user','write')"></checkbox>
+                    </div>
+
+                    <div ng-if="user.get('id')!=writeallowuser && user.get('id')==writedenyuser">
+                      <checkbox class="btn-default list-m-boolean-list"  ng-model="false" ng-change="updateACL(user.get('id'),'false','user','write')"></checkbox>
+                    </div>
+
+                  </div>             
+
+                  <!--Remove-->
+                  <div ng-if="readallowuser || writeallowuser" style="width:25px;">
+                    <i class="fa fa-times"></i>
+                  </div> 
+                </div>
+              </div> 
+            </div>
+            <!--/user--> 
+
+            <!--Role-->
+            <div ng-repeat="readallowrole in editableJsonObj.read.allow.role">
+              <div ng-repeat="writeallowrole in editableJsonObj.write.allow.role" class="acl-content flex-general-row-wrapper" ng-if="(readallowrole || writeallowrole) && (readallowrole!='all' && writeallowrole!='all') ">            
+                <div  class="acl-player">
+                  <p>{{readallowrole || writeallowrole}}</p>
+                </div>
+
+                <div ng-repeat="role in roleRecords" class="acl-player-controll flex-general-row-wrapper">
+                  <!--Read-->               
+                  <div ng-repeat="readdenyrole in editableJsonObj.read.deny.role" class="flex-equal-ratio-items">
+
+                    <div ng-if="role.get('id')==readallowrole && role.get('id')!=readdenyrole">
+                      <checkbox class="btn-default list-m-boolean-list"  ng-model="true" ng-change="updateACL(role.get('id'),'true','role','read')"></checkbox>
+                    </div>
+
+                    <div ng-if="role.get('id')==readallowrole && role.get('id')==readdenyrole">
+                      <checkbox class="btn-default list-m-boolean-list"  ng-model="false" ng-change="updateACL(role.get('id'),'false','role','read')"></checkbox>
+                    </div>
+
+                    <div ng-if="role.get('id')!=readallowrole && role.get('id')==readdenyrole">
+                      <checkbox class="btn-default list-m-boolean-list"  ng-model="false" ng-change="updateACL(role.get('id'),'false','role','read')"></checkbox>
+                    </div>
+
+                  </div>       
+
+                  <!--Write-->               
+                  <div ng-repeat="writedenyrole in editableJsonObj.write.deny.role" class="flex-equal-ratio-items">
+
+                    <div ng-if="role.get('id')==writeallowrole && role.get('id')!=writedenyrole">
+                      <checkbox class="btn-default list-m-boolean-list"  ng-model="true" ng-change="updateACL(role.get('id'),'true','role','write')"></checkbox>
+                    </div>
+
+                    <div ng-if="role.get('id')==writeallowrole && role.get('id')==writedenyrole">
+                      <checkbox class="btn-default list-m-boolean-list"  ng-change="updateACL(role.get('id'),'false','role','write')"></checkbox>
+                    </div>
+
+                    <div ng-if="role.get('id')!=writeallowrole && role.get('id')==writedenyrole">
+                      <checkbox class="btn-default list-m-boolean-list"  ng-model="false" ng-change="updateACL(role.get('id'),'false','role','write')"></checkbox>
+                    </div>
+
+                  </div>             
+
+                  <!--Remove-->
+                  <div ng-if="readallowrole || writeallowrole" style="width:25px;">
+                    <i class="fa fa-times"></i>
+                  </div> 
+                </div>
+              </div> 
+            </div>
+            <!--/Role-->
           
         </div>
       </div>  
       <div class="flex-general-row-wrapper-center modalF">        
-          <button type="button" ng-click="setAndSaveJsonObject()" class="btn btn-primary btn-flat" style="width:400px;">Save</button>
+          <button type="button" ng-click="setAndSaveACLObject()" class="btn btn-primary btn-flat" style="width:400px;">Save</button>
         </div> 
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -3221,4 +3300,3 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
