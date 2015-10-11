@@ -1122,10 +1122,9 @@
     border-radius: 2px;
 }
 
-.relationid-list-wrapper{
-    margin-top: 20px;
+.relationid-list-wrapper{    
     width: 100%;
-    height:150px;
+    height:250px;
 }
 
 .geopoint-list-wrapper{
@@ -1135,43 +1134,58 @@
 }
 
 .relationid-list{
-    width: 545px;
-    height:30px;
-    background-color: #E0EDFF;
-    border-radius: 2px;
+    width: 570px;
+    height:56px;
+    background-color: white;
+    border-radius: 3px;
     cursor: pointer;
     margin-top: 10px;
+    border: 1px solid #F0F0F0;
 }
 
 .relationid-list-empty{
-    width: 545px;
-    height:39px;     
-    margin-top: 10px;
+    width: 100%;
+    height:240px;   
 }
 
 .relationid-list a{
     color: black;
 }
-
+.m-relationid{
+    padding:5px;
+}
+.neorel-wrapper{
+    width: 100%;   
+    height:44px;    
+}
+.neorel-img{
+    width:44px;
+    height: 44px;
+    border: none;
+}
 .md-search-relation-wrapper{
     width: 100%;
     height: auto;
+    padding-left: 14px;    
+    background-color: #F0F0F0;
 }
 .search-rel-wrapper{
     width: 100%;
     height: auto;
+    border-bottom:1px solid #D8D8D8;    
 }
 
 .rel-search-btn-wrapper{
-    border:1px solid gray;
+    padding-left: 14px;
+    height:40px;   
 }
 
 .rel-searchBx{
-    width: 95.8%;
+    width: 95.8%;   
 }
 .rel-searchBx input{
     width: 99.99%;
-    height:30px;
+    height:39px;
     padding-left: 2px;
     border: none;
     font-size: 16px;
@@ -1183,8 +1197,8 @@
     width: 4.1%;
 }
 .rel-searchIcon i{
-    font-size: 22px;
-    margin-top: 4.2px;
+    font-size: 20px;
+    margin-top: 6.5px;
 }
 
 .id-show{
