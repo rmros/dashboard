@@ -229,10 +229,7 @@ $scope.showCommonTypes=function(row,column){
         //$scope.editableJsonObj =JSON.stringify($scope.editableJsonObj,null,2);
 
         $scope.queryTableByName("User")
-        .then(function(userRecords){ 
-          for(var i=o;i<userRecords.length;i++){
-            
-          }
+        .then(function(userRecords){           
           $scope.userRecords=userRecords;          
           return $scope.queryTableByName("Role")
         }).then(function(roleRecords){  
