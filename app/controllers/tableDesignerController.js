@@ -228,6 +228,10 @@ app.controller('tableDesignerController',
 
   function loadProject(id){
     
+    if($rootScope.currentProject){
+      initCB();
+      getProjectTables();
+    }else{
       projectService.getProject(id)
       .then(function(currentProject){
         if(currentProject){
@@ -239,6 +243,8 @@ app.controller('tableDesignerController',
        $rootScope.dataLoading=false;
        $scope.loadingError="We cannot load your project at this point of time. Please try again later.";    
       });
+    }
+    
   }
 
   function getProjectTables(){
@@ -257,7 +263,8 @@ app.controller('tableDesignerController',
       $rootScope.dataLoading=false;     
       $scope.loadingError="We cannot load your tables at this point of time. Please try again later";  
     });
-  } 
+  }
+   
   function initCB(){
     CB.CloudApp.init($rootScope.currentProject.appId, $rootScope.currentProject.keys.master);
   }

@@ -19,11 +19,13 @@ var app=angular.module('CloudBoostDashboard',
     'ngTouch',     
     'uiSwitch',
     'ui.checkbox',
+    'ui.checkbxcross',
     'stripe',
     'chart.js',
     'focusOn',
     'lrInfiniteScroll',
-    'ui.ace'
+    'ui.ace',
+    'angucomplete-alt'
     ]);
 
 app.value('THROTTLE_MILLISECONDS', 1250);
