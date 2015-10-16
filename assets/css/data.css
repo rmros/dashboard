@@ -1841,6 +1841,7 @@
     font-size: 14px;
     margin-top: 15px;
     padding-left: 10px;
+    padding-top: 5px;
 }
 .acl-content{
     height: 40px;
@@ -1851,10 +1852,9 @@
     padding-top: 7px;
     padding-bottom: 3px;
     color: black;
-    font-size: 14px; 
-    margin-top: 5px;
+    font-size: 14px;     
     margin-bottom: 0 !important;
-    background-color: white;
+    background-color: #EDF4FF;
 }
 .acl-search{
     height: 23px;
@@ -1874,7 +1874,7 @@
     width:35%;
 }
 .acl-search-bx{
-    border:1px solid gray;
+    border:1px solid #A6AFB6;
     height: 25px;      
 }
 .acl-search-input{
@@ -1920,12 +1920,12 @@
 }
 
 .acl-header{
-    padding-top: 2px; 
-    padding-bottom: 1px; 
-    padding-left: 10px; 
-    background-color: #F2F2F5;
-    height:30px;
-    width:95.98%;
+    padding-top: 6px; 
+    padding-bottom: 4px; 
+    padding-left: 10px;     
+    height:40px;
+    width:95.60%;    
+    border-top-left-radius: 4px;
 }
 .acl-main-body{           
 }
@@ -1937,6 +1937,10 @@
     padding-left: 10px;
     padding-right: 14px;  
     border-top:1px solid #F0F0F0;  
+}
+.cb-modal-default-btn{
+    width: 70px !important;
+    border-radius: 2px;
 }
 .acl-btn{
     border-radius: 2px;
@@ -1957,10 +1961,11 @@
     margin-left: 3px !important;
 }
 .chbx-icon-bx{
-    border: 1px solid gray;
+    border:1px solid #4892F9;
     height: 18px;
     width: 18px;
     padding: 1px;
     margin-top: 3px;
     cursor: pointer;
+    background-color: white;
 }

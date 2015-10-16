@@ -1096,10 +1096,10 @@
   <div class="modal-dialog">
       <div class="modal-content cf">
 
-        <div class="acl-header pull-left">
-          <h4 style="font-weight:600;margin-top:4px;">ACL</h4>
+        <div class="acl-header pull-left db-color-bg">
+          <h4 style="font-weight:600;margin-top:4px;color:white;">Access Control List (ACL)</h4>
         </div>
-        <div class="pull-right modalX" style="background-color: #F2F2F5;height:30px;">
+        <div class="pull-right modalX db-color-bg" style="padding-top:14px;height:40px;border-top-right-radius: 4px;border:1px solid #4892F9;">
           <button type="button" class="close" style="font-size:24px !important;" data-dismiss="modal" aria-hidden="true">&times;</button>
         </div>  
 
@@ -1108,12 +1108,12 @@
           <div class="acl-wrapper" style="padding-top:15px !important;">         
 
             <!--Public User-->
-            <div ng-repeat="user in aclUsers" ng-show="user.id=='all'" class="acl-content flex-general-row-wrapper">           
+            <div  ng-show="aclPublic.id=='all'" class="acl-content flex-general-row-wrapper">           
               <div  class="acl-player">
-                <p>
-                  <i ng-show="user.player=='User'" class="icon ion-person-stalker" style="cursor:default;"></i>
-                  <i ng-show="user.player=='Role'" class="icon ion-unlocked" style="cursor:default;"></i>
-                  {{user.name}}
+                <p class="db-color-fg" style="font-size:14px;">
+                  <i class="icon ion-person-stalker" style="cursor:default;"></i>
+                  
+                  {{aclPublic.name}}
                 </p>                   
               </div>
 
@@ -1121,27 +1121,27 @@
                 <!--Read-->               
                 <div class="flex-equal-ratio-items flex-general-row-wrapper"> 
                   <!--Null-->            
-                  <div ng-show="user.readValue==null" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'read',true,user.id,'user')">             
+                  <div ng-show="aclPublic.readValue==null" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(aclPublic.player,'read',true,aclPublic.id,'user')">             
                     <div>
                       &nbsp;
                     </div>                    
                   </div>
 
                   <!--True-->
-                  <div ng-show="user.readValue==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'read',false,user.id,'user')">            
+                  <div ng-show="aclPublic.readValue==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(aclPublic.player,'read',false,aclPublic.id,'user')">            
                     <div >
-                      <i class="icon ion-android-done" style="font-size:14px;"></i>
+                      <i class="icon ion-android-done db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
                   <!--False-->
-                  <div ng-show="user.readValue==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'read',null,user.id,'user')">        
+                  <div ng-show="aclPublic.readValue==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(aclPublic.player,'read',null,aclPublic.id,'user')">        
                     <div>
-                      <i class="icon ion-android-close" style="font-size:14px;"></i>
+                      <i class="icon ion-android-close db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
-                  <div style="margin-top:2px;margin-left:1px;">
+                  <div class="db-color-fg" style="margin-top:2px;margin-left:1px;">
                     Read
                   </div>
                 </div>       
@@ -1150,33 +1150,33 @@
                 <div class="flex-equal-ratio-items flex-general-row-wrapper">                 
 
                   <!--Null-->            
-                  <div ng-show="user.writeValue==null" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'write',true,user.id,'user')">             
+                  <div ng-show="aclPublic.writeValue==null" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(aclPublic.player,'write',true,aclPublic.id,'user')">             
                     <div>
                       &nbsp;
                     </div>                    
                   </div>
 
                   <!--True-->
-                  <div ng-show="user.writeValue==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'write',false,user.id,'user')">           
+                  <div ng-show="aclPublic.writeValue==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(aclPublic.player,'write',false,aclPublic.id,'user')">           
                     <div >
-                      <i class="icon ion-android-done" style="font-size:14px;"></i>
+                      <i class="icon ion-android-done db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
                   <!--False-->
-                  <div ng-show="user.writeValue==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'write',null,user.id,'user')">  
+                  <div ng-show="aclPublic.writeValue==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(aclPublic.player,'write',null,aclPublic.id,'user')">  
                     <div>
-                      <i class="icon ion-android-close" style="font-size:14px;"></i>
+                      <i class="icon ion-android-close db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
-                  <div style="margin-top:2px;margin-left:1px;">
+                  <div class="db-color-fg" style="margin-top:2px;margin-left:1px;">
                     Write
                   </div>                       
                 </div>             
 
                 <!--Remove-->
                 <div style="width:25px;">
-                  &nbsp;
+                  <i class="fa fa-question-circle" style="color:gray;margin-top:5px;" normaltooltipleft="msg='Public read and write permissions'"></i>
                 </div> 
               </div>
             </div>
@@ -1185,7 +1185,7 @@
             <!--User-->
             <div ng-repeat="user in aclUsers" ng-show="user.id!='all'" class="acl-content flex-general-row-wrapper">           
               <div  class="acl-player">
-                <p>
+                <p class="db-color-fg" style="font-size:14px;">
                   <i ng-show="user.player=='User'" class="icon ion-person-stalker" style="cursor:default;"></i>
                   <i ng-show="user.player=='Role'" class="icon ion-unlocked" style="cursor:default;"></i>
                   {{user.name}} <span ng-show="user.id!='all'" style="color:#A09F9F">({{user.id}})</span> 
@@ -1205,18 +1205,18 @@
                   <!--True-->
                   <div ng-show="user.readValue==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'read',false,user.id,'user')">            
                     <div >
-                      <i class="icon ion-android-done" style="font-size:14px;"></i>
+                      <i class="icon ion-android-done db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
                   <!--False-->
                   <div ng-show="user.readValue==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'read',null,user.id,'user')">        
                     <div>
-                      <i class="icon ion-android-close" style="font-size:14px;"></i>
+                      <i class="icon ion-android-close db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
-                  <div style="margin-top:2px;margin-left:1px;">
+                  <div class="db-color-fg" style="margin-top:2px;margin-left:1px;">
                     Read
                   </div>
                 </div>       
@@ -1234,17 +1234,17 @@
                   <!--True-->
                   <div ng-show="user.writeValue==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'write',false,user.id,'user')">           
                     <div >
-                      <i class="icon ion-android-done" style="font-size:14px;"></i>
+                      <i class="icon ion-android-done db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
                   <!--False-->
                   <div ng-show="user.writeValue==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'write',null,user.id,'user')">  
                     <div>
-                      <i class="icon ion-android-close" style="font-size:14px;"></i>
+                      <i class="icon ion-android-close db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
-                  <div style="margin-top:2px;margin-left:1px;">
+                  <div class="db-color-fg" style="margin-top:2px;margin-left:1px;">
                     Write
                   </div>                       
                 </div>             
@@ -1260,7 +1260,7 @@
             <!--Role-->
             <div ng-repeat="role in aclRoles" class="acl-content flex-general-row-wrapper">            
               <div  class="acl-player">
-                <p>
+                <p class="db-color-fg" style="font-size:14px;">
                   <i ng-show="role.player=='User'" class="icon ion-person-stalker" style="cursor:default;"></i>
                   <i ng-show="role.player=='Role'" class="icon ion-unlocked" style="cursor:default;"></i>
                   {{role.name}} <span style="color:#A09F9F">({{role.id}})</span> 
@@ -1280,17 +1280,17 @@
                   <!--True-->
                   <div ng-show="role.readValue==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(role.player,'read',false,role.id,'role')">            
                     <div >
-                      <i class="icon ion-android-done" style="font-size:14px;"></i>
+                      <i class="icon ion-android-done db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
                   <!--False-->
                   <div ng-show="role.readValue==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(role.player,'read',null,role.id,'role')">        
                     <div>
-                      <i class="icon ion-android-close" style="font-size:14px;"></i>
+                      <i class="icon ion-android-close db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
-                  <div style="margin-top:2px;margin-left:1px;">
+                  <div class="db-color-fg" style="margin-top:2px;margin-left:1px;">
                     Read
                   </div>
                 </div>       
@@ -1308,18 +1308,18 @@
                   <!--True-->
                   <div ng-show="role.writeValue==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(role.player,'write',false,role.id,'role')">            
                     <div >
-                      <i class="icon ion-android-done" style="font-size:14px;"></i>
+                      <i class="icon ion-android-done db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
                   <!--False-->
                   <div ng-show="role.writeValue==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(role.player,'write',null,role.id,'role')"> 
                     <div>
-                      <i class="icon ion-android-close" style="font-size:14px;"></i>
+                      <i class="icon ion-android-close db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
-                  <div style="margin-top:2px;margin-left:1px;">
+                  <div class="db-color-fg" style="margin-top:2px;margin-left:1px;">
                     Write
                   </div>                   
                 </div>             
@@ -1336,7 +1336,7 @@
             <div ng-repeat="newACL in addACL">
             <div  class="acl-content flex-general-row-wrapper">            
               <div  class="acl-player">
-                <p> 
+                <p class="db-color-fg" style="font-size:14px;"> 
                   <i ng-show="newACL.player=='User'" class="icon ion-person-stalker" style="cursor:default;"></i>
                   <i ng-show="newACL.player=='Role'" class="icon ion-unlocked" style="cursor:default;"></i>
                   {{newACL.name}} <span style="color:#A09F9F">({{newACL.id}})</span>
@@ -1356,17 +1356,17 @@
                   <!--True-->
                   <div ng-show="newACL.read==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(newACL.player,'read',false,newACL.id,'newacl')">            
                     <div >
-                      <i class="icon ion-android-done" style="font-size:14px;"></i>
+                      <i class="icon ion-android-done db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
                   <!--False-->
                   <div ng-show="newACL.read==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(newACL.player,'read',null,newACL.id,'newacl')"> 
                     <div>
-                      <i class="icon ion-android-close" style="font-size:14px;"></i>
+                      <i class="icon ion-android-close db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>                   
-                  <div style="margin-top:2px;margin-left:1px;">
+                  <div class="db-color-fg" style="margin-top:2px;margin-left:1px;">
                     Read
                   </div>
                 </div>       
@@ -1384,17 +1384,17 @@
                   <!--True-->
                   <div ng-show="newACL.write==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(newACL.player,'write',false,newACL.id,'newacl')">            
                     <div >
-                      <i class="icon ion-android-done" style="font-size:14px;"></i>
+                      <i class="icon ion-android-done db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
                   <!--False-->
                   <div ng-show="newACL.write==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(newACL.player,'write',null,newACL.id,'newacl')"> 
                     <div>
-                      <i class="icon ion-android-close" style="font-size:14px;"></i>
+                      <i class="icon ion-android-close db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
-                  <div style="margin-top:2px;margin-left:1px;">
+                  <div class="db-color-fg" style="margin-top:2px;margin-left:1px;">
                     Write
                   </div>
                 </div>             
@@ -1431,7 +1431,7 @@
                    <input id="acl-search-id" type="text"  autokomplete class="acl-search-input" style="width:100%" placeholder="User or Role">
                   </div> 
                   <div style="width:4.5%; margin-left:3px;">
-                    <i class="fa fa-search" style="margin-top:5px;color:gray;"></i>
+                    <i class="fa fa-search" style="margin-top:5px;color:#A6AFB6;"></i>
                   </div>                                  
                 </div>                
               </div>             
@@ -1440,9 +1440,13 @@
           
         </div>
       </div>  
-      <div class="acl-footer cf">        
-          <button type="button" ng-click="setAndSaveACLObject()" class="acl-btn db-color-bg">Save</button>
-        </div> 
+      <div class="modal-footer">
+        
+        <a class="pull-left" style="margin-top:5px; color:#BFBDBD;text-decoration:underline;" href="https://tutorials.cloudboost.io/?lang=en&category=security&subcategory=acl" target="_blank">Why are ACLs important?</a>
+         
+        <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary cb-modal-default-btn" ng-click="setAndSaveACLObject()" >Save</button>
+      </div>    
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div>
@@ -2380,10 +2384,10 @@
   <div class="modal-dialog">
       <div class="modal-content cf">
 
-        <div class="acl-header pull-left">
-          <h4 style="font-weight:600;margin-top:4px;">ACL</h4>
+        <div class="acl-header pull-left db-color-bg">
+          <h4 style="font-weight:600;margin-top:4px;color:white;">Access Control List (ACL)</h4>
         </div>
-        <div class="pull-right modalX" style="background-color: #F2F2F5;height:30px;">
+        <div class="pull-right modalX db-color-bg" style="padding-top:14px;height:40px;border-top-right-radius: 4px;border:1px solid #4892F9;">
           <button type="button" class="close" style="font-size:24px !important;" data-dismiss="modal" aria-hidden="true">&times;</button>
         </div>  
 
@@ -2392,12 +2396,12 @@
           <div class="acl-wrapper" style="padding-top:15px !important;">         
 
             <!--Public User-->
-            <div ng-repeat="user in aclUsers" ng-show="user.id=='all'" class="acl-content flex-general-row-wrapper">           
+            <div  ng-show="aclPublic.id=='all'" class="acl-content flex-general-row-wrapper">           
               <div  class="acl-player">
-                <p>
-                  <i ng-show="user.player=='User'" class="icon ion-person-stalker" style="cursor:default;"></i>
-                  <i ng-show="user.player=='Role'" class="icon ion-unlocked" style="cursor:default;"></i>
-                  {{user.name}}
+                <p class="db-color-fg" style="font-size:14px;">
+                  <i class="icon ion-person-stalker" style="cursor:default;"></i>
+                  
+                  {{aclPublic.name}}
                 </p>                   
               </div>
 
@@ -2405,27 +2409,27 @@
                 <!--Read-->               
                 <div class="flex-equal-ratio-items flex-general-row-wrapper"> 
                   <!--Null-->            
-                  <div ng-show="user.readValue==null" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'read',true,user.id,'user')">             
+                  <div ng-show="aclPublic.readValue==null" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(aclPublic.player,'read',true,aclPublic.id,'user')">             
                     <div>
                       &nbsp;
                     </div>                    
                   </div>
 
                   <!--True-->
-                  <div ng-show="user.readValue==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'read',false,user.id,'user')">            
+                  <div ng-show="aclPublic.readValue==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(aclPublic.player,'read',false,aclPublic.id,'user')">            
                     <div >
-                      <i class="icon ion-android-done" style="font-size:14px;"></i>
+                      <i class="icon ion-android-done db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
                   <!--False-->
-                  <div ng-show="user.readValue==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'read',null,user.id,'user')">        
+                  <div ng-show="aclPublic.readValue==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(aclPublic.player,'read',null,aclPublic.id,'user')">        
                     <div>
-                      <i class="icon ion-android-close" style="font-size:14px;"></i>
+                      <i class="icon ion-android-close db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
-                  <div style="margin-top:2px;margin-left:1px;">
+                  <div class="db-color-fg" style="margin-top:2px;margin-left:1px;">
                     Read
                   </div>
                 </div>       
@@ -2434,33 +2438,33 @@
                 <div class="flex-equal-ratio-items flex-general-row-wrapper">                 
 
                   <!--Null-->            
-                  <div ng-show="user.writeValue==null" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'write',true,user.id,'user')">             
+                  <div ng-show="aclPublic.writeValue==null" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(aclPublic.player,'write',true,aclPublic.id,'user')">             
                     <div>
                       &nbsp;
                     </div>                    
                   </div>
 
                   <!--True-->
-                  <div ng-show="user.writeValue==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'write',false,user.id,'user')">           
+                  <div ng-show="aclPublic.writeValue==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(aclPublic.player,'write',false,aclPublic.id,'user')">           
                     <div >
-                      <i class="icon ion-android-done" style="font-size:14px;"></i>
+                      <i class="icon ion-android-done db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
                   <!--False-->
-                  <div ng-show="user.writeValue==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'write',null,user.id,'user')">  
+                  <div ng-show="aclPublic.writeValue==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(aclPublic.player,'write',null,aclPublic.id,'user')">  
                     <div>
-                      <i class="icon ion-android-close" style="font-size:14px;"></i>
+                      <i class="icon ion-android-close db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
-                  <div style="margin-top:2px;margin-left:1px;">
+                  <div class="db-color-fg" style="margin-top:2px;margin-left:1px;">
                     Write
                   </div>                       
                 </div>             
 
                 <!--Remove-->
                 <div style="width:25px;">
-                  &nbsp;
+                  <i class="fa fa-question-circle" style="color:gray;margin-top:5px;" normaltooltipleft="msg='Public read and write permissions'"></i>
                 </div> 
               </div>
             </div>
@@ -2469,7 +2473,7 @@
             <!--User-->
             <div ng-repeat="user in aclUsers" ng-show="user.id!='all'" class="acl-content flex-general-row-wrapper">           
               <div  class="acl-player">
-                <p>
+                <p class="db-color-fg" style="font-size:14px;">
                   <i ng-show="user.player=='User'" class="icon ion-person-stalker" style="cursor:default;"></i>
                   <i ng-show="user.player=='Role'" class="icon ion-unlocked" style="cursor:default;"></i>
                   {{user.name}} <span ng-show="user.id!='all'" style="color:#A09F9F">({{user.id}})</span> 
@@ -2489,18 +2493,18 @@
                   <!--True-->
                   <div ng-show="user.readValue==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'read',false,user.id,'user')">            
                     <div >
-                      <i class="icon ion-android-done" style="font-size:14px;"></i>
+                      <i class="icon ion-android-done db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
                   <!--False-->
                   <div ng-show="user.readValue==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'read',null,user.id,'user')">        
                     <div>
-                      <i class="icon ion-android-close" style="font-size:14px;"></i>
+                      <i class="icon ion-android-close db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
-                  <div style="margin-top:2px;margin-left:1px;">
+                  <div class="db-color-fg" style="margin-top:2px;margin-left:1px;">
                     Read
                   </div>
                 </div>       
@@ -2518,17 +2522,17 @@
                   <!--True-->
                   <div ng-show="user.writeValue==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'write',false,user.id,'user')">           
                     <div >
-                      <i class="icon ion-android-done" style="font-size:14px;"></i>
+                      <i class="icon ion-android-done db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
                   <!--False-->
                   <div ng-show="user.writeValue==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(user.player,'write',null,user.id,'user')">  
                     <div>
-                      <i class="icon ion-android-close" style="font-size:14px;"></i>
+                      <i class="icon ion-android-close db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
-                  <div style="margin-top:2px;margin-left:1px;">
+                  <div class="db-color-fg" style="margin-top:2px;margin-left:1px;">
                     Write
                   </div>                       
                 </div>             
@@ -2544,7 +2548,7 @@
             <!--Role-->
             <div ng-repeat="role in aclRoles" class="acl-content flex-general-row-wrapper">            
               <div  class="acl-player">
-                <p>
+                <p class="db-color-fg" style="font-size:14px;">
                   <i ng-show="role.player=='User'" class="icon ion-person-stalker" style="cursor:default;"></i>
                   <i ng-show="role.player=='Role'" class="icon ion-unlocked" style="cursor:default;"></i>
                   {{role.name}} <span style="color:#A09F9F">({{role.id}})</span> 
@@ -2564,17 +2568,17 @@
                   <!--True-->
                   <div ng-show="role.readValue==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(role.player,'read',false,role.id,'role')">            
                     <div >
-                      <i class="icon ion-android-done" style="font-size:14px;"></i>
+                      <i class="icon ion-android-done db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
                   <!--False-->
                   <div ng-show="role.readValue==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(role.player,'read',null,role.id,'role')">        
                     <div>
-                      <i class="icon ion-android-close" style="font-size:14px;"></i>
+                      <i class="icon ion-android-close db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
-                  <div style="margin-top:2px;margin-left:1px;">
+                  <div class="db-color-fg" style="margin-top:2px;margin-left:1px;">
                     Read
                   </div>
                 </div>       
@@ -2592,18 +2596,18 @@
                   <!--True-->
                   <div ng-show="role.writeValue==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(role.player,'write',false,role.id,'role')">            
                     <div >
-                      <i class="icon ion-android-done" style="font-size:14px;"></i>
+                      <i class="icon ion-android-done db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
                   <!--False-->
                   <div ng-show="role.writeValue==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(role.player,'write',null,role.id,'role')"> 
                     <div>
-                      <i class="icon ion-android-close" style="font-size:14px;"></i>
+                      <i class="icon ion-android-close db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
-                  <div style="margin-top:2px;margin-left:1px;">
+                  <div class="db-color-fg" style="margin-top:2px;margin-left:1px;">
                     Write
                   </div>                   
                 </div>             
@@ -2620,7 +2624,7 @@
             <div ng-repeat="newACL in addACL">
             <div  class="acl-content flex-general-row-wrapper">            
               <div  class="acl-player">
-                <p> 
+                <p class="db-color-fg" style="font-size:14px;"> 
                   <i ng-show="newACL.player=='User'" class="icon ion-person-stalker" style="cursor:default;"></i>
                   <i ng-show="newACL.player=='Role'" class="icon ion-unlocked" style="cursor:default;"></i>
                   {{newACL.name}} <span style="color:#A09F9F">({{newACL.id}})</span>
@@ -2640,17 +2644,17 @@
                   <!--True-->
                   <div ng-show="newACL.read==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(newACL.player,'read',false,newACL.id,'newacl')">            
                     <div >
-                      <i class="icon ion-android-done" style="font-size:14px;"></i>
+                      <i class="icon ion-android-done db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
                   <!--False-->
                   <div ng-show="newACL.read==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(newACL.player,'read',null,newACL.id,'newacl')"> 
                     <div>
-                      <i class="icon ion-android-close" style="font-size:14px;"></i>
+                      <i class="icon ion-android-close db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>                   
-                  <div style="margin-top:2px;margin-left:1px;">
+                  <div class="db-color-fg" style="margin-top:2px;margin-left:1px;">
                     Read
                   </div>
                 </div>       
@@ -2668,17 +2672,17 @@
                   <!--True-->
                   <div ng-show="newACL.write==true" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(newACL.player,'write',false,newACL.id,'newacl')">            
                     <div >
-                      <i class="icon ion-android-done" style="font-size:14px;"></i>
+                      <i class="icon ion-android-done db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
 
                   <!--False-->
                   <div ng-show="newACL.write==false" class="chbx-icon-bx flex-general-column-wrapper-center" ng-click="changeACL(newACL.player,'write',null,newACL.id,'newacl')"> 
                     <div>
-                      <i class="icon ion-android-close" style="font-size:14px;"></i>
+                      <i class="icon ion-android-close db-color-fg" style="font-size:14px;"></i>
                     </div>
                   </div>
-                  <div style="margin-top:2px;margin-left:1px;">
+                  <div class="db-color-fg" style="margin-top:2px;margin-left:1px;">
                     Write
                   </div>
                 </div>             
@@ -2715,7 +2719,7 @@
                    <input id="acl-search-id" type="text"  autokomplete class="acl-search-input" style="width:100%" placeholder="User or Role">
                   </div> 
                   <div style="width:4.5%; margin-left:3px;">
-                    <i class="fa fa-search" style="margin-top:5px;color:gray;"></i>
+                    <i class="fa fa-search" style="margin-top:5px;color:#A6AFB6;"></i>
                   </div>                                  
                 </div>                
               </div>             
@@ -2724,13 +2728,19 @@
           
         </div>
       </div>  
-      <div class="acl-footer cf">        
-          <button type="button" ng-click="setRelationData(relEditableRow,relEditableColumn,relEditableJsonObj)" class="acl-btn db-color-bg">Save</button>
-        </div> 
+      <div class="modal-footer">
+        
+        <a class="pull-left" style="margin-top:5px; color:#BFBDBD;text-decoration:underline;" href="https://tutorials.cloudboost.io/?lang=en&category=security&subcategory=acl" target="_blank">Why are ACLs important?</a>
+         
+        <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary cb-modal-default-btn" ng-click="setRelationData(relEditableRow,relEditableColumn,relEditableJsonObj)" >Save</button>
+      </div>    
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div>
 <!-- Relation EditACL Modal -->
+
+
 <!-- Relation EditJSON Modal -->
   <div class="modal fade colored-header danger" id="md-rel-objectviewer" tabindex="-1" role="dialog">
     <div class="modal-dialog">

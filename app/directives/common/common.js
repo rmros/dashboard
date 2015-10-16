@@ -76,6 +76,25 @@ app.directive('infotooltipleft', function(){
     };
 });
 
+app.directive('normaltooltipleft', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){       
+            $(element)
+            .attr('title',scope.$eval(attrs.normaltooltipleft))
+            .tooltipster({
+               arrow:true,
+               animation: 'fade',
+               delay: 200,
+               theme: 'tooltipster-shadow',
+               touchDevices: false,
+               trigger: 'hover',
+               position:'left'
+            });
+        }
+    };
+});
+
 app.directive('infotooltipright', function(){
     return {
         restrict: 'A',
@@ -278,7 +297,7 @@ app.directive('autokomplete', function(){
                             setTimeout(function(){ 
                                 $("#acl-search-id").val(null); 
                                 scope.newACLSpinner=false;
-                            }, 1000);   
+                            }, 500);   
                         }
                         scope.newACLSpinner=false;
 
@@ -296,7 +315,7 @@ app.directive('autokomplete', function(){
                         setTimeout(function(){ 
                             $("#acl-search-id").val(null); 
                             scope.newACLSpinner=false;
-                        }, 1000); 
+                        }, 500); 
                     }                
                 }
             });

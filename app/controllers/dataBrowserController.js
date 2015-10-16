@@ -70,6 +70,14 @@ $scope.addACL=[];
 $scope.newACLSpinner=false;
 $scope.userRecords=[];
 $scope.roleRecords=[];
+$scope.aclPublic={
+  id:"all",
+  name:"Public",
+  icon:"ion-person-stalker",
+  player:"User",
+  readValue:null,
+  writeValue:null
+};
 
 $scope.init = function() { 
   id = $stateParams.appId;
@@ -83,10 +91,10 @@ $scope.init = function() {
   getBeacon();     
 };
 
-$scope.loadTableData = function(t,orderBy,orderByType,limit,skip) {          
+$scope.loadTableData = function(tableName,orderBy,orderByType,limit,skip) {          
   var q=$q.defer();
-  if(t){   
-      var query = new CB.CloudQuery(t.name);
+  if(tableName){   
+      var query = new CB.CloudQuery(tableName);
 
       if(orderByType=="asc"){
         query.orderByAsc(orderBy);
@@ -223,6 +231,14 @@ $scope.showCommonTypes=function(row,column){
         $scope.addACL=[];
         $scope.aclUsers=[];
         $scope.aclRoles=[];
+        $scope.aclPublic={
+          id:"all",
+          name:"Public",
+          icon:"ion-person-stalker",
+          player:"User",
+          readValue:null,
+          writeValue:null
+        };
 
         //Getting Users For Autocomplete
         $scope.queryTableByName("User")
@@ -369,8 +385,14 @@ function prepareACLDisplay(aclObject){
       for(var j=0;j<writeUsers.length;++j){
         if(readUsers[i].id==writeUsers[j].id){
           readUsers[i].writeValue=writeUsers[j].writeValue;
+          //Special case (Public)          
+          if(readUsers[i].id==writeUsers[j].id && readUsers[i].id=="all"){
+            $scope.aclPublic.readValue=readUsers[i].readValue;
+            $scope.aclPublic.writeValue=readUsers[i].writeValue;
+          }
           writeUsers.splice(j,1);
         }
+        
       }
     }
 
@@ -394,7 +416,8 @@ function createACL(tableName,array,readOrWrite,permission){
     for(var i=0;i<array.length;++i){
       if(tableName,array[i]!="all"){
         promises.push($scope.queryTableById(tableName,array[i]));
-      }else if(array[i]=="all"){
+      }else if(array[i]=="all"){         
+
           var jsonObj={};
           jsonObj.id=array[i];                 
           jsonObj.name="Public";
@@ -404,21 +427,22 @@ function createACL(tableName,array,readOrWrite,permission){
           jsonObj.writeValue=null;
           
           if(readOrWrite=="read" && permission=="allow"){  
-            jsonObj.readValue=true;         
+            jsonObj.readValue=true;                    
           }else if(readOrWrite=="read" && permission=="deny"){  
-            jsonObj.readValue=false;            
+            jsonObj.readValue=false;                     
           } 
 
           if(readOrWrite=="write" && permission=="allow"){  
-            jsonObj.writeValue=true;         
+            jsonObj.writeValue=true;                     
           }else if(readOrWrite=="write" && permission=="deny"){  
-            jsonObj.writeValue=false;            
+            jsonObj.writeValue=false;                         
           }    
 
           if(tableName=="Role"){
             jsonObj.icon="ion-unlocked";
           }else if(tableName=="User"){
-            jsonObj.icon="ion-person-stalker";  
+            jsonObj.icon="ion-person-stalker"; 
+            $scope.aclPublic.icon="ion-person-stalker";   
           }     
 
           returnList.push(jsonObj);      
@@ -500,6 +524,16 @@ $scope.changeACL=function(player,settingName,bool,playerId,arrayName){
         }else if(settingName=="write"){
           $scope.aclUsers[i].writeValue=bool;
         }
+      }
+      
+    }
+
+    //Public ACL
+    if(playerId=="all"){
+      if(settingName=="read"){
+        $scope.aclPublic.readValue=bool;
+      }else if(settingName=="write"){
+        $scope.aclPublic.writeValue=bool;
       }
     }
 
@@ -608,6 +642,7 @@ $scope.removeACL=function(player,playerId,arrayName,cloudObject){
         $scope.aclUsers.splice(i,1);
       }
     }
+
   }else if(arrayName=="role"){
     for(var i=0;i<$scope.aclRoles.length;++i){
       if($scope.aclRoles[i].id==playerId){
@@ -1011,7 +1046,7 @@ $scope.searchRelationDocs=function(){
   $("#md-reldocumentviewer").modal("hide");
 
   //List Relations records 
-  $scope.loadTableData($scope.tableDef,"createdAt","asc",20,0)
+  $scope.loadTableData($scope.tableDef.name,"createdAt","asc",20,0)
   .then(function(list){        
        
    $scope.relationTableData=list;
@@ -1660,7 +1695,7 @@ $scope.showListFile=function(row,column,index){
 $scope.listSearchRelationDocs=function(){ 
   $scope.tableDef=_.first(_.where($rootScope.currentProject.tables, {name: $scope.editableColumn.relatedTo}));
   //List Relations records 
-  $scope.loadTableData($scope.tableDef,"createdAt","asc",20,0)
+  $scope.loadTableData($scope.tableDef.name,"createdAt","asc",20,0)
   .then(function(list){ 
     $scope.listRelationTableData=list; 
     $("#md-searchlistdocument").modal("show");         
@@ -1941,62 +1976,55 @@ $scope.saveCloudObject = function(obj){
 
 function loadProject(id){
 
-      projectService.getProject(id)
-      .then(function(currentProject){
-          if(currentProject){
-            $rootScope.currentProject=currentProject;
-            initCbApp();
-            getProjectTables();                                        
-          }                                           
-      },
-      function(error){ 
-        errorNotify('We cannot load your project at this point in time. Please try again later.');        
-      });
+  if($rootScope.currentProject){
+    initCbApp();
+    getProjectTables();
+  }else{
+    projectService.getProject(id)
+    .then(function(currentProject){
+        if(currentProject){
+          $rootScope.currentProject=currentProject;
+          initCbApp();
+          getProjectTables();                                        
+        }                                           
+    },
+    function(error){ 
+      errorNotify('We cannot load your project at this point in time. Please try again later.');        
+    });
+  }
+  
 }
 
 function getProjectTables(){
+  var promises=[];
 
-  tableService.getProjectTables($rootScope.currentProject)
-  .then(function(data){       
+  promises.push($scope.loadTableData(tableName,$scope.orderBy,$scope.orderByType,10,0));
 
-    if(!data){      
-      $rootScope.currentProject.tables=[];                       
-    }else if(data){                        
-        $rootScope.currentProject.tables=data;
+  if(!$rootScope.currentProject.tables || $rootScope.currentProject.tables.length==0){
+    //Get All project tables
+    promises.push(tableService.getProjectTables($rootScope.currentProject));     
+  }else{
+    $rootScope.currentProject.currentTable= _.first(_.where($rootScope.currentProject.tables, {name: tableName}));
+  }  
 
-        getProjectTableByName(tableName)
-        .then(function(table){
-            if(table){
-              $rootScope.currentProject.currentTable=table;
+  $q.all(promises).then(function(list){ 
+    if(list.length==1){
+      $scope.currentTableData=list[0];      
+    }
 
-              //Load data 
-              $scope.loadTableData(table,$scope.orderBy,$scope.orderByType,10,0)
-              .then(function(list){              
-                  $scope.currentTableData=list;
-                  $scope.totalRecords=10;
-                  $scope.isTableLoaded=true; 
+    if(list.length==2){      
+      $scope.currentTableData=list[0];
+      $rootScope.currentProject.tables=list[1];
+      $rootScope.currentProject.currentTable= _.first(_.where($rootScope.currentProject.tables, {name: tableName}));
+    }
+    $scope.totalRecords=10;
+    $scope.isTableLoaded=true;
 
-                  //Fixed Header Re-run                 
-                  //$(".smoothTable").floatThead('reflow')
-                                                                                 
-              },function(error){
-                $scope.isTableLoaded=true; 
-                $scope.tableLoadedError="Error in loading table records";                                
-              });
-              //end of loafing data                 
-            }                              
-        },
-        function(error){ 
-          errorNotify('Error getting table');              
-        });
-
-    }else{                                                                   
-      $rootScope.currentProject.tables=[];
-    }          
-         
-  }, function(error){  
-    errorNotify('We cannot load your tables at this point in time. Please try again later.');      
+  }, function(err){  
+    $scope.isTableLoaded=true; 
+    $scope.tableLoadedError="Error in loading table records";
   });
+
 } 
 
 function getProjectTableByName(tableDefName){
@@ -2021,7 +2049,7 @@ $scope.addMoreRecords=function(){
   if($scope.currentTableData && $rootScope.currentProject && $rootScope.currentProject.currentTable){
     $scope.loadingRecords=true;
     //load more data
-    $scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,5,$scope.totalRecords)
+    $scope.loadTableData($rootScope.currentProject.currentTable.name,$scope.orderBy,$scope.orderByType,5,$scope.totalRecords)
     .then(function(list){
       if(list && list.length>0){
         if($scope.currentTableData.length>0){
@@ -2325,7 +2353,7 @@ $scope.sortASC=function(column){
     $scope.orderBy=column.name;
     $scope.orderByType="asc";    
 
-    $scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0)
+    $scope.loadTableData($rootScope.currentProject.currentTable.name,$scope.orderBy,$scope.orderByType,10,0)
     .then(function(list){ 
 
        $scope.currentTableData=list; 
@@ -2352,7 +2380,7 @@ $scope.sortDESC=function(column){
 
     $scope.orderBy=column.name;
     $scope.orderByType="desc";
-    $scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0)
+    $scope.loadTableData($rootScope.currentProject.currentTable.name,$scope.orderBy,$scope.orderByType,10,0)
     .then(function(list){ 
 
        $scope.currentTableData=list; 
