@@ -1,3 +1,11 @@
+/*Data Browser Theme Color*/
+.db-color-bg{
+    background-color:#4892F9; 
+}
+.db-color-fg{
+    color:#4892F9; 
+}
+
 .flex-general-row-wrapper{
    /* Flex row rules */
     display: flex;
@@ -304,7 +312,7 @@
 }
 .modalF{
     padding-left: 30px;
-    padding-bottom: 30px;
+    padding-bottom: 8px;
     padding-right: 30px;
     padding-top:10px;
 }
@@ -1782,12 +1790,11 @@
     padding: 10px;
 }
 
-.uploader div.browser label {
-    background-color: #5a7bc2;
+.uploader div.browser label {   
     padding: 5px 15px;
     color: white;
     padding: 6px 0px;
-  font-size: 14px;
+    font-size: 14px;
     font-weight: bold;
     cursor: pointer;
     border-radius: 5px;
@@ -1825,28 +1832,29 @@
 .acl-wrapper{
     width:100%;
     height: auto;  
-    margin-bottom: 20px;   
+    margin-bottom: 20px;  
+    margin-top: 7px; 
 }
 .acl-head{
     height: 34px;
-    width: 100%;
-    background-color: #3A5795;
-    padding: 4.3px;
-    color: white;
+    width: 100%; 
     font-size: 14px;
+    margin-top: 15px;
+    padding-left: 10px;
 }
 .acl-content{
-    height: 30px;
+    height: 40px;
     width: 100%;
     border-bottom: 1px solid #DBD9D9;
     padding-right: 4.3px;
-    padding-left: 4.3px;
-    padding-top: 2px;
-    padding-bottom: 2.5px;
+    padding-left: 10px;
+    padding-top: 7px;
+    padding-bottom: 3px;
     color: black;
     font-size: 14px; 
     margin-top: 5px;
     margin-bottom: 0 !important;
+    background-color: white;
 }
 .acl-search{
     height: 23px;
@@ -1866,14 +1874,14 @@
     width:35%;
 }
 .acl-search-bx{
-    border:1px solid #E5E3E3;
-    height: 23px; 
-    border-radius: 1.9px;   
+    border:1px solid gray;
+    height: 25px;      
 }
 .acl-search-input{
     border: none;
     height: 22px;
-    color: black;    
+    color: black; 
+    margin-left: 2px;   
 }
 
 .acl-search-input:focus{
@@ -1909,4 +1917,50 @@
   background-clip: padding-box;
   *border-right-width: 2px;
   *border-bottom-width: 2px;
+}
+
+.acl-header{
+    padding-top: 2px; 
+    padding-bottom: 1px; 
+    padding-left: 10px; 
+    background-color: #F2F2F5;
+    height:30px;
+    width:95.98%;
+}
+.acl-main-body{           
+}
+.acl-footer{
+    height:50px;
+    width: 100%;   
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 14px;  
+    border-top:1px solid #F0F0F0;  
+}
+.acl-btn{
+    border-radius: 2px;
+    color: white;
+    border:none;
+    height:30px;
+    width: 80px;    
+    float: right;
+    font-weight: 700px;
+    font-size: 14px;
+}
+
+.tricheckbx{
+    height: 17px;
+    width: 17px;
+    border-radius: 0 !important;
+    background-color: white !important;
+    margin-left: 3px !important;
+}
+.chbx-icon-bx{
+    border: 1px solid gray;
+    height: 18px;
+    width: 18px;
+    padding: 1px;
+    margin-top: 3px;
+    cursor: pointer;
 }

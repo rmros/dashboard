@@ -66,13 +66,10 @@ $scope.listFileError=[];
 $scope.orderBy="createdAt"; 
 $scope.orderByType="asc";
 $scope.hiddenColumnCount=0;
-$scope.addACL={
-  id:null,
-  name:null,
-  read:false,
-  write:false,
-  player:null
-};
+$scope.addACL=[];
+$scope.newACLSpinner=false;
+$scope.userRecords=[];
+$scope.roleRecords=[];
 
 $scope.init = function() { 
   id = $stateParams.appId;
@@ -221,18 +218,24 @@ $scope.showCommonTypes=function(row,column){
       $scope.editableJsonObj=null;
     }
     if($scope.editableJsonObj){      
-        //$scope.editableJsonObj =JSON.stringify($scope.editableJsonObj,null,2);
+        
+        prepareACLDisplay($scope.editableJsonObj);
+        $scope.addACL=[];
+        $scope.aclUsers=[];
+        $scope.aclRoles=[];
 
+        //Getting Users For Autocomplete
         $scope.queryTableByName("User")
-        .then(function(userRecords){
-         
+        .then(function(userRecords){         
           $scope.userRecords=userRecords;        
-          return $scope.queryTableByName("Role")
-        }).then(function(roleRecords){  
-          $scope.roleRecords=roleRecords;         
-          $("#md-aclviewer").modal();
-        },function(error){          
-          $("#md-aclviewer").modal();       
+        },function(error){         
+        });
+
+        //Getting Roles For Autocomplete
+        $scope.queryTableByName("Role")
+        .then(function(roleRecords){         
+          $scope.roleRecords=roleRecords;  
+        },function(error){           
         });       
     }    
 
@@ -277,81 +280,387 @@ $scope.showCommonTypes=function(row,column){
 };
 //End Text
 
-$scope.setACL=function(settingName){  
+function prepareACLDisplay(aclObject){
+  $scope.aclRoles=[]; 
+  $scope.aclUsers=[]; 
+
+  //Role   
+  var rolePromise=[];
+  rolePromise.push(createACL("Role",aclObject.read.allow.role,"read","allow"));
+  rolePromise.push(createACL("Role",aclObject.read.deny.role,"read","deny"));
+
+  rolePromise.push(createACL("Role",aclObject.write.allow.role,"write","allow"));
+  rolePromise.push(createACL("Role",aclObject.write.deny.role,"write","deny"));
+
+  $q.all(rolePromise).then(function(dList){
+    var readRoles=[];
+    var writeRoles=[];
+
+    if(dList[0].length>0){
+      readRoles=dList[0]; 
+    }
+    if(dList[1].length>0){
+      if(readRoles.length>0){
+        readRoles=roles.concat(dList[1]); 
+      }else{
+        readRoles=dList[1];
+      } 
+    }
+
+    if(dList[2].length>0){
+      writeRoles=dList[2]; 
+    }
+    if(dList[3].length>0){
+      if(writeRoles.length>0){
+        writeRoles=roles.concat(dList[3]); 
+      }else{
+        writeRoles=dList[3];
+      } 
+    }
+
+    for(var i=0;i<readRoles.length;++i){
+      for(var j=0;j<writeRoles.length;++j){
+        if(readRoles[i].id==writeRoles[j].id){
+          readRoles[i].writeValue=writeRoles[j].writeValue;
+          writeRoles.splice(j,1);
+        }
+      }
+    }
+
+    $scope.aclRoles=readRoles.concat(writeRoles);
+  },function(){
+  });
+
+  //User   
+  var userPromise=[];
+  userPromise.push(createACL("User",aclObject.read.allow.user,"read","allow"));
+  userPromise.push(createACL("User",aclObject.read.deny.user,"read","deny"));
+
+  userPromise.push(createACL("User",aclObject.write.allow.user,"write","allow"));
+  userPromise.push(createACL("User",aclObject.write.deny.user,"write","deny"));
+
+  $q.all(userPromise).then(function(dList){
+    var readUsers=[];
+    var writeUsers=[];
+
+    if(dList[0].length>0){
+      readUsers=dList[0]; 
+    }
+    if(dList[1].length>0){
+      if(readUsers.length>0){
+        readUsers=roles.concat(dList[1]); 
+      }else{
+        readUsers=dList[1];
+      } 
+    }
+
+    if(dList[2].length>0){
+      writeUsers=dList[2]; 
+    }
+    if(dList[3].length>0){
+      if(writeUsers.length>0){
+        writeUsers=roles.concat(dList[3]); 
+      }else{
+        writeUsers=dList[3];
+      } 
+    }
+
+    for(var i=0;i<readUsers.length;++i){
+      for(var j=0;j<writeUsers.length;++j){
+        if(readUsers[i].id==writeUsers[j].id){
+          readUsers[i].writeValue=writeUsers[j].writeValue;
+          writeUsers.splice(j,1);
+        }
+      }
+    }
+
+    $scope.aclUsers=readUsers.concat(writeUsers);
+    if($scope.editableJsonObj){
+      $("#md-aclviewer").modal();  
+    }else if($scope.relEditableJsonObj){
+      $("#md-rel-aclviewer").modal("show");
+    }    
+  },function(){
+  });
+
+}
+
+function createACL(tableName,array,readOrWrite,permission){
+  var q=$q.defer();
+  var returnList=[];
+
+  if(array.length>0){
+    var promises=[];
+    for(var i=0;i<array.length;++i){
+      if(tableName,array[i]!="all"){
+        promises.push($scope.queryTableById(tableName,array[i]));
+      }else if(array[i]=="all"){
+          var jsonObj={};
+          jsonObj.id=array[i];                 
+          jsonObj.name="Public";
+          jsonObj.player=tableName;
+          
+          jsonObj.readValue=null;
+          jsonObj.writeValue=null;
+          
+          if(readOrWrite=="read" && permission=="allow"){  
+            jsonObj.readValue=true;         
+          }else if(readOrWrite=="read" && permission=="deny"){  
+            jsonObj.readValue=false;            
+          } 
+
+          if(readOrWrite=="write" && permission=="allow"){  
+            jsonObj.writeValue=true;         
+          }else if(readOrWrite=="write" && permission=="deny"){  
+            jsonObj.writeValue=false;            
+          }    
+
+          if(tableName=="Role"){
+            jsonObj.icon="ion-unlocked";
+          }else if(tableName=="User"){
+            jsonObj.icon="ion-person-stalker";  
+          }     
+
+          returnList.push(jsonObj);      
+      }      
+    }
+
+    if(promises.length>0){
+      $q.all(promises).then(function(list){
+        
+
+        for(var i=0;i<array.length;++i){
+          var jsonObj={};
+          jsonObj.id=array[i];          
+
+          if(tableName=="Role"){
+            jsonObj.name=list[i].get("name");
+          }else if(tableName=="User"){
+            jsonObj.name=list[i].get("username"); 
+          }
+
+          jsonObj.player=tableName;
+          
+          jsonObj.readValue=null;
+          jsonObj.writeValue=null;
+
+          
+          if(readOrWrite=="read" && permission=="allow"){  
+            jsonObj.readValue=true;         
+          }else if(readOrWrite=="read" && permission=="deny"){  
+            jsonObj.readValue=false;            
+          } 
+
+          if(readOrWrite=="write" && permission=="allow"){  
+            jsonObj.writeValue=true;         
+          }else if(readOrWrite=="write" && permission=="deny"){  
+            jsonObj.writeValue=false;            
+          }    
+
+          if(tableName=="Role"){
+            jsonObj.icon="ion-unlocked";
+          }else if(tableName=="User"){
+            jsonObj.icon="ion-person-stalker";  
+          }     
+
+          returnList.push(jsonObj);        
+        }
+        q.resolve(returnList);
+      },function(error){
+        q.reject(error);
+      });
+
+    }else{
+      q.resolve(returnList);
+    }
+      
+  }else{   
+    q.resolve(returnList);
+  } 
+
+  return  q.promise; 
+}
+
+$scope.changeACL=function(player,settingName,bool,playerId,arrayName){
+  if(arrayName=="newacl"){
+    for(var i=0;i<$scope.addACL.length;++i){
+      if($scope.addACL[i].id==playerId){
+        if(settingName=="read"){
+          $scope.addACL[i].read=bool;
+        }else if(settingName=="write"){
+          $scope.addACL[i].write=bool;
+        }
+      }
+    }
+  }else if(arrayName=="user"){
+    for(var i=0;i<$scope.aclUsers.length;++i){
+      if($scope.aclUsers[i].id==playerId){
+        if(settingName=="read"){
+          $scope.aclUsers[i].readValue=bool;
+        }else if(settingName=="write"){
+          $scope.aclUsers[i].writeValue=bool;
+        }
+      }
+    }
+
+  }else if(arrayName=="role"){
+    for(var i=0;i<$scope.aclRoles.length;++i){
+      if($scope.aclRoles[i].id==playerId){
+        if(settingName=="read"){
+          $scope.aclRoles[i].readValue=bool;
+        }else if(settingName=="write"){
+          $scope.aclRoles[i].writeValue=bool;
+        }
+      }
+    }
+  }
+
+  if($scope.editableRow && $scope.editableJsonObj){
+    $scope.setACL(player,settingName,bool,playerId,$scope.editableRow);  
+  }else if($scope.relEditableRow && $scope.relEditableJsonObj){
+    $scope.setACL(player,settingName,bool,playerId,$scope.relEditableRow); 
+  }
+    
+};
+
+$scope.setACL=function(player,settingName,bool,playerId,cloudObject){  
   //User
-  if($scope.addACL && $scope.addACL.player=="User"){    
+  if(player=="User"){    
     //$scope.editableRow.ACL = new CB.ACL(); 
     if(settingName=="read"){
-      $scope.editableRow.ACL.setUserReadAccess($scope.addACL.id,$scope.addACL.read);
+      if(bool==true || bool==false){
+        cloudObject.ACL.setUserReadAccess(playerId,bool);
+      }else if(bool==null){
+        var allowIndex=cloudObject.get("ACL").read.allow.user.indexOf(playerId);
+        if(allowIndex>-1){
+          cloudObject.get("ACL").read.allow.user.splice(allowIndex,1);
+        } 
+        var denyIndex=cloudObject.get("ACL").read.deny.user.indexOf(playerId);
+        if(denyIndex>-1){
+          cloudObject.get("ACL").read.deny.user.splice(denyIndex,1);
+        }       
+      }
+      
     }
-    if(settingName=="write"){
-      $scope.editableRow.ACL.setUserWriteAccess($scope.addACL.id,$scope.addACL.write);
-    }    
+    if(settingName=="write"){      
+      if(bool==true || bool==false){
+        cloudObject.ACL.setUserWriteAccess(playerId,bool);
+      }else if(bool==null){
+        var allowIndex=cloudObject.get("ACL").write.allow.user.indexOf(playerId);
+        if(allowIndex>-1){
+          cloudObject.get("ACL").write.allow.user.splice(allowIndex,1);
+        } 
+        var denyIndex=cloudObject.get("ACL").write.deny.user.indexOf(playerId);
+        if(denyIndex>-1){
+          cloudObject.get("ACL").write.deny.user.splice(denyIndex,1);
+        }
+      }
+    }
   }  
 
   //Role
-  if($scope.addACL && $scope.addACL.player=="Role"){
-    //$scope.editableRow.ACL = new CB.ACL();  
-    if(settingName=="read"){  
-      $scope.editableRow.ACL.setRoleReadAccess($scope.addACL.id,$scope.addACL.read);
-    }
-
-    if(settingName=="write"){
-      $scope.editableRow.ACL.setRoleWriteAccess($scope.addACL.id,$scope.addACL.write);
-    }
-  } 
-
-  /*$scope.addACL={
-    id:null,
-    name:null,
-    read:false,
-    write:false,
-    player:null
-  }; */
-};
-
-$scope.updateACL=function(id,bool,player,settingName){
-  $scope.editableRow.ACL = new CB.ACL();   
-  if(player=="User"){
+  if(player=="Role"){    
+    //$scope.editableRow.ACL = new CB.ACL(); 
     if(settingName=="read"){
-      $scope.editableRow.ACL.setUserReadAccess(id,bool);
-    }else if(settingName=="write"){
-      $scope.editableRow.ACL.setUserWriteAccess(id,bool);
+      if(bool==true || bool==false){
+        cloudObject.ACL.setRoleReadAccess(playerId,bool);
+      }else if(bool==null){
+        var allowIndex=cloudObject.get("ACL").read.allow.role.indexOf(playerId);
+        if(allowIndex>-1){
+          cloudObject.get("ACL").read.allow.role.splice(allowIndex,1);
+        } 
+        var denyIndex=cloudObject.get("ACL").read.deny.role.indexOf(playerId);
+        if(denyIndex>-1){
+          cloudObject.get("ACL").read.deny.role.splice(denyIndex,1);
+        }       
+      }
+      
     }
-  } 
-
-  if(player=="Role"){
-    if(settingName=="read"){
-      $scope.editableRow.ACL.setRoleReadAccess(id,bool);
-    }else if(settingName=="write"){
-      $scope.editableRow.ACL.setRoleWriteAccess(id,bool);
+    if(settingName=="write"){      
+      if(bool==true || bool==false){
+        cloudObject.ACL.setRoleWriteAccess(playerId,bool);
+      }else if(bool==null){
+        var allowIndex=cloudObject.get("ACL").write.allow.role.indexOf(playerId);
+        if(allowIndex>-1){
+          cloudObject.get("ACL").write.allow.role.splice(allowIndex,1);
+        } 
+        var denyIndex=cloudObject.get("ACL").write.deny.role.indexOf(playerId);
+        if(denyIndex>-1){
+          cloudObject.get("ACL").write.deny.role.splice(denyIndex,1);
+        }
+      }
     }
   }
-  
+    
+};
+
+$scope.removeACL=function(player,playerId,arrayName,cloudObject){
+
+  if(arrayName=="newacl"){
+    for(var i=0;i<$scope.addACL.length;++i){
+      if($scope.addACL[i].id==playerId){
+        $scope.addACL.splice(i,1);
+      }
+    }
+  }else if(arrayName=="user"){
+    for(var i=0;i<$scope.aclUsers.length;++i){
+      if($scope.aclUsers[i].id==playerId){
+        $scope.aclUsers.splice(i,1);
+      }
+    }
+  }else if(arrayName=="role"){
+    for(var i=0;i<$scope.aclRoles.length;++i){
+      if($scope.aclRoles[i].id==playerId){
+        $scope.aclRoles.splice(i,1);
+      }
+    }
+  }
+
+  if(player=="User"){
+    var allowIndex=cloudObject.get("ACL").read.allow.user.indexOf(playerId);
+    if(allowIndex>-1){
+      cloudObject.get("ACL").read.allow.user.splice(allowIndex,1);
+    } 
+    var denyIndex=cloudObject.get("ACL").read.deny.user.indexOf(playerId);
+    if(denyIndex>-1){
+      cloudObject.get("ACL").read.deny.user.splice(denyIndex,1);
+    }
+  }  
+
+  if(player=="Role"){
+    var allowIndex=cloudObject.get("ACL").read.allow.role.indexOf(playerId);
+    if(allowIndex>-1){
+      cloudObject.get("ACL").read.allow.role.splice(allowIndex,1);
+    } 
+    var denyIndex=cloudObject.get("ACL").read.deny.role.indexOf(playerId);
+    if(denyIndex>-1){
+      cloudObject.get("ACL").read.deny.role.splice(denyIndex,1);
+    }
+  }  
+
+  $("#acl-search-id").val(null);
 };
 
 $scope.deleteData=function(row,column){
-    if(!column.required){
-      nullifyFields();
-      $scope.editableRow=row;//row
-      $scope.editableColumnName=column.name;//column name 
-      $scope.editableColumn=column;
-      $scope.editableIndex=$scope.currentTableData.indexOf(row);//index
-   
-      //Show INPUT Box to Edit for Commong DataTypes
-      if(column.document.dataType!="Object" && column.document.dataType!="ACL" && column.document.dataType!="File" && column.document.dataType!="GeoPoint" && column.document.dataType!="List"){
-        $scope.nullAccepted=true;
-        var arry2=[column.name];
-        var index=angular.copy($scope.editableIndex);       
+  if(!column.required){
+    nullifyFields();
+    $scope.editableRow=row;//row
+    $scope.editableColumnName=column.name;//column name 
+    $scope.editableColumn=column;
+    $scope.editableIndex=$scope.currentTableData.indexOf(row);//index
+ 
+    //Show INPUT Box to Edit for Commong DataTypes
+    if(column.document.dataType!="Object" && column.document.dataType!="ACL" && column.document.dataType!="File" && column.document.dataType!="GeoPoint" && column.document.dataType!="List"){
+      $scope.nullAccepted=true;
+      var arry2=[column.name];
+      var index=angular.copy($scope.editableIndex);       
 
-        $scope.editableField[index]=arry2;
-        $scope.editableField[index][column.name]=null;
-        $scope.setAndSave();
-      }
-    } 
-
-}  
-
+      $scope.editableField[index]=arry2;
+      $scope.editableField[index][column.name]=null;
+      $scope.setAndSave();
+    }
+  } 
+}
  
 $scope.setAndSaveJsonObject=function(){
     $("#md-objectviewer").modal("hide");      
@@ -416,6 +725,13 @@ $scope.setAndSaveACLObject=function(){
     .then(function(obj){           
       $scope.editableJsonObj=null;
       showSaveIconInSecond($scope.editableIndex);
+      $scope.addACL={
+        id:null,
+        name:null,
+        read:null,
+        write:null,
+        player:null
+      }; 
     }, function(error){          
       $scope.editableJsonObj=null;          
       rowErrordMode($scope.editableIndex,error);     
@@ -881,8 +1197,21 @@ $scope.setRelationData=function(cloudObject,column,data){
   if(column.document.dataType=="DateTime"){
     data=new Date(data);
   }
-  //ACL or Object
-  if(column.document.dataType=="ACL" || column.document.dataType=="Object"){      
+  //ACL
+  if(column.document.dataType=="ACL"){      
+    try {     
+      if(typeof data!="object"){
+        $scope.relationError[column.name]="Invalid Object";
+      }else{
+        $("#md-rel-aclviewer").modal("hide");
+      }  
+    }
+    catch(err) {
+      $scope.relationError[column.name]="Invalid Object";
+    }
+  }
+  //Object
+  if(column.document.dataType=="Object"){      
     try {
       data=JSON.parse(data);
       if(typeof data!="object"){
@@ -953,8 +1282,41 @@ $scope.showRelationModals=function(cloudObject,column){
   $scope.relEditableColumn=column;
   $scope.relEditableColumnName=column.name;
 
-  //ACL or Object
-  if(column.document.dataType=="ACL" || column.document.dataType=="Object"){
+  //ACL
+  if(column.document.dataType=="ACL"){
+    
+    $scope.relEditableJsonObj=angular.copy(cloudObject.get(column.name));   
+    if(!cloudObject.get(column.name)){
+      $scope.relEditableJsonObj=null;
+    }   
+   
+    if($scope.relEditableJsonObj){      
+        
+        prepareACLDisplay($scope.relEditableJsonObj);
+        $scope.addACL=[];
+        $scope.aclUsers=[];
+        $scope.aclRoles=[];
+
+        //Getting Users For Autocomplete
+        $scope.queryTableByName("User")
+        .then(function(userRecords){         
+          $scope.userRecords=userRecords;        
+        },function(error){         
+        });
+
+        //Getting Roles For Autocomplete
+        $scope.queryTableByName("Role")
+        .then(function(roleRecords){         
+          $scope.roleRecords=roleRecords;  
+        },function(error){           
+        });       
+    }
+
+    //$("#md-rel-aclviewer").modal("show");
+  }
+
+  //Object
+  if(column.document.dataType=="Object"){
     
     $scope.relEditableJsonObj=angular.copy(cloudObject.get(column.name));   
     if(!cloudObject.get(column.name)){
@@ -963,6 +1325,7 @@ $scope.showRelationModals=function(cloudObject,column){
     $scope.relEditableJsonObj=JSON.stringify($scope.relEditableJsonObj,null,2);
     $("#md-rel-objectviewer").modal("show");
   }
+
   //GeoPoint
   if(column.document.dataType=="GeoPoint"){
     $scope.relEditableGeopoint=angular.copy(cloudObject.get(column.name));   
@@ -1436,8 +1799,12 @@ function nullifyFields(){
 
     if($scope.showInputForEdit[$scope.editableIndex] && $scope.showInputForEdit[$scope.editableIndex][$scope.editableColumnName]){
       $scope.showInputForEdit[$scope.editableIndex][$scope.editableColumnName]=false;
-    }                
-    $scope.editableField[$scope.editableIndex][$scope.editableColumnName]=null;//field or value 
+    } 
+    if($scope.editableField.length>0){
+      if($scope.editableField[$scope.editableIndex] && $scope.editableField[$scope.editableIndex].length>0){
+        $scope.editableField[$scope.editableIndex][$scope.editableColumnName]=null;//field or value
+      }       
+    }    
   }
            
   nullifyEditable(); 

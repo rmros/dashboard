@@ -212,48 +212,117 @@ app.directive('autokomplete', function(){
                 source:  function (request, response) {
                     var arrayRecords=[];                    
 
-                    scope.queryTableByName("User")
-                    .then(function(userRecords){ 
+                   // scope.queryTableByName("User")
+                    //.then(function(userRecords){ 
 
-                        scope.queryTableByName("Role")
-                        .then(function(roleRecords){ 
+                        //scope.queryTableByName("Role")
+                        //.then(function(roleRecords){ 
+                            var userRecords=scope.userRecords;
+                            if(userRecords.length>0){
+                                for(var i=0;i<userRecords.length;i++){
+                                    arrayRecords.push(CB.toJSON( userRecords[i] ));
+                                }
+                            }
                             
-                            for(var i=0;i<userRecords.length;i++){
-                                arrayRecords.push(CB.toJSON( userRecords[i] ));
-                            }  
-                            for(var j=0;j<roleRecords.length;j++){
-                                arrayRecords.push(CB.toJSON( roleRecords[j] ));
-                            }               
-
+                            var roleRecords=scope.roleRecords;  
+                            if(roleRecords.length>0){
+                                for(var j=0;j<roleRecords.length;j++){
+                                    arrayRecords.push(CB.toJSON( roleRecords[j] ));
+                                }
+                            }                                           
+                            var details;
                            //data :: JSON list defined
-                            response($.map(arrayRecords, function (value, key) {                                                            
-                                var details= {
-                                    label   : value._id+" ("+value._tableName+")",
-                                    value   : value._id,                                   
-                                    player  : value._tableName
+                            response($.map(arrayRecords, function (value, key) { 
+                                details={
+                                    value  : value._id,
+                                    player : value._tableName
                                 };
+
                                 if(value._tableName=="User"){
                                     details.name=value.username;
+                                    details.icon='<i class="icon ion-person-stalker"></i>';
+                                    details.label=value._tableName+"-"+value.username+"("+value._id+")";
                                 }
                                 if(value._tableName=="Role"){
                                     details.name=value.name;
-                                }
+                                    details.icon='<i class="icon ion-unlocked"></i>';
+                                    details.label=value._tableName+"-"+value.name+"("+value._id+")";
+                                }                                                                                          
+                               
                                 return details;
                             }));
-                        });                       
-                    }); 
+                        //});                       
+                    //}); 
                   
-                },
+                },                
                 select: function (event, ui) {
-                    scope.addACL.id=ui.item.value;
-                    scope.addACL.name=ui.item.name;
-                    scope.addACL.player=ui.item.player; 
-                    $("#acl-search-id").val(null);                                   
+                    scope.newACLSpinner=true;
+
+                    if(scope.addACL.length>0){
+                        var acl = _.find(scope.addACL, function(obj){ 
+                            if(obj.id==ui.item.value){
+                                return obj;
+                            } 
+                        });
+                        if(!acl){
+                            var aclObj={};
+                            aclObj.id=ui.item.value;
+                            aclObj.name=ui.item.name;
+                            aclObj.icon=ui.item.icon;
+                            aclObj.player=ui.item.player;
+                            aclObj.read=null;
+                            aclObj.write=null;
+
+                            scope.addACL.push(aclObj);
+                            $("#acl-search-id").val(null);
+                            setTimeout(function(){ 
+                                $("#acl-search-id").val(null); 
+                                scope.newACLSpinner=false;
+                            }, 1000);   
+                        }
+                        scope.newACLSpinner=false;
+
+                    }else{
+                        var aclObj={};
+                        aclObj.id=ui.item.value;
+                        aclObj.name=ui.item.name;
+                        aclObj.icon=ui.item.icon;
+                        aclObj.player=ui.item.player;
+                        aclObj.read=null;
+                        aclObj.write=null;
+
+                        scope.addACL.push(aclObj); 
+                        $("#acl-search-id").val(null);
+                        setTimeout(function(){ 
+                            $("#acl-search-id").val(null); 
+                            scope.newACLSpinner=false;
+                        }, 1000); 
+                    }                
                 }
             });
         }
     };
 });
+
+app.directive('tristate', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){
+                    
+            $(element).tristate({
+                change: function(state, value) {
+                    var settingName=$(this).data("access");
+                    var player=$(this).data("player");
+                    var playerId=$(this).data("playerid");
+                    scope.setACL(player,settingName,value,playerId);
+                },
+                checked:true,
+                unchecked:null,
+                indeterminate:false
+            });
+        }
+    }
+});                
 
 
 function appIdValidation(appId){
