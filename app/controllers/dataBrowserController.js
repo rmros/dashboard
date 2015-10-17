@@ -91,10 +91,10 @@ $scope.init = function() {
   getBeacon();     
 };
 
-$scope.loadTableData = function(tableName,orderBy,orderByType,limit,skip) {          
+$scope.loadTableData = function(t,orderBy,orderByType,limit,skip) {          
   var q=$q.defer();
-  if(tableName){   
-      var query = new CB.CloudQuery(tableName);
+  if(t){   
+      var query = new CB.CloudQuery(t.name);
 
       if(orderByType=="asc"){
         query.orderByAsc(orderBy);
@@ -1059,7 +1059,7 @@ $scope.searchRelationDocs=function(){
   $("#md-reldocumentviewer").modal("hide");
 
   //List Relations records 
-  $scope.loadTableData($scope.tableDef.name,"createdAt","asc",20,0)
+  $scope.loadTableData($scope.tableDef,"createdAt","asc",20,0)
   .then(function(list){        
        
    $scope.relationTableData=list;
@@ -1708,7 +1708,7 @@ $scope.showListFile=function(row,column,index){
 $scope.listSearchRelationDocs=function(){ 
   $scope.tableDef=_.first(_.where($rootScope.currentProject.tables, {name: $scope.editableColumn.relatedTo}));
   //List Relations records 
-  $scope.loadTableData($scope.tableDef.name,"createdAt","asc",20,0)
+  $scope.loadTableData($scope.tableDef,"createdAt","asc",20,0)
   .then(function(list){ 
     $scope.listRelationTableData=list; 
     $("#md-searchlistdocument").modal("show");         
@@ -2009,30 +2009,27 @@ function loadProject(id){
 }
 
 function getProjectTables(){
-  var promises=[];
-
-  promises.push($scope.loadTableData(tableName,$scope.orderBy,$scope.orderByType,10,0));
+  var promises=[];  
 
   if(!$rootScope.currentProject.tables || $rootScope.currentProject.tables.length==0){
     //Get All project tables
     promises.push(tableService.getProjectTables($rootScope.currentProject));     
   }else{
-    $rootScope.currentProject.currentTable= _.first(_.where($rootScope.currentProject.tables, {name: tableName}));
+    $rootScope.currentProject.currentTable= _.first(_.where($rootScope.currentProject.tables, {name: tableName}));   
   }  
 
   $q.all(promises).then(function(list){ 
-    if(list.length==1){
-      $scope.currentTableData=list[0];      
-    }
 
-    if(list.length==2){      
-      $scope.currentTableData=list[0];
-      $rootScope.currentProject.tables=list[1];
-      $rootScope.currentProject.currentTable= _.first(_.where($rootScope.currentProject.tables, {name: tableName}));
+    if(list.length==1){      
+      $rootScope.currentProject.tables=list[0];
+      $rootScope.currentProject.currentTable= _.first(_.where($rootScope.currentProject.tables, {name: tableName}));      
     }
+    return $scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0);    
+
+  }).then(function(cbObjects){ 
+    $scope.currentTableData=cbObjects;
     $scope.totalRecords=10;
-    $scope.isTableLoaded=true;
-
+    $scope.isTableLoaded=true; 
   }, function(err){  
     $scope.isTableLoaded=true; 
     $scope.tableLoadedError="Error in loading table records";
@@ -2062,7 +2059,7 @@ $scope.addMoreRecords=function(){
   if($scope.currentTableData && $rootScope.currentProject && $rootScope.currentProject.currentTable){
     $scope.loadingRecords=true;
     //load more data
-    $scope.loadTableData($rootScope.currentProject.currentTable.name,$scope.orderBy,$scope.orderByType,5,$scope.totalRecords)
+    $scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,5,$scope.totalRecords)
     .then(function(list){
       if(list && list.length>0){
         if($scope.currentTableData.length>0){
@@ -2366,7 +2363,7 @@ $scope.sortASC=function(column){
     $scope.orderBy=column.name;
     $scope.orderByType="asc";    
 
-    $scope.loadTableData($rootScope.currentProject.currentTable.name,$scope.orderBy,$scope.orderByType,10,0)
+    $scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0)
     .then(function(list){ 
 
        $scope.currentTableData=list; 
@@ -2393,7 +2390,7 @@ $scope.sortDESC=function(column){
 
     $scope.orderBy=column.name;
     $scope.orderByType="desc";
-    $scope.loadTableData($rootScope.currentProject.currentTable.name,$scope.orderBy,$scope.orderByType,10,0)
+    $scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0)
     .then(function(list){ 
 
        $scope.currentTableData=list; 
