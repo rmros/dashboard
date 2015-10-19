@@ -253,6 +253,10 @@ app.controller('appsController',
     }    
   };
 
+  $scope.closeEditApp=function(index){
+    $scope.showProject[index]=false;
+  };
+
   function addDefaultTables(project){
     var q=$q.defer();
 

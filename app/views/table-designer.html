@@ -125,14 +125,17 @@
                               <span  style="word-break: break-all;">&nbsp;</span>
                             </div>
                             <div style="margin-top:10px;" data-ng-show="tableErrorForCreate">
-                              <span  style="word-break: break-all;color:red;">{{tableErrorForCreate}}</span>
+                              <span  style="word-break: break-all;color:red;font-size:12px;">{{tableErrorForCreate}}</span>
                             </div>
 
                             <div class="popup-buttons-div flex-general-row-wrapper">
 
                               <button ng-disabled="isCreatingTable" type="button" ng-click="cancelAddtable()" data-close-stackbox="true" class="custmBtn tableCancelBtn">Cancel</button>
 
-                              <button ng-show="!isCreatingTable" type="button" class="custmBtn tableCreateBtn" ng-disabled="tableErrorForCreate" data-close-stackbox="{{!addTablePopup}}" ng-click="addNewTable()">Create</button>
+                              <button ng-show="!isCreatingTable && !tableErrorForCreate" type="button" class="custmBtn tableCreateBtn" ng-disabled="tableErrorForCreate" data-close-stackbox="{{!addTablePopup}}" ng-click="addNewTable()">Create</button>
+
+                              <!--Disable on error-->
+                              <button ng-show="!isCreatingTable && tableErrorForCreate" type="button" class="custmBtn tableDisableCreateBtn"  style="cursor:default;" data-close-stackbox="{{!addTablePopup}}" >Create</button>
 
                               <!--While Saving-->
                               <button ng-show="isCreatingTable" type="button" class="custmBtn tableCreateBtn" ng-disabled="tableErrorForCreate">

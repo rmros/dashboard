@@ -36,7 +36,8 @@
     "ngInfiniteScroll": "~1.2.1",
     "angular-ui-ace": "bower",
     "ionicons": "~2.0.1",
-    "angu-fixed-header-table": "~1.2.0"
+    "angu-fixed-header-table": "~1.2.0",
+    "angular-click-outside": "~2.1.0"
   },
   "devDependencies": {}
 }
