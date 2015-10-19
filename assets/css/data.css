@@ -277,10 +277,8 @@
 
 .tableCreateBtn{
     margin-left:8px;
-    background-color: #3A5795;
     border: none;
-    color:white;
-    border: 1px solid #3A5795;
+    color:white;    
 }
 .tableDisableCreateBtn{
     margin-left:8px;
