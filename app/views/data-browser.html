@@ -17,14 +17,16 @@
             </div> 
             <div class="headerC flex-general-row-wrapper-center">
 
-              <div ng-show="isTableLoaded" class="tableNameDiv flex-general-row-wrapper">              
-                <h3 ng-click="showTableList=!showTableList">                
-                  {{currentProject.currentTable.name}}
-                </h3> 
-                <i class="fa fa-angle-down fa-2x" ng-click="showTableList=!showTableList"></i>        
+              <div ng-show="isTableLoaded" class="tableNameDiv flex-general-row-wrapper">   
+                <div class="flex-general-row-wrapper" id="table-menu-btn" ng-click="showTableList=!showTableList">           
+                  <h3>                
+                    {{currentProject.currentTable.name}}
+                  </h3> 
+                  <i class="fa fa-angle-down fa-2x"></i> 
+                </div>       
 
                 <!--DropDown for TableList-->
-                <div class="tableList-wrapper" ng-show="showTableList">
+                <div class="tableList-wrapper" ng-show="showTableList" id="main-menu" click-outside="closeTableMenu()" outside-if-not="table-menu-btn">
                   <div style="background-color:white;width:99.99%; height:210px;" malihuscrollbar-for-popup>
 
                   <div  ng-repeat="t in currentProject.tables" style="width:259px !important;">
@@ -114,7 +116,7 @@
 
         <!--Hide columns-->
         <div class="hide-col-btn-group">
-          <button type="button" class="hide-col-btn" ng-click="toggleHiddenColShow()">
+          <button type="button" id="hide-col-btn-id" class="hide-col-btn" ng-click="toggleHiddenColShow()">
             <div class="pull-left">
               <div style="margin-left:10px;" ng-class='{hiddencolindicator : hiddenColumnCount>0}'>
                 <i class="fa fa-columns"></i>&nbsp;
@@ -127,7 +129,7 @@
             </div>
           </button>
 
-          <div class="hidden-col-wrapper" ng-show="showHiddenColList">
+          <div class="hidden-col-wrapper" ng-show="showHiddenColList" id="hide-col-box" click-outside="closeHideColBox()" outside-if-not="hide-col-btn-id">
             <div class="hidden-col-container">
               <!--show all and hide all button-->
               <div class="hidden-col-short-btnwrapper flex-general-row-wrapper">
@@ -272,7 +274,7 @@
                     </div>
                   </div> 
 
-                  <div ng-if="column.document.dataType!='Id'" class="cust-cell-dropdwn" ng-click="toggleColOptions($index)">
+                  <div ng-if="column.document.dataType!='Id'" class="cust-cell-dropdwn" id="cust-cell-dropdwn-btn{{$index}}" ng-click="toggleColOptions($index)">
                       <!--Active Column-->
                       <!--ASC-->
                       <i ng-if="orderBy==column.name && orderByType=='asc'" class="fa fa-angle-up dropdown-icon-size" style="padding-top: 4.6px;"></i>
@@ -287,7 +289,7 @@
                 </div>
 
                   <!--col dropdown-->
-                  <div ng-if="showColOptions[$index] && column.document.dataType!='Id'" class="col-dropdown">
+                  <div ng-if="showColOptions[$index] && column.document.dataType!='Id'" class="col-dropdown" id="col-configure-drpdown{{$index}}" click-outside="closeColConfig($index)" outside-if-not="cust-cell-dropdwn-btn{{$index}}">
                     <!--Column options-->
                     <div ng-show="!editColumn[$index]" class="flex-general-column-wrapper">          
 
@@ -382,13 +384,13 @@
              <!--Extra Add Column-->
               <th class="addColTh">
                 <div class="addColThDiv">                 
-                  <div class="flex-general-row-wrapper-center" ng-mouseenter="showNewColumnPreview=!showNewColumnPreview" ng-mouseleave="showNewColumnPreview=!showNewColumnPreview" ng-click="initiateColumnSettings()">
+                  <div class="flex-general-row-wrapper-center" ng-mouseenter="showNewColumnPreview=!showNewColumnPreview" ng-mouseleave="showNewColumnPreview=!showNewColumnPreview" ng-click="initiateColumnSettings()" id="add-column-popup-btn">
                       <span>+</span>
                   </div>                                     
                 </div> 
 
                 <!--Add Column PopUp-->
-                <div class="addColPopUpWrapper" ng-show="showAddColPopUp">
+                <div class="addColPopUpWrapper" ng-show="showAddColPopUp" id="add-column-popup" click-outside="closeAddCol()" outside-if-not="add-column-popup-btn">
                   <form name="addNewColumnForm" ng-submit="addColumn(addNewColumnForm.$valid)">
                       <div>
                         <label class="addcollabel" style="font-size:13px;">Enter new column name</label>

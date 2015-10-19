@@ -54,7 +54,7 @@
           <div ng-if="!animateApp[$index]" data-ng-class="{animated:isAppCreated==true,fadeIn:$index==0,slideInLeft:$index==1}"> 
               <div class="header">
                 <div class="actions">
-                  <a ng-click="toggleAppEdit($index)"><i class="fa fa-pencil" style="font-size:1.3em"></i></a>
+                  <a id="edit-app-btn{{$index}}" ng-click="toggleAppEdit($index)"><i class="fa fa-pencil" style="font-size:1.3em"></i></a>
                 </div>     
                 <h3><i class="fa fa-cloud "></i>&nbsp;&nbsp;{{list.name}}</h3>
               </div>
@@ -101,7 +101,7 @@
           </div> 
 
           <!-- Edit -->
-          <div ng-hide="!showProject[$index]" class="block block-color fadedPrimary" style="height:330px">
+          <div ng-hide="!showProject[$index]" id="edit-app{{$index}}" click-outside="closeEditApp($index)" outside-if-not="edit-app-btn{{$index}}" class="block block-color fadedPrimary" style="height:330px">
             <div class="header">
               <h3><i class="fa fa-pencil "></i>&nbsp;&nbsp;edit project</h3>
             </div>

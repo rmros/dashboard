@@ -37,7 +37,11 @@
     "angular-ui-ace": "bower",
     "ionicons": "~2.0.1",
     "angu-fixed-header-table": "~1.2.0",
+<<<<<<< HEAD
     "angucomplete-alt": "~1.3.0"
+=======
+    "angular-click-outside": "~2.1.0"
+>>>>>>> newDataBrowser
   },
   "devDependencies": {}
 }

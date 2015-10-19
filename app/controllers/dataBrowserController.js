@@ -2603,6 +2603,27 @@ function showSaveIconInSecond(index){
 
 /*------/Partial & Table Definition Functions---------------*/ 
 
+//Toggling popups
+$scope.closeTableMenu=function(){
+  if($scope.showTableList){
+    $scope.showTableList=false;
+  }  
+};
+
+$scope.closeHideColBox=function(){
+  if($scope.showHiddenColList==true){
+    $scope.showHiddenColList=false;
+  }
+};
+
+$scope.closeColConfig=function(index){
+  $scope.showColOptions[index]=false;
+};
+$scope.closeAddCol=function(){
+  $scope.showAddColPopUp=false;
+};
+//End Toggling popups
+
 $scope.goToDocumentation=function(){
   //Update Beacon
   if($scope.beacon && !$scope.beacon.documentationLink){

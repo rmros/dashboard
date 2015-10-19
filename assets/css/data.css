@@ -282,6 +282,12 @@
     color:white;
     border: 1px solid #3A5795;
 }
+.tableDisableCreateBtn{
+    margin-left:8px;
+    background-color: #DDDBDB;
+    border: none;
+    color:black;    
+}
 
 .tableCreateBtn:hover{  
     background-color: #3A5795;   
