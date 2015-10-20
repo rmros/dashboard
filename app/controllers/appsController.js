@@ -2,22 +2,20 @@
 
 app.controller('appsController',
   ['$scope',
-    '$q',
+   '$q',
    'projectService', 
    '$http',
    '$rootScope',
-   '$cookies', 
-   '$intercom',
+   '$cookies',   
    '$timeout',
    'tableService',
-   'beaconService',
+   'beaconService',   
   function ($scope,
   $q,
   projectService,
   $http,
   $rootScope,
-  $cookies,
-  $intercom,
+  $cookies,  
   $timeout,
   tableService,
   beaconService) {
@@ -44,10 +42,7 @@ app.controller('appsController',
           appId:"Copy",
           masterKey:"Copy",
           javascriptKey:"Copy"
-        }; 
-
-        //Intercom integration   
-        integrateIntercom();
+        };       
         
         //listing start
         projectService.projectList()         
@@ -277,17 +272,6 @@ app.controller('appsController',
       });
 
     return q.promise;
-  }
-
-  function integrateIntercom(){
-    var user = {
-        name: $.cookie('userFullname'),
-        email: $.cookie('email'),
-        created_at: Date.parse($.cookie('createdAt')),
-        user_id : $.cookie('userId')
-      };
-
-    $intercom.boot(user);
   }
 
   function toggleSideBar(_this){

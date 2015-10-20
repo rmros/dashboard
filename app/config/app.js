@@ -12,8 +12,7 @@ var app=angular.module('CloudBoostDashboard',
     'ui.router',
     'kendo.directives',
     'ngPrettyJson',
-    'ngCookies',
-    'angular-intercom',
+    'ngCookies',   
     'ngClipboard',
     'ngResource',    
     'ngTouch',     
@@ -26,7 +25,8 @@ var app=angular.module('CloudBoostDashboard',
     'lrInfiniteScroll',
     'ui.ace',
     'angucomplete-alt',
-    'angular-click-outside'
+    'angular-click-outside',
+    'ngIntercom'
     ]);
 
 app.value('THROTTLE_MILLISECONDS', 1250);

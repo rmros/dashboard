@@ -8664,3 +8664,14 @@ ul.timeline li > .date {
   -moz-animation: rotation 2s infinite linear;
   -o-animation: rotation 2s infinite linear;
 }
+
+.intercomm{
+  height: 45px;
+  width: 45px;
+  border-radius: 25px;
+  background-color: #2D3D4D;
+  position: fixed;
+  z-index: 999999;
+  right: 20px;
+  bottom: 20px;
+}
