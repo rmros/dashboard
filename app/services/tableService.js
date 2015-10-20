@@ -72,6 +72,7 @@ app.factory('tableService',
 
         table.save()
         .then(function(obj){
+          table=obj;         
           q.resolve(obj);
       
           if(create && !__isDevelopment){

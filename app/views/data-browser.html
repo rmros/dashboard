@@ -121,7 +121,8 @@
               <div style="margin-left:10px;" ng-class='{hiddencolindicator : hiddenColumnCount>0}'>
                 <i class="fa fa-columns"></i>&nbsp;
                 <span ng-if="hiddenColumnCount>0">{{hiddenColumnCount}}</span> &nbsp;               
-                Hide Columns 
+                <span ng-if="hiddenColumnCount==0">Hide Columns</span> 
+                <span ng-if="hiddenColumnCount>0">Hidden Columns</span>
               </div>           
             </div>
             <div class="pull-right"> 

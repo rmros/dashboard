@@ -150,6 +150,7 @@ app.controller('tableDesignerController',
 
         tableService.saveTable(table)
         .then(function(respTable){
+          $rootScope.currentProject.tables[index]=respTable;          
           //$scope.goToDataBrowser(respTable);           
           $scope.newTableName =null; 
           $scope.isCreatingTable=false;
