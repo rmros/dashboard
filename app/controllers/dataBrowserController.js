@@ -1078,12 +1078,13 @@ $scope.linkRecord=function(relationCBRecord){
     rowEditMode(i);
    
     var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
-       if(everyCol.name!=$scope.editableColumnName && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
-         if(!$scope.editableRow.get(everyCol.name)){
+      if(everyCol.name!=$scope.editableColumnName && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
+        if(!$scope.editableRow.get(everyCol.name)){
           return everyCol;
-         }          
-       }
+        }          
+      }
     });
+
     $scope.editableRow.set($scope.editableColumnName,relationCBRecord); 
     if(requiredField){      
       rowWarningMode(i,$scope.editableRow,$scope.editableColumnName);
