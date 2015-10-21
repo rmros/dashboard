@@ -1423,7 +1423,7 @@
             <button type="button" class="close" style="font-size:26px !important;" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
 
-          <div ng-show="!searchRelDocsError && relationTableData.length>1" class="search-rel-wrapper cf" style="background-color:white;">
+          <div ng-show="!searchRelDocsError" class="search-rel-wrapper cf" style="background-color:white;">
               <div class="rel-search-btn-wrapper flex-general-row-wrapper pull-left" style="width:96%;">
                 <div class="rel-searchIcon">
                   <i class="fa fa-search"></i>
@@ -1433,6 +1433,7 @@
                 </div>                
               </div>                                
           </div>
+          
           <!--List-->
           <div ng-if="!searchRelDocsError && relationTableData.length>0" class="md-search-relation-wrapper">
             
@@ -2942,7 +2943,7 @@
             <button type="button" class="close" style="font-size:26px !important;" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div> 
 
-          <div ng-show="!searchRelDocsError && listRelationTableData.length>1" class="search-rel-wrapper cf" style="background-color:white;">
+          <div ng-show="!searchRelDocsError" class="search-rel-wrapper cf" style="background-color:white;">
               <div class="rel-search-btn-wrapper flex-general-row-wrapper pull-left" style="width:96%;">
                 <div class="rel-searchIcon">
                   <i class="fa fa-search"></i>
