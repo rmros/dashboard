@@ -1062,7 +1062,7 @@ $scope.searchRelationDocs=function(){
   $scope.loadTableData($scope.tableDef,"createdAt","asc",20,0)
   .then(function(list){        
        
-   $scope.relationTableData=list;
+   $scope.relationTableData=list;   
    $("#md-searchreldocument").modal();          
    //$scope.$digest(); 
                                           
