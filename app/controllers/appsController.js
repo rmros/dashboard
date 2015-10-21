@@ -5,6 +5,7 @@ app.controller('appsController',
    '$q',
    'projectService', 
    '$http',
+   '$state',
    '$rootScope',
    '$cookies',   
    '$timeout',
@@ -14,6 +15,7 @@ app.controller('appsController',
   $q,
   projectService,
   $http,
+  $state,
   $rootScope,
   $cookies,  
   $timeout,
@@ -43,20 +45,9 @@ app.controller('appsController',
           masterKey:"Copy",
           javascriptKey:"Copy"
         };       
-        
-        //listing start
-        projectService.projectList()         
-        .then(function(data){
-          $rootScope.dataLoading=false; 
-          $scope.projectListObj=data;
 
-          //getBeacon
-          getBeacon();                              
-        },function(error){
-          $rootScope.dataLoading=false; 
-          $scope.loadingError='Cannot connect to server. Please try again.';
-        });
-         //listing ends                           
+        projectList();
+                                   
   };
 
   $scope.deleteAppModal=function(project, index){
@@ -65,6 +56,7 @@ app.controller('appsController',
       $scope.projectToBeDeletedIndex=$scope.projectListObj.indexOf($scope.projectToBeDeleted);
       $scope.confirmAppName=null;
       $('#deleteappmodal').modal();
+      $scope.newList=angular.copy($scope.projectListObj.splice($scope.projectToBeDeletedIndex,1)); 
   };
 
   $scope.deleteProject = function(){               
@@ -80,13 +72,25 @@ app.controller('appsController',
 
           projectService.deleteProject($scope.projectToBeDeleted.appId)
           .then(function(){
-            $scope.deleteSpinner=false;
-            $scope.toggleAppEdit($scope.appIndex);
-            $scope.confirmAppName=null;
-            $('#deleteappmodal').modal("hide");  
+            $scope.deleteSpinner=false;            
+
             //project is deleted.
-            $scope.projectListObj.splice($scope.projectToBeDeletedIndex,1);
-            successNotify('The project is successfully deleted.');                
+            $scope.projectListObj=$scope.newList;           
+            //$scope.showProject[$scope.appIndex]=false;
+            successNotify('The project is successfully deleted.');
+
+            if($scope.showProject.length>0){
+              for(var i=0;i<$scope.showProject.length;++i){              
+                $scope.showProject[i]=false;              
+              }
+            }
+
+            var editId="#edit-app"+$scope.appIndex;  
+            var editBtnId="edit-app-btn"+$scope.appIndex;             
+            $(editId).attr("outside-if-not",editBtnId);                         
+
+            $scope.confirmAppName=null;
+            $('#deleteappmodal').modal("hide");                            
 
           },function(error){
             $scope.confirmAppName=null;
@@ -251,6 +255,22 @@ app.controller('appsController',
   $scope.closeEditApp=function(index){
     $scope.showProject[index]=false;
   };
+
+  function projectList(){
+    //listing start
+    projectService.projectList()         
+    .then(function(data){
+      $rootScope.dataLoading=false; 
+      $scope.projectListObj=data;
+
+      //getBeacon
+      getBeacon();                              
+    },function(error){
+      $rootScope.dataLoading=false; 
+      $scope.loadingError='Cannot connect to server. Please try again.';
+    });
+     //listing ends
+  }
 
   function addDefaultTables(project){
     var q=$q.defer();
