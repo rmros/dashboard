@@ -3423,12 +3423,13 @@
             <!--Roll List of Relation-->
             <div ng-if="editableColumn.relatedTo!='Text' &&editableColumn.relatedTo!='Email' && editableColumn.relatedTo!='URL' && editableColumn.relatedTo!='Number' && editableColumn.relatedTo!='DateTime' && editableColumn.relatedTo!='Object' && editableColumn.relatedTo!='Boolean' && editableColumn.relatedTo!='File' && editableColumn.relatedTo!='GeoPoint'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
 
-                <div ng-repeat="eachRelation in editableList | orderBy:predicate:reverse track by $index" class="relationid-list flex-general-row-wrapper-center cf">
+                <div ng-repeat="eachRelation in editableList | orderBy:predicate:reverse track by $index" class="relationid-list-display flex-general-row-wrapper-center cf">
                   <div class="m-relationid id-show" ng-click="viewRelationData(editableRow,editableColumn,$index)">
-                    <a>
+                    <a style="color:black;">
                      {{eachRelation.document._id}}
                     </a>  
                   </div>
+                  &nbsp;
                   <div class="m-remove-relation remv-show">
                     <div ng-click="deleteListItem($index)">
                      <i class="fa fa-times"></i>

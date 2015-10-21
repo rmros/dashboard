@@ -1051,7 +1051,8 @@ $scope.addRelationToRelation=function(cloudObject,column){
     
   }else{
     $scope.linkedRelatedDoc=null;
-    $("#md-reldocumentviewer").modal();
+    $scope.relToRel=true;    
+    $scope.searchRelationDocs();
   } 
 };
 
@@ -1093,10 +1094,11 @@ $scope.linkRecord=function(relationCBRecord){
     }else{
       rowSpinnerMode(i);
                  
+      $("#md-searchreldocument").modal("hide");
+                 
       //Save Cloud Object
       $scope.saveCloudObject($scope.editableRow)
-      .then(function(obj){  
-        $("#md-searchreldocument").modal("hide");
+      .then(function(obj){          
         showSaveIconInSecond(i);
         
       }, function(error){ 

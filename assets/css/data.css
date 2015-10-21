@@ -1214,7 +1214,7 @@
 }
 
 .id-show{
-    width: 95%;    
+    width: 94.5%;   
 }
 .real-content-list-text{  
     width:87%;    
@@ -1986,4 +1986,15 @@
     margin-top: 3px;
     cursor: pointer;
     background-color: white;
+}
+
+.relationid-list-display {
+    width: 550px;
+    height: 35px;
+    background-color: #E0EDFF;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-top: 10px;
+    border: 1px solid #F0F0F0;
+    color:black;
 }
