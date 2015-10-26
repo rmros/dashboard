@@ -1,5 +1,5 @@
 
-app.directive('fixedtableheadcol', function(){
+/*app.directive('fixedtableheadcol', function(){
     return {
         restrict: 'A',
         link: function(scope, element, attrs){       
@@ -22,7 +22,7 @@ app.directive('fixedthead', function(){
             });
         }
     };
-});
+});*/
 
 app.directive('appNameValidation', function(){
     return {
@@ -150,6 +150,7 @@ app.directive('errortooltip', function(){
     };
 });
 
+/*
 app.directive('colresize', function(){
     return {
         restrict: 'A',
@@ -157,7 +158,7 @@ app.directive('colresize', function(){
             $(element).resizableColumns();
         }
     };
-});
+});*/
 
 
 //Scrollbar for both vertical and horizontal
@@ -201,7 +202,7 @@ app.directive('malihuscrollbarForPopup', function(){
     };
 });
 
-app.directive('filechange', function(){
+/*app.directive('filechange', function(){
     return {
         restrict: 'A',
         link: function(scope, element, attrs){       
@@ -218,7 +219,8 @@ app.directive('filechange', function(){
             });
         }
     };
-});
+});*/
+
 
 app.directive('dmuploader', function(){
     return {
@@ -238,6 +240,63 @@ app.directive('dmuploader', function(){
         }
     };
 });
+
+//Especially for relation Files
+app.directive('reldmuploader', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){       
+            $(element).dmUploader({               
+                onNewFile: function(id, file){ 
+                    
+                    var column = $(element).data('column');
+                    
+                    var reader = new FileReader();
+                    reader.onload = function (e) {                       
+                        scope.relfileSelected(column,reader.result,file.name,file);
+                    }
+                    reader.readAsDataURL(file);                    
+                }
+            });
+        }
+    };
+});
+
+
+//Especially for list relation Files
+app.directive('listreldmuploader', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){       
+            $(element).dmUploader({               
+                onNewFile: function(id, file){ 
+                    
+                    var column = $(element).data('column');
+                    
+                    var reader = new FileReader();
+                    reader.onload = function (e) {                       
+                        scope.relListFileSelected(column,reader.result,file.name,file);
+                    }
+                    reader.readAsDataURL(file);                    
+                }
+            });
+        }
+    };
+});
+
+app.directive('fileloading', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){
+                    
+            scope.relFileProgress=$(element).progressTimer({
+               timeLimit: 25,
+               onFinish: function () {                   
+               }
+            });
+        }
+    }
+}); 
 
 app.directive('autokomplete', function(){
     return {
@@ -358,8 +417,7 @@ app.directive('tristate', function(){
             });
         }
     }
-});                
-
+}); 
 
 function appIdValidation(appId){
     var appIdValidationError=null;

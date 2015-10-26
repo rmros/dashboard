@@ -55,7 +55,10 @@ $scope.relatedTableDefArray=[];
 $scope.relatedTableRecordArray=[];
 $scope.relationError=[];
 $scope.relationHoldData=[];
-$scope.relationShowInput=[];  
+$scope.relationShowInput=[]; 
+$scope.setRelFileError=[]; 
+$scope.setRelFileSpinner=[];
+$scope.viewRelDataError=[];
 
 //Random
 $scope.isFileSelected=false;  
@@ -78,6 +81,7 @@ $scope.aclPublic={
   readValue:null,
   writeValue:null
 };
+$scope.relFileProgress=null;
 
 $scope.init = function() { 
   id = $stateParams.appId;
@@ -315,11 +319,11 @@ function prepareACLDisplay(aclObject){
 
   //Role   
   var rolePromise=[];
-  rolePromise.push(createACL("Role",aclObject.read.allow.role,"read","allow"));
-  rolePromise.push(createACL("Role",aclObject.read.deny.role,"read","deny"));
+  rolePromise.push(createACL("Role",aclObject.document.read.allow.role,"read","allow"));
+  rolePromise.push(createACL("Role",aclObject.document.read.deny.role,"read","deny"));
 
-  rolePromise.push(createACL("Role",aclObject.write.allow.role,"write","allow"));
-  rolePromise.push(createACL("Role",aclObject.write.deny.role,"write","deny"));
+  rolePromise.push(createACL("Role",aclObject.document.write.allow.role,"write","allow"));
+  rolePromise.push(createACL("Role",aclObject.document.write.deny.role,"write","deny"));
 
   $q.all(rolePromise).then(function(dList){
     var readRoles=[];
@@ -346,7 +350,7 @@ function prepareACLDisplay(aclObject){
         writeRoles=dList[3];
       } 
     }
-
+    
     for(var i=0;i<readRoles.length;++i){
       for(var j=0;j<writeRoles.length;++j){
         if(readRoles[i].id==writeRoles[j].id){
@@ -354,7 +358,7 @@ function prepareACLDisplay(aclObject){
           writeRoles.splice(j,1);
         }
       }
-    }
+    }    
 
     $scope.aclRoles=readRoles.concat(writeRoles);
   },function(){
@@ -362,11 +366,11 @@ function prepareACLDisplay(aclObject){
 
   //User   
   var userPromise=[];
-  userPromise.push(createACL("User",aclObject.read.allow.user,"read","allow"));
-  userPromise.push(createACL("User",aclObject.read.deny.user,"read","deny"));
+  userPromise.push(createACL("User",aclObject.document.read.allow.user,"read","allow"));
+  userPromise.push(createACL("User",aclObject.document.read.deny.user,"read","deny"));
 
-  userPromise.push(createACL("User",aclObject.write.allow.user,"write","allow"));
-  userPromise.push(createACL("User",aclObject.write.deny.user,"write","deny"));
+  userPromise.push(createACL("User",aclObject.document.write.allow.user,"write","allow"));
+  userPromise.push(createACL("User",aclObject.document.write.deny.user,"write","deny"));
 
   $q.all(userPromise).then(function(dList){
     var readUsers=[];
@@ -394,20 +398,39 @@ function prepareACLDisplay(aclObject){
       } 
     }
 
-    for(var i=0;i<readUsers.length;++i){
-      for(var j=0;j<writeUsers.length;++j){
-        if(readUsers[i].id==writeUsers[j].id){
-          readUsers[i].writeValue=writeUsers[j].writeValue;
-          //Special case (Public)          
-          if(readUsers[i].id==writeUsers[j].id && readUsers[i].id=="all"){
-            $scope.aclPublic.readValue=readUsers[i].readValue;
-            $scope.aclPublic.writeValue=readUsers[i].writeValue;
+    if(readUsers.length>0){
+      for(var i=0;i<readUsers.length;++i){
+        if(writeUsers.length>0){
+          for(var j=0;j<writeUsers.length;++j){
+            if(readUsers[i].id==writeUsers[j].id){
+              readUsers[i].writeValue=writeUsers[j].writeValue;
+              //Special case (Public)          
+              if(readUsers[i].id==writeUsers[j].id && readUsers[i].id=="all"){
+                $scope.aclPublic.readValue=readUsers[i].readValue;
+                $scope.aclPublic.writeValue=readUsers[i].writeValue;
+              }
+              writeUsers.splice(j,1);
+            }          
           }
-          writeUsers.splice(j,1);
+        }else{
+          //Special case (Public) 
+          if(readUsers[i].id=="all"){
+            $scope.aclPublic.readValue=readUsers[i].readValue;
+            $scope.aclPublic.writeValue=null;
+          }          
         }
         
       }
+    }else if(writeUsers.length>0){
+      for(var j=0;j<writeUsers.length;++j){            
+        //Special case (Public)          
+        if(writeUsers[j].id=="all"){
+          $scope.aclPublic.readValue=null;
+          $scope.aclPublic.writeValue=writeUsers[j].writeValue;
+        }                  
+      } 
     }
+    
 
     $scope.aclUsers=readUsers.concat(writeUsers);
     if($scope.editableJsonObj){
@@ -428,7 +451,8 @@ function createACL(tableName,array,readOrWrite,permission){
     var promises=[];
     for(var i=0;i<array.length;++i){
       if(tableName,array[i]!="all"){
-        promises.push($scope.queryTableById(tableName,array[i]));
+        var tableDef= _.first(_.where($rootScope.currentProject.tables, {name: tableName})); 
+        promises.push($scope.queryTableById(tableDef,array[i]));
       }else if(array[i]=="all"){         
 
           var jsonObj={};
@@ -578,13 +602,13 @@ $scope.setACL=function(player,settingName,bool,playerId,cloudObject){
       if(bool==true || bool==false){
         cloudObject.ACL.setUserReadAccess(playerId,bool);
       }else if(bool==null){
-        var allowIndex=cloudObject.get("ACL").read.allow.user.indexOf(playerId);
+        var allowIndex=cloudObject.get("ACL").document.read.allow.user.indexOf(playerId);
         if(allowIndex>-1){
-          cloudObject.get("ACL").read.allow.user.splice(allowIndex,1);
+          cloudObject.get("ACL").document.read.allow.user.splice(allowIndex,1);
         } 
-        var denyIndex=cloudObject.get("ACL").read.deny.user.indexOf(playerId);
+        var denyIndex=cloudObject.get("ACL").document.read.deny.user.indexOf(playerId);
         if(denyIndex>-1){
-          cloudObject.get("ACL").read.deny.user.splice(denyIndex,1);
+          cloudObject.get("ACL").document.read.deny.user.splice(denyIndex,1);
         }       
       }
       
@@ -593,13 +617,13 @@ $scope.setACL=function(player,settingName,bool,playerId,cloudObject){
       if(bool==true || bool==false){
         cloudObject.ACL.setUserWriteAccess(playerId,bool);
       }else if(bool==null){
-        var allowIndex=cloudObject.get("ACL").write.allow.user.indexOf(playerId);
+        var allowIndex=cloudObject.get("ACL").document.write.allow.user.indexOf(playerId);
         if(allowIndex>-1){
-          cloudObject.get("ACL").write.allow.user.splice(allowIndex,1);
+          cloudObject.get("ACL").document.write.allow.user.splice(allowIndex,1);
         } 
-        var denyIndex=cloudObject.get("ACL").write.deny.user.indexOf(playerId);
+        var denyIndex=cloudObject.get("ACL").document.write.deny.user.indexOf(playerId);
         if(denyIndex>-1){
-          cloudObject.get("ACL").write.deny.user.splice(denyIndex,1);
+          cloudObject.get("ACL").document.write.deny.user.splice(denyIndex,1);
         }
       }
     }
@@ -612,13 +636,13 @@ $scope.setACL=function(player,settingName,bool,playerId,cloudObject){
       if(bool==true || bool==false){
         cloudObject.ACL.setRoleReadAccess(playerId,bool);
       }else if(bool==null){
-        var allowIndex=cloudObject.get("ACL").read.allow.role.indexOf(playerId);
+        var allowIndex=cloudObject.get("ACL").document.read.allow.role.indexOf(playerId);
         if(allowIndex>-1){
-          cloudObject.get("ACL").read.allow.role.splice(allowIndex,1);
+          cloudObject.get("ACL").document.read.allow.role.splice(allowIndex,1);
         } 
-        var denyIndex=cloudObject.get("ACL").read.deny.role.indexOf(playerId);
+        var denyIndex=cloudObject.get("ACL").document.read.deny.role.indexOf(playerId);
         if(denyIndex>-1){
-          cloudObject.get("ACL").read.deny.role.splice(denyIndex,1);
+          cloudObject.get("ACL").document.read.deny.role.splice(denyIndex,1);
         }       
       }
       
@@ -627,13 +651,13 @@ $scope.setACL=function(player,settingName,bool,playerId,cloudObject){
       if(bool==true || bool==false){
         cloudObject.ACL.setRoleWriteAccess(playerId,bool);
       }else if(bool==null){
-        var allowIndex=cloudObject.get("ACL").write.allow.role.indexOf(playerId);
+        var allowIndex=cloudObject.get("ACL").document.write.allow.role.indexOf(playerId);
         if(allowIndex>-1){
-          cloudObject.get("ACL").write.allow.role.splice(allowIndex,1);
+          cloudObject.get("ACL").document.write.allow.role.splice(allowIndex,1);
         } 
-        var denyIndex=cloudObject.get("ACL").write.deny.role.indexOf(playerId);
+        var denyIndex=cloudObject.get("ACL").document.write.deny.role.indexOf(playerId);
         if(denyIndex>-1){
-          cloudObject.get("ACL").write.deny.role.splice(denyIndex,1);
+          cloudObject.get("ACL").document.write.deny.role.splice(denyIndex,1);
         }
       }
     }
@@ -665,24 +689,24 @@ $scope.removeACL=function(player,playerId,arrayName,cloudObject){
   }
 
   if(player=="User"){
-    var allowIndex=cloudObject.get("ACL").read.allow.user.indexOf(playerId);
+    var allowIndex=cloudObject.get("ACL").document.read.allow.user.indexOf(playerId);
     if(allowIndex>-1){
-      cloudObject.get("ACL").read.allow.user.splice(allowIndex,1);
+      cloudObject.get("ACL").document.read.allow.user.splice(allowIndex,1);
     } 
-    var denyIndex=cloudObject.get("ACL").read.deny.user.indexOf(playerId);
+    var denyIndex=cloudObject.get("ACL").document.read.deny.user.indexOf(playerId);
     if(denyIndex>-1){
-      cloudObject.get("ACL").read.deny.user.splice(denyIndex,1);
+      cloudObject.get("ACL").document.read.deny.user.splice(denyIndex,1);
     }
   }  
 
   if(player=="Role"){
-    var allowIndex=cloudObject.get("ACL").read.allow.role.indexOf(playerId);
+    var allowIndex=cloudObject.get("ACL").document.read.allow.role.indexOf(playerId);
     if(allowIndex>-1){
-      cloudObject.get("ACL").read.allow.role.splice(allowIndex,1);
+      cloudObject.get("ACL").document.read.allow.role.splice(allowIndex,1);
     } 
-    var denyIndex=cloudObject.get("ACL").read.deny.role.indexOf(playerId);
+    var denyIndex=cloudObject.get("ACL").document.read.deny.role.indexOf(playerId);
     if(denyIndex>-1){
-      cloudObject.get("ACL").read.deny.role.splice(denyIndex,1);
+      cloudObject.get("ACL").document.read.deny.role.splice(denyIndex,1);
     }
   }  
 
@@ -1125,7 +1149,7 @@ $scope.viewRelationData=function(row,column,index){
       var rowId=row.get(column.name).document._id;
     } 
     var tableDef=_.first(_.where($rootScope.currentProject.tables, {name: tableName})); 
-
+    
     //get Table data
     $scope.queryTableById(tableDef,rowId)
     .then(function(record){       
@@ -1134,7 +1158,7 @@ $scope.viewRelationData=function(row,column,index){
         //Convert ISODate 2 DateObject
         convertISO2DateObj(tableDef,record); 
         $scope.relatedTableDefArray.push(tableDef);       
-        $scope.relatedTableRecordArray.push(record);
+        $scope.relatedTableRecordArray.push(record);        
 
         //Nullify errors
         //clearRelationErrors();        
@@ -1143,7 +1167,7 @@ $scope.viewRelationData=function(row,column,index){
       $("#md-relationviewer").modal();
 
     }, function(error){
-      $scope.viewRelDataError=error;
+      $scope.viewRelDataError.push(error);
       $("#md-relationviewer").modal();  
     });
     //End of get Table data       
@@ -1393,32 +1417,51 @@ $scope.showRelationModals=function(cloudObject,column){
     $("#md-rel-fileviewer").modal();
   }
   //List
-  if(column.document.dataType=="List"){
-    
-  }
+  //if(column.document.dataType=="List"){    
+  //}
     
 };
+
+$scope.relfileSelected=function(column,selectedFile,fileName,fileObj){  
+  column=CB.fromJSON(column.document);
+
+  $scope.relEditableRow=$scope.relatedTableRecordArray[$scope.relatedTableRecordArray.length-1];
+  $scope.relEditableColumn=column;
+  $scope.relEditableColumnName=column.name;
+
+  $scope.isFileSelected=true;
+  $scope.selectedFile=selectedFile;
+  $scope.selectedfileName=fileName;
+  $scope.selectedFileObj=fileObj;
+  $scope.selectedFileExtension=fileName.split(".")[fileName.split(".").length-1]; 
+  $scope.setRelFile();
+};
+
 //relation File
 $scope.setRelFile=function(){    
   if($scope.selectedFileObj) {
-    $("#md-rel-fileviewer").modal("hide");
-    $scope.setRelFileSpinner=true;
+    //$("#md-rel-fileviewer").modal("hide");
+    $scope.setRelFileSpinner[$scope.relEditableColumnName]=true;
 
     getCBFile($scope.selectedFileObj)
     .then(function(cloudBoostFile){
     
-        $scope.relEditableRow.set($scope.relEditableColumnName,cloudBoostFile);
-        
+        $scope.relEditableRow.set($scope.relEditableColumnName,cloudBoostFile);        
+        $scope.removeSelectdFile(); 
+        $scope.setRelFileSpinner[$scope.relEditableColumnName]=false; 
         $scope.relEditableRow=null; 
         $scope.relEditableColumn=null;
         $scope.relEditableColumnName=null;
         $scope.relEditableFile=null;
-        $scope.removeSelectdFile(); 
-        $scope.setRelFileSpinner=false;       
+        //progress bar
+        $scope.relFileProgress.progressTimer('complete');      
 
     }, function(err){
-      $scope.setRelFileSpinner=false; 
-      $scope.setRelFileError="Something went wrong .try again";
+      $scope.setRelFileSpinner[$scope.relEditableColumnName]=false; 
+      $scope.setRelFileError[$scope.relEditableColumnName]="Something went wrong .try again";
+      $timeout(function(){ 
+        $scope.setRelFileError[$scope.relEditableColumnName]=null;         
+      }, 1500);
     });
             
   }
@@ -1498,7 +1541,12 @@ $scope.showRelationList=function(cloudObject,column){
     convertFieldsISO2DateObj(); 
   } 
   $scope.isRelationalList=true;
-  $("#md-list-commontypes").modal();  
+
+  $("#md-list-commontypes").modal(); 
+  if(!$scope.editableList || $scope.editableList.length==0){
+    $scope.listSearchRelationDocs();
+  }   
+
 };
 //End of relation
 
@@ -1609,6 +1657,7 @@ $scope.deleteListItem=function(index){
     $scope.listIndex=null;
   }   
 };
+
 $scope.deleteListItemFromTable=function(row,column,index){
   nullifyFields();
   $scope.editableRow=row;//row
@@ -1675,6 +1724,7 @@ $scope.showListJsonObject=function(row,index){
 $scope.addListFileModal=function(){  
   $("#md-list-fileviewer").modal("show");
 };
+
 $scope.addListFile=function(){   
   $("#md-list-fileviewer").modal("hide"); 
   if($scope.selectedFileObj) {     
@@ -1697,6 +1747,72 @@ $scope.addListFile=function(){
     });
 
   }
+};
+
+$scope.relListFileSelected=function(column,selectedFile,fileName,fileObj){  
+  column=CB.fromJSON(column.document);
+
+  $scope.editableRow=$scope.relatedTableRecordArray[$scope.relatedTableRecordArray.length-1];
+  $scope.editableColumn=column;  
+
+  $scope.editableList=$scope.editableRow.get(column.name); 
+  $scope.newListItem=null;
+  $scope.addListItemError=null;
+  clearListErrors();
+  $scope.isRelationalList=true;
+
+  $scope.isFileSelected=true;
+  $scope.selectedFile=selectedFile;
+  $scope.selectedfileName=fileName;
+  $scope.selectedFileObj=fileObj;
+  $scope.selectedFileExtension=fileName.split(".")[fileName.split(".").length-1]; 
+
+  if(!$scope.editableList || $scope.editableList.length==0){
+    $scope.editableList=[];
+  }
+
+  
+  var dummyObj={};
+  $scope.editableList.unshift(dummyObj);  
+  var newIndex=$scope.editableList.indexOf(dummyObj);  
+  $scope.editableRow.set($scope.editableColumn.name,$scope.editableList);
+
+  $scope.listFileSpinner[newIndex]=true;
+  $scope.$digest();  
+
+  getCBFile($scope.selectedFileObj)
+  .then(function(cloudBoostFile){   
+        
+    $scope.editableList[newIndex]=cloudBoostFile;      
+    $scope.removeSelectdFile();
+    $scope.editableRow.set($scope.editableColumn.name,$scope.editableList);
+    $scope.listFileSpinner[newIndex]=false;
+    //progress bar
+    $scope.relFileProgress.progressTimer('complete'); 
+  }, function(err){    
+    $scope.listFileSpinner[newIndex]=false;
+  }); 
+};
+
+$scope.deleteRelationListItem=function(index,column){ 
+
+  $scope.editableRow=$scope.relatedTableRecordArray[$scope.relatedTableRecordArray.length-1];
+  $scope.editableColumn=column;  
+
+  $scope.editableList=$scope.editableRow.get(column.name);
+
+  $scope.editableList.splice(index,1);
+  if($scope.editableList.length==0){
+    $scope.editableList=null;
+  }
+
+  if($scope.editableColumn.relatedTo=="File"){     
+    $scope.listEditableRow=null;//row
+    $scope.listEditableColumn=null;//row
+    $scope.listIndex=null;
+  }  
+  $scope.editableRow.set($scope.editableColumn.name,$scope.editableList);
+   
 };
 
 //List ShowFile
@@ -1945,7 +2061,7 @@ $scope.saveRelationObj=function(relCloudObject){
       $scope.relationErrorMode="Not Saved! These "+colNames+" are required";           
     }else{
       $scope.relationErrorMode=null;
-      $scope.relationSpinnerMode=true;
+      $scope.relationSpinnerMode=true;      
 
       //Save Cloud Object
       $scope.saveCloudObject(relCloudObject)
@@ -1961,6 +2077,7 @@ $scope.saveRelationObj=function(relCloudObject){
 
         //Nullify errors
         clearRelationErrors();
+        $scope.closeRelModal();
 
       }, function(error){ 
         $scope.relationSpinnerMode=false;   
@@ -1972,6 +2089,10 @@ $scope.saveRelationObj=function(relCloudObject){
     
 };
 //End of Save for relation table  
+
+$scope.removeRelErrors=function(){
+  $scope.relationErrorMode=null;
+};
 
 $scope.saveCloudObject = function(obj){
   var q=$q.defer(); 

@@ -564,9 +564,138 @@
                 <!--ACL-->
                 <div ng-if="column.document.dataType=='ACL'" class="tdDiv cf" style="min-width: 260px" ng-dblclick="showCommonTypes(eachRow,column); $event.stopPropagation()"> 
 
-                  <div class="real-content pull-left"> 
-                    <div class="objectSpan">
-                      {{eachRow.get(column.name) }} 
+                  <div class="real-content-acl pull-left"> 
+                    <div class="objectSpan-acl">
+
+                      <!--Write User-->
+                      <div ng-if="eachRow.get(column.name).document.write.allow.user.length>0 && eachRow.get(column.name).document.write.allow.user[0]!='all'">
+                        <div class="cf">
+
+                          <div class="flex-general-column-wrapper-center pull-left" style="height:20px;width:20px;background-color:gray;border-radius:25px;">
+                            <span style="font-size:14px;color:white;">W</span>
+                          </div>
+
+                          <div class="pull-left" style="margin-left:4px;margin-top:2.3px;">
+                            <span>{{eachRow.get(column.name).document.write.allow.user.length}}</span>&nbsp;<span>Users</span>
+                          </div>
+
+                          <div class="pull-left" style="margin-left:3px;margin-top:2.3px;">
+                            ,<span>{{eachRow.get(column.name).document.write.allow.role.length}}</span>&nbsp;<span>Roles</span>
+                          </div>
+
+                        </div>
+                      </div>
+                      <!--/Write User-->  
+
+                      <!--Write user=0,Role-->
+                      <div ng-if="eachRow.get(column.name).document.write.allow.user.length==0 && eachRow.get(column.name).document.write.allow.role.length>0">
+                        <div class="cf">
+
+                          <div class="flex-general-column-wrapper-center pull-left" style="height:20px;width:20px;background-color:gray;border-radius:25px;">
+                            <span style="font-size:14px;color:white;">W</span>
+                          </div>
+
+                          <div class="pull-left" style="margin-left:4px;margin-top:2.3px;">
+                            <span>{{eachRow.get(column.name).document.write.allow.user.length}}</span>&nbsp;<span>Users</span>
+                          </div>
+
+                          <div class="pull-left" style="margin-left:3px;margin-top:2.3px;">
+                            ,<span>{{eachRow.get(column.name).document.write.allow.role.length}}</span>&nbsp;<span>Roles</span>
+                          </div>
+
+                        </div>
+                      </div>
+                      <!--/Write user=0,Role--> 
+
+                      <!--Read Write=0,user-->
+                      <div ng-if="eachRow.get(column.name).document.write.allow.user.length==0 && eachRow.get(column.name).document.write.allow.role.length==0 && eachRow.get(column.name).document.read.allow.user.length>0 && eachRow.get(column.name).document.read.allow.user[0]!='all'">
+                        <div class="cf">
+
+                          <div class="flex-general-column-wrapper-center pull-left" style="height:20px;width:20px;background-color:gray;border-radius:25px;">
+                            <span style="font-size:14px;color:white;">R</span>
+                          </div>
+
+                          <div class="pull-left" style="margin-left:4px;margin-top:2.3px;">
+                            <span>{{eachRow.get(column.name).document.read.allow.user.length}}</span>&nbsp;<span>Users</span>
+                          </div>
+
+                          <div class="pull-left" style="margin-left:3px;margin-top:2.3px;">
+                            ,<span>{{eachRow.get(column.name).document.read.allow.role.length}}</span>&nbsp;<span>Roles</span>
+                          </div>
+
+                        </div>
+                      </div>
+                      <!--/Read Write=0,user-->
+
+                      <!--Read Write=0,user=0,role-->
+                      <div ng-if="eachRow.get(column.name).document.write.allow.user.length==0 && eachRow.get(column.name).document.write.allow.role.length==0 && eachRow.get(column.name).document.read.allow.user.length==0 && eachRow.get(column.name).document.read.allow.role.length>0">
+                        <div class="cf">
+
+                          <div class="flex-general-column-wrapper-center pull-left" style="height:20px;width:20px;background-color:gray;border-radius:25px;">
+                            <span style="font-size:14px;color:white;">R</span>
+                          </div>
+
+                          <div class="pull-left" style="margin-left:4px;margin-top:2.3px;">
+                            <span>{{eachRow.get(column.name).document.read.allow.user.length}}</span>&nbsp;<span>Users</span>
+                          </div>
+
+                          <div class="pull-left" style="margin-left:3px;margin-top:2.3px;">
+                            ,<span>{{eachRow.get(column.name).document.read.allow.role.length}}</span>&nbsp;<span>Roles</span>
+                          </div>
+
+                        </div>
+                      </div>
+                      <!--/Read Write=0,user=0,role-->
+
+
+                      <!--Only Public write-->
+                      <div ng-if="eachRow.get(column.name).document.write.allow.user.length>0 && eachRow.get(column.name).document.write.allow.user[0]=='all'">
+                        <div class="cf">
+
+                          <div class="flex-general-column-wrapper-center pull-left" style="height:20px;width:20px;background-color:gray;border-radius:25px;">
+                            <span style="font-size:14px;color:white;">W</span>
+                          </div>
+
+                          <div class="pull-left" style="margin-left:4px;margin-top:2.3px;">
+                           &nbsp;<span style="color:gray;">Public Write Access</span>
+                          </div>                 
+
+                        </div>
+                      </div>
+                      <!--/Only Public write-->  
+
+                      <!--Only Public read-->
+                      <div ng-if="eachRow.get(column.name).document.write.allow.user.length==0 && eachRow.get(column.name).document.read.allow.user.length>0 && eachRow.get(column.name).document.read.allow.user[0]=='all'">
+                        <div class="cf">
+
+                          <div class="flex-general-column-wrapper-center pull-left" style="height:20px;width:20px;background-color:gray;border-radius:25px;">
+                            <span style="font-size:14px;color:white;">R</span>
+                          </div>
+
+                          <div class="pull-left" style="margin-left:4px;margin-top:2.3px;">
+                           &nbsp;<span style="color:gray;">Public Read Access</span>
+                          </div>                 
+
+                        </div>
+                      </div>
+                      <!--/Only Public read--> 
+
+                      <!--Everything null-->
+                      <div ng-if="eachRow.get(column.name).document.write.allow.user.length==0 && eachRow.get(column.name).document.read.allow.user.length==0 && eachRow.get(column.name).document.write.allow.role.length==0 && eachRow.get(column.name).document.read.allow.role.length==0">
+                        <div class="cf">
+
+                          <div class="flex-general-column-wrapper-center pull-left" style="height:20px;width:20px;background-color:gray;border-radius:25px;">
+                            <span style="font-size:14px;color:white;">-</span>
+                          </div>
+
+                          <div class="pull-left" style="margin-left:4px;margin-top:2.3px;">
+                           &nbsp;<span style="color:gray;">No users</span>
+                          </div>                 
+
+                        </div>
+                      </div>
+                      <!--/Everything null-->                 
+
                     </div>                
                   </div>
 
@@ -1732,7 +1861,7 @@
             <!--Relation-->
             <div ng-show="linkedRelatedDoc && !relToRel" class="relationid-list-wrapper" malihuscrollbar-for-popup>
 
-                <div class="relationid-list flex-general-row-wrapper-center cf">
+                <div class="relationid-single-docs flex-general-row-wrapper-center cf">
                   <div class="m-relationid id-show">
                     
                      {{linkedRelatedDoc}}
@@ -1750,7 +1879,7 @@
             <!--Relation of relation-->
             <div ng-show="linkedRelatedDoc && relToRel" class="relationid-list-wrapper" malihuscrollbar-for-popup>
 
-                <div class="relationid-list flex-general-row-wrapper-center cf">
+                <div class="relationid-single-docs flex-general-row-wrapper-center cf">
                   <div class="m-relationid id-show">
                     
                      {{linkedRelatedDoc}}
@@ -1773,21 +1902,13 @@
 <!-- /Add Relation Modal -->
 
 <!-- Search Relation Documents Modal -->
-  <div class="modal fade colored-header danger" id="md-searchreldocument" tabindex="-1" role="dialog">
+  <div class="modal fade colored-header danger" id="md-searchreldocument"  tabindex="-1" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content"> 
 
-        <div class="" style="background-color: #F0F0F0;">
+        <div class="" style="background-color: #F0F0F0;border-top-left-radius:5px;border-top-right-radius:5px;">
 
-          <div ng-show="searchRelDocsError || !relationTableData || relationTableData.length==0" class="pull-right" style="width:3%; margin-top:3px; margin-right:2px;">
-            <button type="button" class="close" style="font-size:26px !important;" data-dismiss="modal" aria-hidden="true">&times;</button>
-          </div>
-
-          <div ng-show="!searchRelDocsError && relationTableData.length>0" class="pull-right" style="width:3%; margin-top:3px; margin-right:2px; background-color: white;">
-            <button type="button" class="close" style="font-size:26px !important;" data-dismiss="modal" aria-hidden="true">&times;</button>
-          </div>
-
-          <div ng-show="!searchRelDocsError" class="search-rel-wrapper cf" style="background-color:white;">
+          <div ng-show="!searchRelDocsError" class="search-rel-wrapper cf" style="background-color:white;border-top-left-radius:5px;border-top-right-radius:5px;">
               <div class="rel-search-btn-wrapper flex-general-row-wrapper pull-left" style="width:96%;">
                 <div class="rel-searchIcon">
                   <i class="fa fa-search"></i>
@@ -1799,26 +1920,36 @@
           </div>
           
           <!--List-->
-          <div ng-if="!searchRelDocsError && relationTableData.length>0" class="md-search-relation-wrapper">
+          <div ng-show="!searchRelDocsError && relationTableData.length>0" class="md-search-relation-wrapper">
             
             <div class="relationid-list-wrapper" malihuscrollbar-for-popup>
 
                 <!--show list-->
                 <div ng-show="relationTableData.length>0 && !relToRel" ng-repeat="eachRelRow in relationTableData | filter:searchRelDocId" class="relationid-list">
+
                   <div class="m-relationid" ng-click="linkRecord(eachRelRow)">
                      <div class="neorel-wrapper cf">
-                      <div class="pull-left">
-                        <div ng-repeat="relcol in tableDef.columns">
-                          <img ng-if="relcol.document.dataType=='File'" src="{{eachRelRow.get(relcol.name).url}}" class="neorel-img">
+
+                      <div class="pull-left" ng-repeat="fileCol in (filterImages=(tableDef.columns | getImageFromArray))">
+
+                        <div ng-show="eachRelRow.get(fileCol.name) && ((eachRelRow.get(fileCol.name).document.name | extension)=='jpeg' || (eachRelRow.get(fileCol.name).document.name | extension)=='jpg' || (eachRelRow.get(fileCol.name).document.name | extension)=='png' || (eachRelRow.get(fileCol.name).document.name | extension)=='tif' || (eachRelRow.get(fileCol.name).document.name | extension)=='gif')" style="margin-right:5px;">  
+                                                 
+                          <img  src="eachRelRow.get(fileCol.name).document.url" class="neorel-img">
                         </div>
+
                       </div>
-                      <div class="pull-right" style="padding-top:4px; padding-bottom:2px;">
-                        <span style="font-size:14px;">{{eachRelRow.get('id')}}</span>
-                        <br>
-                        <span style="margin-top:4px;color:#A09F9F;font-style: italic;">{{eachRelRow.get('createdAt') | date:'medium'}}</span>
-                      </div>  
+
+                      <div class="pull-left" style="padding-top:4px; padding-bottom:2px;padding-left:2px;">
+                        <div style="font-size:14px;">{{eachRelRow.get('id')}}</div>     
+
+                        <div style="font-size:12px;" ng-repeat="textCol in (Texts=(tableDef.columns | getTextFromArray))" ng-show="eachRelRow.get(textCol.name)">{{eachRelRow.get(textCol.name)}}</div>
+                      
+                        <div style="margin-top:3.5px;color:#A09F9F;font-style: italic;">{{eachRelRow.get('createdAt') | date:'medium'}}</div>
+                      </div>
+
                      </div>
-                  </div>  
+                  </div>
+
                 </div>                
 
                 <!--show list of relation to relation-->
@@ -1826,16 +1957,24 @@
                   <div class="m-relationid" ng-click="setRelationData(relEditableRow,relEditableColumn,eachRelRow)">
 
                      <div class="neorel-wrapper cf">
-                      <div class="pull-left">
-                        <div ng-repeat="relcol in tableDef.columns">
-                          <img ng-if="relcol.document.dataType=='File'" src="{{eachRelRow.get(relcol.name).url}}" class="neorel-img">
+
+                      <div class="pull-left" ng-repeat="fileCol in (filterImages=(tableDef.columns | getImageFromArray))">
+
+                        <div ng-show="eachRelRow.get(fileCol.name) && ((eachRelRow.get(fileCol.name).document.name | extension)=='jpeg' || (eachRelRow.get(fileCol.name).document.name | extension)=='jpg' || (eachRelRow.get(fileCol.name).document.name | extension)=='png' || (eachRelRow.get(fileCol.name).document.name | extension)=='tif' || (eachRelRow.get(fileCol.name).document.name | extension)=='gif')" style="margin-right:5px;">  
+                                                 
+                          <img  src="eachRelRow.get(fileCol.name).document.url" class="neorel-img">
                         </div>
+
                       </div>
-                      <div class="pull-right" style="padding-top:4px; padding-bottom:2px;">
-                        <span style="font-size:14px;">{{eachRelRow.get('id')}}</span>
-                        <br>
-                        <span style="margin-top:4px;color:#A09F9F;font-style: italic;">{{eachRelRow.get('createdAt') | date:'medium'}}</span>
-                      </div>  
+
+                      <div class="pull-left" style="padding-top:4px; padding-bottom:2px;padding-left:2px;">
+                        <div style="font-size:14px;">{{eachRelRow.get('id')}}</div>     
+
+                        <div style="font-size:12px;" ng-repeat="textCol in (Texts=(tableDef.columns | getTextFromArray))" ng-show="eachRelRow.get(textCol.name)">{{eachRelRow.get(textCol.name)}}</div>
+                      
+                        <div style="margin-top:3.5px;color:#A09F9F;font-style: italic;">{{eachRelRow.get('createdAt') | date:'medium'}}</div>
+                      </div> 
+
                      </div>
 
                   </div>  
@@ -1863,7 +2002,11 @@
           </div>  
 
         </div>
+        <div class="modal-footer">        
+          <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+        </div>
       </div><!-- /.modal-content -->
+      
     </div><!-- /.modal-dialog -->
 </div>
 <!-- /Search Relation Documents Modal -->
@@ -1871,104 +2014,75 @@
 <!-- Relation Modal -->
   <div class="modal fade colored-header danger" id="md-relationviewer" tabindex="-1" role="dialog">
     <div class="modal-dialog">
-      <div class="modal-content">
-
-        <div class="pull-right modalX">
-          <button type="button" class="close" ng-click="closeRelModal()" aria-hidden="true">&times;</button>
-        </div>  
-        <div class="flex-general-row-wrapper-center modalH">
-          <div class="flex-general-row-wrapper">
-
-            <div style="width:50px;" ng-if="relatedTableDefArray && relatedTableDefArray.length>1">
-             <h3 ng-click="goToPrevRel()"><i class="fa fa-arrow-left"></i></h3> 
-            </div>
-
-            <div>
-             <h3>Relation Viewer</h3> 
-            </div> 
-          </div>       
-        </div>      
-        <div class="modal-body"> 
-          <!--No Data-->
-          <div ng-if="(!viewRelDataError) && (relatedTableRecordArray.length==0)" class="row">
-            <div class="col-md-12">
-               <div class="flex-general-column-wrapper-center">
-                <span style="font-size:14px;">No Data</span>
-               </div>
-            </div>  
-          </div>
-
-          <!--Error-->
-          <div ng-if="viewRelDataError" class="row">
-            <div class="col-md-12">
-               <div class="flex-general-column-wrapper-center">
-                <span style="font-size:14px;color:red;">{{viewRelDataError}}</span>
-               </div>
-            </div>  
-          </div>
+      <div class="modal-content">             
+        <div class="">        
 
           <!--Modal table header-->
-          <div ng-if="(!viewRelDataError) && (relatedTableRecordArray.length!=0)" class="row">
+          <div class="row">
             <div class="col-md-12">
-              <div class="m-table-header db-color-bg">
+              <div class="m-table-header db-color-bg" style="border-top-left-radius:4.8px; border-top-right-radius:4.8px;">
                  <div class="pull-left">
-                  <h4>
+
+                    <!--More than one relations-->
+                    <div ng-if="relatedTableDefArray && relatedTableDefArray.length>1" ng-click="goToPrevRel()" class="db-color-fg flex-general-column-wrapper-center" style="width:25px;height:25px;border-radius:25px; background-color:white;margin-top:7px;">   
+                      <i class="icon ion-android-arrow-back db-color-fg" style="font-size:20px;"></i>
+                    </div>
+
+                    <!--Dummy-->
+                    <div class="db-color-fg flex-general-column-wrapper-center" style="width:22px;height:22px;margin-top:5px;"> 
+                    </div>  
+
+                 </div> 
+                 <div class="pull-left">
+                  <h4 style="margin-left:2px;">
                     {{relatedTableDefArray[relatedTableDefArray.length-1].name}}
                   </h4>
                  </div> 
+                 <div class="pull-right flex-general-column-wrapper-center">
+                    <button type="button" class="close" ng-click="closeRelModal()" aria-hidden="true" style="margin-top:3px;">&times;</button>
+                 </div>
               </div>  
             </div>  
           </div>  
-          <!--/Modal table header-->
+          <!--/Modal table header--> 
 
-          <!--Modal table strip-->
-          <div ng-if="(!viewRelDataError) && (relatedTableRecordArray.length!=0)" class="row">
-            <div class="col-md-12">
-              <div class="m-table-strip">                  
+          <!--Saving Errors--> 
+          <div style="width:100%;">
+            <div ng-show="relationErrorMode && !relationSpinnerMode && !relationSaveTickMode" style="width:100%;height:30px;background-color:#C40101;color:white;padding-left:5px;padding-right:5px;padding-top:3px;" ng-class="{animated:relationErrorMode}" class="fadeIn">
 
-                 <div class="pull-right m-table-ctrls"> 
+              <div class="pull-left" style="padding-top:1px;">                
+                <span>{{relationErrorMode}}</span>
+              </div>
 
-                  <!--Save Button-->
-                  <div ng-if="!relationErrorMode && !relationSpinnerMode && !relationSaveTickMode">
-                    <span style="margin-top:4px;" ng-click="saveRelationObj(relatedTableRecordArray[relatedTableRecordArray.length-1])">
-                      <i class="fa fa-floppy-o fa-lg"></i>
-                    </span>
-                  </div>
-
-                  <!--Spinner-->
-                  <div ng-if="!relationErrorMode && relationSpinnerMode && !relationSaveTickMode">
-                    <span style="margin-top:4px;">
-                      <i class="fa fa-spinner fa-spin fa-lg"></i>
-                    </span>
-                  </div>
-
-                  <!--Save Tick-->
-                  <div ng-if="!relationErrorMode && !relationSpinnerMode && relationSaveTickMode">
-                    <span style="margin-top:4px;">
-                      <i class="fa fa-check fa-lg" style="color:#1CC902;"></i>
-                    </span>
-                  </div>
-
-                  <!--Error-->
-                  <div ng-if="relationErrorMode && !relationSpinnerMode && !relationSaveTickMode">
-                    <span style="margin-top:4px;">
-                     <span class="relSaveError">{{relationErrorMode}}</span>
-                    </span>
-                  </div>
-
-                 </div>        
-
+              <div class="pull-right" ng-click="removeRelErrors()">
+                <i class="icon ion-android-close" style="font-size:16px;color:white;"></i>
               </div>  
+
             </div>  
           </div>  
-          <!--/Modal table strip-->
+          <!--/Saving Errors-->
+
+          <!--Modal Error-->
+          <div ng-if="(viewRelDataError[viewRelDataError.length-1]) || (relatedTableRecordArray.length==0) || (!relatedTableRecordArray[relatedTableRecordArray.length-1])" class="relation-data-wrapper">
+            <div id="relationTable">          
+              
+              <div class="modal-rel-form flex-general-column-wrapper" style="width:100%; height:100%;">
+                <div class="flex-general-column-wrapper-center" style="width:100%; height:100%;">                  
+                  <div class="m-key cf flex-general-column-wrapper-center">
+                    <span style="font-size:14px; color:#BFBFBF">{{viewRelDataError[viewRelDataError.length-1] || 'Null CloudObject'}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> 
+          <!--Modal Error-->             
          
           <!--Modal Related Table Form-->
-          <div ng-if="(!viewRelDataError) && (relatedTableRecordArray.length!=0)" class="relation-data-wrapper" style="margin-top:3px;">
+          <div ng-if="(!viewRelDataError[viewRelDataError.length-1]) && (relatedTableRecordArray.length!=0) && (relatedTableRecordArray[relatedTableRecordArray.length-1])" class="relation-data-wrapper">
             <div id="relationTable" malihuscrollbar-for-popup>          
               
               <div class="modal-rel-form flex-general-column-wrapper">
-                <div class="m-key-value" ng-repeat="relCol in relatedTableDefArray[relatedTableDefArray.length-1].columns">
+                <div class="m-key-value flex-general-column-wrapper-center" ng-repeat="relCol in relatedTableDefArray[relatedTableDefArray.length-1].columns">
                   <!--Column Name-->
                   <div class="m-key cf">
                     
@@ -2060,7 +2174,136 @@
 
                         <div class="m-real-content-acl pull-left">
                           <div class="m-acl-aura">
-                          {{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name)}}
+
+                            <!--Write User-->
+                              <div ng-if="relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.write.allow.user.length>0 && relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.write.allow.user[0]!='all'">
+                                <div class="cf">
+
+                                  <div class="flex-general-column-wrapper-center pull-left" style="height:20px;width:20px;background-color:gray;border-radius:25px;">
+                                    <span style="font-size:14px;color:white;">W</span>
+                                  </div>
+
+                                  <div class="pull-left" style="margin-left:4px;margin-top:2.3px;">
+                                    <span>{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.write.allow.user.length}}</span>&nbsp;<span>Users</span>
+                                  </div>
+
+                                  <div class="pull-left" style="margin-left:3px;margin-top:2.3px;">
+                                    ,<span>{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.write.allow.role.length}}</span>&nbsp;<span>Roles</span>
+                                  </div>
+
+                                </div>
+                              </div>
+                              <!--/Write User-->  
+
+                              <!--Write user=0,Role-->
+                              <div ng-if="relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.write.allow.user.length==0 && relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.write.allow.role.length>0">
+                                <div class="cf">
+
+                                  <div class="flex-general-column-wrapper-center pull-left" style="height:20px;width:20px;background-color:gray;border-radius:25px;">
+                                    <span style="font-size:14px;color:white;">W</span>
+                                  </div>
+
+                                  <div class="pull-left" style="margin-left:4px;margin-top:2.3px;">
+                                    <span>{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.write.allow.user.length}}</span>&nbsp;<span>Users</span>
+                                  </div>
+
+                                  <div class="pull-left" style="margin-left:3px;margin-top:2.3px;">
+                                    ,<span>{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.write.allow.role.length}}</span>&nbsp;<span>Roles</span>
+                                  </div>
+
+                                </div>
+                              </div>
+                              <!--/Write user=0,Role--> 
+
+                              <!--Read Write=0,user-->
+                              <div ng-if="relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.write.allow.user.length==0 && relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.write.allow.role.length==0 && relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.read.allow.user.length>0 && relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.read.allow.user[0]!='all'">
+                                <div class="cf">
+
+                                  <div class="flex-general-column-wrapper-center pull-left" style="height:20px;width:20px;background-color:gray;border-radius:25px;">
+                                    <span style="font-size:14px;color:white;">R</span>
+                                  </div>
+
+                                  <div class="pull-left" style="margin-left:4px;margin-top:2.3px;">
+                                    <span>{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.read.allow.user.length}}</span>&nbsp;<span>Users</span>
+                                  </div>
+
+                                  <div class="pull-left" style="margin-left:3px;margin-top:2.3px;">
+                                    ,<span>{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.read.allow.role.length}}</span>&nbsp;<span>Roles</span>
+                                  </div>
+
+                                </div>
+                              </div>
+                              <!--/Read Write=0,user-->
+
+                              <!--Read Write=0,user=0,role-->
+                              <div ng-if="relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.write.allow.user.length==0 && relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.write.allow.role.length==0 && relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.read.allow.user.length==0 && relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.read.allow.role.length>0">
+                                <div class="cf">
+
+                                  <div class="flex-general-column-wrapper-center pull-left" style="height:20px;width:20px;background-color:gray;border-radius:25px;">
+                                    <span style="font-size:14px;color:white;">R</span>
+                                  </div>
+
+                                  <div class="pull-left" style="margin-left:4px;margin-top:2.3px;">
+                                    <span>{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.read.allow.user.length}}</span>&nbsp;<span>Users</span>
+                                  </div>
+
+                                  <div class="pull-left" style="margin-left:3px;margin-top:2.3px;">
+                                    ,<span>{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.read.allow.role.length}}</span>&nbsp;<span>Roles</span>
+                                  </div>
+
+                                </div>
+                              </div>
+                              <!--/Read Write=0,user=0,role-->
+
+
+                              <!--Only Public write-->
+                              <div ng-if="relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.write.allow.user.length>0 && relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.write.allow.user[0]=='all'">
+                                <div class="cf">
+
+                                  <div class="flex-general-column-wrapper-center pull-left" style="height:20px;width:20px;background-color:gray;border-radius:25px;">
+                                    <span style="font-size:14px;color:white;">W</span>
+                                  </div>
+
+                                  <div class="pull-left" style="margin-left:4px;margin-top:2.3px;">
+                                   &nbsp;<span style="color:gray;">Public Write Access</span>
+                                  </div>                 
+
+                                </div>
+                              </div>
+                              <!--/Only Public write-->  
+
+                              <!--Only Public read-->
+                              <div ng-if="relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.write.allow.user.length==0 && relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.read.allow.user.length>0 && relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.read.allow.user[0]=='all'">
+                                <div class="cf">
+
+                                  <div class="flex-general-column-wrapper-center pull-left" style="height:20px;width:20px;background-color:gray;border-radius:25px;">
+                                    <span style="font-size:14px;color:white;">R</span>
+                                  </div>
+
+                                  <div class="pull-left" style="margin-left:4px;margin-top:2.3px;">
+                                   &nbsp;<span style="color:gray;">Public Read Access</span>
+                                  </div>                 
+
+                                </div>
+                              </div>
+                              <!--/Only Public read--> 
+
+                              <!--Everything null-->
+                              <div ng-if="relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.write.allow.user.length==0 && relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.read.allow.user.length==0 && relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.write.allow.role.length==0 && relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.read.allow.role.length==0">
+                                <div class="cf">
+
+                                  <div class="flex-general-column-wrapper-center pull-left" style="height:20px;width:20px;background-color:gray;border-radius:25px;">
+                                    <span style="font-size:14px;color:white;">-</span>
+                                  </div>
+
+                                  <div class="pull-left" style="margin-left:4px;margin-top:2.3px;">
+                                   &nbsp;<span style="color:gray;">No users</span>
+                                  </div>                 
+
+                                </div>
+                              </div>
+                              <!--/Everything null-->      
+
                           </div>
                         </div>
                         <div class="m-popup-btn pull-right">
@@ -2171,36 +2414,91 @@
                       <div class="m-data-container-file cf">
 
                         <div class="m-real-content-file pull-left">
+
                           <!--Images-->
-                          <a ng-click="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)" ng-if="(relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='jpeg' || (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='jpg' || (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='png' || (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='tif' || (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='gif' && !setRelFileSpinner && !setRelFileError" >
-                            <img class="m-dynamix-img" src="{{relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name].document.url}}">
-                          </a>
+                          <div ng-if="(relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='jpeg' || (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='jpg' || (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='png' || (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='tif' || (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)=='gif' && !setRelFileSpinner[relCol.name] && !setRelFileError[relCol.name]">
+                            <div class="rel-single-img" style="position:relative;">
 
-                          <!--Other Files-->
-                          <a ng-click="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)" ng-if="(relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension) && ((relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='jpeg' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='jpg' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='png' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='tif' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='gif') && !setRelFileSpinner && !setRelFileError">
-                            <img class="m-static-img" src="assets/images/file2.png">
-                          </a>
+                              <a ng-click="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)">
+                                <img class="m-dynamix-img" src="{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).url}}">
+                              </a>
 
-                          <!--Add File Button-->
-                          <div ng-if="!relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name) && !setRelFileSpinner && !setRelFileError" ng-click="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)" class="m-img-add">
-                            <span>
-                              <i class="fa fa-plus-circle"></i>
-                            </span>
-                          </div> 
+                              <!--Image controllers-->
+                              <div class="m-rel-file-toolz flex-general-row-wrapper cf">
+                                  <!--Download-->
+                                  <a href="{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).url}}" target="_blank">
+                                    <div class="pull-left flex-general-column-wrapper-center" style="height:26px; width:26px; border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;">
+                                      <i class="icon ion-ios-download-outline" style="color:white;font-size:20px;"></i>
+                                    </div>
+                                  </a>  
 
-                          <!--Spinner-->
-                          <div ng-if="setRelFileSpinner" class="m-img-add">
-                            <span>
-                             <i class="fa fa-spinner fa-spin"></i>
-                            </span>
+                                  <!--Delete-->
+                                  <div class="pull-left flex-general-column-wrapper-center" style="margin-left:3px; height:26px; width:26px;border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;" ng-click="setRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,null)">
+                                    <i class="icon ion-ios-trash-outline" style="color:white;font-size:20px;"></i>
+                                  </div>
+                              </div>
+                              <!--/Image controllers--> 
+                              </div> 
+                              <p style="margin-left:3px;">{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).name}}</p>
                           </div>
 
+                          <!--Other Files-->
+                          <div ng-if="(relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension) && ((relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='jpeg' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='jpg' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='png' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='tif' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).document.name | extension)!='gif') && !setRelFileSpinner[relCol.name] && !setRelFileError[relCol.name]">
+
+                            <div class="rel-single-static-img" style="position:relative;">
+
+                              <a ng-click="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)" >
+                                <img class="m-static-img" src="assets/images/file2.png">
+                              </a>                             
+
+                              <!--Image controllers-->
+                              <div class="m-rel-static-file-toolz flex-general-row-wrapper cf">
+                                  <!--Download-->
+                                  <a href="{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).url}}" target="_blank">
+                                    <div class="pull-left flex-general-column-wrapper-center" style="height:26px; width:26px; border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;">
+                                      <i class="icon ion-ios-download-outline" style="color:white;font-size:20px;"></i>
+                                    </div>
+                                  </a>  
+
+                                  <!--Delete-->
+                                  <div class="pull-left flex-general-column-wrapper-center" style="margin-left:3px; height:26px; width:26px;border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;" ng-click="setRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,null)">
+                                    <i class="icon ion-ios-trash-outline" style="color:white;font-size:20px;"></i>
+                                  </div>
+                              </div>
+                              <!--/Image controllers--> 
+                            </div>
+                              <p style="margin-left:20px;">{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).name}}</p>
+                          </div>                       
+
+                          <!-- D&D Markup -->
+                          <div ng-if="!relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name) && !setRelFileSpinner[relCol.name] && !setRelFileError[relCol.name]" class="rel-uploader cf flex-general-row-wrapper-center" reldmuploader data-column="{{relCol}}">
+                            <div class="browser pull-left">
+                              <label class="flex-general-column-wrapper-center">
+                                <span style="position:absolute; margin-top:14px;margin-left:-8px;">                          
+                                  <i class="icon ion-plus" style="color:#CECCCC; font-size:18px;"></i>
+                                </span>
+                                <input type="file" name="files[]" multiple="multiple" title='Click to add Files'>
+                              </label>
+                            </div>                                               
+                            <div class="pull-left">&nbsp;Drag &amp; Drop File Here</div>                          
+                          </div>
+                          <!-- /D&D Markup -->                          
+
+                          <!--Spinner-->
+                          <div ng-if="setRelFileSpinner[relCol.name]" class="m-img-add flex-general-column-wrapper-center">
+                            <div style="width:100%;">
+                              <div class="loading-progress-1" fileloading style="width:90%;"></div>
+                            </div>
+                          </div>
+                          <!--/Spinner-->
+
                           <!--Error-->
-                          <div ng-if="setRelFileError && !setRelFileSpinner" class="m-img-add">
-                            <span>
-                              {{setRelFileError}}
-                            </span>
+                          <div ng-if="setRelFileError[relCol.name] && !setRelFileSpinner[relCol.name]" class="m-img-add flex-general-column-wrapper-center">
+                            <div>
+                              {{setRelFileError[relCol.name]}}
+                            </div>
                           </div> 
+                          <!--/Error-->
 
                         </div>                       
 
@@ -2249,7 +2547,7 @@
 
                   <!--List-->
                   <div ng-if="relCol.document.dataType=='List'" class="m-value">
-                      <div class="m-data-container cf" style="height:37px;">
+                      <div class="m-data-container cf" style="height:37px;" ng-if="relCol.document.relatedTo!='File'">
 
                         <!--Text,Encrypted Text,Email,Number,URL-->
                         <div ng-if="relCol.document.relatedTo=='Text' || relCol.document.relatedTo=='EncryptedText' || relCol.document.relatedTo=='Email' || relCol.document.relatedTo=='Number' || relCol.document.relatedTo=='URL'" class="m-real-content pull-left">                           
@@ -2302,6 +2600,7 @@
                              
                               <div ng-repeat="eachObj in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
 
+
                                   <div class="m-rel-common">
                                     {{eachObj}}
                                   </div>                                 
@@ -2309,31 +2608,7 @@
                               </div>
 
                           </div>
-                        </div>  
-
-                        <!--File--> 
-                        <div ng-if="relCol.document.relatedTo=='File'" class="m-real-content-list-file pull-left">  
-                          <div  class="m-list-condition flex-general-row-wrapper cf">
-                             
-                              <div ng-repeat="eachFile in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper pull-left">
-                                  <!--Images-->
-                                  <div ng-if="eachFile && eachFile.document.url && ((eachFile.document.name | extension)=='jpeg' || (eachFile.document.name | extension)=='jpg' || (eachFile.document.name | extension)=='png' || (eachFile.document.name | extension)=='tif' || (eachFile .document.name | extension)=='gif')" class="m-rel-images">
-
-                                    <img src="{{eachFile.document.url}}">
-
-                                  </div> 
-
-                                  <!--Other Files-->                                
-                                  <div ng-if="eachFile && eachFile.document.url && ((eachFile.document.name | extension)!='jpeg' && (eachFile.document.name | extension)!='jpg' && (eachFile.document.name | extension)!='png' && (eachFile.document.name | extension)!='tif' && (eachFile .document.name | extension)!='gif')"  class="m-rel-othersfiles">
-
-                                    <img src="assets/images/file2.png">
-
-                                  </div>
-                              </div>
-
-                          </div>
-
-                        </div>
+                        </div>                     
 
                         <!--GeoPoint-->
                         <div ng-if="relCol.document.relatedTo=='GeoPoint'" class="m-real-geopoint pull-left">                           
@@ -2375,6 +2650,126 @@
                         </div>
 
                       </div>
+
+                      <!--List of Files-->                         
+                      <div ng-if="relCol.document.relatedTo=='File'" class="m-real-content-list-file pull-left" style="width:100%;">                          
+                   
+                        <!--Empty List-->   
+                        <div  ng-if="relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).length==0 || !relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name)" class="m-list-condition flex-general-row-wrapper cf">  
+
+                          <!-- D&D Markup -->
+                          <div  class="rel-uploader cf flex-general-row-wrapper-center" listreldmuploader data-column="{{relCol}}">
+                            <div class="browser pull-left">
+                              <label class="flex-general-column-wrapper-center">
+                                <span style="position:absolute; margin-top:14px;margin-left:-8px;">                          
+                                  <i class="icon ion-plus" style="color:#CECCCC; font-size:18px;"></i>
+                                </span>
+                                <input type="file" name="files[]" multiple="multiple" title='Click to add Files'>
+                              </label>
+                            </div>                                               
+                            <div class="pull-left">&nbsp;Drag &amp; Drop File Here</div>                          
+                          </div>
+                          <!-- /D&D Markup -->
+
+                        </div>
+
+                        <!--List items>0-->  
+                        <div ng-if="relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).length>0" class="m-list-condition flex-general-row-wrapper cf">
+
+                          <!--Addition-->
+                          <div class="new-rel-list-file-up pull-left" style="background-color:white;">
+
+                              <!-- D&D Markup -->
+                              <div  class="rel-list-uploader cf flex-general-row-wrapper-center" listreldmuploader data-column="{{relCol}}">
+
+                                <div class="browser">
+                                  <label class="flex-general-column-wrapper-center">
+                                    <div style="position:absolute !important;margin-top:60px;">                          
+                                      <i class="icon ion-plus list-file-up-icon" style="color:#DCDCDC;  margin-left:65px;font-size:28px;"></i>
+                                    </div>
+                                    <input type="file" name="files[]" multiple="multiple" title='Click to add Files'>
+                                  </label>
+                                </div>               
+                                                          
+                              </div>
+                              <!-- /D&D Markup -->
+
+                          </div>
+
+                          <!--List-->
+                          <div ng-repeat="file in relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name) track by $index" class="flex-general-row-wrapper cf">
+
+                            <!--Spinner-->
+                            <div ng-show="listFileSpinner[$index]" class="new-rel-list-file pull-left flex-general-column-wrapper-center">
+                              <div style="width:100%;">
+                                <div class="loading-progress-1" fileloading style="margin-left:5px;margin-top:12px;width:90%;"></div>
+                              </div>  
+                            </div> 
+
+                            <!--File Content-->
+                            <div ng-show="!listFileSpinner[$index]" class="new-rel-list-file pull-left">
+                              <!--Img Files-->
+                              <div class="rel-list-file-view" ng-if="(file.document.name | extension)=='jpeg' || (file.document.name | extension)=='jpg' || (file.document.name | extension)=='png' || (file.document.name | extension)=='tif' || (file.document.name | extension)=='gif'">
+
+                                <img src="{{file.document.url}}" style="width:150px;height:130px;">
+
+                                <!--Image controllers-->
+                                <div class="m-rel-static-file-toolz flex-general-row-wrapper cf">
+                                    <!--Download-->
+                                    <a href="{{file.document.url}}" target="_blank">
+                                      <div class="pull-left flex-general-column-wrapper-center" style="height:26px; width:26px; border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;">
+                                        <i class="icon ion-ios-download-outline" style="color:white;font-size:20px;"></i>
+                                      </div>
+                                    </a>  
+
+                                    <!--Delete-->
+                                    <div class="pull-left flex-general-column-wrapper-center" style="margin-left:3px; height:26px; width:26px;border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;" ng-click="deleteRelationListItem($index,relCol)">
+                                      <i class="icon ion-ios-trash-outline" style="color:white;font-size:20px;"></i>
+                                    </div>
+                                </div>
+                                <!--/Image controllers-->  
+
+                              </div> 
+
+                              <!--Other Files-->
+                              <div class="rel-list-file-view" ng-if="(file.document.name | extension)!='jpeg' && (file.document.name | extension)!='jpg' && (file.document.name | extension)!='png' && (file.document.name | extension)!='tif' && (file.document.name | extension)!='gif'">
+
+                                <img src="assets/images/file2.png" style="width:125px;height:120px;margin-left:15px;margin-top:6px;">
+
+                                <!--Image controllers-->
+                                <div class="m-rel-static-file-toolz flex-general-row-wrapper cf">
+                                    <!--Download-->
+                                    <a href="{{file.document.url}}" target="_blank">
+                                      <div class="pull-left flex-general-column-wrapper-center" style="height:26px; width:26px; border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;">
+                                        <i class="icon ion-ios-download-outline" style="color:white;font-size:20px;"></i>
+                                      </div>
+                                    </a>  
+
+                                    <!--Delete-->
+                                    <div class="pull-left flex-general-column-wrapper-center" style="margin-left:3px; height:26px; width:26px;border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;" ng-click="deleteRelationListItem($index,relCol)">
+                                      <i class="icon ion-ios-trash-outline" style="color:white;font-size:20px;"></i>
+                                    </div>
+                                </div>
+                                <!--/Image controllers-->  
+
+                              </div>
+
+                              <!--File Name-->
+                              <div class="rel-list-file-view-name flex-general-column-wrapper-center">
+                                <div style="color:black;">
+                                  {{file.document.name}}
+                                </div>  
+                              </div> 
+                            </div>                           
+                          </div>                                                    
+                          
+                        </div>
+
+                      </div>
+                      <!--/List of Files-->  
+
+                      <div>
+                    </div>  
                   </div>
 
                   <!--Others-->
@@ -2398,10 +2793,25 @@
 
             </div>  
           </div>
-          <!--/Modal Related Table Form-->
+          <!--/Modal Related Table Form-->           
+        </div>       
+      </div><!-- /.modal-content -->
+      <div class="modal-footer">        
+            <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+
+            <!--On Relation View Error-->
+            <button type="button" style="color:gray;cursor:pointer !important;" class="btn cb-modal-default-btn" ng-if="(viewRelDataError[viewRelDataError.length-1]) || (relatedTableRecordArray.length==0) || !relatedTableRecordArray[relatedTableRecordArray.length-1] || relationErrorMode">Save</button>
+
+            <!--Save-->
+            <button type="button" class="btn btn-primary cb-modal-default-btn" ng-if="!relationErrorMode && !relationSpinnerMode && !relationSaveTickMode && !viewRelDataError[viewRelDataError.length-1] && relatedTableRecordArray.length!=0 && relatedTableRecordArray[relatedTableRecordArray.length-1]" ng-click="saveRelationObj(relatedTableRecordArray[relatedTableRecordArray.length-1])">Save</button>
+
+            <!--Spinner-->
+            <button type="button" class="btn btn-primary cb-modal-default-btn" ng-if="!relationErrorMode && relationSpinnerMode && !relationSaveTickMode"><i class="fa fa-spinner fa-spin fa-lg"></i> Saving..</button>
+
+            <!--Save Tick-->
+            <button type="button" class="btn btn-primary cb-modal-default-btn" ng-if="!relationErrorMode && !relationSpinnerMode && relationSaveTickMode"><i class="fa fa-check fa-lg"></i> Saved</button>
 
         </div>
-      </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
 <!-- Relation Modal -->
@@ -3458,6 +3868,7 @@
 <!-- /Add-View List common types Modal -->
 
 
+
 <!-- LIST EditJSON Modal -->
   <div class="modal fade colored-header danger" id="md-list-objectviewer" tabindex="-1" role="dialog">
     <div class="modal-dialog">
@@ -3660,17 +4071,9 @@
 <div class="modal fade colored-header danger" id="md-searchlistdocument" tabindex="-1" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">             
-        <div class="" style="background-color: #F0F0F0;">           
+        <div class="" style="background-color: #F0F0F0;border-top-left-radius:5px;border-top-right-radius:5px;">          
 
-          <div ng-show="searchRelDocsError || !listRelationTableData || listRelationTableData.length==0" class="pull-right" style="width:3%; margin-top:3px; margin-right:2px;">
-            <button type="button" class="close" style="font-size:26px !important;" data-dismiss="modal" aria-hidden="true">&times;</button>
-          </div>
-
-          <div ng-show="!searchRelDocsError && listRelationTableData.length>0" class="pull-right" style="width:3%; margin-top:3px; margin-right:2px; background-color: white;">
-            <button type="button" class="close" style="font-size:26px !important;" data-dismiss="modal" aria-hidden="true">&times;</button>
-          </div> 
-
-          <div ng-show="!searchRelDocsError" class="search-rel-wrapper cf" style="background-color:white;">
+          <div ng-show="!searchRelDocsError" class="search-rel-wrapper cf" style="background-color:white;border-top-left-radius:5px;border-top-right-radius:5px;">
               <div class="rel-search-btn-wrapper flex-general-row-wrapper pull-left" style="width:96%;">
                 <div class="rel-searchIcon">
                   <i class="fa fa-search"></i>
@@ -3683,35 +4086,33 @@
 
           <div ng-if="!searchRelDocsError && listRelationTableData.length>0" class="md-search-relation-wrapper">
             <div class="relationid-list-wrapper" malihuscrollbar-for-popup>
+
                 <!--show list-->
                 <div ng-show="listRelationTableData.length>0" ng-repeat="eachRelRow in listRelationTableData | filter:searchRelListDoc" class="relationid-list">
                   <div class="m-relationid" ng-click="addListItem(eachRelRow)">
-                     <div class="neorel-wrapper cf">
-                      <div class="pull-left">
-                        <div ng-repeat="relcol in tableDef.columns">
-                          <img ng-if="relcol.document.dataType=='File'" src="{{eachRelRow.get(relcol.name).url}}" class="neorel-img">
+                     <div class="neorel-wrapper cf">                     
+
+                      <div class="pull-left" ng-repeat="fileCol in (filterImages=(tableDef.columns | getImageFromArray))">
+
+                        <div ng-show="eachRelRow.get(fileCol.name) && ((eachRelRow.get(fileCol.name).document.name | extension)=='jpeg' || (eachRelRow.get(fileCol.name).document.name | extension)=='jpg' || (eachRelRow.get(fileCol.name).document.name | extension)=='png' || (eachRelRow.get(fileCol.name).document.name | extension)=='tif' || (eachRelRow.get(fileCol.name).document.name | extension)=='gif')" style="margin-right:5px;">  
+                                                 
+                          <img  src="eachRelRow.get(fileCol.name).document.url" class="neorel-img">
                         </div>
+
                       </div>
-                      <div class="pull-right" style="padding-top:4px; padding-bottom:2px;">
-                        <span style="font-size:14px;">{{eachRelRow.get('id')}}</span>
-                        <br>
-                        <span style="margin-top:4px;color:#A09F9F;font-style: italic;">{{eachRelRow.get('createdAt') | date:'medium'}}</span>
-                      </div>  
+
+                      <div class="pull-left" style="padding-top:4px; padding-bottom:2px;padding-left:2px;">
+                        <div style="font-size:14px;">{{eachRelRow.get('id')}}</div>     
+
+                        <div style="font-size:12px;" ng-repeat="textCol in (Texts=(tableDef.columns | getTextFromArray))" ng-show="eachRelRow.get(textCol.name)">{{eachRelRow.get(textCol.name)}}</div>
+                      
+                        <div style="margin-top:3.5px;color:#A09F9F;font-style: italic;">{{eachRelRow.get('createdAt') | date:'medium'}}</div>
+                      </div>
+
                      </div>
                   </div>  
                 </div>
-
-                <!--show list-->
-                <!--<div ng-show="listRelationTableData.length>0" ng-repeat="eachRelRow in listRelationTableData | filter:searchRelListDoc" class="relationid-list flex-general-column-wrapper-center">
-                  <div class="m-relationid" ng-click="addListItem(eachRelRow)">
-                    <a>
-                      {{eachRelRow.document._id}}
-                    </a>  
-                  </div>  
-                </div>-->          
-
-                              
-                
+          
             </div>  
           </div>
 
@@ -3733,6 +4134,9 @@
             </div> 
           </div> 
 
+        </div>
+        <div class="modal-footer">        
+          <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

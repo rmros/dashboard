@@ -14,10 +14,10 @@ app.controller('loginController',
       userService.logIn($scope.email,$scope.password)
       .then(function(data){               
 
-        $.cookie('userId', data._id, { expires: 1,path: '/' });
-        $.cookie('userFullname', data.name, { expires: 1,path: '/' });
-        $.cookie('email', data.email, { expires: 1,path: '/' });
-        $.cookie('createdAt', data.createdAt, { expires: 1,path: '/' });
+        $.cookie('userId', data._id, { expires: 29,path: '/' });
+        $.cookie('userFullname', data.name, { expires: 29,path: '/' });
+        $.cookie('email', data.email, { expires: 29,path: '/' });
+        $.cookie('createdAt', data.createdAt, { expires: 29,path: '/' });
         
         window.location.href=dashboardURL;
         //$scope.showSpinner=false;

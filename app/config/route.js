@@ -95,3 +95,34 @@ app.filter('ISO2DateObject', function() {
 });
 
 
+app.filter('getImageFromArray', function() {
+  return function(array) {
+    if(array && array.length>0){
+      return _.find(array, function(eachCol){ 
+        if(eachCol.dataType=="File"){
+          return eachCol;
+        }
+      });
+    }else {
+      return null;
+    }
+    
+  }
+});
+
+app.filter('getTextFromArray', function() {
+  return function(array) {
+    if(array && array.length>0){
+      return _.find(array, function(eachCol){ 
+        if(eachCol.dataType=="Text"){
+          return eachCol;
+        }
+      });
+    }else {
+      return null;
+    }
+    
+  }
+});
+
+
