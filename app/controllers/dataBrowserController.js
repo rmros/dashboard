@@ -1081,7 +1081,7 @@ $scope.addRelationToRelation=function(cloudObject,column){
 };
 
 $scope.searchRelationDocs=function(){
-  $("#md-reldocumentviewer").modal("hide");
+  $("#md-reldocumentviewer").modal("hide");  
 
   //List Relations records 
   $scope.loadTableData($scope.tableDef,"createdAt","asc",20,0)
