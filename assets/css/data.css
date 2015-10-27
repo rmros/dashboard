@@ -1571,7 +1571,7 @@
     width: 220px;
     height: 30px;
     font-size: 14px;  
-    color: blue; 
+    color: black; 
 }
 .geopoint-inputz:focus{
     outline: none;
@@ -2137,6 +2137,11 @@
     width: 83px !important;
     border-radius: 2px;
 }
+.cb-modal-default-btn-long{
+    width: 100px !important;
+    border-radius: 2px;
+}
+
 .acl-btn{
     border-radius: 2px;
     color: white;

@@ -196,32 +196,34 @@
 <!--delete table modal-->
   <div class="modal fade colored-header danger" id="md-deleteTable" tabindex="-1" role="dialog">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content">      
 
-      <div class="pull-right modalX">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-      </div>  
-      <div class="flex-general-row-wrapper-center modalH">
-        <h3>Delete Table</h3>        
+      <div style="height:55px; width:100%;padding:13px;">
+        <div class="pull-left" style="padding-left:8px;">
+          <span style="font-size:18px;">Delete Table</span>
+        </div>          
       </div>
-      
-      <div class="modal-body">
+
+      <div class="modal-body" style="border-top:1px solid #dddbdb;">
         <div class="text-center">
                  
           <p>To delete, type in the table name.</p>
           <center>
             <input type="text" class="form-control" ng-model="confirmTableName" required style="width:400px;"/>
-          </center> 
-          <div class="flex-general-row-wrapper-center modalF">        
-            <button ng-show="!isDeletingTable" type="button" class="btn btn-danger btn-flat" style="width:400px;" ng-click="deleteTable(selectedTable)">DELETE TABLE</button>
-
-            <!--While Deleting-->
-            <button ng-show="isDeletingTable" type="button" class="btn btn-danger btn-flat" style="width:400px;">
-              <i class="fa fa-spinner fa-spin"></i>&nbsp;DELETING TABLE..</button>
-            <!--/While Deleting-->
-          </div>         
+          </center>                   
         </div>
-      </div>      
+      </div>
+
+      <div class="modal-footer">        
+        <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+
+        <!--Delete-->
+        <button type="button" ng-show="!isDeletingTable" ng-click="deleteTable(selectedTable)" class="btn btn-danger" style="width:120px; border-radius:2px !important;">Delete table</button>  
+
+         <!--While Deleting-->
+        <button type="button" ng-show="isDeletingTable" class="btn btn-danger" style="width:130px; border-radius:2px !important;"><i class="fa fa-spinner fa-spin"></i>&nbsp;Deleting Table..</button> 
+      </div> 
+
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

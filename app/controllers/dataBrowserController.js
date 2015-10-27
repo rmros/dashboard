@@ -975,6 +975,10 @@ function getCBFile(fileObj){
 };*/
 
 $scope.setAndSaveGeopoint=function(valid){
+  if(!$scope.geoPointValidation('latitude',$scope.editableGeopoint.latitude)){
+    $scope.geoPointValidation('longitude',$scope.editableGeopoint.longitude);
+  }
+
   if(valid  && !$scope.geopointEditError){
 
     if($scope.editableRow.get($scope.editableColumnName)){//if geopoint is there
@@ -1083,7 +1087,7 @@ $scope.addRelationToRelation=function(cloudObject,column){
 $scope.searchRelationDocs=function(){
   $("#md-reldocumentviewer").modal("hide");  
 
-  //List Relations records 
+ //List Relations records 
   $scope.loadTableData($scope.tableDef,"createdAt","asc",20,0)
   .then(function(list){        
        
@@ -1470,6 +1474,11 @@ $scope.setRelFile=function(){
 
 
 $scope.relSetAndSaveGeopoint=function(valid){
+
+  if(!$scope.geoPointValidation('latitude',$scope.relEditableGeopoint.latitude)){
+    $scope.geoPointValidation('longitude',$scope.relEditableGeopoint.longitude);
+  }  
+
   if(valid  && !$scope.geopointEditError){
 
     if($scope.relEditableRow.get($scope.relEditableColumnName)){//if geopoint is there
@@ -1892,6 +1901,10 @@ $scope.addListGeopointModal=function(){
 };
 
 $scope.listAddGeopoint=function(valid){
+  if(!$scope.geoPointValidation('latitude',$scope.listEditableGeopoint.latitude)){
+    $scope.geoPointValidation('longitude',$scope.listEditableGeopoint.longitude);
+  }
+
   if(valid  && !$scope.geopointEditError){    
     var loc = new CB.CloudGeoPoint($scope.listEditableGeopoint.latitude,$scope.listEditableGeopoint.longitude);
     if(!$scope.editableList || $scope.editableList.length==0){
@@ -2148,6 +2161,7 @@ function getProjectTables(){
       $rootScope.currentProject.tables=list[0];
       $rootScope.currentProject.currentTable= _.first(_.where($rootScope.currentProject.tables, {name: tableName}));      
     }
+
     return $scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0);    
 
   }).then(function(cbObjects){ 
@@ -2644,6 +2658,7 @@ $scope.geoPointValidation=function(type,value){
         $scope.geopointEditError=null;
       }    
   }
+  return $scope.geopointEditError;
 };
 
 //Row focused functions

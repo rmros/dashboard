@@ -151,7 +151,9 @@
 
                   <div ng-if="vcol.dataType!='Id'" class="flex-general-row-wrapper">
                     <div class="hidden-col-chbx-div">
+                      
                       <checkbox  class="hidden-col-chbx chckbx-fix"  ng-model="!hideColumn[$index]" ng-click="toggleHideColumn($index)"></checkbox>
+
                     </div>
                     <div class="hidden-col-name-div">
                       <span>{{vcol.name}}</span>
@@ -240,8 +242,11 @@
                          <!--DateTime-->
                         <i ng-if="column.document.dataType=='DateTime'" class="fa fa-calendar-o col-icon-size" style="cursor:default;"></i>
 
-                        <!--ACL or Object-->
-                        <i ng-if="column.document.dataType=='ACL' || column.document.dataType=='Object'" class="fa fa-lock col-icon-size" style="cursor:default;"></i>
+                        <!--ACL-->
+                        <i ng-if="column.document.dataType=='ACL'" class="fa fa-lock col-icon-size" style="cursor:default;"></i>
+
+                        <!--Object-->
+                        <i ng-if="column.document.dataType=='Object'" class="fa fa-circle col-icon-size" style="cursor:default;"></i>
 
                         <!--Text-->
                         <i ng-if="column.document.dataType=='Text'" class="fa fa-text-height col-icon-size" style="cursor:default;"></i>
@@ -819,7 +824,7 @@
                     <div class="flex-general-row-wrapper-center"> 
                       <!--Image Files-->
                       <a ng-if="(eachRow.get(column.name).document.name | extension)=='jpeg' || (eachRow.get(column.name).document.name | extension)=='jpg' || (eachRow.get(column.name).document.name | extension)=='png' || (eachRow.get(column.name).document.name | extension)=='tif' || (eachRow.get(column.name).document.name | extension)=='gif'" ng-click="showCommonTypes(eachRow,column)">
-                        <img  src="{{eachRow.document[column.name].document.url}}" class="fileT-thumb-width" alt="image" />
+                        <img  ng-src="{{eachRow.document[column.name].document.url}}" class="fileT-thumb-width" alt="image" />
                       </a> 
 
                       <!--Other Files-->
@@ -937,7 +942,7 @@
                          <div ng-repeat="eachFile in eachRow.document[column.name] track by $index" class="flex-general-row-wrapper">      
                             <!--Images-->                                              
                             <div ng-if="eachFile && eachFile.document.url && ((eachFile.document.name | extension)=='jpeg' || (eachFile.document.name | extension)=='jpg' || (eachFile.document.name | extension)=='png' || (eachFile.document.name | extension)=='tif' || (eachFile .document.name | extension)=='gif')" class="list-File-images">
-                              <img src="{{eachFile.document.url}}">                             
+                              <img ng-src="{{eachFile.document.url}}">                             
                             </div>
                             
                             <!--Other Files-->               
@@ -1587,24 +1592,26 @@
 <!-- EditJSON Modal -->
 <div class="modal fade colored-header danger" id="md-objectviewer" tabindex="-1" role="dialog">
   <div class="modal-dialog">
-    <div class="modal-content">
-
-      <div class="pull-right modalX">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-      </div>  
-      <div class="flex-general-row-wrapper-center modalH">
-        <h3>Object Viewer</h3>        
-      </div>      
-      <div class="modal-body">        
+    <div class="modal-content">        
+      <div style="height:55px; width:100%;padding:13px;">
+        <div class="pull-left" style="padding-left:8px;">
+          <span style="font-size:18px;">{{editableColumn.name}}</span>
+        </div>          
+      </div>
+        
+      <div style="border-top:1px solid #dddbdb;">        
        
-        <div ui-ace="{ mode: 'json', theme: 'monokai' }" ng-model="editableJsonObj">
+        <div ui-ace="{ mode: 'json', theme: 'chrome' }" ng-model="editableJsonObj">
         </div>
         
       </div>
+      
+      <div class="modal-footer">        
+        <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+        <!--Save-->
+        <button type="button" ng-click="setAndSaveJsonObject()" class="btn btn-primary cb-modal-default-btn" >Save</button>   
+      </div>
 
-      <div class="flex-general-row-wrapper-center modalF">        
-          <button type="button" ng-click="setAndSaveJsonObject()" class="btn btn-primary btn-flat" style="width:400px;">Save</button>
-        </div> 
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div>
@@ -1613,15 +1620,15 @@
 <!-- EditFile Modal -->
 <div class="modal fade colored-header danger" id="md-fileviewer" tabindex="-1" role="dialog">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content">         
 
-        <div class="pull-right modalX">
-          <button type="button" class="close" ng-click="removeSelectdFile()" data-dismiss="modal" aria-hidden="true">&times;</button>
-        </div>  
-        <div class="flex-general-row-wrapper-center modalH">
-          <h3>Files</h3>        
-        </div>      
-        <div class="modal-body">
+        <div style="height:55px; width:100%;padding:13px;">
+          <div class="pull-left" style="padding-left:8px;">
+            <span style="font-size:18px;">Files</span>
+          </div>          
+        </div>
+
+        <div class="modal-body" style="border-top:1px solid #dddbdb;">
 
           <div class="flex-general-row-wrapper-center">
             <!--Add file-->
@@ -1636,13 +1643,7 @@
                 </label>
               </div>
             </div>
-            <!-- /D&D Markup -->
-
-            <!--<div ng-if="!editableFile && !selectedFile">
-              <div class="modal-add-file">
-                <input filechange type="file" id="notification-file" class="form-control">
-              </div>                
-            </div>-->
+            <!-- /D&D Markup -->           
 
             <div  ng-if="selectedFile && selectedFileExtension">  
               <!--View File for Images-->
@@ -1651,26 +1652,12 @@
                 <!--Image-->
                 <div class="">
                   <a class="modal-anchor">
-                    <img src="{{selectedFile}}">                  
+                    <img ng-src="{{selectedFile}}">                  
                   </a>                  
                 </div>
 
                 <div class="flex-general-row-wrapper-center">
                   <span style="margin-top:12px;">{{selectedfileName}}</span> 
-                </div>
-
-                <!--Image Edit tools--> 
-                <div class="moda-img-tools2 flex-general-row-wrapper-center">
-                  <div class="modal-img-option2">
-                    <a ng-click="setAndSaveFile()">
-                     <i class="fa fa-floppy-o"></i>
-                    </a>
-                  </div>
-                  <div class="modal-img-option2" style="margin-left:5px;">
-                    <a ng-click="removeSelectdFile()">
-                    <i class="fa fa-times-circle-o"  style="color:red"></i>
-                    </a>
-                  </div>                  
                 </div>
 
               </div> 
@@ -1687,21 +1674,7 @@
 
                   <div class="flex-general-row-wrapper-center">
                     <span style="margin-top:12px;">{{selectedfileName}}</span> 
-                  </div>
-
-                  <!--Image Edit tools--> 
-                  <div class="moda-img-tools2 flex-general-row-wrapper-center">
-                    <div class="modal-img-option2">
-                      <a ng-click="setAndSaveFile()">
-                       <i class="fa fa-floppy-o"></i>
-                      </a>
-                    </div>
-                    <div class="modal-img-option2" style="margin-left:5px;">
-                      <a ng-click="removeSelectdFile()">
-                        <i class="fa fa-times-circle-o"  style="color:red"></i>
-                      </a>
-                    </div>                  
-                  </div>
+                  </div>               
 
                 </div>
               
@@ -1714,26 +1687,12 @@
                 <!--Image-->
                 <div>
                   <a class="modal-anchor flex-general-row-wrapper-center">
-                    <img src="{{editableFile.document.url}}">                  
+                    <img ng-src="{{editableFile.document.url}}">                  
                   </a>                  
                 </div>
                 <div class="flex-general-row-wrapper-center">
                   <span style="margin-top:14px;">{{editableFile.document.name}}</span> 
-                </div>               
-
-                <!--Image Edit tools--> 
-                <div class="moda-img-tools2 flex-general-row-wrapper-center">
-                  <div class="modal-img-option2">
-                    <a href="{{editableFile.document.url}}" target="_blank">
-                     <i class="fa fa-download"></i>
-                    </a>
-                  </div>
-                  <div class="modal-img-option2" style="margin-left:5px;">
-                    <a ng-click="deleteFile()">
-                    <i class="fa fa-trash-o"></i>
-                    </a>
-                  </div>                  
-                </div>
+                </div>           
 
               </div> 
 
@@ -1749,46 +1708,75 @@
 
                   <div class="flex-general-row-wrapper-center">
                     <span style="margin-top:14px;">{{editableFile.document.name}}</span>  
-                  </div>                             
-
-                  <!--Image Edit tools--> 
-                  <div class="moda-img-tools2 flex-general-row-wrapper-center">
-                    <div class="modal-img-option2">
-                      <a href="{{editableFile.document.url}}" target="_blank">
-                       <i class="fa fa-download"></i>
-                      </a>
-                    </div>
-                    <div class="modal-img-option2" style="margin-left:5px;">
-                      <a ng-click="deleteFile()">
-                      <i class="fa fa-trash-o"></i>
-                      </a>
-                    </div>                  
-                  </div>
+                  </div>             
 
                 </div>  
             </div>     
 
           </div>
+
+        </div><!--/model-body-->
+
+        <!--Footer-->
+        <div class="modal-footer">        
+          <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+
+          <!--New File-->
+          <!--Save-->
+          <button type="button" ng-if="selectedFile && selectedFileExtension" ng-click="setAndSaveFile()" class="btn btn-primary cb-modal-default-btn-long" ><i class="fa fa-floppy-o"></i>&nbsp;Save</button>
+
+          <!--Remove File-->
+          <button type="button" ng-if="selectedFile && selectedFileExtension" ng-click="removeSelectdFile()" class="btn btn-danger cb-modal-default-btn-long" ><i class="fa fa-times-circle-o"></i>&nbsp;Remove</button> 
+          <!--/New File-->
+
+
+          <!--File View-->
+          <!--Save-->
+          <a ng-if="!selectedFile && editableFile && editableFile.document.url" href="{{editableFile.document.url}}" target="_blank" class="btn btn-primary cb-modal-default-btn-long" ><i class="fa fa-download"></i>&nbsp;Download</a>
+
+          <!--Remove File-->
+          <button ng-if="!selectedFile && editableFile && editableFile.document.url" type="button" ng-click="deleteFile()" class="btn btn-danger cb-modal-default-btn-long" ><i class="fa fa-trash-o"></i>&nbsp;Delete</button> 
+          <!--/File View-->
+
         </div>
+
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
 <!-- EditFile Modal -->
 
-<!--GEO POINT-->
 
+
+<!--GEO POINT-->
 <!-- Add/Remove GeoPoint -->
   <div class="modal fade colored-header danger" id="md-geodocumentviewer" tabindex="-1" role="dialog">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content">        
 
-        <div class="pull-right modalX">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <div style="height:55px; width:100%;padding:13px;">
+          <div class="pull-left" style="padding-left:8px;">
+            <span style="font-size:18px;">{{editableColumn.name}}</span>
+          </div>          
+        </div>
+
+        <!--Saving Errors--> 
+        <div style="width:100%;">
+          <div ng-show="geopointEditError" style="width:100%;height:30px;background-color:#C40101;color:white;padding-left:5px;padding-right:5px;padding-top:3.5px;" ng-class="{animated:geopointEditError}" class="fadeIn">
+
+            <div class="pull-left" style="padding-top:1px;">                
+              <span>{{geopointEditError.msg}}</span>
+            </div>
+
+            <div class="pull-right" ng-click="geopointEditError=!geopointEditError">
+              <i class="icon ion-android-close" style="font-size:16px;color:white;"></i>
+            </div>  
+
+          </div>  
         </div>  
-        <div class="flex-general-row-wrapper-center modalH">
-          <h3>Geo Point</h3>        
-        </div>      
-        <div class="modal-body">
+        <!--/Saving Errors-->
+
+
+        <div style="border-top:1px solid #dddbdb;">
           <form role="form" name="geoPointForm" ng-submit="setAndSaveGeopoint(geoPointForm.$valid)">
 
             <div class="madd-relation-wrapper">            
@@ -1804,11 +1792,7 @@
                           <h4>Latitude</h4>                          
                         </div>  
                         
-                        <input type="text" ng-model="editableGeopoint.latitude" class="geopoint-inputz"  ng-blur="geoPointValidation('latitude',editableGeopoint.latitude)" minlength="-90" maxlength="90" required>
-
-                        <div ng-if="geopointEditError && (geopointEditError.type=='latitude')" class="geopoint-error">
-                          <span>{{geopointEditError.msg}}</span>                          
-                        </div>
+                        <input type="text" ng-model="editableGeopoint.latitude" class="geopoint-inputz"  ng-blur="geoPointValidation('latitude',editableGeopoint.latitude)" minlength="-90" maxlength="90" required>                        
                       </div>
 
                       <!--Longitude-->
@@ -1819,23 +1803,26 @@
                         </div>
 
                         <input type="text" ng-model="editableGeopoint.longitude" class="geopoint-inputz" ng-blur="geoPointValidation('longitude',editableGeopoint.longitude)" minlength="-180" maxlength="180" required>
-
-                        <div ng-if="geopointEditError && (geopointEditError.type=='longitude')" class="geopoint-error">
-                          <span>{{geopointEditError.msg}}</span>                          
-                        </div>
+                       
                       </div>
 
                     </div> 
                   </div>
                   
               </div> 
-            </div> 
+            </div>             
 
-            <div ng-show="!geopointEditError" class="flex-general-row-wrapper-center modalF">        
-              <button  type="submit" class="btn btn-primary btn-flat" style="width:400px;">Save</button>
+            <div class="modal-footer">        
+              <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+              <!--Save-->
+              <button type="submit" ng-show="geopointEditError"  class="btn  cb-modal-default-btn" style="color:gray !important;">Save</button> 
+              <!--Save-->
+              <button type="submit" ng-show="!geopointEditError" ng-click="setAndSaveJsonObject()" class="btn btn-primary cb-modal-default-btn" >Save</button>
             </div>
+
         </form>
-        </div>
+        </div>        
+
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
@@ -1934,7 +1921,7 @@
 
                         <div ng-show="eachRelRow.get(fileCol.name) && ((eachRelRow.get(fileCol.name).document.name | extension)=='jpeg' || (eachRelRow.get(fileCol.name).document.name | extension)=='jpg' || (eachRelRow.get(fileCol.name).document.name | extension)=='png' || (eachRelRow.get(fileCol.name).document.name | extension)=='tif' || (eachRelRow.get(fileCol.name).document.name | extension)=='gif')" style="margin-right:5px;">  
                                                  
-                          <img  src="eachRelRow.get(fileCol.name).document.url" class="neorel-img">
+                          <img  ng-src="{{eachRelRow.get(fileCol.name).document.url}}" class="neorel-img">
                         </div>
 
                       </div>
@@ -1962,7 +1949,7 @@
 
                         <div ng-show="eachRelRow.get(fileCol.name) && ((eachRelRow.get(fileCol.name).document.name | extension)=='jpeg' || (eachRelRow.get(fileCol.name).document.name | extension)=='jpg' || (eachRelRow.get(fileCol.name).document.name | extension)=='png' || (eachRelRow.get(fileCol.name).document.name | extension)=='tif' || (eachRelRow.get(fileCol.name).document.name | extension)=='gif')" style="margin-right:5px;">  
                                                  
-                          <img  src="eachRelRow.get(fileCol.name).document.url" class="neorel-img">
+                          <img  ng-src="{{eachRelRow.get(fileCol.name).document.url}}" class="neorel-img">
                         </div>
 
                       </div>
@@ -1986,10 +1973,9 @@
           <!--no records-->
           <div ng-show="!searchRelDocsError && (!relationTableData || relationTableData.length==0)" class="relationid-list-empty flex-general-column-wrapper-center" style="margin-top:20px;">
             <div class="flex-general-column-wrapper-center">                  
-                <p style="font-size:16px; color:black; font-weight:700;">No records found </p>
-                <p>
-                  <span style="color:black;">go to table </span>
-                  <span ng-click="goToDataBrowser(tableDef)" style="cursor:pointer; color:blue;">{{tableDef.name}}</span>
+                <p style="font-size:16px; color:gray;">Table {{tableDef.name}} has no records</p>
+                <p>                 
+                  <button type="button" ng-click="goToDataBrowser(tableDef)" class="btn db-color-bg" style="border-radius:3px;color:white;border:none;">Add Records</button>
                 </p>                  
             </div>                              
           </div>
@@ -1997,7 +1983,7 @@
           <!--Error-->
           <div style="width: 100%;height:250px;background-color: #F0F0F0;" class="flex-general-column-wrapper-center" ng-if="searchRelDocsError">
             <div class="flex-general-column-wrapper-center">
-              <p style="color:red;font-size:14px;">{{searchRelDocsError}}</p>
+              <p style="color:gray;font-size:14px;">{{searchRelDocsError}}</p>
             </div> 
           </div>  
 
@@ -2096,8 +2082,11 @@
                        <!--DateTime-->
                       <i ng-if="relCol.document.dataType=='DateTime'" class="fa fa-calendar-o col-icon-size"></i>
 
-                      <!--ACL or Object-->
-                      <i ng-if="relCol.document.dataType=='ACL' || column.document.dataType=='Object'" class="fa fa-lock col-icon-size"></i>
+                      <!--ACL-->
+                      <i ng-if="relCol.document.dataType=='ACL'" class="fa fa-lock col-icon-size"></i>
+
+                      <!--Object-->
+                      <i ng-if="column.document.dataType=='Object'" class="fa fa-circle col-icon-size"></i>
 
                       <!--Text-->
                       <i ng-if="relCol.document.dataType=='Text'" class="fa fa-text-height col-icon-size"></i>
@@ -2420,7 +2409,7 @@
                             <div class="rel-single-img" style="position:relative;">
 
                               <a ng-click="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)">
-                                <img class="m-dynamix-img" src="{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).url}}">
+                                <img class="m-dynamix-img" ng-src="{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).url}}">
                               </a>
 
                               <!--Image controllers-->
@@ -2711,7 +2700,7 @@
                               <!--Img Files-->
                               <div class="rel-list-file-view" ng-if="(file.document.name | extension)=='jpeg' || (file.document.name | extension)=='jpg' || (file.document.name | extension)=='png' || (file.document.name | extension)=='tif' || (file.document.name | extension)=='gif'">
 
-                                <img src="{{file.document.url}}" style="width:150px;height:130px;">
+                                <img ng-src="{{file.document.url}}" style="width:150px;height:130px;">
 
                                 <!--Image controllers-->
                                 <div class="m-rel-static-file-toolz flex-general-row-wrapper cf">
@@ -3184,28 +3173,42 @@
     <div class="modal-dialog">
       <div class="modal-content">
 
-        <div class="pull-right modalX">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <div style="height:55px; width:100%;padding:13px;">
+          <div class="pull-left" style="padding-left:8px;">
+            <span style="font-size:18px;">{{relEditableColumn.name}}</span>
+          </div>          
+        </div>    
+
+        <!--Saving Errors--> 
+        <div style="width:100%;">
+          <div ng-show="relationError[relEditableColumn.name]" style="width:100%;height:30px;background-color:#C40101;color:white;padding-left:5px;padding-right:5px;padding-top:3.5px;" ng-class="{animated:relationError[relEditableColumn.name]}" class="fadeIn">
+
+            <div class="pull-left" style="padding-top:1px;">                
+              <span>{{relationError[relEditableColumn.name]}}</span>
+            </div>
+
+            <div class="pull-right" ng-click="relationError[relEditableColumn.name]=!relationError[relEditableColumn.name]">
+              <i class="icon ion-android-close" style="font-size:16px;color:white;"></i>
+            </div>  
+
+          </div>  
         </div>  
-        <div class="flex-general-row-wrapper-center modalH">
-          <h3>Object Viewer</h3>        
-        </div>      
-        <div class="modal-body">
+        <!--/Saving Errors-->
 
-          <div ui-ace="{ mode: 'json', theme: 'monokai' }" ng-model="relEditableJsonObj">
-          </div>
+        <div style="border-top:1px solid #dddbdb;">
 
-          <!--Error-->
-          <div>
-            <p style="color:red;">{{relationError[relEditableColumn.name]}}</p>
-          </div>       
+          <div ui-ace="{ mode: 'json', theme: 'chrome' }" ng-model="relEditableJsonObj">
+          </div>               
 
         </div>
          
         <!--Set Button-->
-        <div class="flex-general-row-wrapper-center modalF">        
-          <button type="button" ng-click="setRelationData(relEditableRow,relEditableColumn,relEditableJsonObj)" class="btn btn-primary btn-flat" style="width:400px;">Set</button>
+        <div class="modal-footer">        
+          <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+          <!--Save-->
+          <button type="button" ng-click="setRelationData(relEditableRow,relEditableColumn,relEditableJsonObj)" class="btn btn-primary cb-modal-default-btn" >Set</button>   
         </div>
+
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
@@ -3213,17 +3216,18 @@
 
 
 <!-- Relation EditFile Modal -->
-  <div class="modal fade colored-header danger" id="md-rel-fileviewer" tabindex="-1" role="dialog">
+<div class="modal fade colored-header danger" id="md-rel-fileviewer" tabindex="-1" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
 
-        <div class="pull-right modalX">
-          <button type="button" class="close" ng-click="removeSelectdFile()" data-dismiss="modal" aria-hidden="true">&times;</button>
-        </div>  
-        <div class="flex-general-row-wrapper-center modalH">
-          <h3>Files</h3>        
-        </div>      
-        <div class="modal-body">
+        <div style="height:55px; width:100%;padding:13px;">
+          <div class="pull-left" style="padding-left:8px;">
+            <span style="font-size:18px;">Files</span>
+          </div>          
+        </div> 
+
+
+        <div class="modal-body" style="border-top:1px solid #dddbdb;">
 
           <div class="flex-general-row-wrapper-center">            
               <!--Add file-->
@@ -3238,13 +3242,7 @@
                   </label>
                 </div>
               </div>
-              <!-- /D&D Markup -->
-
-              <!--<div ng-if="!relEditableFile && !selectedFile">
-                <div class="modal-add-file">
-                  <input filechange type="file" id="notification-file" class="form-control">
-                </div>                
-              </div>-->
+              <!-- /D&D Markup -->            
 
             <div  ng-if="selectedFile && selectedFileExtension">  
               <!--View File for Images-->
@@ -3253,26 +3251,12 @@
                 <!--Image-->
                 <div class="">
                   <a class="modal-anchor">
-                    <img src="{{selectedFile}}">                  
+                    <img ng-src="{{selectedFile}}">                  
                   </a>                  
                 </div>
 
                 <div class="flex-general-row-wrapper-center">
                   <span style="margin-top:12px;">{{selectedfileName}}</span> 
-                </div>
-
-                <!--Image Edit tools--> 
-                <div class="moda-img-tools2 flex-general-row-wrapper-center">
-                  <div class="modal-img-option2">
-                    <a ng-click="setRelFile()">
-                     <i class="fa fa-plus-square"></i>
-                    </a>
-                  </div>
-                  <div class="modal-img-option2" style="margin-left:5px;">
-                    <a ng-click="removeSelectdFile()">
-                    <i class="fa fa-times-circle-o"  style="color:red"></i>
-                    </a>
-                  </div>                  
                 </div>
 
               </div> 
@@ -3289,21 +3273,7 @@
 
                   <div class="flex-general-row-wrapper-center">
                     <span style="margin-top:12px;">{{selectedfileName}}</span> 
-                  </div>
-
-                  <!--Image Edit tools--> 
-                  <div class="moda-img-tools2 flex-general-row-wrapper-center">
-                    <div class="modal-img-option2">
-                      <a ng-click="setRelFile()">
-                       <i class="fa fa-plus-square"></i>
-                      </a>
-                    </div>
-                    <div class="modal-img-option2" style="margin-left:5px;">
-                      <a ng-click="removeSelectdFile()">
-                        <i class="fa fa-times-circle-o"  style="color:red"></i>
-                      </a>
-                    </div>                  
-                  </div>
+                  </div>   
 
                 </div>
               
@@ -3316,26 +3286,12 @@
                 <!--Image-->
                 <div>
                   <a class="modal-anchor flex-general-row-wrapper-center">
-                    <img src="{{relEditableFile.document.url}}">                  
+                    <img ng-src="{{relEditableFile.document.url}}">                  
                   </a>                  
                 </div>
                 <div class="flex-general-row-wrapper-center">
                   <span style="margin-top:14px;">{{relEditableFile.document.name}}</span> 
-                </div>               
-
-                <!--Image Edit tools--> 
-                <div class="moda-img-tools2 flex-general-row-wrapper-center">
-                  <div class="modal-img-option2">
-                    <a href="{{relEditableFile.document.url}}" target="_blank">
-                     <i class="fa fa-download"></i>
-                    </a>
-                  </div>
-                  <div class="modal-img-option2" style="margin-left:5px;">
-                    <a ng-click="setRelationData(relEditableRow,relEditableColumn,null)">
-                    <i class="fa fa-times-circle-o"  style="color:red"></i>
-                    </a>
-                  </div>                  
-                </div>
+                </div>          
 
               </div> 
 
@@ -3351,27 +3307,38 @@
 
                   <div class="flex-general-row-wrapper-center">
                     <span style="margin-top:14px;">{{relEditableFile.document.name}}</span>  
-                  </div>                             
-
-                  <!--Image Edit tools--> 
-                  <div class="moda-img-tools2 flex-general-row-wrapper-center">
-                    <div class="modal-img-option2">
-                      <a href="{{relEditableFile.document.url}}" target="_blank">
-                       <i class="fa fa-download"></i>
-                      </a>
-                    </div>
-                    <div class="modal-img-option2" style="margin-left:5px;">
-                      <a ng-click="setRelationData(relEditableRow,relEditableColumn,null)">
-                      <i class="fa fa-times-circle-o"  style="color:red"></i>
-                      </a>
-                    </div>                  
-                  </div>
-
+                  </div> 
+                
                 </div>  
             </div>     
 
           </div>
         </div>
+
+         <!--Footer-->
+        <div class="modal-footer">        
+          <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+
+          <!--New File-->
+          <!--Save-->
+          <button type="button" ng-if="selectedFile && selectedFileExtension" ng-click="setRelFile()" class="btn btn-primary cb-modal-default-btn-long" ><i class="fa fa-floppy-o"></i>&nbsp;Save</button>
+
+          <!--Remove File-->
+          <button type="button" ng-if="selectedFile && selectedFileExtension" ng-click="removeSelectdFile()" class="btn btn-danger cb-modal-default-btn-long" ><i class="fa fa-times-circle-o"></i>&nbsp;Remove</button> 
+          <!--/New File-->
+
+
+          <!--File View-->
+          <!--Save-->
+          <a ng-if="!selectedFile && relEditableFile && relEditableFile.document.url" href="{{relEditableFile.document.url}}" target="_blank" class="btn btn-primary cb-modal-default-btn-long" ><i class="fa fa-download"></i>&nbsp;Download</a>
+
+          <!--Remove File-->
+          <button ng-if="!selectedFile && relEditableFile && relEditableFile.document.url" type="button" ng-click="setRelationData(relEditableRow,relEditableColumn,null)" class="btn btn-danger cb-modal-default-btn-long" ><i class="fa fa-trash-o"></i>&nbsp;Delete</button> 
+          <!--/File View-->
+
+        </div>
+        <!--/Footer-->
+
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
@@ -3381,15 +3348,32 @@
 <!-- Add/Remove Relational GeoPoint -->
   <div class="modal fade colored-header danger" id="md-rel-geodocumentviewer" tabindex="-1" role="dialog">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content">        
 
-        <div class="pull-right modalX">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <div style="height:55px; width:100%;padding:13px;">
+          <div class="pull-left" style="padding-left:8px;">
+            <span style="font-size:18px;">{{relEditableColumn.name}}</span>
+          </div>          
+        </div>
+
+        <!--Saving Errors--> 
+        <div style="width:100%;">
+          <div ng-show="geopointEditError" style="width:100%;height:30px;background-color:#C40101;color:white;padding-left:5px;padding-right:5px;padding-top:3.5px;" ng-class="{animated:geopointEditError}" class="fadeIn">
+
+            <div class="pull-left" style="padding-top:1px;">                
+              <span>{{geopointEditError.msg}}</span>
+            </div>
+
+            <div class="pull-right" ng-click="geopointEditError=!geopointEditError">
+              <i class="icon ion-android-close" style="font-size:16px;color:white;"></i>
+            </div>  
+
+          </div>  
         </div>  
-        <div class="flex-general-row-wrapper-center modalH">
-          <h3>Geo Point</h3>        
-        </div>      
-        <div class="modal-body">
+        <!--/Saving Errors-->
+
+
+        <div style="border-top:1px solid #dddbdb;">
           <form role="form" name="relGeoPointForm" ng-submit="relSetAndSaveGeopoint(relGeoPointForm.$valid)">
 
             <div class="madd-relation-wrapper">            
@@ -3403,13 +3387,10 @@
 
                         <div class="geopoint-name">
                           <h4>Latitude</h4>                          
-                        </div>  
-                        
-                        <input type="text" ng-model="relEditableGeopoint.latitude" class="geopoint-inputz"  ng-blur="geoPointValidation('latitude',relEditableGeopoint.latitude)" minlength="-90" maxlength="90" required>
-
-                        <div ng-if="geopointEditError && (geopointEditError.type=='latitude')" class="geopoint-error">
-                          <span>{{geopointEditError.msg}}</span>                          
                         </div>
+
+                        <input type="text" ng-model="relEditableGeopoint.latitude" class="geopoint-inputz"  ng-blur="geoPointValidation('latitude',relEditableGeopoint.latitude)" minlength="-90" maxlength="90" required>
+                       
                       </div>
 
                       <!--Longitude-->
@@ -3420,21 +3401,24 @@
                         </div>
 
                         <input type="text" ng-model="relEditableGeopoint.longitude" class="geopoint-inputz" ng-blur="geoPointValidation('longitude',relEditableGeopoint.longitude)" minlength="-180" maxlength="180" required>
-
-                        <div ng-if="geopointEditError && (geopointEditError.type=='longitude')" class="geopoint-error">
-                          <span>{{geopointEditError.msg}}</span>                          
-                        </div>
+                       
                       </div>
 
                     </div> 
                   </div>
                   
               </div> 
-            </div> 
+            </div>            
 
-            <div ng-show="!geopointEditError" class="flex-general-row-wrapper-center modalF">        
-              <button  type="submit" class="btn btn-primary btn-flat" style="width:400px;">Set</button>
+            <div class="modal-footer">        
+              <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+
+              <!--Set-->
+              <button type="button" ng-show="geopointEditError"  class="btn btn-primary cb-modal-default-btn" >Set</button>
+              <!--Set-->
+              <button type="submit" ng-show="!geopointEditError" class="btn btn-primary cb-modal-default-btn" >Set</button>   
             </div>
+
         </form>
         </div>
       </div><!-- /.modal-content -->
@@ -3447,15 +3431,16 @@
 <!-- Add-View List common types Modal -->
   <div class="modal fade colored-header danger" id="md-list-commontypes" tabindex="-1" role="dialog">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content">        
 
-        <div class="pull-right modalX">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeListModal()">&times;</button>
-        </div>  
-        <div class="flex-general-row-wrapper-center modalH">
-          <h3>Documents List</h3>        
-        </div>      
-        <div class="modal-body">
+        <div style="height:55px; width:100%;padding:13px;">
+          <div class="pull-left" style="padding-left:8px;">
+            <span style="font-size:18px;">{{editableColumn.name}}</span>
+          </div>          
+        </div> 
+
+
+        <div style="border-top:1px solid #dddbdb;">
           <div class="madd-relation-wrapper">
             <div  class="add-list-btn-wrapper">            
 
@@ -3767,7 +3752,7 @@
                   <div ng-if="eachFile && eachFile.document.url && ((eachFile.document.name | extension)=='jpeg' || (eachFile.document.name | extension)=='jpg' || (eachFile.document.name | extension)=='png' || (eachFile.document.name | extension)=='tif' || (eachFile .document.name | extension)=='gif')" class="flex-general-row-wrapper list-file-display" style="margin-left:4px;">                      
 
                       <div ng-if="!listFileSpinner[$index] && !listFileError[$index]" class="list-file-aura-list flex-general-row-wrapper-center">               
-                        <img ng-click="showListFile(editableRow,editableColumn,$index)" src="{{eachFile.document.url}}" class="list-m-file-list list-file-display-item" />
+                        <img ng-click="showListFile(editableRow,editableColumn,$index)" ng-src="{{eachFile.document.url}}" class="list-m-file-list list-file-display-item" />
                       </div>
 
                       <div ng-if="!listFileSpinner[$index] && !listFileError[$index]" class="list-images-remove-cross">
@@ -3845,23 +3830,23 @@
                      <i class="fa fa-times"></i>
                     </div>
                   </div>  
-                </div>
-                
+                </div>                
             </div>
-
           </div> 
+        </div>
+
+        <!--Footer-->
+        <div class="modal-footer">        
+          <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
 
           <!--Save-->
-          <div ng-if="!isRelationalList" class="flex-general-row-wrapper-center modalF" style="margin-top:10px;">        
-              <button  ng-click="setAndSaveList()" type="button" class="btn btn-primary btn-flat" style="width:400px;">Save List</button>
-          </div>
+          <button ng-if="!isRelationalList" type="button" ng-click="setAndSaveList()" class="btn btn-primary cb-modal-default-btn" >Save List</button> 
 
           <!--Relational List Save-->
-          <div ng-if="isRelationalList" class="flex-general-row-wrapper-center modalF" style="margin-top:10px;">        
-              <button  ng-click="setRelationData(editableRow,editableColumn,editableList)" type="button" class="btn btn-primary btn-flat" style="width:400px;">Save List</button>
-          </div>
+          <button ng-if="isRelationalList" type="button" ng-click="setRelationData(editableRow,editableColumn,editableList)" class="btn btn-primary cb-modal-default-btn" >Save List</button>
 
         </div>
+
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
@@ -3872,29 +3857,43 @@
 <!-- LIST EditJSON Modal -->
   <div class="modal fade colored-header danger" id="md-list-objectviewer" tabindex="-1" role="dialog">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content"> 
 
-        <div class="pull-right modalX">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <div style="height:55px; width:100%;padding:13px;">
+          <div class="pull-left" style="padding-left:8px;">
+            <span style="font-size:18px;">{{editableColumn.name}}</span>
+          </div>          
+        </div>
+
+        <!--Saving Errors--> 
+        <div style="width:100%;">
+          <div ng-show="modifyListItemError[listIndex]" style="width:100%;height:30px;background-color:#C40101;color:white;padding-left:5px;padding-right:5px;padding-top:3.5px;" ng-class="{animated:modifyListItemError[listIndex]}" class="fadeIn">
+
+            <div class="pull-left" style="padding-top:1px;">                
+              <span>{{modifyListItemError[listIndex]}}</span>
+            </div>
+
+            <div class="pull-right" ng-click="modifyListItemError[listIndex]=!modifyListItemError[listIndex]">
+              <i class="icon ion-android-close" style="font-size:16px;color:white;"></i>
+            </div>  
+
+          </div>  
         </div>  
-        <div class="flex-general-row-wrapper-center modalH">
-          <h3>Object Viewer</h3>        
-        </div>      
-        <div class="modal-body">
+        <!--/Saving Errors-->
 
-          <div ui-ace="{ mode: 'json', theme: 'monokai' }" ng-model="listEditableRow">
-          </div>
+        <div style="border-top:1px solid #dddbdb;border-bottom:1px solid #ebebeb;">
 
-          <!--Error-->
-          <div>
-            <p style="color:red;">{{modifyListItemError[listIndex]}}</p>
+          <div ui-ace="{ mode: 'json', theme: 'chrome' }" ng-model="listEditableRow">
           </div>      
 
+        </div>             
+
+        <div class="modal-footer">        
+          <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+          <!--Save-->
+          <button type="button" ng-click="modifyListItem(listEditableRow,listIndex)" class="btn btn-primary cb-modal-default-btn" >Modify</button>   
         </div>
 
-        <div class="flex-general-row-wrapper-center modalF">        
-            <button type="button" ng-click="modifyListItem(listEditableRow,listIndex)" class="btn btn-primary btn-flat" style="width:400px;">Modify</button>
-        </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
@@ -3902,39 +3901,33 @@
 
 
 <!--LIST EditFile Modal -->
-  <div class="modal fade colored-header danger" id="md-list-fileviewer" tabindex="-1" role="dialog">
+<div class="modal fade colored-header danger" id="md-list-fileviewer" tabindex="-1" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
 
-        <div class="pull-right modalX">
-          <button type="button" class="close" ng-click="removeSelectdFile()" data-dismiss="modal" aria-hidden="true">&times;</button>
-        </div>  
-        <div class="flex-general-row-wrapper-center modalH">
-          <h3>Files</h3>        
-        </div>      
-        <div class="modal-body">
+        <div style="height:55px; width:100%;padding:13px;">
+          <div class="pull-left" style="padding-left:8px;">
+            <span style="font-size:18px;">Files</span>
+          </div>          
+        </div> 
+
+        <div class="modal-body" style="border-top:1px solid #dddbdb;">
 
           <div class="flex-general-row-wrapper-center">
 
-              <!--Add file-->
-              <!-- D&D Markup -->
-              <div ng-if="!listEditableRow && !selectedFile" class="uploader" dmuploader>
-                <div>Drag &amp; Drop Files Here</div>
-                <div class="or">-or-</div>
-                <div class="browser">
-                  <label>
-                    <span>Choose files</span>
-                    <input type="file" name="files[]" multiple="multiple" title='Click to add Files'>
-                  </label>
-                </div>
+            <!--Add file-->
+            <!-- D&D Markup -->
+            <div ng-if="!listEditableRow && !selectedFile" class="uploader" dmuploader>
+              <div>Drag &amp; Drop Files Here</div>
+              <div class="or">-or-</div>
+              <div class="browser">
+                <label class="db-color-bg">
+                  <span>Choose files</span>
+                  <input type="file" name="files[]" multiple="multiple" title='Click to add Files'>
+                </label>
               </div>
-              <!-- /D&D Markup -->
-
-              <!--<div ng-if="!listEditableRow && !selectedFile">
-                <div class="modal-add-file">
-                  <input filechange type="file" id="notification-file" class="form-control">
-                </div>                
-              </div>-->
+            </div>
+            <!-- /D&D Markup -->             
 
             <div  ng-if="selectedFile && selectedFileExtension">  
               <!--View File for Images-->
@@ -3943,27 +3936,13 @@
                 <!--Image-->
                 <div class="">
                   <a class="modal-anchor">
-                    <img src="{{selectedFile}}">                  
+                    <img ng-src="{{selectedFile}}">                  
                   </a>                  
                 </div>
 
                 <div class="flex-general-row-wrapper-center">
                   <span style="margin-top:12px;">{{selectedfileName}}</span> 
-                </div>
-
-                <!--Image Edit tools--> 
-                <div ng-if="isFileSelected" class="moda-img-tools2 flex-general-row-wrapper-center">
-                  <div class="modal-img-option2">
-                    <a ng-click="addListFile()">
-                     <i class="fa fa-plus-circle"></i>
-                    </a>
-                  </div>
-                  <div class="modal-img-option2" style="margin-left:5px;">
-                    <a ng-click="removeSelectdFile()">
-                    <i class="fa fa-times-circle-o"  style="color:red"></i>
-                    </a>
-                  </div>                  
-                </div>
+                </div>             
 
               </div> 
 
@@ -3979,21 +3958,7 @@
 
                   <div class="flex-general-row-wrapper-center">
                     <span style="margin-top:12px;">{{selectedfileName}}</span> 
-                  </div>
-
-                  <!--Image Edit tools--> 
-                  <div class="moda-img-tools2 flex-general-row-wrapper-center">
-                    <div class="modal-img-option2">
-                      <a ng-click="addListFile()">
-                       <i class="fa fa-plus-circle"></i>
-                      </a>
-                    </div>
-                    <div class="modal-img-option2" style="margin-left:5px;">
-                      <a ng-click="removeSelectdFile()">
-                        <i class="fa fa-times-circle-o"  style="color:red"></i>
-                      </a>
-                    </div>                  
-                  </div>
+                  </div>               
 
                 </div>
               
@@ -4006,27 +3971,12 @@
                 <!--Image-->
                 <div>
                   <a class="modal-anchor flex-general-row-wrapper-center">
-                    <img src="{{listEditableRow.document[listEditableColumn.name][listIndex].document.url}}">                  
+                    <img ng-src="{{listEditableRow.document[listEditableColumn.name][listIndex].document.url}}">                  
                   </a>                  
                 </div>
                 <div class="flex-general-row-wrapper-center">
                   <span style="margin-top:14px;">{{listEditableRow.document[listEditableColumn.name][listIndex].document.name}}</span> 
-                </div>               
-
-                <!--Image Edit tools--> 
-                <div class="moda-img-tools2 flex-general-row-wrapper-center">
-                  <div class="modal-img-option2">
-                    <a href="{{listEditableRow.document[listEditableColumn.name][listIndex].document.url}}" target="_blank">
-                     <i class="fa fa-download"></i>
-                    </a>
-                  </div>
-                  <div class="modal-img-option2" style="margin-left:5px;">
-                    <a ng-click="deleteListItem(listIndex)">
-                    <i class="fa fa-times-circle-o"  style="color:red"></i>
-                    </a>
-                  </div>                  
-                </div>
-
+                </div> 
               </div> 
               
               <!--View File for Other Files-->
@@ -4041,27 +3991,37 @@
 
                   <div class="flex-general-row-wrapper-center">
                     <span style="margin-top:14px;">{{listEditableRow.document[listEditableColumn.name][listIndex].document.name}}</span>  
-                  </div>                             
-
-                  <!--Image Edit tools--> 
-                  <div class="moda-img-tools2 flex-general-row-wrapper-center">
-                    <div class="modal-img-option2">
-                      <a href="{{listEditableRow.document[listEditableColumn.name][listIndex].document.url}}" target="_blank">
-                       <i class="fa fa-download"></i>
-                      </a>
-                    </div>
-                    <div class="modal-img-option2" style="margin-left:5px;">
-                      <a ng-click="deleteListItem(listIndex)">
-                      <i class="fa fa-times-circle-o"  style="color:red"></i>
-                      </a>
-                    </div>                  
                   </div>
-
                 </div>  
             </div>     
 
           </div>
         </div>
+
+        <!--Footer-->
+        <div class="modal-footer">        
+          <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+
+          <!--New File-->
+          <!--Save-->
+          <button type="button" ng-if="selectedFile && selectedFileExtension" ng-click="addListFile()" class="btn btn-primary cb-modal-default-btn-long" ><i class="fa fa-floppy-o"></i>&nbsp;Save</button>
+
+          <!--Remove File-->
+          <button type="button" ng-if="selectedFile && selectedFileExtension" ng-click="removeSelectdFile()" class="btn btn-danger cb-modal-default-btn-long" ><i class="fa fa-times-circle-o"></i>&nbsp;Remove</button> 
+          <!--/New File-->
+
+
+          <!--File View-->
+          <!--Save-->
+          <a ng-if="!selectedFile && listEditableRow && listEditableRow.document[listEditableColumn.name][listIndex].document.url" href="{{listEditableRow.document[listEditableColumn.name][listIndex].document.url}}" target="_blank" class="btn btn-primary cb-modal-default-btn-long" ><i class="fa fa-download"></i>&nbsp;Download</a>
+
+          <!--Remove File-->
+          <button ng-if="!selectedFile && editableFile && editableFile.document.url" type="button" ng-click="deleteListItem(listIndex)" class="btn btn-danger cb-modal-default-btn-long" ><i class="fa fa-trash-o"></i>&nbsp;Delete</button> 
+          <!--/File View-->
+
+        </div>
+        <!--/Footer-->
+
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
@@ -4096,7 +4056,7 @@
 
                         <div ng-show="eachRelRow.get(fileCol.name) && ((eachRelRow.get(fileCol.name).document.name | extension)=='jpeg' || (eachRelRow.get(fileCol.name).document.name | extension)=='jpg' || (eachRelRow.get(fileCol.name).document.name | extension)=='png' || (eachRelRow.get(fileCol.name).document.name | extension)=='tif' || (eachRelRow.get(fileCol.name).document.name | extension)=='gif')" style="margin-right:5px;">  
                                                  
-                          <img  src="eachRelRow.get(fileCol.name).document.url" class="neorel-img">
+                          <img  ng-src="eachRelRow.get(fileCol.name).document.url" class="neorel-img">
                         </div>
 
                       </div>
@@ -4118,19 +4078,20 @@
 
           <!--no records-->
           <div ng-show="!searchRelDocsError && (!listRelationTableData || listRelationTableData.length==0)" class="relationid-list-empty flex-general-column-wrapper-center">
-            <div class="flex-general-column-wrapper-center">                  
-                <p style="font-size:16px; color:black; font-weight:700;">No records found </p>
-                <p>
-                  <span style="color:black;">go to table </span>
-                  <span ng-click="goToDataBrowser(tableDef)" style="cursor:pointer; color:blue;">{{tableDef.name}}</span>
-                </p>                  
+            <div class="flex-general-column-wrapper-center">                
+
+                <p style="font-size:16px; color:gray;">Table {{tableDef.name}} has no records</p>
+                <p>                 
+                  <button type="button" ng-click="goToDataBrowser(tableDef)" class="btn db-color-bg" style="border-radius:3px;color:white;border:none;">Add Records</button>
+                </p> 
+
             </div>              
           </div>
 
           <!--Error-->
           <div class="flex-general-column-wrapper-center" ng-if="searchRelDocsError">
             <div class="flex-general-column-wrapper-center">
-              <p style="color:red;">{{searchRelDocsError}}</p>
+              <p style="color:gray;">{{searchRelDocsError}}</p>
             </div> 
           </div> 
 
@@ -4147,15 +4108,32 @@
 <!-- Add/Remove List GeoPoint -->
   <div class="modal fade colored-header danger" id="md-list-geodocumentviewer" tabindex="-1" role="dialog">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content">        
 
-        <div class="pull-right modalX">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <div style="height:55px; width:100%;padding:13px;">
+          <div class="pull-left" style="padding-left:8px;">
+            <span style="font-size:18px;">{{editableColumn.name}}</span>
+          </div>          
+        </div>
+
+
+        <!--Saving Errors--> 
+        <div style="width:100%;">
+          <div ng-show="geopointEditError" style="width:100%;height:30px;background-color:#C40101;color:white;padding-left:5px;padding-right:5px;padding-top:3.5px;" ng-class="{animated:geopointEditError}" class="fadeIn">
+
+            <div class="pull-left" style="padding-top:1px;">                
+              <span>{{geopointEditError.msg}}</span>
+            </div>
+
+            <div class="pull-right" ng-click="geopointEditError=!geopointEditError">
+              <i class="icon ion-android-close" style="font-size:16px;color:white;"></i>
+            </div>  
+
+          </div>  
         </div>  
-        <div class="flex-general-row-wrapper-center modalH">
-          <h3>Geo Point</h3>        
-        </div>      
-        <div class="modal-body">
+        <!--/Saving Errors-->
+
+        <div style="border-top:1px solid #dddbdb;">
           <form role="form" name="listGeoPointForm" ng-submit="listAddGeopoint(listGeoPointForm.$valid)">
 
             <div class="madd-relation-wrapper">            
@@ -4172,10 +4150,7 @@
                         </div>  
                         
                         <input type="text" ng-model="listEditableGeopoint.latitude" class="geopoint-inputz"  ng-blur="geoPointValidation('latitude',listEditableGeopoint.latitude)" minlength="-90" maxlength="90" required>
-
-                        <div ng-if="geopointEditError && (geopointEditError.type=='latitude')" class="geopoint-error">
-                          <span>{{geopointEditError.msg}}</span>                          
-                        </div>
+                       
                       </div>
 
                       <!--Longitude-->
@@ -4186,20 +4161,21 @@
                         </div>
 
                         <input type="text" ng-model="listEditableGeopoint.longitude" class="geopoint-inputz" ng-blur="geoPointValidation('longitude',listEditableGeopoint.longitude)" minlength="-180" maxlength="180" required>
-
-                        <div ng-if="geopointEditError && (geopointEditError.type=='longitude')" class="geopoint-error">
-                          <span>{{geopointEditError.msg}}</span>                          
-                        </div>
                       </div>
 
                     </div> 
                   </div>
                   
               </div> 
-            </div> 
+            </div>           
 
-            <div ng-show="!geopointEditError" class="flex-general-row-wrapper-center modalF">        
-              <button  type="submit" class="btn btn-primary btn-flat" style="width:400px;">Add</button>
+            <div class="modal-footer">        
+              <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+              <!--Error-->
+              <button type="button"  ng-show="geopointEditError" class="btn cb-modal-default-btn" style="color:gray !important;" >Add</button> 
+
+              <!--Save-->
+              <button type="submit"  ng-show="!geopointEditError" class="btn btn-primary cb-modal-default-btn" >Add</button>   
             </div>
         </form>
         </div>
@@ -4273,36 +4249,37 @@
 <!-- /Edit List GeoPoint -->
 
 
-
 <!--delete column modal-->
   <div class="modal fade colored-header danger" id="md-deleteColumn" tabindex="-1" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
 
-      <div class="pull-right modalX">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-      </div>  
-      <div class="flex-general-row-wrapper-center modalH">
-        <h3>Delete Column</h3>        
+      <div style="height:55px; width:100%;padding:13px;">
+        <div class="pull-left" style="padding-left:8px;">
+          <span style="font-size:18px;">Delete Column</span>
+        </div>          
       </div>
       
-      <div class="modal-body">
+      <div class="modal-body" style="border-top:1px solid #dddbdb;">
         <div class="text-center">
                  
           <p>To delete, type in the column name.</p>
           <center>
             <input type="text" class="form-control" ng-model="confirmDeleteColumnName" required style="width:400px;"/>
-          </center> 
-          <div class="flex-general-row-wrapper-center modalF">        
-            <button  type="button" ng-show="!columnDeleteModalSpinner" class="btn btn-danger btn-flat" style="width:400px;" ng-click="deleteColumn()">DELETE COLUMN</button>
-
-            <!--While Deleting-->
-            <button  type="button" ng-show="columnDeleteModalSpinner" class="btn btn-danger btn-flat" style="width:400px;">
-              <i class="fa fa-spinner fa-spin"></i>&nbsp;DELETING COLUMN..</button>
-            <!--/While Deleting-->
-          </div>         
+          </center>                    
         </div>
-      </div>      
+      </div>  
+
+      <div class="modal-footer">        
+        <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+
+        <!--Delete-->
+        <button type="button" ng-show="!columnDeleteModalSpinner" ng-click="deleteColumn()" class="btn btn-danger" style="width:120px; border-radius:3px !important;">Delete Column</button>  
+
+         <!--While Deleting-->
+        <button type="button" ng-show="columnDeleteModalSpinner" class="btn btn-danger" style="width:142px; border-radius:3px !important;"><i class="fa fa-spinner fa-spin"></i>&nbsp;Deleting Column..</button> 
+      </div>
+
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

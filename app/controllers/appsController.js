@@ -56,7 +56,9 @@ app.controller('appsController',
       $scope.projectToBeDeletedIndex=$scope.projectListObj.indexOf($scope.projectToBeDeleted);
       $scope.confirmAppName=null;
       $('#deleteappmodal').modal();
-      $scope.newList=angular.copy($scope.projectListObj.splice($scope.projectToBeDeletedIndex,1)); 
+
+      $scope.newList=angular.copy($scope.projectListObj); 
+      $scope.newList.splice($scope.projectToBeDeletedIndex,1); 
   };
 
   $scope.deleteProject = function(){               
