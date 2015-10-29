@@ -221,7 +221,7 @@ app.directive('malihuscrollbarForPopup', function(){
     };
 });*/
 
-
+//File uploader
 app.directive('dmuploader', function(){
     return {
         restrict: 'A',

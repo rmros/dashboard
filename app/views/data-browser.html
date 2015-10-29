@@ -415,9 +415,12 @@
                       <div  ng-if="newColumnObj.dataType=='List'" style="margin-top:5px;">
                         <label class="addcollabel" style="font-size:13px;">Select Target Type</label>
                          <select   class="default-form-elem noFocus" ng-model="newColumnObj.relatedTo">
+                            <optgroup label="Tables">
                               <option ng-repeat="eachTable in currentProject.tables"  value="{{eachTable.name}}">{{eachTable.name}}</option>
-                      
-                            <option ng-repeat="dTypes in colDataTypes | filter:filterDataType"  ng-show="dTypes.visible"  value="{{dTypes.name}}">{{dTypes.text}}</option>
+                            </optgroup>
+                            <optgroup label="Data Types">
+                              <option ng-repeat="dTypes in colDataTypes | filter:filterDataType"  ng-show="dTypes.visible"  value="{{dTypes.name}}">{{dTypes.text}}</option>
+                            </optgroup label="Tables">
                           </select>
                       </div>
 
@@ -3442,133 +3445,17 @@
 
         <div style="border-top:1px solid #dddbdb;">
           <div class="madd-relation-wrapper">
-            <div  class="add-list-btn-wrapper">            
 
-              <!--Text-->
-              <div ng-if="editableColumn.document.relatedTo=='Text'" class="document-list-add-wrapper flex-general-row-wrapper">
-                  <div class="document-list-txt-add-wrapper flex-general-row-wrapper-center cf">
-                  
-                    <div  class="list-text-aura">
-                        <input type="text" ng-model="$parent.newListItem" class="list-modal-text">
-                    </div>                  
-
-                  </div>
-                 <div class="list-text-add-btn">                   
-                     <button ng-click="addListItem(newListItem)">Add</button>                   
-                  </div>
-
+            <!--Add New Records Button-->
+            <div  class="add-list-btn-wrapper" ng-if="editableColumn.relatedTo!='File'"> 
+              <div class="document-list-add-wrapper flex-general-row-wrapper">
+                <!--For List of Texts-->
+                <button ng-click="addListItem()" type="button"  class="nuevo-add-list-btn" >Add New Record</button>
               </div>
-              <!--/Text-->
-
-              <!--Email-->
-              <div ng-if="editableColumn.relatedTo=='Email'" class="document-list-add-wrapper flex-general-row-wrapper">
-
-                  <div class="document-list-txt-add-wrapper flex-general-row-wrapper-center cf">
-                   
-                    <div class="list-text-aura">
-                      <input type="text" ng-model="$parent.newListItem" class="list-modal-text">
-                    </div>                  
-
-                  </div>
-                  <div class="list-text-add-btn">                   
-                    <button ng-click="addListItem(newListItem)">Add</button>                   
-                  </div>                   
-
-              </div>                          
-              <!--/Email-->
-
-              <!--URL-->
-              <div ng-if="editableColumn.relatedTo=='URL'" class="document-list-add-wrapper flex-general-row-wrapper">
-
-                  <div class="document-list-txt-add-wrapper flex-general-row-wrapper-center cf">
-                   
-                    <div class="list-text-aura">
-                        <input type="text" ng-model="$parent.newListItem" class="list-modal-text">
-                    </div>                  
-
-                  </div>
-                 <div class="list-text-add-btn">                   
-                     <button ng-click="addListItem(newListItem)">Add</button>                   
-                  </div>
-
-              </div>
-              <!--/URL-->
-
-              <!--Number-->
-              <div ng-if="editableColumn.relatedTo=='Number'" class="document-list-add-wrapper flex-general-row-wrapper">
-
-                  <div class="document-list-txt-add-wrapper flex-general-row-wrapper-center cf">
-                   
-                    <div class="list-text-aura">
-                        <input type="text" ng-model="$parent.newListItem" class="list-modal-text">
-                    </div>                  
-
-                  </div>
-                 <div class="list-text-add-btn">                   
-                     <button ng-click="addListItem(newListItem)">Add</button>                   
-                  </div>
-
-              </div>
-              <!--/Number-->              
-
-              <!--DateTime-->
-              <div ng-if="editableColumn.relatedTo=='DateTime'" class="document-list-add-wrapper flex-general-row-wrapper">
-
-                  <div class="list-datetime-add-btn">                   
-                     <button ng-click="addListItem(newListItem)">Add</button>                   
-                  </div>
-                  <div class="list-datetime-aura flex-general-row-wrapper-center cf">
-                     <input kendo-date-time-picker  k-ng-model="$parent.newListItem"  class="list-m-datetime" />  
-                  </div>                 
-
-              </div>
-              <!--/DateTime-->
-
-              <!--Boolean-->
-              <div ng-if="editableColumn.relatedTo=='Boolean' || editableColumn.relatedTo=='Object'" class="document-list-add-wrapper flex-general-column-wrapper-center">
-
-                  <div class="list-boolean-add-btn flex-general-column-wrapper-center">                   
-                    <button type="button" ng-click="addListItem()" class="add-relation-btn">Add</button>                   
-                  </div>                                 
-
-              </div>
-              <!--/Boolean-->
-
-              <!--File-->
-              <div ng-if="editableColumn.relatedTo=='File'" class="document-list-add-wrapper">
-
-                  <div class="list-boolean-add-btn">                   
-                     <button type="button" ng-click="addListFileModal()" class="add-relation-btn">Add File</button>                   
-                  </div>                                 
-
-              </div>
-              <!--/File-->
-
-              <!--Geopoint-->
-              <div ng-if="editableColumn.relatedTo=='GeoPoint'" class="document-list-add-wrapper">
-
-                  <div class="list-boolean-add-btn">                   
-                     <button type="button" ng-click="addListGeopointModal()" class="add-relation-btn">Add Geopoint</button>                   
-                  </div>                                 
-
-              </div>
-              <!--Geopoint-->
-
-              <!--Relation-->
-              <div ng-if="editableColumn.relatedTo!='Text' && editableColumn.relatedTo!='Email' && editableColumn.relatedTo!='URL' && editableColumn.relatedTo!='Number' && editableColumn.relatedTo!='DateTime' && editableColumn.relatedTo!='Object' && editableColumn.relatedTo!='Boolean' && editableColumn.relatedTo!='File' && editableColumn.relatedTo!='GeoPoint'" class="document-list-add-wrapper">
-                  
-                <button type="button"  ng-click="listSearchRelationDocs()" class="add-relation-btn">Add Relation</button>
-
-              </div>
-
-              <!--Error Message-->
-              <div>
-                <span style="color:red;margin-left:7px;">{{addListItemError}}</span>
-              </div>           
-
             </div> 
 
-            <!--Roll List of Text-->
+
+            <!--List of Text-->
             <div ng-if="editableColumn.relatedTo=='Text'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
 
                 <div ng-repeat="eachText in editableList | orderBy:predicate:reverse track by $index">
@@ -3594,6 +3481,7 @@
                 </div>
 
             </div>            
+            <!--List of Text-->
 
             <!--Roll List of Email-->
             <div ng-if="editableColumn.relatedTo=='Email'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
@@ -3742,55 +3630,124 @@
 
             </div>
 
-             <!--Roll List of File-->
-            <div ng-if="editableColumn.relatedTo=='File'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
+            <!--List of File-->
+            <div ng-if="editableColumn.relatedTo=='File'" class="document-file-list-wrapper list-mat" malihuscrollbar-for-popup>
 
-              <div class="flex-general-row-wrapper document-list-file-wrapper">        
-
-                <div ng-repeat="eachFile in editableList | orderBy:predicate:reverse track by $index">                    
-                  <!--Images-->
-                  <div ng-if="eachFile && eachFile.document.url && ((eachFile.document.name | extension)=='jpeg' || (eachFile.document.name | extension)=='jpg' || (eachFile.document.name | extension)=='png' || (eachFile.document.name | extension)=='tif' || (eachFile .document.name | extension)=='gif')" class="flex-general-row-wrapper list-file-display" style="margin-left:4px;">                      
-
-                      <div ng-if="!listFileSpinner[$index] && !listFileError[$index]" class="list-file-aura-list flex-general-row-wrapper-center">               
-                        <img ng-click="showListFile(editableRow,editableColumn,$index)" ng-src="{{eachFile.document.url}}" class="list-m-file-list list-file-display-item" />
-                      </div>
-
-                      <div ng-if="!listFileSpinner[$index] && !listFileError[$index]" class="list-images-remove-cross">
-                        <div ng-click="deleteListItem($index)">
-                          X
-                        </div>
-                      </div>
-                  </div>
-
-                  <!--Other Files-->
-                  <div  ng-if="eachFile && eachFile.document.url && ((eachFile.document.name | extension)!='jpeg' && (eachFile.document.name | extension)!='jpg' && (eachFile.document.name | extension)!='png' && (eachFile.document.name | extension)!='tif' && (eachFile .document.name | extension)!='gif')" class="flex-general-row-wrapper" style="margin-left:4px;">
-
-                      <div ng-if="!listFileSpinner[$index] && !listFileError[$index]" class="list-file-aura-list flex-general-row-wrapper-center">               
-                        <img ng-click="showListFile(editableRow,editableColumn,$index)" src="assets/images/file2.png" class="list-m-file2-list" />
-                      </div>
-
-                      <div ng-if="!listFileSpinner[$index] && !listFileError[$index]" class="m-remove-document list-datetime-remv-show">
-                        <div ng-click="deleteListItem($index)">
-                          <i class="fa fa-trash-o fa-lg"></i>
-                        </div>
-                      </div>
-                  </div>
-
-                  <!--Spinner && Error-->
-                  <div  ng-if="listFileSpinner[$index] || listFileError[$index]" class="flex-general-row-wrapper list-file-display" style="margin-left:4px;">
-                      <div  class="list-file-aura-list flex-general-row-wrapper-center"> 
-                        <!--Spinner-->             
-                        <i ng-if="listFileSpinner[$index]" class="fa fa-spinner fa-spin fa-lg"></i>
-                        <!--Error-->  
-                        <span style="color:red;overflow:hide;word-wrap: break-word;" ng-if="listFileError[$index]">{{listFileError[$index]}}</span>
-                      </div>                      
-                  </div>
-
-                </div>                  
-                    
+              <!--Empty List -->
+              <!--Drag and Drop Markup -->
+              <div  ng-show="!editableList || editableList.length==0" class="rel-uploader cf flex-general-row-wrapper-center" style="margin-top:49px;" dmuploader>
+                <div class="browser pull-left">
+                  <label class="flex-general-column-wrapper-center">
+                    <span style="position:absolute; margin-top:14px;margin-left:-8px;">                          
+                      <i class="icon ion-plus" style="color:#CECCCC; font-size:18px;"></i>
+                    </span>
+                    <input type="file" name="files[]" multiple="multiple" title='Click to add Files'>
+                  </label>
+                </div>                                               
+                <div class="pull-left">&nbsp;Drag &amp; Drop File Here</div>                          
               </div>
+              <!--/Drag and Drop Markup -->
+              <!--Empty List -->
 
+              <!--List>0-->
+              <div ng-show="editableList.length>0" class="flex-general-row-wrapper cf">
+
+                <!--Addition Button-->
+                <div class="new-rel-list-file-up pull-left" style="background-color:white;">
+                  <!-- D&D Markup -->
+                  <div  class="rel-list-uploader cf flex-general-row-wrapper-center" dmuploader>
+                    <div class="browser">
+                      <label class="flex-general-column-wrapper-center">
+                        <div style="position:absolute !important;margin-top:60px;">                          
+                          <i class="icon ion-plus list-file-up-icon" style="color:#DCDCDC;  margin-left:65px;font-size:28px;"></i>
+                        </div>
+                        <input type="file" name="files[]" multiple="multiple" title='Click to add Files'>
+                      </label>
+                    </div>                                              
+                  </div>
+                  <!-- /D&D Markup -->
+                </div>
+                <!--/Addition Button-->
+
+                <!--List-->
+                <div ng-repeat="file in editableList track by $index" class="flex-general-row-wrapper cf">
+
+                  <!--Spinner-->
+                  <div ng-show="listFileSpinner[$index]" class="new-rel-list-file pull-left flex-general-column-wrapper-center">
+                    <div style="width:100%;">
+                      <div class="loading-progress-1" fileloading style="margin-left:5px;margin-top:12px;width:90%;"></div>
+                    </div>  
+                  </div> 
+
+                  <!--Error-->
+                  <div ng-show="listFileError[$index]" class="new-rel-list-file pull-left flex-general-column-wrapper-center">
+                    <div style="width:100%;">
+                      <div>{{listFileError[$index]}}</div>
+                    </div>  
+                  </div>
+
+                  <!--File Content-->
+                  <div ng-show="!listFileSpinner[$index] && !listFileError[$index]" class="new-rel-list-file pull-left">
+                    <!--Img Files-->
+                    <div class="rel-list-file-view" ng-if="(file.document.name | extension)=='jpeg' || (file.document.name | extension)=='jpg' || (file.document.name | extension)=='png' || (file.document.name | extension)=='tif' || (file.document.name | extension)=='gif'">
+
+                      <img ng-src="{{file.document.url}}" style="width:150px;height:130px;">
+
+                      <!--Image controllers-->
+                      <div class="m-rel-static-file-toolz flex-general-row-wrapper cf">
+                          <!--Download-->
+                          <a href="{{file.document.url}}" target="_blank">
+                            <div class="pull-left flex-general-column-wrapper-center" style="height:26px; width:26px; border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;">
+                              <i class="icon ion-ios-download-outline" style="color:white;font-size:20px;"></i>
+                            </div>
+                          </a>  
+
+                          <!--Delete-->
+                          <div class="pull-left flex-general-column-wrapper-center" style="margin-left:3px; height:26px; width:26px;border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;" ng-click="deleteListItem($index)">
+                            <i class="icon ion-ios-trash-outline" style="color:white;font-size:20px;"></i>
+                          </div>
+                      </div>
+                      <!--/Image controllers-->  
+
+                    </div> 
+
+                    <!--Other Files-->
+                    <div class="rel-list-file-view" ng-if="(file.document.name | extension)!='jpeg' && (file.document.name | extension)!='jpg' && (file.document.name | extension)!='png' && (file.document.name | extension)!='tif' && (file.document.name | extension)!='gif'">
+
+                      <img src="assets/images/file2.png" style="width:125px;height:120px;margin-left:15px;margin-top:6px;">
+
+                      <!--Image controllers-->
+                      <div class="m-rel-static-file-toolz flex-general-row-wrapper cf">
+                          <!--Download-->
+                          <a href="{{file.document.url}}" target="_blank">
+                            <div class="pull-left flex-general-column-wrapper-center" style="height:26px; width:26px; border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;">
+                              <i class="icon ion-ios-download-outline" style="color:white;font-size:20px;"></i>
+                            </div>
+                          </a>  
+
+                          <!--Delete-->
+                          <div class="pull-left flex-general-column-wrapper-center" style="margin-left:3px; height:26px; width:26px;border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;" ng-click="deleteListItem($index)">
+                            <i class="icon ion-ios-trash-outline" style="color:white;font-size:20px;"></i>
+                          </div>
+                      </div>
+                      <!--/Image controllers-->  
+
+                    </div>
+
+                    <!--File Name-->
+                    <div class="rel-list-file-view-name flex-general-column-wrapper-center">
+                      <div style="color:black;">
+                        {{file.document.name}}
+                      </div>  
+                    </div> 
+                  </div>                           
+                </div>
+
+
+              </div>  
+              <!--List>0-->
             </div>
+            <!--List of File-->
 
 
             <!--Roll List of GeoPoint-->

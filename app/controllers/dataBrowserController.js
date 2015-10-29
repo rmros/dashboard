@@ -818,6 +818,11 @@ $scope.fileSelected=function(selectedFile,fileName,fileObj){
   $scope.selectedfileName=fileName;
   $scope.selectedFileObj=fileObj;
   $scope.selectedFileExtension=fileName.split(".")[fileName.split(".").length-1]; 
+
+  //If List..Add it to List
+  if($scope.editableColumn && $scope.editableColumn.relatedTo=="File"){     
+    $scope.addListFile();
+  }
 };
 
 $scope.setAndSaveFile=function(){ 
@@ -1567,6 +1572,7 @@ function convertFieldsISO2DateObj(){
   }      
 }
 
+/*
 $scope.addListItem=function(newListItem){
   $scope.addListItemError=null;
   if(newListItem || $scope.editableColumn.relatedTo=="Boolean" || $scope.editableColumn.relatedTo=="Object"){
@@ -1608,6 +1614,42 @@ $scope.addListItem=function(newListItem){
       }                 
   }
   
+};*/
+
+$scope.addListItem=function(){
+  $scope.addListItemError=null;
+  
+  if(!$scope.editableList || $scope.editableList.length==0){
+    $scope.editableList=[];
+  }
+  var newListItem=null;
+
+  /*********************ADD ITEM*************************************/
+  if($scope.editableColumn.relatedTo=="DateTime"){    
+    newListItem=new Date(); 
+  }
+  if( $scope.editableColumn.relatedTo=="Object"){    
+    newListItem={}; 
+  }
+  if($scope.editableColumn.relatedTo=="Number"){ 
+    newListItem=0;              
+  }
+  if($scope.editableColumn.relatedTo=="Email"){     
+    newListItem="hello@cloudboost.io";    
+  }
+  if($scope.editableColumn.relatedTo=="URL"){     
+    newListItem="http://cloudboost.io";    
+  }
+
+  if($scope.editableColumn.relatedTo!='Text' && $scope.editableColumn.relatedTo!='Email' && $scope.editableColumn.relatedTo!='URL' && $scope.editableColumn.relatedTo!='Number' && $scope.editableColumn.relatedTo!='DateTime' && $scope.editableColumn.relatedTo!='Object' && $scope.editableColumn.relatedTo!='Boolean' && $scope.editableColumn.relatedTo!='File' && $scope.editableColumn.relatedTo!='GeoPoint'){
+    $("#md-searchlistdocument").modal("hide");
+  }
+
+  if($scope.editableColumn.relatedTo=='Text' && $scope.editableColumn.relatedTo=='Email' && $scope.editableColumn.relatedTo=='URL' && $scope.editableColumn.relatedTo=='Number' && $scope.editableColumn.relatedTo=='DateTime' && $scope.editableColumn.relatedTo=='Object' && $scope.editableColumn.relatedTo=='Boolean'  && $scope.editableColumn.relatedTo=='GeoPoint'){
+    //Push Record
+    $scope.editableList.push(newListItem); 
+  }  
+
 };
 
 $scope.modifyListItem=function(data,index){
@@ -1730,29 +1772,30 @@ $scope.showListJsonObject=function(row,index){
 };
 
 //List File
-$scope.addListFileModal=function(){  
-  $("#md-list-fileviewer").modal("show");
-};
+//$scope.addListFileModal=function(){  
+  //$("#md-list-fileviewer").modal("show");
+//};
 
 $scope.addListFile=function(){   
-  $("#md-list-fileviewer").modal("hide"); 
+  //$("#md-list-fileviewer").modal("hide"); 
   if($scope.selectedFileObj) {     
     if(!$scope.editableList || $scope.editableList.length==0){
       $scope.editableList=[];
     }
     var dummyObj={};
-    $scope.editableList.push(dummyObj);
-    $scope.listFileSpinner[$scope.editableList.length-1]=true;
+    $scope.editableList.unshift(dummyObj);
+    var index=$scope.editableList.indexOf(dummyObj);
+    $scope.listFileSpinner[index]=true;
 
     getCBFile($scope.selectedFileObj)
     .then(function(cloudBoostFile){     
-      $scope.editableList[$scope.editableList.length-1]=cloudBoostFile;       
+      $scope.editableList[index]=cloudBoostFile;       
       //$scope.editableList.push(cloudBoostFile);      
       $scope.removeSelectdFile();
-      $scope.listFileSpinner[$scope.editableList.length-1]=false;
+      $scope.listFileSpinner[index]=false;
 
     }, function(err){
-      $scope.listFileError[$scope.editableList.length-1]="Something went wrong. try again";
+      $scope.listFileError[index]="Something went wrong. try again";
     });
 
   }
@@ -2288,10 +2331,12 @@ $scope.addColumn = function(valid) {
       $(".data-table-design").css("height","76vh");
       $("#scrollbar-wrapper").mCustomScrollbar("scrollTo",['top','right']); 
     }, 2000);*/
+
     $('#scrollbar-wrapper').scrollTo('#extra-col-th',400,{axis:'x',duration:5000}); 
 
     tableService.saveTable($rootScope.currentProject.currentTable)
-    .then(function(table){        
+    .then(function(table){  
+      $('#scrollbar-wrapper').scrollTo('#extra-col-th',400,{axis:'x',duration:5000});       
       $scope.newColumnObj=null;
       $scope.saveSpinner=false;                                                  
     },

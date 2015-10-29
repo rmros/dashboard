@@ -1169,7 +1169,24 @@
 .madd-relation-wrapper{
     width:100%;
     height: auto;    
-    padding: 3px;    
+    padding: 20px;    
+    background-color: #F5F7FA;
+}
+.nuevo-add-list-btn{
+    width: 100%;
+    border-radius: 2px;
+    height: 36px;      
+    font-size: 14px;
+    margin-top: 3.5px;
+    background-color: white;
+    border: 1px solid #D6D6D6;
+}
+.nuevo-add-list-btn:hover{
+    color:black;
+    background-color: #d4d5d6;
+}
+.nuevo-add-list-btn:focus{
+    outline: none;
 }
 
 .add-relation-btn-wrapper{
@@ -1390,12 +1407,19 @@
     color: white;     
 }
 
-
 .document-list-wrapper{
     margin-top: 20px;
+    margin-bottom: 20px;
     width: 100%;
-    max-height:100px; 
+    height:200px;     
     max-height:250px;     
+}
+.document-file-list-wrapper{
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 100%;
+    height:247px;     
+    max-height:250px;       
 }
 .document-list-add-wrapper{
     margin-top: 20px;
