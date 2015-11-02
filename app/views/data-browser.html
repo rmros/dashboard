@@ -1788,18 +1788,9 @@
                   <div class="geo-point-add-remv flex-general-row-wrapper-center">
                     <div class="flex-general-row-wrapper">
 
-                      <!--Latitude-->
-                      <div>
-
-                        <div class="geopoint-name">
-                          <h4>Latitude</h4>                          
-                        </div>  
-                        
-                        <input type="text" ng-model="editableGeopoint.latitude" class="geopoint-inputz"  ng-blur="geoPointValidation('latitude',editableGeopoint.latitude)" minlength="-90" maxlength="90" required>                        
-                      </div>
 
                       <!--Longitude-->
-                      <div style="margin-left:4px;">
+                      <div>
                         
                         <div class="geopoint-name">
                           <h4>Longitude</h4>
@@ -1808,6 +1799,17 @@
                         <input type="text" ng-model="editableGeopoint.longitude" class="geopoint-inputz" ng-blur="geoPointValidation('longitude',editableGeopoint.longitude)" minlength="-180" maxlength="180" required>
                        
                       </div>
+
+                      <!--Latitude-->
+                      <div style="margin-left:4px;">
+
+                        <div class="geopoint-name">
+                          <h4>Latitude</h4>                          
+                        </div>  
+                        
+                        <input type="text" ng-model="editableGeopoint.latitude" class="geopoint-inputz"  ng-blur="geoPointValidation('latitude',editableGeopoint.latitude)" minlength="-90" maxlength="90" required>                        
+                      </div>
+                     
 
                     </div> 
                   </div>
@@ -2002,7 +2004,7 @@
 
 <!-- Relation Modal -->
   <div class="modal fade colored-header danger" id="md-relationviewer" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog cb-md-custom-width">
       <div class="modal-content">             
         <div class="">        
 
@@ -2010,7 +2012,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="m-table-header db-color-bg" style="border-top-left-radius:4.8px; border-top-right-radius:4.8px;">
-                 <div class="pull-left">
+                  <div class="pull-left">
 
                     <!--More than one relations-->
                     <div ng-if="relatedTableDefArray && relatedTableDefArray.length>1" ng-click="goToPrevRel()" class="db-color-fg flex-general-column-wrapper-center" style="width:25px;height:25px;border-radius:25px; background-color:white;margin-top:7px;">   
@@ -2022,11 +2024,13 @@
                     </div>  
 
                  </div> 
+
                  <div class="pull-left">
                   <h4 style="margin-left:2px;">
                     {{relatedTableDefArray[relatedTableDefArray.length-1].name}}
                   </h4>
                  </div> 
+
                  <div class="pull-right flex-general-column-wrapper-center">
                     <button type="button" class="close" ng-click="closeRelModal()" aria-hidden="true" style="margin-top:3px;">&times;</button>
                  </div>
@@ -2539,52 +2543,83 @@
 
                   <!--List-->
                   <div ng-if="relCol.document.dataType=='List'" class="m-value">
-                      <div class="m-data-container cf" style="height:37px;" ng-if="relCol.document.relatedTo!='File'">
+                      <!--List DataTypes except File-->
+                      <div ng-if="relCol.document.relatedTo!='File'" class="m-data-container cf" style="height:auto;">
 
+                        <!--Add Button-->
+                        <div class="document-rel-list-add-wrapper flex-general-row-wrapper">                       
+                          <button type="button" ng-click="showRelationList(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)" class="nuevo-rel-add-list-btn" >Add New Record</button>           
+                        </div>
+                        <!--/Add Button-->
+                          
                         <!--Text,Encrypted Text,Email,Number,URL-->
-                        <div ng-if="relCol.document.relatedTo=='Text' || relCol.document.relatedTo=='EncryptedText' || relCol.document.relatedTo=='Email' || relCol.document.relatedTo=='Number' || relCol.document.relatedTo=='URL'" class="m-real-content pull-left">                           
-                          <div  class="m-list-condition flex-general-row-wrapper">
-                             
-                              <div ng-repeat="eachText in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
-                                  <div class="m-rel-common">
-                                    {{eachText}}
-                                  </div>
-                              </div>
+                        <div ng-if="relCol.document.relatedTo=='Text' || relCol.document.relatedTo=='EncryptedText' || relCol.document.relatedTo=='Email' || relCol.document.relatedTo=='Number' || relCol.document.relatedTo=='URL'" class="m-real-content" style="padding-top:15px;"> 
 
+                          <!--Texts-->
+                          <div ng-repeat="eachText in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index">
+                            <div class="document-list-txt-wrapper flex-general-row-wrapper-center cf" style="margin-top: 5px !important;">
+                              
+                              <div class="list-text-aura">
+                                <input type="text" ng-model="eachText" ng-blur="modifyListItem(eachText,$index)" class="list-modal-text">
+                              </div>                  
+
+                              <div class="m-remove-document list-text-remv-show" style="padding-right:2px;">
+                                <div ng-click="deleteListItem($index)">
+                                 <i class="fa fa-trash-o fa-lg"></i>
+                                </div>
+                              </div> 
+                                                 
+                            </div>
+
+                            <!--Modify Error-->
+                            <div>
+                              <span style="color:red;margin-left:5px;">{{modifyListItemError[$index]}}</span>
+                            </div>
                           </div>
+                          <!--/Texts-->
+
                         </div>  
 
                         <!--DateTime-->
-                        <div ng-if="relCol.document.relatedTo=='DateTime'" class="m-real-content pull-left">                           
-                          <div  class="m-list-condition flex-general-row-wrapper">
-                             
-                              <div ng-repeat="eachDateTime in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
-                                  <div class="m-rel-common">
-                                    {{eachDateTime | ISO2DateObject}}
-                                  </div>
-                              </div>
+                        <div ng-if="relCol.document.relatedTo=='DateTime'" class="m-real-content">                 
 
+                          <div  ng-repeat="eachDate in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="document-list-datetime-wrapper flex-general-row-wrapper cf">        
+
+                            <div class="list-datetime-aura-list">
+
+                              <input kendo-date-time-picker value="{{eachDate | ISO2DateObject}}" k-ng-model="eachDate"  class="list-m-datetime-list" ng-blur="modifyListItem(eachDate,$index)"/>   
+
+                            </div>
+
+                            <div class="m-remove-document list-datetime-remv-show" style="margin-left: 0 !important;">
+                              <div ng-click="deleteListItem($index)">
+                                <i class="fa fa-trash-o fa-lg"></i>
+                              </div>
+                            </div>
+                              
                           </div>
+
                         </div>  
 
-                         <!--Boolean-->
-                        <div ng-if="relCol.document.relatedTo=='Boolean'" class="m-real-content pull-left">                          
-                          <div  class="m-list-condition flex-general-row-wrapper">
-                             
-                              <div ng-repeat="eachBoolean in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
+                        <!--Boolean-->
+                        <div ng-if="relCol.document.relatedTo=='Boolean'" class="m-real-content">                          
+                          <div  ng-repeat="eachBoolean in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="document-list-bool-wrapper cf">               
+                              <div class="pull-left list-boolean-aura-list flex-general-row-wrapper-center">    
 
-                                  <div ng-if="eachBoolean" class="m-rel-true">
-                                    {{eachBoolean}}
-                                  </div>
-
-                                  <div ng-if="!eachBoolean" class="m-rel-false">
-                                    false
-                                  </div>
+                                <checkbox class="btn-default list-m-boolean-list"  ng-model="eachBoolean" ng-change="modifyListItem(eachBoolean,$index)"></checkbox>  
 
                               </div>
 
-                          </div>
-                        </div>  
+                              <div class="pull-right m-remove-document list-datetime-remv-show" style="padding-right:6.5px !important;padding-top:3px !important;">
+                                <div ng-click="deleteListItem($index)">
+                                  <i class="icon ion-close"></i>
+                                </div>
+                              </div>                  
+                                
+                            </div>
+
+                        </div> 
+                        <!--/Boolean--> 
 
                         <!--Object-->
                         <div ng-if="relCol.document.relatedTo=='Object'" class="m-real-content pull-left">    
@@ -2633,15 +2668,10 @@
 
                           </div>
 
-                        </div>
-
-                        <div class="m-popup-btn pull-right">
-                          <a class="m-round-btn" ng-click="showRelationList(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)">
-                            <i class="fa fa-expand db-color-fg"></i>&nbsp;
-                          </a>
-                        </div>
+                        </div>                       
 
                       </div>
+                      <!--/List DataTypes except File-->
 
                       <!--List of Files-->                         
                       <div ng-if="relCol.document.relatedTo=='File'" class="m-real-content-list-file pull-left" style="width:100%;">                          
@@ -3385,8 +3415,19 @@
                   <div class="geo-point-add-remv flex-general-row-wrapper-center">
                     <div class="flex-general-row-wrapper">
 
-                      <!--Latitude-->
+                      <!--Longitude-->
                       <div>
+                        
+                        <div class="geopoint-name">
+                          <h4>Longitude</h4>
+                        </div>
+
+                        <input type="text" ng-model="relEditableGeopoint.longitude" class="geopoint-inputz" ng-blur="geoPointValidation('longitude',relEditableGeopoint.longitude)" minlength="-180" maxlength="180" required>
+                       
+                      </div>
+
+                      <!--Latitude-->
+                      <div style="margin-left:4px;">
 
                         <div class="geopoint-name">
                           <h4>Latitude</h4>                          
@@ -3396,16 +3437,7 @@
                        
                       </div>
 
-                      <!--Longitude-->
-                      <div style="margin-left:4px;">
-                        
-                        <div class="geopoint-name">
-                          <h4>Longitude</h4>
-                        </div>
-
-                        <input type="text" ng-model="relEditableGeopoint.longitude" class="geopoint-inputz" ng-blur="geoPointValidation('longitude',relEditableGeopoint.longitude)" minlength="-180" maxlength="180" required>
-                       
-                      </div>
+                      
 
                     </div> 
                   </div>
@@ -3450,7 +3482,7 @@
             <div  class="add-list-btn-wrapper" ng-if="editableColumn.relatedTo!='File'"> 
               <div class="document-list-add-wrapper flex-general-row-wrapper">
                 <!--For List of Texts-->
-                <button ng-click="addListItem()" type="button"  class="nuevo-add-list-btn" >Add New Record</button>
+                <button ng-click="addListItem()" type="button"  class="nuevo-add-list-btn" >Add New Record</button>                
               </div>
             </div> 
 
@@ -3458,7 +3490,7 @@
             <!--List of Text-->
             <div ng-if="editableColumn.relatedTo=='Text'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
 
-                <div ng-repeat="eachText in editableList | orderBy:predicate:reverse track by $index">
+                <div ng-repeat="eachText in editableList track by $index">
                   <div class="document-list-txt-wrapper flex-general-row-wrapper-center cf">
                     
                     <div  class="list-text-aura">
@@ -3486,7 +3518,7 @@
             <!--Roll List of Email-->
             <div ng-if="editableColumn.relatedTo=='Email'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
 
-                <div ng-repeat="eachEmail in editableList | orderBy:predicate:reverse track by $index">
+                <div ng-repeat="eachEmail in editableList track by $index">
                   <div class="document-list-txt-wrapper flex-general-row-wrapper-center cf">
                     
                     <div  class="list-text-aura">
@@ -3510,7 +3542,7 @@
             <!--Roll List of URL-->
             <div ng-if="editableColumn.relatedTo=='URL'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
 
-                <div ng-repeat="eachURL in editableList | orderBy:predicate:reverse track by $index">
+                <div ng-repeat="eachURL in editableList track by $index">
                   <div class="document-list-txt-wrapper flex-general-row-wrapper-center cf">
                     
                     <div  class="list-text-aura">
@@ -3535,7 +3567,7 @@
             <!--Roll List of Number-->
             <div ng-if="editableColumn.relatedTo=='Number'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
 
-                <div ng-repeat="eachNumber in editableList | orderBy:predicate:reverse track by $index">
+                <div ng-repeat="eachNumber in editableList track by $index">
                   <div class="document-list-txt-wrapper flex-general-row-wrapper-center cf">
                     
                     <div  class="list-text-aura">
@@ -3557,10 +3589,10 @@
 
             </div>
 
-            <!--Roll List of DateTime-->
+            <!--List of DateTime-->
             <div ng-if="editableColumn.relatedTo=='DateTime'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
 
-                <div  ng-repeat="eachDate in editableList | orderBy:predicate:reverse track by $index" class="document-list-datetime-wrapper flex-general-row-wrapper cf">        
+                <div  ng-repeat="eachDate in editableList track by $index" class="document-list-datetime-wrapper flex-general-row-wrapper cf">        
 
                   <div class="list-datetime-aura-list">
 
@@ -3568,7 +3600,7 @@
 
                   </div>
 
-                  <div class="m-remove-document list-datetime-remv-show">
+                  <div class="m-remove-document list-datetime-remv-show" style="margin-left: 0 !important;">
                     <div ng-click="deleteListItem($index)">
                       <i class="fa fa-trash-o fa-lg"></i>
                     </div>
@@ -3577,50 +3609,53 @@
                 </div>
 
             </div>
+            <!--/List of DateTime-->
 
-            <!--Roll List of Boolean-->
+            <!--List of Boolean-->
             <div ng-if="editableColumn.relatedTo=='Boolean'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
 
-                <div  ng-repeat="eachBoolean in editableList | orderBy:predicate:reverse track by $index" class="document-list-datetime-wrapper flex-general-row-wrapper-center cf">        
+                <div  ng-repeat="eachBoolean in editableList track by $index" class="document-list-bool-wrapper cf">        
 
-                  <div class="flex-general-row-wrapper">
-                    <div class="list-boolean-aura-list flex-general-row-wrapper-center">            
+                 
+                  <div class="pull-left list-boolean-aura-list flex-general-row-wrapper-center">            
 
-                      <checkbox class="btn-default list-m-boolean-list"  ng-model="eachBoolean" ng-change="modifyListItem(eachBoolean,$index)"></checkbox>  
+                    <checkbox class="btn-default list-m-boolean-list"  ng-model="eachBoolean" ng-change="modifyListItem(eachBoolean,$index)"></checkbox>  
 
-                    </div>
-
-                    <div class="m-remove-document list-datetime-remv-show">
-                      <div ng-click="deleteListItem($index)">
-                        <i class="fa fa-trash-o fa-lg"></i>
-                      </div>
-                    </div>
                   </div>
+
+                  <div class="pull-right m-remove-document list-datetime-remv-show" style="padding-right:8px !important;padding-top:3px !important;">
+                    <div ng-click="deleteListItem($index)">
+                      <i class="icon ion-close"></i>
+                    </div>
+                  </div>                  
                     
                 </div>
 
             </div>
+            <!--/List of Boolean-->
 
-            <!--Role List of JSON-Object-->
+            <!--List of JSON-Object-->
             <div ng-if="editableColumn.relatedTo=='Object'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
 
-              <div  ng-repeat="eachJSON in editableList | orderBy:predicate:reverse track by $index">
-                <div  class="document-list-datetime-wrapper flex-general-column-wrapper-center cf">   
+              <div  ng-repeat="eachJSON in editableList track by $index">
+                <div  class="document-list-json-wrapper cf">   
 
-                  <div class="flex-general-row-wrapper">  
-                    <div class="list-boolean-aura-list flex-general-row-wrapper-center">                  
-                      <p ng-click="showListJsonObject(eachJSON,$index)" class="list-m-json-list">{{eachJSON || "null"}}</p>                   
+                  <div class="pull-left" style="width:96.8%"> 
+                    <div class="list-json-aura-list">                  
+                      <p ng-click="showListJsonObject(eachJSON,$index)" class="list-m-json-list">{{eachJSON || "null"}}</p>     
+                    </div>                    
+                  </div>
 
-                    </div>
-
-                    <div class="m-remove-document list-datetime-remv-show">
+                  <div class="pull-right">
+                    <div class="m-remove-document list-datetime-remv-show" style="margin-top:7.6px !important;">
                       <div ng-click="deleteListItem($index)">
                         <i class="fa fa-trash-o fa-lg"></i>
                       </div>
                     </div>
-                  </div>
+                  </div>  
                     
                 </div>
+
                 <!--Modify Error-->
                 <div>
                   <span style="color:red;margin-left:5px;">{{modifyListItemError[$index]}}</span>
@@ -3629,6 +3664,7 @@
               </div>
 
             </div>
+            <!--/List of JSON-Object-->
 
             <!--List of File-->
             <div ng-if="editableColumn.relatedTo=='File'" class="document-file-list-wrapper list-mat" malihuscrollbar-for-popup>
@@ -3750,12 +3786,12 @@
             <!--List of File-->
 
 
-            <!--Roll List of GeoPoint-->
+            <!--List of GeoPoint-->
             <div ng-if="editableColumn.relatedTo=='GeoPoint'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
 
-                <div ng-repeat="eachGeopoint in editableList | orderBy:predicate:reverse track by $index" class="relationid-list flex-general-row-wrapper-center cf">
+                <div ng-repeat="eachGeopoint in editableList track by $index" class="geopoint-list flex-general-row-wrapper-center cf">
 
-                  <div class="m-relationid id-show" >
+                  <div class="m-relationid id-show" ng-click="editListGeoPoint($index)">
                     <div ng-click="editListGeoPoint($index)">
                       { <span>{{eachGeopoint.latitude}}</span>,&nbsp;
                       <span>{{eachGeopoint.longitude}}</span> }
@@ -3771,24 +3807,49 @@
                 </div>
                 
             </div>
+            <!--/List of GeoPoint-->
 
-            <!--Roll List of Relation-->
-            <div ng-if="editableColumn.relatedTo!='Text' &&editableColumn.relatedTo!='Email' && editableColumn.relatedTo!='URL' && editableColumn.relatedTo!='Number' && editableColumn.relatedTo!='DateTime' && editableColumn.relatedTo!='Object' && editableColumn.relatedTo!='Boolean' && editableColumn.relatedTo!='File' && editableColumn.relatedTo!='GeoPoint'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
+            <!--List of Relation Objects-->
+            <div ng-if="editableColumn.relatedTo!='Text' &&editableColumn.relatedTo!='Email' && editableColumn.relatedTo!='URL' && editableColumn.relatedTo!='Number' && editableColumn.relatedTo!='DateTime' && editableColumn.relatedTo!='Object' && editableColumn.relatedTo!='Boolean' && editableColumn.relatedTo!='File' && editableColumn.relatedTo!='GeoPoint'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>               
 
-                <div ng-repeat="eachRelation in editableList | orderBy:predicate:reverse track by $index" class="relationid-list-display flex-general-row-wrapper-center cf">
-                  <div class="m-relationid id-show" ng-click="viewRelationData(editableRow,editableColumn,$index)">
-                    <a style="color:black;">
-                     {{eachRelation.document._id}}
-                    </a>  
-                  </div>
-                  &nbsp;
-                  <div class="m-remove-relation remv-show">
-                    <div ng-click="deleteListItem($index)">
-                     <i class="fa fa-times"></i>
-                    </div>
+                <!--show list-->
+                <div ng-repeat="eachRelRow in editableList | filter:searchRelListDoc" class="relationid-list-show">
+                  <div class="m-relationid" ng-click="viewRelationData(editableRow,editableColumn,$index)">
+                     <div class="neorel-wrapper cf">                     
+
+                      <!--Image-->
+                      <div class="pull-left" ng-repeat="fileCol in (filterImages=(tableDef.columns | getImageFromArray))">
+
+                        <div ng-show="eachRelRow.get(fileCol.name) && ((eachRelRow.get(fileCol.name).document.name | extension)=='jpeg' || (eachRelRow.get(fileCol.name).document.name | extension)=='jpg' || (eachRelRow.get(fileCol.name).document.name | extension)=='png' || (eachRelRow.get(fileCol.name).document.name | extension)=='tif' || (eachRelRow.get(fileCol.name).document.name | extension)=='gif')" style="margin-right:5px;">  
+                                                 
+                          <img  ng-src="eachRelRow.get(fileCol.name).document.url" class="neorel-img">
+                        </div>
+
+                      </div>
+
+                      <!--Content-->
+                      <div class="pull-left" style="padding-top:4px; padding-bottom:2px;padding-left:2px;">
+                        <div style="font-size:14px;">{{eachRelRow}}</div>     
+
+                        <div style="font-size:12px;" ng-repeat="textCol in (Texts=(tableDef.columns | getTextFromArray))" ng-show="eachRelRow.get(textCol.name)">{{eachRelRow.get(textCol.name)}}</div>
+                      
+                        <div style="margin-top:3.5px;color:#A09F9F;font-style: italic;">{{eachRelRow.get('createdAt') | date:'medium'}}</div>
+                      </div>
+
+                      <!--Delete Button-->
+                      <div class="pull-right" style="margin-top:-1px; padding-bottom:2px;padding-right:6px;">
+                        <i class="icon ion-close" style="font-size:12px;" ng-click="deleteListItem($index); $event.stopPropagation()"></i>                        
+                      </div>
+
+                     </div>
                   </div>  
-                </div>                
+                </div>
+                <!--show list-->  
+
+
             </div>
+            <!--/List of Relation Objects-->
+
           </div> 
         </div>
 
@@ -4099,8 +4160,19 @@
                   <div class="geo-point-add-remv flex-general-row-wrapper-center">
                     <div class="flex-general-row-wrapper">
 
-                      <!--Latitude-->
+
+                      <!--Longitude-->
                       <div>
+                        
+                        <div class="geopoint-name">
+                          <h4>Longitude</h4>
+                        </div>
+
+                        <input type="text" ng-model="listEditableGeopoint.longitude" class="geopoint-inputz" ng-blur="geoPointValidation('longitude',listEditableGeopoint.longitude)" minlength="-180" maxlength="180" required>
+                      </div>
+
+                      <!--Latitude-->
+                      <div  style="margin-left:4px;">
 
                         <div class="geopoint-name">
                           <h4>Latitude</h4>                          
@@ -4110,15 +4182,7 @@
                        
                       </div>
 
-                      <!--Longitude-->
-                      <div style="margin-left:4px;">
-                        
-                        <div class="geopoint-name">
-                          <h4>Longitude</h4>
-                        </div>
-
-                        <input type="text" ng-model="listEditableGeopoint.longitude" class="geopoint-inputz" ng-blur="geoPointValidation('longitude',listEditableGeopoint.longitude)" minlength="-180" maxlength="180" required>
-                      </div>
+                      
 
                     </div> 
                   </div>

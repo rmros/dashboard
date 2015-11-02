@@ -113,7 +113,7 @@ $scope.loadTableData = function(t,orderBy,orderByType,limit,skip) {
       for(var i=0;i<t.columns.length;++i){
         if(t.columns[i].dataType=="File"){
           query.include(t.columns[i].name);
-        }
+        }        
       } 
 
       query.find({success : function(list){ 
@@ -299,9 +299,36 @@ $scope.showCommonTypes=function(row,column){
     if((!$scope.editableList || $scope.editableList.length==0) && column.relatedTo!='Text' && column.relatedTo!='Email' && column.relatedTo!='URL' && column.relatedTo!='Number' && column.relatedTo!='DateTime' && column.relatedTo!='Object' && column.relatedTo!='Boolean' && column.relatedTo!='File' && column.relatedTo!='GeoPoint'){      
       $("#md-list-commontypes").modal();
       $scope.listSearchRelationDocs(); 
+    }else if(($scope.editableList && $scope.editableList.length>0) && column.relatedTo!='Text' && column.relatedTo!='Email' && column.relatedTo!='URL' && column.relatedTo!='Number' && column.relatedTo!='DateTime' && column.relatedTo!='Object' && column.relatedTo!='Boolean' && column.relatedTo!='File' && column.relatedTo!='GeoPoint'){
+      var cbIdArray=[];
+      for(var j=0;j<$scope.editableList.length;++j){
+        cbIdArray.push($scope.editableList[j].get("id"));
+      }
+
+      //Array CloudObjects
+      var query = new CB.CloudQuery(row.get("_tableName"));      
+      query.containedIn('id', cbIdArray);
+      query.find({
+        success: function(list){
+          if(list && list.length>0){
+            $scope.editableList=list;
+          }else{
+            $scope.editableList=null;
+          }          
+          $("#md-list-commontypes").modal();
+          $scope.$digest();
+        },
+        error: function(err) {
+          $scope.editableList=null;
+          $("#md-list-commontypes").modal();
+        }
+      });
+      //Array CloudObjects
+      
     }else{
       $("#md-list-commontypes").modal();
-    }        
+    }
+
   }else{
     $scope.editableField[index][column.name]=angular.copy(row.get(column.name));      
   }
@@ -980,8 +1007,8 @@ function getCBFile(fileObj){
 };*/
 
 $scope.setAndSaveGeopoint=function(valid){
-  if(!$scope.geoPointValidation('latitude',$scope.editableGeopoint.latitude)){
-    $scope.geoPointValidation('longitude',$scope.editableGeopoint.longitude);
+  if(!$scope.geoPointValidation('longitude',$scope.editableGeopoint.longitude)){
+    $scope.geoPointValidation('latitude',$scope.editableGeopoint.latitude);    
   }
 
   if(valid  && !$scope.geopointEditError){
@@ -990,7 +1017,7 @@ $scope.setAndSaveGeopoint=function(valid){
 
       //checking for old data!=new data
       if(($scope.editableRow.get($scope.editableColumnName).latitude!=$scope.editableGeopoint.latitude) || ($scope.editableRow.get($scope.editableColumnName).longitude!=$scope.editableGeopoint.longitude)){
-        var loc = new CB.CloudGeoPoint($scope.editableGeopoint.latitude,$scope.editableGeopoint.longitude);
+        var loc = new CB.CloudGeoPoint($scope.editableGeopoint.longitude,$scope.editableGeopoint.latitude);
         $scope.editableRow.set($scope.editableColumnName,loc);
         saveGeopoint(); 
 
@@ -1000,7 +1027,7 @@ $scope.setAndSaveGeopoint=function(valid){
       }
 
     }else{//else empty
-      var loc = new CB.CloudGeoPoint($scope.editableGeopoint.latitude,$scope.editableGeopoint.longitude);
+      var loc = new CB.CloudGeoPoint($scope.editableGeopoint.longitude,$scope.editableGeopoint.latitude);
       $scope.editableRow.set($scope.editableColumnName,loc);       
       saveGeopoint();
     }
@@ -1279,7 +1306,9 @@ $scope.setRelationData=function(cloudObject,column,data){
 
   //DateTime
   if(column.document.dataType=="DateTime"){
-    data=new Date(data);
+    if(data){
+      data=new Date(data);
+    }    
   }
   //ACL
   if(column.document.dataType=="ACL"){      
@@ -1479,9 +1508,9 @@ $scope.setRelFile=function(){
 
 
 $scope.relSetAndSaveGeopoint=function(valid){
-
-  if(!$scope.geoPointValidation('latitude',$scope.relEditableGeopoint.latitude)){
-    $scope.geoPointValidation('longitude',$scope.relEditableGeopoint.longitude);
+  
+  if(!$scope.geoPointValidation('longitude',$scope.relEditableGeopoint.longitude)){
+    $scope.geoPointValidation('latitude',$scope.relEditableGeopoint.latitude);
   }  
 
   if(valid  && !$scope.geopointEditError){
@@ -1490,7 +1519,7 @@ $scope.relSetAndSaveGeopoint=function(valid){
 
       //checking for old data!=new data
       if(($scope.relEditableRow.get($scope.relEditableColumnName).latitude!=$scope.relEditableGeopoint.latitude) || ($scope.relEditableRow.get($scope.relEditableColumnName).longitude!=$scope.relEditableGeopoint.longitude)){
-        var loc = new CB.CloudGeoPoint($scope.relEditableGeopoint.latitude,$scope.relEditableGeopoint.longitude);
+        var loc = new CB.CloudGeoPoint($scope.relEditableGeopoint.longitude,$scope.relEditableGeopoint.latitude);
         $scope.relEditableRow.set($scope.relEditableColumnName,loc);
         //relSaveGeopoint();
         $("#md-rel-geodocumentviewer").modal("hide");
@@ -1501,7 +1530,7 @@ $scope.relSetAndSaveGeopoint=function(valid){
       }
 
     }else{//else empty
-      var loc = new CB.CloudGeoPoint($scope.relEditableGeopoint.latitude,$scope.relEditableGeopoint.longitude);
+      var loc = new CB.CloudGeoPoint($scope.relEditableGeopoint.longitude,$scope.relEditableGeopoint.latitude);
       $scope.relEditableRow.set($scope.relEditableColumnName,loc);
       //relSaveGeopoint();
       $("#md-rel-geodocumentviewer").modal("hide");
@@ -1545,7 +1574,7 @@ $scope.showRelationList=function(cloudObject,column){
   $scope.editableColumn=column;//column
   $scope.editableColumnName=column.name;//column name
 
-  $scope.editableList=angular.copy(cloudObject.get(column.name)); 
+  $scope.editableList=cloudObject.get(column.name); 
 
   $scope.newListItem=null;
   $scope.addListItemError=null;
@@ -1556,10 +1585,12 @@ $scope.showRelationList=function(cloudObject,column){
   } 
   $scope.isRelationalList=true;
 
-  $("#md-list-commontypes").modal(); 
-  if(!$scope.editableList || $scope.editableList.length==0){
-    $scope.listSearchRelationDocs();
-  }   
+  //$("#md-list-commontypes").modal(); 
+  //if(!$scope.editableList || $scope.editableList.length==0){
+    //$scope.listSearchRelationDocs();
+  //}   
+
+  $scope.addListItem();
 
 };
 //End of relation
@@ -1567,7 +1598,7 @@ $scope.showRelationList=function(cloudObject,column){
 function convertFieldsISO2DateObj(){
   if($scope.editableList && $scope.editableList.length>0){
     for(var i=0;i<$scope.editableList.length;++i){
-        $scope.editableList[i]= new Date($scope.editableList[i]);
+      $scope.editableList[i]= new Date($scope.editableList[i]);
     }    
   }      
 }
@@ -1616,7 +1647,8 @@ $scope.addListItem=function(newListItem){
   
 };*/
 
-$scope.addListItem=function(){
+$scope.addListItem=function(item){
+  
   $scope.addListItemError=null;
   
   if(!$scope.editableList || $scope.editableList.length==0){
@@ -1641,18 +1673,41 @@ $scope.addListItem=function(){
     newListItem="http://cloudboost.io";    
   }
 
-  if($scope.editableColumn.relatedTo!='Text' && $scope.editableColumn.relatedTo!='Email' && $scope.editableColumn.relatedTo!='URL' && $scope.editableColumn.relatedTo!='Number' && $scope.editableColumn.relatedTo!='DateTime' && $scope.editableColumn.relatedTo!='Object' && $scope.editableColumn.relatedTo!='Boolean' && $scope.editableColumn.relatedTo!='File' && $scope.editableColumn.relatedTo!='GeoPoint'){
-    $("#md-searchlistdocument").modal("hide");
+  if($scope.editableColumn.relatedTo=="GeoPoint"){    
+    $scope.addListGeopointModal();         
   }
 
-  if($scope.editableColumn.relatedTo=='Text' && $scope.editableColumn.relatedTo=='Email' && $scope.editableColumn.relatedTo=='URL' && $scope.editableColumn.relatedTo=='Number' && $scope.editableColumn.relatedTo=='DateTime' && $scope.editableColumn.relatedTo=='Object' && $scope.editableColumn.relatedTo=='Boolean'  && $scope.editableColumn.relatedTo=='GeoPoint'){
-    //Push Record
+  if($scope.editableColumn.relatedTo!='Text' && $scope.editableColumn.relatedTo!='Email' && $scope.editableColumn.relatedTo!='URL' && $scope.editableColumn.relatedTo!='Number' && $scope.editableColumn.relatedTo!='DateTime' && $scope.editableColumn.relatedTo!='Object' && $scope.editableColumn.relatedTo!='Boolean' && $scope.editableColumn.relatedTo!='File' && $scope.editableColumn.relatedTo!='GeoPoint'){
+    if(item){
+      newListItem=item;
+      $("#md-searchlistdocument").modal("hide");
+    }else{
+      $scope.listSearchRelationDocs();
+    }    
+  }
+
+  if($scope.editableColumn.relatedTo!='Text' && $scope.editableColumn.relatedTo!='Email' && $scope.editableColumn.relatedTo!='URL' && $scope.editableColumn.relatedTo!='Number' && $scope.editableColumn.relatedTo!='DateTime' && $scope.editableColumn.relatedTo!='Object' && $scope.editableColumn.relatedTo!='Boolean' && $scope.editableColumn.relatedTo!='File' && $scope.editableColumn.relatedTo!='GeoPoint'){
+    if(newListItem){
+      //Push Record
+      $scope.editableList.push(newListItem); 
+
+      //If Relation
+      if($scope.relatedTableRecordArray && $scope.relatedTableRecordArray.length>0){
+        $scope.editableRow.set($scope.editableColumn.name,$scope.editableList);
+      }
+    }    
+  }else if($scope.editableColumn.relatedTo!="GeoPoint"){    
     $scope.editableList.push(newListItem); 
-  }  
+    //If Relation
+    if($scope.relatedTableRecordArray && $scope.relatedTableRecordArray.length>0){
+      $scope.editableRow.set($scope.editableColumn.name,$scope.editableList);
+    }   
+  } 
 
 };
 
-$scope.modifyListItem=function(data,index){
+$scope.modifyListItem=function(data,index){  
+
   $scope.modifyListItemError[index]=null;
   if(data || $scope.editableColumn.relatedTo=="Boolean" || $scope.editableColumn.relatedTo=="Object"){
       
@@ -1663,7 +1718,6 @@ $scope.modifyListItem=function(data,index){
         var tempData=data;
         data=parseInt(data);
         if(data.toString()==tempData){
-
         }else{
           data=null;
           $scope.modifyListItemError[index]="Invalid Number";
@@ -1690,7 +1744,12 @@ $scope.modifyListItem=function(data,index){
       }
 
       if((data || $scope.editableColumn.relatedTo=="Boolean") && (!$scope.modifyListItemError[index])){
-        $scope.editableList[index]=data;        
+        $scope.editableList[index]=data; 
+
+        //If Relation
+        if($scope.relatedTableRecordArray && $scope.relatedTableRecordArray.length>0){
+          $scope.editableRow.set($scope.editableColumn.name,$scope.editableList);
+        }      
       }                      
   }
   
@@ -1706,7 +1765,11 @@ $scope.deleteListItem=function(index){
     $scope.listEditableRow=null;//row
     $scope.listEditableColumn=null;//row
     $scope.listIndex=null;
-  }   
+  } 
+  //If Relation
+  if($scope.relatedTableRecordArray && $scope.relatedTableRecordArray.length>0){
+    $scope.editableRow.set($scope.editableColumn.name,$scope.editableList);
+  }  
 };
 
 $scope.deleteListItemFromTable=function(row,column,index){
@@ -1944,12 +2007,13 @@ $scope.addListGeopointModal=function(){
 };
 
 $scope.listAddGeopoint=function(valid){
-  if(!$scope.geoPointValidation('latitude',$scope.listEditableGeopoint.latitude)){
-    $scope.geoPointValidation('longitude',$scope.listEditableGeopoint.longitude);
+  
+  if(!$scope.geoPointValidation('longitude',$scope.listEditableGeopoint.longitude)){
+    $scope.geoPointValidation('latitude',$scope.listEditableGeopoint.latitude);
   }
 
   if(valid  && !$scope.geopointEditError){    
-    var loc = new CB.CloudGeoPoint($scope.listEditableGeopoint.latitude,$scope.listEditableGeopoint.longitude);
+    var loc = new CB.CloudGeoPoint($scope.listEditableGeopoint.longitude,$scope.listEditableGeopoint.latitude);
     if(!$scope.editableList || $scope.editableList.length==0){
       $scope.editableList=[];
     }
@@ -1973,7 +2037,7 @@ $scope.modifyListGeoPoint=function(valid){
 
     //checking for old data!=new data
     if(($scope.editableList[$scope.geopointListIndex].latitude!=$scope.listEditableGeopoint.latitude) || ($scope.editableList[$scope.geopointListIndex].longitude!=$scope.listEditableGeopoint.longitude)){
-      var loc = new CB.CloudGeoPoint($scope.listEditableGeopoint.latitude,$scope.listEditableGeopoint.longitude);   
+      var loc = new CB.CloudGeoPoint($scope.listEditableGeopoint.longitude,$scope.listEditableGeopoint.latitude);   
       $scope.editableList[$scope.geopointListIndex]=loc;      
       
       $scope.listEditableGeopoint.latitude=null;
@@ -2054,41 +2118,49 @@ $scope.setAndSave=function(){
 };
 
 function save(){
-    //Check if previous value is not equal to modified value
-    $scope.showInputForEdit[$scope.editableIndex][$scope.editableColumnName]=false;
-    if($scope.editableRow.get($scope.editableColumnName)!=$scope.editableField[$scope.editableIndex][$scope.editableColumnName]){
-        rowEditMode($scope.editableIndex);       
+  //Check if previous value is not equal to modified value
+  $scope.showInputForEdit[$scope.editableIndex][$scope.editableColumnName]=false;
+  if($scope.editableRow.get($scope.editableColumnName)!=$scope.editableField[$scope.editableIndex][$scope.editableColumnName]){
+      rowEditMode($scope.editableIndex);       
 
-        var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
-          if(everyCol.name!=$scope.editableColumnName && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
-            if(!$scope.editableRow.get(everyCol.name)){
-              return everyCol;
-            }          
-          }
+      var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
+        if(everyCol.name!=$scope.editableColumnName && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
+          if(!$scope.editableRow.get(everyCol.name)){
+            return everyCol;
+          }          
+        }
+      });
+
+      if($scope.editableColumn.dataType=="Number"){
+        var tempValue=angular.copy($scope.editableField[$scope.editableIndex][$scope.editableColumnName]);
+        $scope.editableField[$scope.editableIndex][$scope.editableColumnName]=parseInt($scope.editableField[$scope.editableIndex][$scope.editableColumnName]);
+        if(isNaN($scope.editableField[$scope.editableIndex][$scope.editableColumnName])){
+          $scope.editableField[$scope.editableIndex][$scope.editableColumnName]=tempValue;
+        }
+      }
+
+      //Check for null DateTime
+      if($scope.editableColumn.dataType=="DateTime"){
+        if($scope.editableField[$scope.editableIndex][$scope.editableColumnName].getTime()==new Date(null).getTime()){
+          $scope.editableField[$scope.editableIndex][$scope.editableColumnName]=null;
+        }
+      }
+
+      $scope.editableRow.set($scope.editableColumnName,$scope.editableField[$scope.editableIndex][$scope.editableColumnName]);
+      if(requiredField){      
+        rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);          
+      }else{
+        rowSpinnerMode($scope.editableIndex);          
+      
+        //Save Cloud Object
+        $scope.saveCloudObject($scope.editableRow)
+        .then(function(obj){               
+          showSaveIconInSecond($scope.editableIndex);
+        }, function(error){                         
+          rowErrorMode($scope.editableIndex,error);   
         });
-
-        if($scope.editableColumn.dataType=="Number"){
-          var tempValue=angular.copy($scope.editableField[$scope.editableIndex][$scope.editableColumnName]);
-          $scope.editableField[$scope.editableIndex][$scope.editableColumnName]=parseInt($scope.editableField[$scope.editableIndex][$scope.editableColumnName]);
-          if(isNaN($scope.editableField[$scope.editableIndex][$scope.editableColumnName])){
-            $scope.editableField[$scope.editableIndex][$scope.editableColumnName]=tempValue;
-          }
-        }
-        $scope.editableRow.set($scope.editableColumnName,$scope.editableField[$scope.editableIndex][$scope.editableColumnName]);
-        if(requiredField){      
-          rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);          
-        }else{
-          rowSpinnerMode($scope.editableIndex);          
-        
-          //Save Cloud Object
-          $scope.saveCloudObject($scope.editableRow)
-          .then(function(obj){               
-            showSaveIconInSecond($scope.editableIndex);
-          }, function(error){                         
-            rowErrorMode($scope.editableIndex,error);   
-          });
-        }
-    }
+      }
+  }
 }
 //End of Save 
 

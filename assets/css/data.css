@@ -861,7 +861,7 @@
 
 #relationTable{   
     width:100%; 
-    height:300px;   
+    height:390px;   
 }
 
 .modal-rel-form{
@@ -906,9 +906,13 @@
    padding: 2px;
    width: 95%;
 
-}  
+} 
+ 
 .m-data-container{
-    padding: 4px;
+    padding-top: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 4px;
     background-color: white;
     border: 1px solid #DEDFE0;
     border-radius: 2px;
@@ -1169,7 +1173,10 @@
 .madd-relation-wrapper{
     width:100%;
     height: auto;    
-    padding: 20px;    
+    padding-top: 20px; 
+    padding-bottom: 20px;  
+    padding-left: 20px; 
+    padding-right: 2px;     
     background-color: #F5F7FA;
 }
 .nuevo-add-list-btn{
@@ -1185,7 +1192,24 @@
     color:black;
     background-color: #d4d5d6;
 }
+
+.nuevo-rel-add-list-btn{
+    width: 100%;
+    border-radius: 2px;
+    height: 36px;      
+    font-size: 14px;
+    margin-top: 3.5px;
+    background-color: #eff1f2;
+    border: 1px solid #D6D6D6;
+}
+.nuevo-rel-add-list-btn:hover{
+    color:black;
+    background-color: #d4d5d6;
+}
 .nuevo-add-list-btn:focus{
+    outline: none;
+}
+.nuevo-rel-add-list-btn:focus{
     outline: none;
 }
 
@@ -1212,9 +1236,22 @@
     width: 100%;
     height:90px;
 }
-
+.geopoint-list{
+    width:99.99%;
+    height:34px;
+    background-color: #E0EDFF;
+}
 .relationid-list{
     width: 570px;
+    height:74px;
+    background-color: white;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 10px;
+    border: 1px solid #F0F0F0;
+}
+.relationid-list-show{
+    width: 565px;
     height:74px;
     background-color: white;
     border-radius: 3px;
@@ -1412,17 +1449,26 @@
     margin-bottom: 20px;
     width: 100%;
     height:200px;     
-    max-height:250px;     
+    max-height:250px;
+    padding-right: 18px;     
 }
+
 .document-file-list-wrapper{
     margin-top: 15px;
     margin-bottom: 15px;
     width: 100%;
     height:247px;     
-    max-height:250px;       
+    max-height:250px; 
+    padding-right: 18px;      
 }
 .document-list-add-wrapper{
     margin-top: 20px;
+    width: 100%;
+    height:auto;   
+}
+
+.document-rel-list-add-wrapper{
+    margin-top: 4px;
     width: 100%;
     height:auto;   
 }
@@ -1447,7 +1493,7 @@
 }
 
 .document-list-txt-wrapper{
-    width: 532px;
+    width: 100%;    
     height:30px;
     margin-top: 10px;
     border: 1px solid #E8E8E8;
@@ -1455,7 +1501,11 @@
 }
 
 .list-text-aura{
-    width:96%;
+    width:96.4%;
+}
+
+.rel-list-text-aura{
+    width:95.4%;
 }
 
 .list-modal-text{
@@ -1472,6 +1522,7 @@
     margin-left: 3px;
 }
 .add-list-btn-wrapper{
+    padding-right:18px;
     width:100%;
     height: 40px;
     margin-top:-30px;
@@ -1496,10 +1547,25 @@
  }
 
 .document-list-datetime-wrapper{
-    width: 532px;
+    width: 99.99%;
     height:30px;
     margin-top: 7px;    
+    padding: 0; 
+}
+
+.document-list-bool-wrapper{
+    width:99.99%;
+    height:34px;
+    margin-top: 7px;    
     padding: 0;
+    background-color: #E0EDFF;
+}
+
+.document-list-json-wrapper{
+    width:100%;
+    height:34px;
+    margin-top: 7px;    
+    padding: 0;    
 }
 .document-list-file-wrapper{
     width: 532px;
@@ -1508,11 +1574,15 @@
     padding: 0;         
 }
 .list-datetime-aura-list{
-    width:95%;
+    width:97%;
     height:32px;         
 }
-.list-boolean-aura-list{    
-    height:32px;
+.list-json-aura-list{    
+    height:34px;    
+    width:99.99%;
+    background-color: #E0EDFF;
+    padding-top: 1px;
+    padding-left: 2px;
 }
 .list-file-aura-list{
     width:100px;
@@ -1550,10 +1620,13 @@
     margin-top: 4.6px;
     margin-left: 5px;
 }
+.list-boolean-aura-list{
+    width:96%;    
+    padding-top: 6px;
+}
 .list-m-json-list{
-    height:23px;
-    width:98%;
-    background-color: #E8EAEB;
+    height:28px;
+    width:99..99%;    
     padding-bottom:2px;
     padding-left:2px;
     padding-right:2px;
@@ -2222,4 +2295,9 @@
     position: absolute;
     bottom: 3px;
     right: 12px;
+}
+
+.cb-md-custom-width {
+  width: 46%;
+  max-width: none;
 }
