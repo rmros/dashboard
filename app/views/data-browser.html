@@ -2548,7 +2548,7 @@
 
                         <!--Add Button-->
                         <div class="document-rel-list-add-wrapper flex-general-row-wrapper">                       
-                          <button type="button" ng-click="showRelationList(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol)" class="nuevo-rel-add-list-btn" >Add New Record</button>           
+                          <button type="button" ng-click="showRelationList(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,'add',null,null)" class="nuevo-rel-add-list-btn" >Add New Record</button>           
                         </div>
                         <!--/Add Button-->
                           
@@ -2560,11 +2560,11 @@
                             <div class="document-list-txt-wrapper flex-general-row-wrapper-center cf" style="margin-top: 5px !important;">
                               
                               <div class="list-text-aura">
-                                <input type="text" ng-model="eachText" ng-blur="modifyListItem(eachText,$index)" class="list-modal-text">
+                                <input type="text" ng-model="eachText" ng-blur="showRelationList(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,'modify',eachText,$index)" class="list-modal-text">
                               </div>                  
 
                               <div class="m-remove-document list-text-remv-show" style="padding-right:2px;">
-                                <div ng-click="deleteListItem($index)">
+                                <div ng-click="showRelationList(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,'delete',null,$index)">
                                  <i class="fa fa-trash-o fa-lg"></i>
                                 </div>
                               </div> 
@@ -2587,31 +2587,32 @@
 
                             <div class="list-datetime-aura-list">
 
-                              <input kendo-date-time-picker value="{{eachDate | ISO2DateObject}}" k-ng-model="eachDate"  class="list-m-datetime-list" ng-blur="modifyListItem(eachDate,$index)"/>   
+                              <input kendo-date-time-picker value="{{eachDate | ISO2DateObject}}" k-ng-model="eachDate"  class="list-m-datetime-list" ng-blur="showRelationList(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,'modify',eachDate,$index)" />   
 
                             </div>
 
                             <div class="m-remove-document list-datetime-remv-show" style="margin-left: 0 !important;">
-                              <div ng-click="deleteListItem($index)">
+                              <div ng-click="showRelationList(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,'delete',null,$index)">
                                 <i class="fa fa-trash-o fa-lg"></i>
                               </div>
                             </div>
                               
                           </div>
 
-                        </div>  
+                        </div> 
+                        <!--/DateTime--> 
 
                         <!--Boolean-->
                         <div ng-if="relCol.document.relatedTo=='Boolean'" class="m-real-content">                          
                           <div  ng-repeat="eachBoolean in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="document-list-bool-wrapper cf">               
                               <div class="pull-left list-boolean-aura-list flex-general-row-wrapper-center">    
 
-                                <checkbox class="btn-default list-m-boolean-list"  ng-model="eachBoolean" ng-change="modifyListItem(eachBoolean,$index)"></checkbox>  
+                                <checkbox class="btn-default list-m-boolean-list"  ng-model="eachBoolean" ng-change="showRelationList(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,'modify',eachBoolean,$index)"></checkbox>  
 
                               </div>
 
                               <div class="pull-right m-remove-document list-datetime-remv-show" style="padding-right:6.5px !important;padding-top:3px !important;">
-                                <div ng-click="deleteListItem($index)">
+                                <div ng-click="showRelationList(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,'delete',null,$index)">
                                   <i class="icon ion-close"></i>
                                 </div>
                               </div>                  
@@ -2622,53 +2623,102 @@
                         <!--/Boolean--> 
 
                         <!--Object-->
-                        <div ng-if="relCol.document.relatedTo=='Object'" class="m-real-content pull-left">    
-                          <div  class="m-list-condition flex-general-row-wrapper">
-                             
-                              <div ng-repeat="eachObj in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
+                        <div ng-if="relCol.document.relatedTo=='Object'" class="m-real-content">
 
+                          <div ng-repeat="eachJSON in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index">
+                            <div  class="document-list-json-wrapper cf">   
 
-                                  <div class="m-rel-common">
-                                    {{eachObj}}
-                                  </div>                                 
-
+                              <div class="pull-left" style="width:96.4%"> 
+                                <div class="list-json-aura-list">                  
+                                  <p ng-click="showRelationList(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,'modify',eachJSON,$index)" class="list-m-json-list">{{eachJSON || "null"}}</p>     
+                                </div>                    
                               </div>
 
+                              <div class="pull-right">
+                                <div class="m-remove-document list-datetime-remv-show" style="margin-top:7.6px !important;">
+                                  <div ng-click="showRelationList(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,'delete',null,$index)">
+                                    <i class="fa fa-trash-o fa-lg"></i>
+                                  </div>
+                                </div>
+                              </div>  
+                                
+                            </div>
+
+                            <!--Modify Error-->
+                            <div>
+                              <span style="color:red;margin-left:5px;">{{modifyListItemError[$index]}}</span>
+                            </div>
+
                           </div>
-                        </div>                     
+
+                        </div>  
+                        <!--/Object-->                   
 
                         <!--GeoPoint-->
-                        <div ng-if="relCol.document.relatedTo=='GeoPoint'" class="m-real-geopoint pull-left">                           
-                          <div  class="m-list-condition flex-general-row-wrapper">
-                             
-                              <div class="m-list-loop flex-general-row-wrapper">
+                        <div ng-if="relCol.document.relatedTo=='GeoPoint'" class="m-real-geopoint" style="margin-top: 14px;">                         
 
-                                  <div class="m-rel-geopoint" ng-repeat="eachGeopoint in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" ng-show="eachGeopoint" >
-                                    <div>
-                                      { <span>{{eachGeopoint.latitude}}</span>,&nbsp;
-                                      <span>{{eachGeopoint.longitude}}</span> }
-                                    </div>
-                                  </div>
+                          <div  ng-repeat="eachGeopoint in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="geopoint-list flex-general-row-wrapper-center cf">
+
+                            <div class="m-relationid id-show" ng-click="showRelationList(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,'modify',eachGeopoint,$index)">
+                              <div>
+                                { <span>{{eachGeopoint.latitude}}</span>,&nbsp;
+                                <span>{{eachGeopoint.longitude}}</span> }
+                              </div>  
+                            </div>
+
+                            <div class="m-remove-relation remv-show">
+                              <div ng-click="showRelationList(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,'delete',null,$index)">
+                               <i class="icon ion-close"></i>
                               </div>
+                            </div>
 
                           </div>
+
                         </div>
+                        <!--/GeoPoint-->
 
                         <!--Relation--> 
-                        <div ng-if="relCol.document.relatedTo!='Text' && relCol.document.relatedTo!='EncryptedText' && relCol.document.relatedTo!='Email' && relCol.document.relatedTo!='Number' && relCol.document.relatedTo!='URL' && relCol.document.relatedTo!='DateTime' && relCol.document.relatedTo!='Boolean' && relCol.document.relatedTo!='File' && relCol.document.relatedTo!='Object' && relCol.document.relatedTo!='GeoPoint'" class="m-real-content pull-left">  
-                          <div  class="m-list-condition flex-general-row-wrapper">
-                             
-                              <div ng-repeat="eachRel in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name] track by $index" class="m-list-loop flex-general-row-wrapper">
-                                  
-                                  <div class="m-rel-relation" ng-click="listViewRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,$index)">
-                                    {{eachRel.document._id}}
-                                  </div> 
-                                 
+                        <div ng-if="relCol.document.relatedTo!='Text' && relCol.document.relatedTo!='EncryptedText' && relCol.document.relatedTo!='Email' && relCol.document.relatedTo!='Number' && relCol.document.relatedTo!='URL' && relCol.document.relatedTo!='DateTime' && relCol.document.relatedTo!='Boolean' && relCol.document.relatedTo!='File' && relCol.document.relatedTo!='Object' && relCol.document.relatedTo!='GeoPoint'" class="m-real-content">  
+                          <div  class="m-list-condition">                            
+
+                              <!--show list-->
+                              <div ng-repeat="eachRelRow in relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]" class="relationid-rel-list-show">
+                                <div class="m-relationid" ng-click="listViewRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,$index)">
+                                   <div class="neorel-wrapper cf">                     
+
+                                    <!--Image-->
+                                    <div class="pull-left" ng-repeat="fileCol in (filterImages=(relatedTableDefArray[relatedTableDefArray.length-1].columns | getImageFromArray))">
+
+                                      <div ng-show="eachRelRow.get(fileCol.name) && ((eachRelRow.get(fileCol.name).document.name | extension)=='jpeg' || (eachRelRow.get(fileCol.name).document.name | extension)=='jpg' || (eachRelRow.get(fileCol.name).document.name | extension)=='png' || (eachRelRow.get(fileCol.name).document.name | extension)=='tif' || (eachRelRow.get(fileCol.name).document.name | extension)=='gif')" style="margin-right:5px;">  
+                                                               
+                                        <img  ng-src="eachRelRow.get(fileCol.name).document.url" class="neorel-img">
+                                      </div>
+
+                                    </div>
+
+                                    <!--Content-->
+                                    <div class="pull-left" style="padding-top:4px; padding-bottom:2px;padding-left:2px;">
+                                      <div style="font-size:14px;">{{eachRelRow.get("id")}}</div>     
+
+                                      <div style="font-size:12px;" ng-repeat="textCol in (Texts=(relatedTableDefArray[relatedTableDefArray.length-1].columns | getTextFromArray))" ng-show="eachRelRow.get(textCol.name)">{{eachRelRow.get(textCol.name)}}</div>
+                                    
+                                      <div style="margin-top:3.5px;color:#A09F9F;font-style: italic;">{{eachRelRow.get('createdAt') | date:'medium'}}</div>
+                                    </div>
+
+                                    <!--Delete Button-->
+                                    <div class="pull-right" style="margin-top:-1px; padding-bottom:2px;padding-right:6px;">
+                                      <i class="icon ion-close" style="font-size:12px;" ng-click="showRelationList(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,'delete',null,$index); $event.stopPropagation()"></i>                        
+                                    </div>
+
+                                   </div>
+                                </div>  
                               </div>
+                              <!--show list-->
 
                           </div>
 
-                        </div>                       
+                        </div> 
+                        <!--/Relation-->                       
 
                       </div>
                       <!--/List DataTypes except File-->
@@ -2819,7 +2869,7 @@
         </div>       
       </div><!-- /.modal-content -->
       <div class="modal-footer">        
-            <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default cb-modal-default-btn" ng-click="closeRelModal()">Close</button>
 
             <!--On Relation View Error-->
             <button type="button" style="color:gray;cursor:pointer !important;" class="btn cb-modal-default-btn" ng-if="(viewRelDataError[viewRelDataError.length-1]) || (relatedTableRecordArray.length==0) || !relatedTableRecordArray[relatedTableRecordArray.length-1] || relationErrorMode">Save</button>
@@ -3829,7 +3879,7 @@
 
                       <!--Content-->
                       <div class="pull-left" style="padding-top:4px; padding-bottom:2px;padding-left:2px;">
-                        <div style="font-size:14px;">{{eachRelRow}}</div>     
+                        <div style="font-size:14px;">{{eachRelRow.get("id")}}</div>     
 
                         <div style="font-size:12px;" ng-repeat="textCol in (Texts=(tableDef.columns | getTextFromArray))" ng-show="eachRelRow.get(textCol.name)">{{eachRelRow.get(textCol.name)}}</div>
                       

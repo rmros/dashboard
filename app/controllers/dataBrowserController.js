@@ -132,6 +132,8 @@ $scope.queryTableById = function(table,objectId) {
     for(var i=0;i<table.columns.length;++i){
       if(table.columns[i].dataType=="File"){
         query.include(table.columns[i].name);
+      }else if(table.columns[i].dataType=="List" && table.columns[i].document.relatedTo!='Text' && table.columns[i].document.relatedTo!='EncryptedText' && table.columns[i].document.relatedTo!='Email' && table.columns[i].document.relatedTo!='Number' && table.columns[i].document.relatedTo!='URL' && table.columns[i].document.relatedTo!='DateTime' && table.columns[i].document.relatedTo!='Boolean' && table.columns[i].document.relatedTo!='File' && table.columns[i].document.relatedTo!='Object' && table.columns[i].document.relatedTo!='GeoPoint'){
+        query.include(table.columns[i].name);
       }
     }
 
@@ -306,17 +308,18 @@ $scope.showCommonTypes=function(row,column){
       }
 
       //Array CloudObjects
-      var query = new CB.CloudQuery(row.get("_tableName"));      
+      var query = new CB.CloudQuery(column.document.relatedTo);      
       query.containedIn('id', cbIdArray);
       query.find({
         success: function(list){
           if(list && list.length>0){
             $scope.editableList=list;
+            $scope.$digest();
           }else{
             $scope.editableList=null;
+            $scope.$digest();
           }          
-          $("#md-list-commontypes").modal();
-          $scope.$digest();
+          $("#md-list-commontypes").modal();          
         },
         error: function(err) {
           $scope.editableList=null;
@@ -1240,7 +1243,11 @@ function convertISO2DateObj(table,cloudObject){
   for(var i=0;i<table.columns.length;++i){
     if(table.columns[i].document.dataType=="DateTime"){
       var isoDate=cloudObject.get(table.columns[i].name);
-      cloudObject.set(table.columns[i].name,new Date(isoDate));
+      if(isoDate && table.columns[i].name=="expires"){
+        cloudObject.set(table.columns[i].name,new Date(isoDate));
+      }else if(table.columns[i].name!="expires"){
+        cloudObject.set(table.columns[i].name,new Date(isoDate));
+      }      
     }
   }
 }
@@ -1568,7 +1575,7 @@ function checkRelationErrors(){
 }
 
 //Relation List
-$scope.showRelationList=function(cloudObject,column){
+$scope.showRelationList=function(cloudObject,column,functionality,data,index){
   nullifyEditable();
   $scope.editableRow=cloudObject;//row
   $scope.editableColumn=column;//column
@@ -1589,8 +1596,22 @@ $scope.showRelationList=function(cloudObject,column){
   //if(!$scope.editableList || $scope.editableList.length==0){
     //$scope.listSearchRelationDocs();
   //}   
+  if(functionality=="add"){
+    $scope.addListItem();
+  }else if(functionality=="modify"){
 
-  $scope.addListItem();
+    if(column.document.relatedTo=='Object'){
+      $scope.showListJsonObject(data,index);
+    }else if(column.document.relatedTo=='GeoPoint'){
+      $scope.editListGeoPoint(index);
+    }else{
+      $scope.modifyListItem(data,index);
+    }    
+
+  }else if(functionality=="delete"){
+    $scope.deleteListItem(index);
+  }
+  
 
 };
 //End of relation
@@ -1748,7 +1769,7 @@ $scope.modifyListItem=function(data,index){
 
         //If Relation
         if($scope.relatedTableRecordArray && $scope.relatedTableRecordArray.length>0){
-          $scope.editableRow.set($scope.editableColumn.name,$scope.editableList);
+          $scope.editableRow.set($scope.editableColumn.name,$scope.editableList);          
         }      
       }                      
   }
@@ -1828,7 +1849,7 @@ $scope.showListJsonObject=function(row,index){
   $scope.listEditableRow=row;//row
   $scope.listIndex=index;      
   if(!row){
-     $scope.listEditableRow=null;
+    $scope.listEditableRow=null;
   }  
   $scope.listEditableRow=JSON.stringify($scope.listEditableRow,null,2);
   $("#md-list-objectviewer").modal("show");
@@ -1926,8 +1947,7 @@ $scope.deleteRelationListItem=function(index,column){
     $scope.listEditableColumn=null;//row
     $scope.listIndex=null;
   }  
-  $scope.editableRow.set($scope.editableColumn.name,$scope.editableList);
-   
+  $scope.editableRow.set($scope.editableColumn.name,$scope.editableList);   
 };
 
 //List ShowFile
