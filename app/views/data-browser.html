@@ -120,9 +120,9 @@
             <div class="pull-left">
               <div style="margin-left:10px;" ng-class='{hiddencolindicator : hiddenColumnCount>0}'>
                 <i class="fa fa-columns"></i>&nbsp;
-                <span ng-if="hiddenColumnCount>0">{{hiddenColumnCount}}</span> &nbsp;               
-                <span ng-if="hiddenColumnCount==0">Hide Columns</span> 
-                <span ng-if="hiddenColumnCount>0">Hidden Columns</span>
+                <span ng-show="hiddenColumnCount>0">{{hiddenColumnCount}}</span> &nbsp;               
+                <span ng-show="hiddenColumnCount==0">Hide Columns</span> 
+                <span ng-show="hiddenColumnCount>0">Hidden Columns</span>
               </div>           
             </div>
             <div class="pull-right"> 
@@ -152,8 +152,8 @@
                   <div ng-if="vcol.dataType!='Id'" class="flex-general-row-wrapper">
                     <div class="hidden-col-chbx-div">
                       
-                      <checkbox  class="hidden-col-chbx chckbx-fix"  ng-model="!hideColumn[$index]" ng-click="toggleHideColumn($index)"></checkbox>
-
+                      <checkbox  class="hidden-col-chbx chckbx-fix"  ng-model="hideColumn[$index]" ng-click="toggleHideColumn($index)"></checkbox>
+                      
                     </div>
                     <div class="hidden-col-name-div">
                       <span>{{vcol.name}}</span>
@@ -227,7 +227,7 @@
                 </div>                  
               </th>
              
-              <th ng-repeat="column in currentProject.currentTable.columns"  ng-if="!hideColumn[$index]" class="cust-th"> 
+              <th ng-repeat="column in currentProject.currentTable.columns"  ng-if="hideColumn[$index]" class="cust-th"> 
 
                 <div class="cust-cell flex-general-row-wrapper" ng-class="{true: 'cust-cell-width'}[!currentTableData || currentTableData.length==0]">
                   <div class="cust-cell-name flex-general-row-wrapper">                    
@@ -534,7 +534,7 @@
               </td>  
               <!--/default checkbox-->
 
-              <td ng-repeat="column in currentProject.currentTable.columns" ng-if="!hideColumn[$index]"  class="dataTd">   
+              <td ng-repeat="column in currentProject.currentTable.columns" ng-if="hideColumn[$index]"  class="dataTd">   
                 
                 <!--Id-->             
                 <div ng-if="column.document.dataType==='Id'" class="tdDiv cf" style="min-width: 175px; cursor:default;">         
@@ -1094,7 +1094,7 @@
                   </div> 
                             
               </td>
-               <td  class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="!hideColumn[$index]">
+               <td  class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="hideColumn[$index]">
                 <div class="tdDiv cf" ng-click="addRow()" style="cursor:cell;"> 
                 </div>  
               </td>
@@ -1113,7 +1113,7 @@
                   </div> 
               </td>
 
-              <td class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="!hideColumn[$index]">
+              <td class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="hideColumn[$index]">
                 <div class="tdDiv cf"> 
                 </div>  
               </td>
@@ -1131,7 +1131,7 @@
                   </div> 
               </td>
 
-              <td class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="!hideColumn[$index]">
+              <td class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="hideColumn[$index]">
                 <div class="tdDiv cf"> 
                 </div>  
               </td> 
@@ -1148,7 +1148,7 @@
                   </div> 
               </td>
 
-              <td class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="!hideColumn[$index]">
+              <td class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="hideColumn[$index]">
                 <div class="tdDiv cf"> 
                 </div>  
               </td>
@@ -1165,7 +1165,7 @@
                   </div> 
               </td>
 
-              <td class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="!hideColumn[$index]">
+              <td class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="hideColumn[$index]">
                 <div class="tdDiv cf"> 
                 </div>  
               </td>

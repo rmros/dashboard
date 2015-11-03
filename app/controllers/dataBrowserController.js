@@ -791,7 +791,7 @@ $scope.setAndSaveJsonObject=function(){
           showSaveIconInSecond($scope.editableIndex);
         }, function(error){          
           $scope.editableJsonObj=null;          
-          rowErrordMode($scope.editableIndex,error);     
+          rowErrorMode($scope.editableIndex,error);     
         });
       }  
 
@@ -836,7 +836,7 @@ $scope.setAndSaveACLObject=function(){
       }; 
     }, function(error){          
       $scope.editableJsonObj=null;          
-      rowErrordMode($scope.editableIndex,error);     
+      rowErrorMode($scope.editableIndex,error);     
     });
   }     
 };  
@@ -2297,7 +2297,11 @@ function getProjectTables(){
       $rootScope.currentProject.currentTable= _.first(_.where($rootScope.currentProject.tables, {name: tableName}));      
     }
 
-    return $scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0);    
+    for(var i=0;i<$rootScope.currentProject.currentTable.columns.length;++i){
+      $scope.hideColumn[i]=true;
+    }
+
+    return $scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0);
 
   }).then(function(cbObjects){ 
     $scope.currentTableData=cbObjects;
@@ -2415,6 +2419,9 @@ $scope.addColumn = function(valid) {
       column.relatedTo=$scope.newColumnObj.relatedTo;
     }
     $rootScope.currentProject.currentTable.addColumn(column);
+    var index=$rootScope.currentProject.currentTable.columns.indexOf(column);
+    //Column visible
+    $scope.hideColumn[index]=true;
 
     /*$rootScope.currentProject.currentTable.columns.push($scope.newColumnObj);
     $("#scrollbar-wrapper").mCustomScrollbar("update");
@@ -2435,7 +2442,7 @@ $scope.addColumn = function(valid) {
     function(error){ 
       errorNotify("Unable to add the column right now");
       $scope.saveSpinner=false;
-      var index=$rootScope.currentProject.currentTable.columns.indexOf($scope.newColumnObj);
+      //var index=$rootScope.currentProject.currentTable.columns.indexOf($scope.newColumnObj);
       $rootScope.currentProject.currentTable.columns.splice(index,1)            
     });
 
@@ -2444,7 +2451,6 @@ $scope.addColumn = function(valid) {
       $scope.beacon.firstColumn=true;
       updateBeacon();   
     }
-
   }            
 };
 
@@ -2465,11 +2471,12 @@ $scope.confirmDeleteColumn=function(column){
     var tempTable=angular.copy($scope.currentProject.currentTable);  
     for(var i=0;i<tempTable.columns.length;++i){
       if(tempTable.columns[i].name==column.name){
-        var index=i;
+        $scope.requestDelIndex=i;
+
         break;
       }
     }    
-    $scope.showColOptions[index]=false;
+    $scope.showColOptions[$scope.requestDelIndex]=false;
 
     $scope.requestedColumn=column;
     $scope.confirmDeleteColumnName=null;
@@ -2485,21 +2492,26 @@ $scope.deleteColumn=function(){
 
     //Delete
     var column = new CB.Column($scope.requestedColumn.name, $scope.requestedColumn.dataType);
-    $scope.currentProject.currentTable.deleteColumn(column);
+    $scope.currentProject.currentTable.deleteColumn(column);  
 
     $scope.columnDeleteModalSpinner=true;  
 
     tableService.saveTable($scope.currentProject.currentTable)
-    .then(function(table){        
+    .then(function(table){     
+      //Sanitize hide column
+      $scope.hideColumn.splice($scope.requestDelIndex,1);   
       $scope.confirmDeleteColumnName=null;
       $scope.columnDeleteModalSpinner=false;
-      $scope.requestedColumn=null; 
+      $scope.requestedColumn=null;
+      $scope.requestDelIndex=null; 
       $("#md-deleteColumn").modal("hide"); 
     },function(error){
       $("#md-deleteColumn").modal("hide"); 
       $scope.confirmDeleteColumnName=null;
       $scope.columnDeleteModalSpinner=false;
       $scope.requestedColumn=null;
+      $scope.requestDelIndex=null;
+
       errorNotify("Unable to delete the column right now");     
       //ReAssign
       $rootScope.currentProject.currentTable=tempTable;
@@ -2685,7 +2697,7 @@ $scope.sortDESC=function(column){
 $scope.hideThisColumn=function(column){
   var i = $scope.currentProject.currentTable.columns.indexOf(column);
   $scope.showColOptions[i]=false;
-  $scope.hideColumn[i]=true;
+  $scope.hideColumn[i]=false;
   ++$scope.hiddenColumnCount;
 };
 
@@ -2693,20 +2705,20 @@ $scope.toggleHideColumn=function(index){
   var status=$scope.hideColumn[index];
 
   if(!status){
-    $scope.hideColumn[index]=true;
-    ++$scope.hiddenColumnCount;
-  }else if(status==true){
     $scope.hideColumn[index]=false;
     --$scope.hiddenColumnCount;
-  }     
-  
+  }else if(status==true){
+    $scope.hideColumn[index]=true; 
+    ++$scope.hiddenColumnCount;    
+  }  
+
 };
 
 $scope.showallHiddenCols=function(){
   for(var i=0; i<$scope.currentProject.currentTable.columns.length;++i){
     if($scope.currentProject.currentTable.columns[i].dataType!="Id"){
-      if($scope.hideColumn[i]!=false){
-          $scope.hideColumn[i]=false; 
+      if($scope.hideColumn[i]!=true){
+          $scope.hideColumn[i]=true; 
           --$scope.hiddenColumnCount;
       }      
     }           
@@ -2716,8 +2728,8 @@ $scope.showallHiddenCols=function(){
 $scope.hideallHiddenCols=function(){
   for(var i=0; i<$scope.currentProject.currentTable.columns.length;++i){
     if($scope.currentProject.currentTable.columns[i].dataType!="Id"){
-      if($scope.hideColumn[i]!=true){
-          $scope.hideColumn[i]=true; 
+      if($scope.hideColumn[i]!=false){
+          $scope.hideColumn[i]=false; 
           ++$scope.hiddenColumnCount;
       }        
     }           
