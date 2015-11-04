@@ -1,6 +1,6 @@
 app.controller('indexController',
-	['$scope','$rootScope','$cookies','userService','$location',
-	function($scope,$rootScope,$cookies,userService,$location){	    
+	['$scope','$rootScope','userService','$location',
+	function($scope,$rootScope,userService,$location){	    
 
     $scope.$watch(function(scope) {
      return $location.path()

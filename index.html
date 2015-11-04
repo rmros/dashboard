@@ -17,31 +17,35 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
 
 	<!-- Bootstrap core CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="https://cdn.lukej.me/jquery.gritter/1.7.4/css/jquery.gritter.css" />
-	<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">-->
-
+	
+  <!-- Fonts -->
   <link rel="stylesheet" href="assets/fonts/font-awesome-4/css/font-awesome.min.css">
-  <link rel="stylesheet" href="bower_components/ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="bower_components/ionicons/css/ionicons.min.css">   
   
-  <link href="bower_components/animate-css/animate.min.css" rel="stylesheet" />  
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/css/bootstrap-select.min.css" />
+  <!-- Kendo -->
   <link href="assets/css/kendo.common.min.css" rel="stylesheet">    
   <link href="assets/css/kendo.default.min.css" rel="stylesheet">
-  <link href="node_modules/ng-prettyjson/dist/ng-prettyjson.min.css" rel="stylesheet"/>  
-  <link href="assets/js/jquery.x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>   
-  <link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.css">
-  <link href="bower_components/angular-ui-switch/angular-ui-switch.css" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/js/jquery-resizable-columns/dist/jquery.resizableColumns.css">
-  <link href="assets/js/malihu/jquery.mCustomScrollbar.css" rel="stylesheet"/>
-  <link href="assets/js/prettyPhoto_compressed_3.1.6/css/prettyPhoto.css" rel="stylesheet"/>  
 
+  <!-- Malihu scrollbar -->
+  <link href="assets/js/malihu/jquery.mCustomScrollbar.css" rel="stylesheet"/>
+
+  <!-- Notification -->
+  <link href="assets/js/AmaranJS/dist/css/amaran.min.css" rel="stylesheet"/>
+
+  <!-- Modal, stackbox and tooltip -->
   <link href="assets/js/bootstrap-modal-master/css/bootstrap-modal.css" rel="stylesheet"/>
   <link href="bower_components/stackbox/plugin/dist/jquery.stackbox.min.css" rel="stylesheet"/>
-  <link href="assets/js/AmaranJS/dist/css/amaran.min.css" rel="stylesheet"/>
-  <link href="assets/js/tooltipster-master/css/tooltipster.css" rel="stylesheet"/>  
+  <link href="assets/js/tooltipster-master/css/tooltipster.css" rel="stylesheet"/>
+
+  <!-- Chart -->
+  <link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.css">
+
+  <link href="bower_components/animate-css/animate.min.css" rel="stylesheet" />
+  <link href="node_modules/ng-prettyjson/dist/ng-prettyjson.min.css" rel="stylesheet"/>      
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> 
   <link rel="stylesheet" href="bower_components/jquery-progresstimer/dist/css/jquery.progresstimer.min.css"> 
 
+  <!-- CB Custom -->
 	<link href="assets/css/style.css" rel="stylesheet"/>
   <link href="assets/css/data.css" rel="stylesheet"/>
   
@@ -134,96 +138,85 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
   <ui-view></ui-view>   
 	
 </div>
-  
+
+<!-- Core Jquery -->  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
 
 <script type="text/javascript" src="bower_components/ace-builds/src-min-noconflict/ace.js"></script>
+
+<!-- Core Angular -->  
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script> 
 
+<!-- Bootstrap -->  
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-cookies.js"></script> 
+
+<!-- Random --> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-resource.js"></script>  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="bower_components/angular-underscore/angular-underscore.min.js"></script>
 
+<!-- Dashboard plugins --> 
 <script src="assets/js/jquery.pushmenu/js/jPushMenu.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nanoscroller/0.8.6/javascripts/jquery.nanoscroller.min.js"></script>	  
-<script type="text/javascript" src="https://cdn.lukej.me/jquery.gritter/1.7.4/js/jquery.gritter.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nanoscroller/0.8.6/javascripts/jquery.nanoscroller.min.js"></script>
 <script type="text/javascript" src="assets/js/behaviour/core.js"></script>
+<script src="assets/js/behaviour/dashboard.js"></script>
+
+<!-- Kendo Datepicker --> 
 <script src="assets/js/kendo.all.min.js"></script>
 
-<script src="https://cdn.rawgit.com/gdi2290/angular-intercom/master/angular-intercom.min.js"></script> 
-<script src="bower_components/angular-ui-switch/angular-ui-switch.min.js"></script> 
-<script src="bower_components/angular-bootstrap-checkbox/angular-bootstrap-checkbox.js"></script>
-<script src="bower_components/angular-bootstrap-checkbox/angular-bootstrap-checkbox-cross.js"></script>
-<script src="assets/js/tristate.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap.min.js"></script>
-
 <script src="node_modules/ng-prettyjson/dist/ng-prettyjson.min.js"></script>   
 <!--<script src="node_modules/ng-prettyjson/src/ace.js"></script> 
 <script src="node_modules/ng-prettyjson/src/mode-json.js"></script>-->
-<script src="assets/js/behaviour/dashboard.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ng-clip/0.2.6/ng-clip.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.2.0/ZeroClipboard.min.js"></script>
-<script type="text/javascript" src="node_modules/randomcolor/randomColor.js"></script>
-
-<!--table edit-->
- <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-<script src="assets/js/jquery.x-editable/src/inputs/combodate/lib/moment.min.js"></script>
-<script src="assets/js/jquery.x-editable/src/inputs-ext/typeaheadjs/lib/typeahead.js"></script>
-<script src="assets/js/jquery.x-editable/src/inputs-ext/typeaheadjs/typeaheadjs.js"></script>-->
-<!--/table edit-->
-
-<!--New Data Browser-->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-touch.js"></script>
-<script src="assets/js/colResizable1/colResizable-1.5.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/store.js/1.3.14/store.min.js"></script> 
-<script src="assets/js/jquery-resizable-columns/dist/jquery.resizableColumns.min.js"></script>
 <script src="assets/js/malihu/js/minified/jquery.mousewheel.min.js"></script>
-<script src="assets/js/malihu/jquery.mCustomScrollbar.concat.min.js"></script>
-<script src="assets/js/malihu/jquery.mCustomScrollbar.js"></script>
 <script src="bower_components/ng-focus-on/ng-focus-on.min.js"></script>
-<script src="assets/js/prettyPhoto_compressed_3.1.6/js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
+<script src='bower_components/lodash/lodash.min.js'></script>
+<script type="text/javascript" src="assets/js/simplepulse/dist/jQuery.jPulse.js"></script>
+
+<!--Modal, Stackbox and tooltip-->
 <script src="assets/js/bootstrap-modal-master/js/bootstrap-modalmanager.js" type="text/javascript" charset="utf-8"></script>
 <script src="assets/js/bootstrap-modal-master/js/bootstrap-modal.js" type="text/javascript" charset="utf-8"></script>
-<script src='bower_components/lodash/lodash.min.js'></script>
+<script src='bower_components/stackbox/plugin/dist/jquery.stackbox.min.js'></script>
+<script type="text/javascript" src="assets/js/tooltipster-master/js/jquery.tooltipster.min.js"></script>
 
+<!--Kendo Datepicker-->
+<script src="assets/js/malihu/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/malihu/jquery.mCustomScrollbar.js"></script>
+
+<!--Notification-->
+<script type="text/javascript" src="assets/js/AmaranJS/dist/js/jquery.amaran.min.js"></script>
+
+<!--Google Maps-->
 <!--<script src='//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/angular-google-maps/2.1.5/angular-google-maps.min.js'></script>-->
-<script src='bower_components/stackbox/plugin/dist/jquery.stackbox.min.js'></script>
-<script src='assets/js/lrInfiniteScroll/lrInfiniteScroll.js'></script>
+
+<!--Random-->
 <script type="text/javascript" src="bower_components/angular-ui-ace/ui-ace.js"></script>
-<script type="text/javascript" src="assets/js/AmaranJS/dist/js/jquery.amaran.min.js"></script>
-<script type="text/javascript" src="assets/js/tooltipster-master/js/jquery.tooltipster.min.js"></script>
-<script type="text/javascript" src="assets/js/simplepulse/dist/jQuery.jPulse.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/floatthead/1.2.13/jquery.floatThead.min.js"></script>
-<script src="bower_components/angucomplete-alt/angucomplete-alt.js"></script>
 <script type="text/javascript" src="bower_components/angular-click-outside/clickoutside.directive.js"></script>
 <script type="text/javascript" src="bower_components/jquery-progresstimer/dist/js/jquery.progresstimer.min.js"></script>
-<!--/New Data Browser-->
 
 <!--Stripe-->
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script src="https://checkout.stripe.com/checkout.js"></script>
 <script type="text/javascript" src="bower_components/stripe-angular/stripe-angular.js"></script>
-<!--/Stripe-->
+
 
 <!--Chart-->
 <script src="bower_components/Chart.js/Chart.js"></script>
 <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
-<!--/Chart-->
 
 <!--Files-->
-<script src="assets/js/uploadfy/jquery.uploadify.min.js"></script>
-<script src="assets/js/jQuery-File-Upload-9.9.3/jQuery-File-Upload-9.9.3/js/vendor/jquery.ui.widget.js"></script>
-<script src="assets/js/jQuery-File-Upload-9.9.3/jQuery-File-Upload-9.9.3/js/jquery.iframe-transport.js"></script>
-<script src="assets/js/jQuery-File-Upload-9.9.3/jQuery-File-Upload-9.9.3/js/jquery.fileupload.js"></script>
 <script src="assets/js/uploader/src/dmuploader.min.js"></script>
-<!--/Files-->
+
+<!--Infinite Scroll Load-->
+<script src='assets/js/lrInfiniteScroll.js'></script>
 
 <!--Angular Main-->
 <script type="text/javascript" src="app/config/app.js"></script>
@@ -240,8 +233,7 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
 <script src="app/services/userService.js"></script>
 <script src="app/services/projectDetailsService.js"></script>  
 <script src="app/services/paymentService.js"></script>
-<script src="app/services/invoiceService.js"></script>
-<script src="app/services/cloudObjectService.js"></script>  
+<script src="app/services/invoiceService.js"></script> 
 <script src="app/services/beaconService.js"></script>    
 
 <!--Controllers-->
@@ -253,16 +245,12 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
 <script type="text/javascript" src="app/controllers/pricingController.js"></script>
 
 <!--Directives-->
-<script type="text/javascript" src="app/directives/common/common.js"></script>
-
-<!--
-<script type="text/javascript" src="app/directives/xeditable/table-xeditable.js"></script>
-<script type="text/javascript" src="app/directives/xeditable/column-xeditable.js"></script>-->
-<script type="text/javascript" src="app/directives/uploadify/uploadify.js"></script>
-<script type="text/javascript" src="app/directives/uploadify/fileupload.js"></script>
-<script type="text/javascript" src="app/directives/uploadify/fileuploadModal.js"></script>
-<script type="text/javascript" src="app/directives/datetime/datetimeDirective.js"></script>
-<script type="text/javascript" src="app/directives/datetime/datetimeParseDirective.js"></script>
+<script type="text/javascript" src="app/directives/randomDirectives.js"></script>
+<script type="text/javascript" src="app/directives/autocompleteDirective.js"></script>
+<script type="text/javascript" src="app/directives/fileDirective.js"></script>
+<script type="text/javascript" src="app/directives/scrollbarDirective.js"></script>
+<script type="text/javascript" src="app/directives/tooltipDirective.js"></script>
+<script type="text/javascript" src="app/directives/validationDirective.js"></script>
 
 <!-- Begin Inspectlet Embed Code -->
 <script type="text/javascript" id="inspectletjs">

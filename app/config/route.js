@@ -53,23 +53,6 @@ app.filter('debug', function() {
   };
 });
 
-app.filter('convertIsoToDate', function() {
-  return function(input) {
-    return new Date(input);
-  };
-});
-
-app.constant('INTERCOM_APPID', 'xd527zd6');
-
-app.config(function($intercomProvider, INTERCOM_APPID) {
-    // Either include your app_id here or later on boot
-    $intercomProvider
-      .appID(INTERCOM_APPID);
-
-    // you can include the Intercom's script yourself or use the built in async loading feature
-    $intercomProvider
-      .asyncLoading(true)
-});
 
 app.filter('extension', function() {
   return function(val) {
@@ -81,6 +64,12 @@ app.filter('extension', function() {
     }
     
   }
+});
+
+app.filter('convertIsoToDate', function() {
+  return function(input) {
+    return new Date(input);
+  };
 });
 
 app.filter('ISO2DateObject', function() {

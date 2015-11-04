@@ -1,6 +1,6 @@
 app.controller('appSettingsController',
-	['$scope','$rootScope','$stateParams','$cookies','projectService','projectDetailsService',
-	function($scope,$rootScope,$stateParams,$cookies,projectService,projectDetailsService){	
+	['$scope','$rootScope','$stateParams','projectService','projectDetailsService',
+	function($scope,$rootScope,$stateParams,projectService,projectDetailsService){	
     var id;
     $scope.projectSettings={};
     $scope.saveSettingsSpinner=false;

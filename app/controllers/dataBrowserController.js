@@ -15,7 +15,6 @@ tableService,
 $resource,
 $timeout,
 $filter,
-cloudObjectService,
 focus,
 beaconService) {
 
