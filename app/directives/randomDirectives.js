@@ -1,11 +1,20 @@
 //random Directives
-app.directive('verticalscroll', function(){
+/*app.directive('random', function(){
     return {
         restrict: 'A',
         link: function(scope, element, attrs){
-            $(element).scroll(function(e){               
-                $(".fixed-table-wrapper")[0].scrollTop=e.target.scrollTop;
-            });         	         
+            $(element).hover(function(){
+            	var index=$(this).data("index");
+            	var targetScope=angular.element($(".fixedTd")).scope();
+		        targetScope.showSerialNo[index]=true;
+		        targetScope.$digest();
+		    }, function(){
+		        var index=$(this).data("index");		
+		      	var targetScope=angular.element($(".fixedTd")).scope();
+		        targetScope.showSerialNo[index]=false;
+		        targetScope.$digest();
+		    });   	         
         }
     };
 });
+*/

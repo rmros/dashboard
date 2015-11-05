@@ -2306,6 +2306,10 @@ function getProjectTables(){
     $scope.currentTableData=cbObjects;
     $scope.totalRecords=10;
     $scope.isTableLoaded=true; 
+
+    for(var i=0;i<$scope.currentTableData.length;++i){
+      $scope.showSerialNo[i]=true;
+    }
   }, function(err){  
     $scope.isTableLoaded=true; 
     $scope.tableLoadedError="Error in loading table records";
@@ -2880,6 +2884,14 @@ function rowSavedMode(index){
   //General Spinner
   $scope.saveSpinner=false;
 }
+
+$scope.flipCheckBox=function(index){
+  if(!$scope.showSerialNo[index] && !$scope.rowsSelected[index] && !$scope.rowErrorMode[index] && !$scope.rowSpinnerMode[index] && !$scope.rowWarningMode[index] && !$scope.rowSavedMode[index] && !$scope.rowEditMode[index]){
+    $scope.showSerialNo[index]=true;
+  }else if($scope.showSerialNo[index] ){
+    $scope.showSerialNo[index]=false;
+  }  
+};
 
 function showSaveIconInSecond(index){  
   rowSavedMode(index);

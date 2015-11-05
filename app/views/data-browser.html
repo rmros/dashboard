@@ -250,14 +250,17 @@
           </thead> 
           <tbody>
 
-            <tr ng-repeat="eachRow in currentTableData">
+            <tr ng-repeat="eachRow in currentTableData" ng-mouseenter="flipCheckBox($index)" ng-mouseleave="flipCheckBox($index)">
 
               <!--default checkbox-->
-              <td  class="fdataTd fix-collective-chkbx">
+              <td  class="fdataTd fix-collective-chkbx fixedTd">
                   <div class="fTdDiv flex-general-row-wrapper-center">
+
+                    <!--SerialNo-->
+                    <span ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index] && showSerialNo[$index]" class="btn-default checkBxDflt chckbx-fix" class="sno" style="margin-left:6.9px;">{{$index+1}}</span>
+
                     <!--Checkbox-->
-                    <checkbox  ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="btn-default checkBxDflt chckbx-fix"  ng-model="rowsSelected[$index]" ng-click="selectThisRow($index)"></checkbox>
-                    <!--<span ng-show="!showSerialNo[$index]" class="sno">{{$index+1}}</span>-->
+                    <checkbox  ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index] && !showSerialNo[$index]" class="btn-default checkBxDflt chckbx-fix"  ng-model="rowsSelected[$index]" ng-click="selectThisRow($index)"></checkbox>                   
 
                     <!--Edit mode-->
                     <span ng-if="rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="sno-edit">
@@ -320,6 +323,7 @@
 
             </tr>
             <!--/Extra Add row--> 
+
             <!--Dummy trs for space-->
             <tr class="vacuumTr">
               <td class="ldataTd">
@@ -374,7 +378,7 @@
 
          </table>
         </div>
-         <!--/Fixed Top Table-->
+        <!--/Fixed Top Table-->
 
         <!--Normal Flow Table--> 
         <div class="normal-table-wrapper"> 
@@ -656,14 +660,17 @@
           </thead> 
           <tbody>
 
-            <tr ng-repeat="eachRow in currentTableData">
+            <tr ng-repeat="eachRow in currentTableData"  ng-mouseenter="flipCheckBox($index)" ng-mouseleave="flipCheckBox($index)">
 
               <!--default checkbox-->
               <td  class="fdataTd fix-collective-chkbx">
                   <div class="fTdDiv flex-general-row-wrapper-center">
+
+                    <!--SerialNo-->
+                    <span ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="btn-default checkBxDflt chckbx-fix" class="sno">{{$index+1}}</span>
+
                     <!--Checkbox-->
-                    <checkbox  ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="btn-default checkBxDflt chckbx-fix"  ng-model="rowsSelected[$index]" ng-click="selectThisRow($index)"></checkbox>
-                    <!--<span ng-show="!showSerialNo[$index]" class="sno">{{$index+1}}</span>-->
+                    <checkbox  ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="btn-default checkBxDflt chckbx-fix"  ng-model="rowsSelected[$index]" ng-click="selectThisRow($index)"></checkbox>                    
 
                     <!--Edit mode-->
                     <span ng-if="rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="sno-edit">
