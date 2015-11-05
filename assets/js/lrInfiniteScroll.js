@@ -25,7 +25,7 @@
 
                     //if we have reached the threshold and we scroll down                    
                     if (element[0].scrollTop >0 && (remaining < lengthThreshold && (remaining - lastRemaining) < 0)) {
-
+                        
                         //if there is already a timer running which has no expired yet we have to cancel it and restart the timer
                         if (promise !== null) {
                             timeout.cancel(promise);

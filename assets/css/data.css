@@ -424,12 +424,24 @@
 .data-table-design{ 
     width:99.90vw;
     height:81.5vh; 
-    overflow: auto !important;            
+    overflow: auto !important;
 }
 .smoothTable { 
    width:94.6vw; 
-   background-color: white;     
+   background-color: white;       
 }
+/****Fixed Table*****/
+.fixed-table-wrapper{
+   position: absolute;
+   z-index: 2;
+   margin-top: 0.5px;   
+   overflow: hidden;  
+   height:78.8vh; 
+}
+.fixed-table-wrapper .fixedTopTable{
+   width:10vw !important;    
+}
+/****Fixed Table*****/
 
 .checkBx-custom{    
     height:15px;

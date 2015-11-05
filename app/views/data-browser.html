@@ -216,9 +216,169 @@
   <div ng-show="isTableLoaded && !tableLoadedError" class="row data-table-def">
      <div class="col-md-12">
         
-        <div id="scrollbar-wrapper" class="data-table-design" lr-infinite-scroll="addMoreRecords">
-       
-         <table  class="smoothTable" >
+        <div id="scrollbar-wrapper" verticalscroll class="data-table-design" lr-infinite-scroll="addMoreRecords">          
+
+        <!--Fixed Top Table-->  
+        <div class="fixed-table-wrapper"> 
+        <table  class="smoothTable fixedTopTable">
+          <thead>            
+            <tr class="cust-head-tr fix-prime-thead">
+              <th class="fTh cf">
+                <div class="fThDiv">
+                  <checkbox class="btn-default checkBxDflt chckbx-fix" ng-model="areSelectAllRows" ng-click="selectAllRows()"></checkbox>
+                </div>                  
+              </th>
+             
+              <th ng-repeat="column in currentProject.currentTable.columns"  ng-if="column.document.dataType==='Id'" class="cust-th" style="border-right:1px solid #A5A5A5;"> 
+
+                <div class="cust-cell flex-general-row-wrapper" ng-class="{true: 'cust-cell-width'}[!currentTableData || currentTableData.length==0]">
+                  <div class="cust-cell-name flex-general-row-wrapper">                    
+                    <div class="col-name">
+                       <span style="display:inline; cursor:default;">
+                        <!--Id-->
+                        <i class="fa fa-bullseye col-icon-size" style="cursor:default;"></i>
+                        {{column.name}}
+                      </span>
+                    </div>
+                  </div>                
+
+                </div>
+                  
+              </th>                        
+            </tr> 
+            
+          </thead> 
+          <tbody>
+
+            <tr ng-repeat="eachRow in currentTableData">
+
+              <!--default checkbox-->
+              <td  class="fdataTd fix-collective-chkbx">
+                  <div class="fTdDiv flex-general-row-wrapper-center">
+                    <!--Checkbox-->
+                    <checkbox  ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="btn-default checkBxDflt chckbx-fix"  ng-model="rowsSelected[$index]" ng-click="selectThisRow($index)"></checkbox>
+                    <!--<span ng-show="!showSerialNo[$index]" class="sno">{{$index+1}}</span>-->
+
+                    <!--Edit mode-->
+                    <span ng-if="rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="sno-edit">
+                      <i class="fa fa-pencil"></i>
+                    </span>
+
+                    <!--Warning mode-->
+                    <span ng-if="rowWarningMode[$index] && !rowEditMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowErrorMode[$index]" class="sno-warninginfo" infotooltipright="rowInfo">
+                      <i class="fa fa-exclamation-triangle"></i>
+                    </span>
+
+                    <!--Error mode-->
+                    <span ng-if="rowErrorMode[$index] && !rowWarningMode[$index] && !rowEditMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index]" class="sno-errorinfo" infotooltipright="rowInfo">
+                      <i class="fa fa-exclamation-triangle"></i>
+                    </span>
+
+                    <!--Spinner-->
+                    <span ng-if="rowSpinnerMode[$index] && !rowEditMode[$index] && !rowErrorMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="sno-spinner">
+                      <i class="fa fa-spinner fa-spin"></i>
+                    </span>
+
+                    <!--Saved Tick-->
+                    <span ng-if="rowSavedMode[$index] && !rowSpinnerMode[$index] && !rowEditMode[$index] && !rowErrorMode[$index] && !rowWarningMode[$index]" class="sno-saved">
+                      <i class="fa fa-check"></i>
+                    </span>                               
+
+                  </div>              
+              </td>  
+              <!--/default checkbox-->
+
+              <td ng-repeat="column in currentProject.currentTable.columns" ng-show="column.document.dataType=='Id'" class="dataTd"  style="border-right:1px solid #A5A5A5;">                 
+                <!--Id-->             
+                <div  class="tdDiv cf" style="min-width: 175px; cursor:default;">         
+                  <div class="real-content pull-left">
+                    {{eachRow.get(column.name)}}                 
+                  </div>            
+                </div>
+                <!--/Id--> 
+              </td>            
+            </tr>
+
+            <!--Extra Add row-->
+            <tr>
+              <td class="ldataTd addRowTd" ng-click="addRow()">
+                  <div class="lTdDiv">
+                      <div class="flex-general-row-wrapper-center">
+                        <span>+</span>
+                      </div>
+                      
+                      <!--Beacon-->
+                      <div ng-if="beacon && !beacon.firstRow" ng-click="addRow()" class="first-row-beacon-container" style="cursor:pointer;"></div>  
+                  </div> 
+                            
+              </td>
+
+               <td  class="dataTd fixColumn" ng-repeat="column in currentProject.currentTable.columns" ng-if="column.document.dataType==='Id'" style="border-right:1px solid #A5A5A5;">
+                <div class="tdDiv cf" ng-click="addRow()" style="cursor:cell;"> 
+                </div>  
+              </td> 
+
+            </tr>
+            <!--/Extra Add row--> 
+            <!--Dummy trs for space-->
+            <tr class="vacuumTr">
+              <td class="ldataTd">
+                 <div class="lTdDiv">                       
+                  </div> 
+              </td>
+
+              <td class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="column.document.dataType==='Id'">
+                <div class="tdDiv cf"> 
+                </div>  
+              </td>                
+            </tr>
+
+
+            <tr class="vacuumTr">
+              <td class="ldataTd">
+                 <div class="lTdDiv">                       
+                  </div> 
+              </td>
+
+              <td class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="column.document.dataType==='Id'">
+                <div class="tdDiv cf"> 
+                </div>  
+              </td>              
+            </tr>
+
+            <tr class="vacuumTr">
+              <td class="ldataTd">
+                 <div class="lTdDiv">                       
+                  </div> 
+              </td>
+
+              <td class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="column.document.dataType==='Id'">
+                <div class="tdDiv cf"> 
+                </div>  
+              </td>                
+            </tr>
+
+            <tr class="vacuumTr">
+              <td class="ldataTd">
+                 <div class="lTdDiv">                       
+                  </div> 
+              </td>
+
+              <td class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="column.document.dataType==='Id'">
+                <div class="tdDiv cf"> 
+                </div>  
+              </td>               
+            </tr>
+            <!--/Dummy trs for space-->           
+          </tbody>
+
+         </table>
+        </div>
+         <!--/Fixed Top Table-->
+
+        <!--Normal Flow Table--> 
+        <div class="normal-table-wrapper"> 
+        <table  class="smoothTable">
           <thead>            
             <tr class="cust-head-tr fix-prime-thead">
               <th class="fTh cf">
@@ -1177,8 +1337,9 @@
             <!--/Dummy trs for space-->
 
           </tbody>
-
-         </table>
+        </table>
+        </div>
+        <!--/Normal Flow Table-->
 
         <!--Load spinner for Records-->
         <div ng-if="loadingRecords"class="wyl-records-loading flex-general-column-wrapper-center">
