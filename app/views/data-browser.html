@@ -234,7 +234,7 @@
                 </div>                  
               </th>
              
-              <th ng-repeat="column in currentProject.currentTable.columns"  ng-if="column.document.dataType==='Id'" class="cust-th" style="border-right:1px solid #A5A5A5;"> 
+              <th ng-repeat="column in currentProject.currentTable.columns"  ng-if="column.document.dataType==='Id'" class="cust-th" style="border-right:1px solid #4892F9;"> 
 
                 <div class="cust-cell flex-general-row-wrapper" ng-class="{true: 'cust-cell-width'}[!currentTableData || currentTableData.length==0]">
                   <div class="cust-cell-name flex-general-row-wrapper">                    
@@ -296,7 +296,7 @@
               </td>  
               <!--/default checkbox-->
 
-              <td ng-repeat="column in currentProject.currentTable.columns" ng-show="column.document.dataType=='Id'" class="dataTd"  style="border-right:1px solid #A5A5A5;">                 
+              <td ng-repeat="column in currentProject.currentTable.columns" ng-show="column.document.dataType=='Id'" class="dataTd"  style="border-right:1px solid #4892F9;">                 
                 <!--Id-->             
                 <div  class="tdDiv cf" style="min-width: 175px; cursor:default;">         
                   <div class="real-content pull-left">
@@ -321,7 +321,7 @@
                             
               </td>
 
-               <td  class="dataTd fixColumn" ng-repeat="column in currentProject.currentTable.columns" ng-if="column.document.dataType==='Id'" style="border-right:1px solid #A5A5A5;">
+               <td  class="dataTd fixColumn" ng-repeat="column in currentProject.currentTable.columns" ng-if="column.document.dataType==='Id'" style="border-right:1px solid #4892F9;">
                 <div class="tdDiv cf" ng-click="addRow()" style="cursor:cell;"> 
                 </div>  
               </td> 
@@ -3754,7 +3754,7 @@
 
                   <!--Modify Error-->
                   <div>
-                    <span style="color:red;margin-left:5px;">{{modifyListItemError[$index]}}Error</span>
+                    <span style="color:red;margin-left:5px;">{{modifyListItemError[$index]}}</span>
                   </div>
                 </div>
 
