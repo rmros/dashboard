@@ -255,7 +255,7 @@
           </thead> 
           <tbody>
 
-            <tr ng-repeat="eachRow in currentTableData" ng-mouseenter="flipCheckBox($index)" ng-mouseleave="flipCheckBox($index)">
+            <tr ng-repeat="eachRow in currentTableData" ng-mouseenter="flipToCheckBox($index)" ng-mouseleave="flipToSerialNo($index)">
 
               <!--default checkbox-->
               <td  class="fdataTd fix-collective-chkbx fixedTd">
@@ -664,7 +664,7 @@
           </thead> 
           <tbody>
 
-            <tr ng-repeat="eachRow in currentTableData"  ng-mouseenter="flipCheckBox($index)" ng-mouseleave="flipCheckBox($index)">
+            <tr ng-repeat="eachRow in currentTableData"  ng-mouseenter="flipToCheckBox($index)" ng-mouseleave="flipToSerialNo($index)">
 
               <!--default checkbox-->
               <td  class="fdataTd fix-collective-chkbx">
@@ -1773,7 +1773,23 @@
           <span style="font-size:18px;">{{editableColumn.name}}</span>
         </div>          
       </div>
-        
+
+      <!--Saving Errors--> 
+      <div style="width:100%;">
+        <div ng-show="commonError" style="width:100%;height:30px;background-color:#C40101;color:white;padding-left:5px;padding-right:5px;padding-top:3.5px;" ng-class="{animated:commonError}" class="fadeIn">
+
+          <div class="pull-left" style="padding-top:1px;">                
+            <span>{{commonError}}</span>
+          </div>
+
+          <div class="pull-right" ng-click="commonError=!commonError">
+            <i class="icon ion-android-close" style="font-size:16px;color:white;"></i>
+          </div>  
+
+        </div>  
+      </div>  
+      <!--/Saving Errors-->
+
       <div style="border-top:1px solid #dddbdb;">        
        
         <div ui-ace="{ mode: 'json', theme: 'chrome' }" ng-model="editableJsonObj">
@@ -1783,8 +1799,12 @@
       
       <div class="modal-footer">        
         <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
-        <!--Save-->
-        <button type="button" ng-click="setAndSaveJsonObject()" class="btn btn-primary cb-modal-default-btn" >Save</button>   
+
+        <!--Disabled Save-->
+        <button type="button" ng-show="commonError" style="color:gray;cursor:pointer !important;" class="btn btn-default cb-modal-default-btn">Save</button>
+
+        <!--Enabled Save-->
+        <button type="button" ng-show="!commonError" ng-click="setAndSaveJsonObject()" class="btn btn-primary cb-modal-default-btn" >Save</button>   
       </div>
 
     </div><!-- /.modal-content -->
@@ -1921,7 +1941,6 @@
 <!-- EditFile Modal -->
 
 
-
 <!--GEO POINT-->
 <!-- Add/Remove GeoPoint -->
   <div class="modal fade colored-header danger" id="md-geodocumentviewer" tabindex="-1" role="dialog">
@@ -1991,10 +2010,11 @@
 
             <div class="modal-footer">        
               <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
-              <!--Save-->
+              <!--Disabled Save-->
               <button type="submit" ng-show="geopointEditError"  class="btn  cb-modal-default-btn" style="color:gray !important;">Save</button> 
-              <!--Save-->
-              <button type="submit" ng-show="!geopointEditError" ng-click="setAndSaveJsonObject()" class="btn btn-primary cb-modal-default-btn" >Save</button>
+
+              <!--Enabled Save-->
+              <button type="submit" ng-show="!geopointEditError" class="btn btn-primary cb-modal-default-btn" >Save</button>
             </div>
 
         </form>
@@ -2948,10 +2968,17 @@
                               <div style="width:100%;">
                                 <div class="loading-progress-1" fileloading style="margin-left:5px;margin-top:12px;width:90%;"></div>
                               </div>  
+                            </div>
+
+                            <!--Error-->
+                            <div ng-show="listFileError[$index]" class="new-rel-list-file pull-left flex-general-column-wrapper-center">
+                              <div style="width:100%;">
+                                <div>{{listFileError[$index]}}</div>
+                              </div>  
                             </div> 
 
                             <!--File Content-->
-                            <div ng-show="!listFileSpinner[$index]" class="new-rel-list-file pull-left">
+                            <div ng-show="!listFileSpinner[$index] && !listFileError[$index]" class="new-rel-list-file pull-left">
                               <!--Img Files-->
                               <div class="rel-list-file-view" ng-if="(file.document.name | extension)=='jpeg' || (file.document.name | extension)=='jpg' || (file.document.name | extension)=='png' || (file.document.name | extension)=='tif' || (file.document.name | extension)=='gif'">
 
@@ -3043,7 +3070,7 @@
       <div class="modal-footer">        
             <button type="button" class="btn btn-default cb-modal-default-btn" ng-click="closeRelModal()">Close</button>
 
-            <!--On Relation View Error-->
+            <!--Disabled Save(On Relation View Error)-->
             <button type="button" style="color:gray;cursor:pointer !important;" class="btn cb-modal-default-btn" ng-if="(viewRelDataError[viewRelDataError.length-1]) || (relatedTableRecordArray.length==0) || !relatedTableRecordArray[relatedTableRecordArray.length-1] || relationErrorMode">Save</button>
 
             <!--Save-->
@@ -3704,10 +3731,9 @@
             <div  class="add-list-btn-wrapper" ng-if="editableColumn.relatedTo!='File'"> 
               <div class="document-list-add-wrapper flex-general-row-wrapper">
                 <!--For List of Texts-->
-                <button ng-click="addListItem()" type="button"  class="nuevo-add-list-btn" >Add New Record</button>                
+                <button ng-click="addListItem()" type="button"  class="nuevo-add-list-btn" >Add New Record</button>
               </div>
             </div> 
-
 
             <!--List of Text-->
             <div ng-if="editableColumn.relatedTo=='Text'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
@@ -3716,11 +3742,8 @@
                   <div class="document-list-txt-wrapper flex-general-row-wrapper-center cf">
                     
                     <div  class="list-text-aura">
-
-                        <input type="text" ng-model="eachText" ng-blur="modifyListItem(eachText,$index)" class="list-modal-text">
-
-                    </div>
-                  
+                      <input type="text" ng-model="eachText" ng-blur="modifyListItem(eachText,$index)" class="list-modal-text">
+                    </div>                  
 
                     <div class="m-remove-document list-text-remv-show">
                       <div ng-click="deleteListItem($index)">
@@ -3728,16 +3751,17 @@
                       </div>
                     </div>                    
                   </div>
+
                   <!--Modify Error-->
                   <div>
-                    <span style="color:red;margin-left:5px;">{{modifyListItemError[$index]}}</span>
+                    <span style="color:red;margin-left:5px;">{{modifyListItemError[$index]}}Error</span>
                   </div>
                 </div>
 
             </div>            
             <!--List of Text-->
 
-            <!--Roll List of Email-->
+            <!--List of Email-->
             <div ng-if="editableColumn.relatedTo=='Email'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
 
                 <div ng-repeat="eachEmail in editableList track by $index">
@@ -4124,14 +4148,18 @@
         <div style="border-top:1px solid #dddbdb;border-bottom:1px solid #ebebeb;">
 
           <div ui-ace="{ mode: 'json', theme: 'chrome' }" ng-model="listEditableRow">
-          </div>      
+          </div>     
 
         </div>             
 
         <div class="modal-footer">        
           <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+
+          <!--Disabled Save-->
+          <button type="button" ng-show="modifyListItemError[listIndex]" style="color:gray;cursor:pointer !important;" class="btn btn-default cb-modal-default-btn">Modify</button>
+
           <!--Save-->
-          <button type="button" ng-click="modifyListItem(listEditableRow,listIndex)" class="btn btn-primary cb-modal-default-btn" >Modify</button>   
+          <button type="button" ng-show="!modifyListItemError[listIndex]" ng-click="modifyListItem(listEditableRow,listIndex)" class="btn btn-primary cb-modal-default-btn" >Modify</button>   
         </div>
 
       </div><!-- /.modal-content -->

@@ -39,7 +39,7 @@ $scope.rowErrorMode=[];
 $scope.rowSpinnerMode=[]; 
 $scope.rowSavedMode=[];
 $scope.showSerialNo=[];
-$scope.holdeSerialNoInfo=[];
+$scope.holdSerialNoInfo=[];
 $scope.rowsSelected=[];
 
 //Simple dataTypes
@@ -59,25 +59,35 @@ $scope.editableField=[[]];
 $scope.holdFieldData=[[]];
 $scope.newListItem=null;
 
-//Relation  
+/****Relation Modal ****/
+//Main Data Variables
 $scope.relatedTableDefArray=[];
 $scope.relatedTableRecordArray=[];
+
+//Error,spinners,holders
 $scope.relationError=[];
 $scope.relationHoldData=[];
-$scope.relationShowInput=[]; 
+$scope.relationShowInput=[];
+
+//Random
 $scope.setRelFileError=[]; 
 $scope.setRelFileSpinner=[];
 $scope.viewRelDataError=[];
+$scope.relFileProgress=null;
+/****Relation Modal ****/
 
-//Random
-$scope.isFileSelected=false;  
+//Random  
 $scope.currentTableData=[]; 
 $scope.modifyListItemError=[];
+$scope.isFileSelected=false;
 $scope.listFileSpinner=[];
 $scope.listFileError=[];
+
 $scope.orderBy="createdAt"; 
 $scope.orderByType="asc";
 $scope.hiddenColumnCount=0;
+
+//ACL
 $scope.addACL=[];
 $scope.newACLSpinner=false;
 $scope.userRecords=[];
@@ -90,7 +100,6 @@ $scope.aclPublic={
   readValue:null,
   writeValue:null
 };
-$scope.relFileProgress=null;
 
 $scope.init = function() { 
   id = $stateParams.appId;
@@ -773,56 +782,59 @@ $scope.deleteData=function(row,column){
   } 
 }
  
-$scope.setAndSaveJsonObject=function(){
-    $("#md-objectviewer").modal("hide");      
-    //Check if previous value is not equal to modified value
-    if($scope.editableRow.get($scope.editableColumnName)!=JSON.parse($scope.editableJsonObj)){
-      rowEditMode($scope.editableIndex);
-
-      var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
-          if(everyCol.name!=$scope.editableColumnName && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
-           if(!$scope.editableRow.get(everyCol.name)){
-            return everyCol;
-           }          
-          }
-      });
-
-      $scope.editableRow.set($scope.editableColumnName,JSON.parse($scope.editableJsonObj));
-      if(requiredField){           
-        rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);
+$scope.setAndSaveJsonObject=function(){       
+       
+    try {
+      var data=JSON.parse($scope.editableJsonObj);
+      if(typeof data!="object"){
+        $scope.commonError="Invalid Object";
       }else{
-        rowSpinnerMode($scope.editableIndex);        
-    
-        //Save Cloud Object
-        $scope.saveCloudObject($scope.editableRow)
-        .then(function(obj){           
-          $scope.editableJsonObj=null;
-          showSaveIconInSecond($scope.editableIndex);
-        }, function(error){          
-          $scope.editableJsonObj=null;          
-          rowErrorMode($scope.editableIndex,error);     
-        });
-      }  
+        $("#md-objectviewer").modal("hide");
+        rowEditMode($scope.editableIndex);
 
-    }else{
-      $("#md-objectviewer").modal("hide");      
-      $scope.editableJsonObj=null;
-    }     
+        var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
+            if(everyCol.name!=$scope.editableColumnName && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
+             if(!$scope.editableRow.get(everyCol.name)){
+              return everyCol;
+             }          
+            }
+        });
+
+        $scope.editableRow.set($scope.editableColumnName,JSON.parse($scope.editableJsonObj));
+        if(requiredField){           
+          rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);
+        }else{
+          rowSpinnerMode($scope.editableIndex);        
+      
+          //Save Cloud Object
+          $scope.saveCloudObject($scope.editableRow)
+          .then(function(obj){           
+            $scope.editableJsonObj=null;
+            showSaveIconInSecond($scope.editableIndex);
+          }, function(error){          
+            $scope.editableJsonObj=null;          
+            rowErrorMode($scope.editableIndex,error);     
+          });
+        }         
+      }  
+    }
+    catch(err) {
+      $scope.commonError="Invalid Object";
+    }        
     
 };  
 //End JsonObject 
 
 $scope.setAndSaveACLObject=function(){
     
-  $("#md-aclviewer").modal("hide"); 
-  //Check if previous value is not equal to modified value
+  $("#md-aclviewer").modal("hide");   
   rowEditMode($scope.editableIndex);
   var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
-      if(everyCol.name!=$scope.editableColumnName && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
-       if(!$scope.editableRow.get(everyCol.name)){
-        return everyCol;
-       }          
-      }
+    if(everyCol.name!=$scope.editableColumnName && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
+     if(!$scope.editableRow.get(everyCol.name)){
+      return everyCol;
+     }          
+    }
   });
 
   //$scope.editableRow.set($scope.editableColumnName,$scope.editableJsonObj);
@@ -1051,11 +1063,11 @@ function saveGeopoint(){
   rowEditMode($scope.editableIndex);
  
   var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
-     if(everyCol.name!=$scope.editableColumnName && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
-       if(!$scope.editableRow.get(everyCol.name)){
-        return everyCol;
-       }          
-     }
+    if(everyCol.name!=$scope.editableColumnName && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
+     if(!$scope.editableRow.get(everyCol.name)){
+      return everyCol;
+     }          
+    }
   });
   
   if(requiredField){  
@@ -1209,7 +1221,7 @@ $scope.viewRelationData=function(row,column,index){
         $scope.relatedTableRecordArray.push(record);        
 
         //Nullify errors
-        //clearRelationErrors();        
+        clearRelationErrors();        
       }     
     
       $("#md-relationviewer").modal();
@@ -1763,14 +1775,18 @@ $scope.modifyListItem=function(data,index){
       }
 
       if($scope.editableColumn.relatedTo=="Object"){ 
-        data=JSON.parse(data);
-
-        if(typeof data!="object"){
-          data=null;
+        try {
+          data=JSON.parse(data);
+          if(typeof data!="object"){
+            data=null;
+            $scope.modifyListItemError[index]="Invalid Object";
+          }else{
+            $("#md-list-objectviewer").modal("hide");
+          }  
+        }
+        catch(err) {
           $scope.modifyListItemError[index]="Invalid Object";
-        }else{          
-          $("#md-list-objectviewer").modal("hide"); 
-        }        
+        }              
       }
 
       if((data || $scope.editableColumn.relatedTo=="Boolean") && (!$scope.modifyListItemError[index])){
@@ -2105,6 +2121,7 @@ function checkListErrors(){
   }  
 }
 //End of List
+
 $scope.closeListModal=function(){
   nullifyEditable();
 };
@@ -2234,6 +2251,7 @@ $scope.saveRelationObj=function(relCloudObject){
 
         //Nullify errors
         clearRelationErrors();
+        clearListErrors();
         $scope.closeRelModal();
 
       }, function(error){ 
@@ -2319,7 +2337,7 @@ function getProjectTables(){
 
     for(var i=0;i<$scope.currentTableData.length;++i){
       $scope.showSerialNo[i]=true;
-      $scope.holdeSerialNoInfo[i]=true;
+      $scope.holdSerialNoInfo[i]=true;
     }
   }, function(err){  
     $scope.isTableLoaded=true; 
@@ -2555,7 +2573,7 @@ $scope.selectAllRows=function(){
     for(var i=0;i<$scope.currentTableData.length;++i){
       $scope.rowsSelected[i]=true;
       $scope.showSerialNo[i]=false;
-      $scope.holdeSerialNoInfo[i]=false;
+      $scope.holdSerialNoInfo[i]=false;
     }
     $scope.selectedRowsCount=$scope.currentTableData.length;
 
@@ -2563,7 +2581,7 @@ $scope.selectAllRows=function(){
     for(var i=0;i<$scope.currentTableData.length;++i){
       $scope.rowsSelected[i]=false;
       $scope.showSerialNo[i]=true;
-      $scope.holdeSerialNoInfo[i]=true;
+      $scope.holdSerialNoInfo[i]=true;
     }
     $scope.selectedRowsCount=0;    
   }
@@ -2599,7 +2617,7 @@ $scope.deleteSelectedRows=function(){
      $scope.currentTableData.splice(ndex,1);
      $scope.rowsSelected.splice(ndex,1);
      $scope.showSerialNo.splice(ndex,1); 
-     $scope.holdeSerialNoInfo.splice(ndex,1);  
+     $scope.holdSerialNoInfo.splice(ndex,1);  
      --$scope.selectedRowsCount;
     } 
     $scope.areSelectAllRows=false; 
@@ -2623,7 +2641,7 @@ function deleteUnsavedRows(){
       $scope.currentTableData.splice(i,1); 
       $scope.rowsSelected.splice(i,1); 
       $scope.showSerialNo.splice(i,1);
-      $scope.holdeSerialNoInfo.splice(i,1);  
+      $scope.holdSerialNoInfo.splice(i,1);  
       --$scope.selectedRowsCount;      
     }
 
@@ -2668,7 +2686,7 @@ $scope.addRow=function(){
 
   var index=$scope.currentTableData.indexOf(obj);
   $scope.showSerialNo[index]=true;
-  $scope.holdeSerialNoInfo[index]=true;
+  $scope.holdSerialNoInfo[index]=true;
 
   //Update Beacon
   if($scope.beacon && !$scope.beacon.firstRow){
@@ -2920,21 +2938,28 @@ function rowSavedMode(index){
   $scope.rowSavedMode[index]=true;  
 
   //Update SerialNo Info  
-  $scope.showSerialNo=angular.copy($scope.holdeSerialNoInfo); 
+  $scope.showSerialNo=angular.copy($scope.holdSerialNoInfo); 
 }
 
-$scope.flipCheckBox=function(index){
+$scope.flipToCheckBox=function(index){
+  //Gather Info whatever(Order is important, this should be first)
+  if($scope.showSerialNo[index]){
+    $scope.holdSerialNoInfo[index]=false;
+  }
+
+  if($scope.showSerialNo[index]){
+    $scope.showSerialNo[index]=false;
+  }    
+};
+
+$scope.flipToSerialNo=function(index){
   //Gather Info whatever(Order is important, this should be first)
   if(!$scope.showSerialNo[index]){
-    $scope.holdeSerialNoInfo[index]=true;
-  }else if($scope.showSerialNo[index]){
-    $scope.holdeSerialNoInfo[index]=false;
+    $scope.holdSerialNoInfo[index]=true;
   }
 
   if(!$scope.showSerialNo[index] && !$scope.rowsSelected[index]){
     $scope.showSerialNo[index]=true;
-  }else if($scope.showSerialNo[index]){
-    $scope.showSerialNo[index]=false;
   }    
 };
 
