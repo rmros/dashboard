@@ -173,38 +173,43 @@
         <div class="pull-right;" style="width:99.99%;">       
 
           <!--Row selection info-->
-          <div class="data-info-div row-info"  ng-if="selectedRowsCount>0 && !saveSpinner">
-            <p>{{selectedRowsCount}} rows selected</p>
+          <div class="data-info-div row-info"  ng-if="selectedRowsCount>0 && !commonSpinner && !commonSaved">
+            <p ng-show="selectedRowsCount==1">{{selectedRowsCount}} row selected</p>
+            <p ng-show="selectedRowsCount>1">{{selectedRowsCount}} rows selected</p>
           </div>
+          <!--/Row selection info-->
 
-          <!--Warning-->
-          <div class="data-info-div-icons" ng-if="!saveSpinner && rowWar==true" ng-repeat="rowWar in rowWarningMode">           
-            <p class="sno-warninginfo" style="margin-right:25px;" infotooltipleft="rowInfo">
+          <!--Common Warning-->
+          <div class="data-info-div-icons" ng-if="commonWarning && !commonError && !commonSpinner && !commonSaved">           
+            <p class="sno-warninginfo" style="margin-right:25px;" infotooltipleft="commonWarning">
               <i class="fa fa-exclamation-triangle fa-lg"></i>
             </p>
-          </div> 
-
-          <!--Error-->
-          <div class="data-info-div-icons" ng-if="!saveSpinner && rowErr==true" ng-repeat="rowErr in rowErrorMode">         
-            <p  class="sno-errorinfo" style="margin-right:25px;" infotooltipleft="rowInfo">
-              <i class="fa fa-exclamation-triangle fa-lg"></i>
-            </p>         
-
           </div>
+          <!--/Common Warning--> 
 
-          <!--Saving-->
-          <div class="data-info-div-icons" ng-if="!saveSpinner && rowSaved==true" ng-repeat="rowSaved in rowSavedMode">      
-            <p  class="sno-saved" style="margin-right:25px;">             
-              <i class="fa fa-check fa-lg"></i>
+          <!--Common Error-->
+          <div class="data-info-div-icons" ng-if="commonError && !commonWarning && !commonSpinner && !commonSaved">         
+            <p  class="sno-errorinfo" style="margin-right:25px;" infotooltipleft="commonError">
+              <i class="fa fa-exclamation-triangle fa-lg"></i>
             </p>
-          </div>               
+          </div>
+          <!--/Common Error-->                       
 
-          <!--General Saving Spinner-->
-          <div ng-show="saveSpinner" class="data-info-div">
+          <!--Common Saving Spinner-->
+          <div  class="data-info-div" ng-if="commonSpinner && !commonError && !commonWarning && !commonSaved">
             <p class="sno-savingSpin" style="margin-right:25px;">            
               <i class="fa fa-spinner fa-spin fa-2x"></i>
             </p>            
           </div> 
+          <!--/Common Saving Spinner-->
+
+          <!--Common Saved Tick-->
+          <div class="data-info-div-icons" ng-if="commonSaved && !commonError && !commonWarning && !commonSpinner">  
+            <p  class="sno-saved" style="margin-right:25px;">             
+              <i class="fa fa-check fa-lg"></i>
+            </p>
+          </div>
+          <!--/Common Saved Tick-->
 
         </div>     
       </div>  
@@ -257,7 +262,7 @@
                   <div class="fTdDiv flex-general-row-wrapper-center">
 
                     <!--SerialNo-->
-                    <span ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index] && showSerialNo[$index]" class="btn-default checkBxDflt chckbx-fix" class="sno" style="margin-left:6.9px;">{{$index+1}}</span>
+                    <span ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index] && !rowsSelected[$index]  && showSerialNo[$index]" class="btn-default checkBxDflt chckbx-fix" class="sno" style="margin-left:6.9px;">{{$index+1}}</span>
 
                     <!--Checkbox-->
                     <checkbox  ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index] && !showSerialNo[$index]" class="btn-default checkBxDflt chckbx-fix"  ng-model="rowsSelected[$index]" ng-click="selectThisRow($index)"></checkbox>                   
@@ -650,8 +655,7 @@
               <!--Dummy th for space-->  
               <th id="extra-col-th" class="vacuumTh">
                 <div class="vacuumThDiv">                 
-                  <div class="flex-general-row-wrapper-center">
-                     
+                  <div class="flex-general-row-wrapper-center">                     
                   </div>                                  
                 </div>  
               </th>           
@@ -4498,6 +4502,22 @@
           <span style="font-size:18px;">Delete Column</span>
         </div>          
       </div>
+
+      <!--Saving Errors--> 
+      <div style="width:100%;">
+        <div  ng-show="columnDeleteModalError" style="width:100%;height:30px;background-color:#C40101;color:white;padding-left:5px;padding-right:5px;padding-top:3.5px;" ng-class="{animated:columnDeleteModalError}" class="fadeIn">
+
+          <div class="pull-left" style="padding-top:1px;">                
+            <span>{{columnDeleteModalError}}</span>
+          </div>
+
+          <div class="pull-right" ng-click="columnDeleteModalError=!columnDeleteModalError">
+            <i class="icon ion-android-close" style="font-size:16px;color:white;"></i>
+          </div>  
+
+        </div>  
+      </div>  
+      <!--/Saving Errors-->
       
       <div class="modal-body" style="border-top:1px solid #dddbdb;">
         <div class="text-center">
@@ -4510,10 +4530,13 @@
       </div>  
 
       <div class="modal-footer">        
-        <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal" ng-click="clearDeleteColumnData()">Close</button>
+
+        <!--Disabled-->
+        <button type="button" ng-show="columnDeleteModalError && !columnDeleteModalSpinner" style="color:gray;cursor:pointer !important; width:124px;" class="btn">Delete Column</button>
 
         <!--Delete-->
-        <button type="button" ng-show="!columnDeleteModalSpinner" ng-click="deleteColumn()" class="btn btn-danger" style="width:120px; border-radius:3px !important;">Delete Column</button>  
+        <button type="button" ng-show="!columnDeleteModalSpinner && !columnDeleteModalError" ng-click="deleteColumn()" class="btn btn-danger" style="width:120px; border-radius:3px !important;">Delete Column</button>  
 
          <!--While Deleting-->
         <button type="button" ng-show="columnDeleteModalSpinner" class="btn btn-danger" style="width:142px; border-radius:3px !important;"><i class="fa fa-spinner fa-spin"></i>&nbsp;Deleting Column..</button> 

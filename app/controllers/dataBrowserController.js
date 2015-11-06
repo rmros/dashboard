@@ -31,17 +31,27 @@ $scope.showAddColPopUp=false;
 $scope.hideColumn=[];
 $scope.editColumn=[];
 
-//Row specific
-$scope.showSerialNo=[];
-$scope.rowsSelected=[];
-$scope.selectedRowsCount=0;
-$scope.areSelectAllRows=false;  
+/***Errors,Spinners,Warnings,SavedTick***/
+//Array Types
 $scope.rowEditMode=[];
 $scope.rowWarningMode=[];
 $scope.rowErrorMode=[];
 $scope.rowSpinnerMode=[]; 
-$scope.rowSavedMode=[]; 
+$scope.rowSavedMode=[];
+$scope.showSerialNo=[];
+$scope.holdeSerialNoInfo=[];
+$scope.rowsSelected=[];
+
+//Simple dataTypes
+$scope.commonSpinner=false;
+$scope.commonSaved=false;
+$scope.commonError=null;
+$scope.commonWarning=null;
+
+$scope.selectedRowsCount=0;
+$scope.areSelectAllRows=false; 
 $scope.rowInfo=null;
+/***Errors,Spinners,Warnings,SavedTick***/
 
 //Field Ediatble
 $scope.showInputForEdit=[[]]; 
@@ -2309,6 +2319,7 @@ function getProjectTables(){
 
     for(var i=0;i<$scope.currentTableData.length;++i){
       $scope.showSerialNo[i]=true;
+      $scope.holdeSerialNoInfo[i]=true;
     }
   }, function(err){  
     $scope.isTableLoaded=true; 
@@ -2415,7 +2426,8 @@ $scope.initiateColumnSettings = function() {
 $scope.addColumn = function(valid) {
   if(valid){
     $scope.showAddColPopUp=false; 
-    $scope.saveSpinner=true;
+    nullifyCommonErrorInfo();
+    $scope.commonSpinner=true;
 
     var column = new CB.Column($scope.newColumnObj.name, $scope.newColumnObj.dataType, $scope.newColumnObj.required, $scope.newColumnObj.unique);
     if($scope.newColumnObj.relatedTo){
@@ -2440,12 +2452,15 @@ $scope.addColumn = function(valid) {
     .then(function(table){  
       $('#scrollbar-wrapper').scrollTo('#extra-col-th',400,{axis:'x',duration:5000});       
       $scope.newColumnObj=null;
-      $scope.saveSpinner=false;                                                  
+      $scope.commonSpinner=false; 
+      $scope.commonSaved=true;
+      $timeout(function(){ 
+        $scope.commonSaved=false;
+      }, 800);                                                 
     },
-    function(error){ 
-      errorNotify("Unable to add the column right now");
-      $scope.saveSpinner=false;
-      //var index=$rootScope.currentProject.currentTable.columns.indexOf($scope.newColumnObj);
+    function(error){      
+      $scope.commonSpinner=false;
+      $scope.commonError="Unable to add the column right now";      
       $rootScope.currentProject.currentTable.columns.splice(index,1)            
     });
 
@@ -2475,7 +2490,6 @@ $scope.confirmDeleteColumn=function(column){
     for(var i=0;i<tempTable.columns.length;++i){
       if(tempTable.columns[i].name==column.name){
         $scope.requestDelIndex=i;
-
         break;
       }
     }    
@@ -2508,24 +2522,28 @@ $scope.deleteColumn=function(){
       $scope.requestedColumn=null;
       $scope.requestDelIndex=null; 
       $("#md-deleteColumn").modal("hide"); 
+
     },function(error){
-      $("#md-deleteColumn").modal("hide"); 
+      
       $scope.confirmDeleteColumnName=null;
       $scope.columnDeleteModalSpinner=false;
-      $scope.requestedColumn=null;
-      $scope.requestDelIndex=null;
-
-      errorNotify("Unable to delete the column right now");     
+      $scope.columnDeleteModalError="Unable to delete the column right now";     
       //ReAssign
       $rootScope.currentProject.currentTable=tempTable;
     });    
-  }else{
-    $("#md-deleteColumn").modal("hide"); 
+  }else{     
     $scope.confirmDeleteColumnName=null;
-    $scope.columnDeleteModalSpinner=false;
-    $scope.requestedColumn=null;
-    warningNotify("Column name doesn\'t match"); 
+    $scope.columnDeleteModalSpinner=false;    
+    $scope.columnDeleteModalError="Column name doesn\'t match";    
   }
+};
+
+$scope.clearDeleteColumnData=function(){
+  $scope.confirmDeleteColumnName=null;
+  $scope.columnDeleteModalSpinner=false;
+  $scope.requestedColumn=null;
+  $scope.requestDelIndex=null; 
+  $("#md-deleteColumn").modal("hide");
 };
 
 
@@ -2536,12 +2554,16 @@ $scope.selectAllRows=function(){
 
     for(var i=0;i<$scope.currentTableData.length;++i){
       $scope.rowsSelected[i]=true;
+      $scope.showSerialNo[i]=false;
+      $scope.holdeSerialNoInfo[i]=false;
     }
     $scope.selectedRowsCount=$scope.currentTableData.length;
 
   }else if($scope.areSelectAllRows==true){
     for(var i=0;i<$scope.currentTableData.length;++i){
       $scope.rowsSelected[i]=false;
+      $scope.showSerialNo[i]=true;
+      $scope.holdeSerialNoInfo[i]=true;
     }
     $scope.selectedRowsCount=0;    
   }
@@ -2560,7 +2582,9 @@ $scope.selectThisRow=function(index){
 
 $scope.deleteSelectedRows=function(){
   deleteUnsavedRows();//delete rows which doesn't have Id
-  $scope.saveSpinner=true;
+  nullifyCommonErrorInfo();
+  $scope.commonSpinner=true;
+
   var promises=[];
   for(var i=0;i<$scope.rowsSelected.length;++i){
     if($scope.rowsSelected[i]==true){        
@@ -2573,15 +2597,21 @@ $scope.deleteSelectedRows=function(){
     for(var i=0;i<list.length;++i){
      var ndex=$scope.currentTableData.indexOf(list[i]);
      $scope.currentTableData.splice(ndex,1);
-     $scope.rowsSelected.splice(ndex,1); 
+     $scope.rowsSelected.splice(ndex,1);
+     $scope.showSerialNo.splice(ndex,1); 
+     $scope.holdeSerialNoInfo.splice(ndex,1);  
      --$scope.selectedRowsCount;
     } 
     $scope.areSelectAllRows=false; 
-    $scope.saveSpinner=false;                            
-  }, function(err){                
-    errorNotify(err);
+    $scope.commonSpinner=false; 
+    $scope.commonSaved=true;
+    $timeout(function(){ 
+      $scope.commonSaved=false; 
+    }, 800);                            
+  }, function(err){    
     $scope.areSelectAllRows=false;
-    $scope.saveSpinner=false;
+    $scope.commonSpinner=false;
+    $scope.commonError="Unable to add the column right now"; 
   });
  
 };
@@ -2592,6 +2622,8 @@ function deleteUnsavedRows(){
     if(($scope.rowsSelected[i]==true) && (!$scope.currentTableData[i].get("id"))){
       $scope.currentTableData.splice(i,1); 
       $scope.rowsSelected.splice(i,1); 
+      $scope.showSerialNo.splice(i,1);
+      $scope.holdeSerialNoInfo.splice(i,1);  
       --$scope.selectedRowsCount;      
     }
 
@@ -2762,16 +2794,21 @@ $scope.cancelConfigCol=function(column){
 $scope.saveConfigCol=function(column){
   if(column.document.isEditable){
     var i = $scope.currentProject.currentTable.columns.indexOf(column);      
-    $scope.saveSpinner=true;
+    nullifyCommonErrorInfo();
+    $scope.commonSpinner=true;
 
     tableService.saveTable(id,$scope.currentProject.currentTable)
     .then(function(table){ 
       $scope.editColumn[i]=false;      
       $scope.showColOptions[i]=false; 
-      $scope.saveSpinner=false;                             
+      $scope.commonSpinner=false; 
+      $scope.commonSaved=true;
+      $timeout(function(){ 
+        $scope.commonSaved=false;        
+      }, 800);                             
     },function(error){
-      $scope.saveSpinner=false;
-      errorNotify(error);  
+      $scope.commonSpinner=false;
+      $scope.commonError="Unable to add the column right now";      
     });      
   }
 };
@@ -2858,9 +2895,7 @@ function rowErrorMode(index,error){
   $scope.rowWarningMode[index]=false;
   $scope.rowErrorMode[index]=true;
   $scope.rowSpinnerMode[index]=false; 
-  $scope.rowSavedMode[index]=false;
-  //General Spinner
-  $scope.saveSpinner=false;
+  $scope.rowSavedMode[index]=false;  
 }
 
 function rowSpinnerMode(index){
@@ -2869,9 +2904,7 @@ function rowSpinnerMode(index){
   $scope.rowWarningMode[index]=false;
   $scope.rowErrorMode[index]=false;
   $scope.rowSpinnerMode[index]=true; 
-  $scope.rowSavedMode[index]=false;
-  //General Spinner
-  $scope.saveSpinner=true;
+  $scope.rowSavedMode[index]=false; 
 }
 
 function rowSavedMode(index){
@@ -2880,18 +2913,33 @@ function rowSavedMode(index){
   $scope.rowWarningMode[index]=false;
   $scope.rowErrorMode[index]=false;
   $scope.rowSpinnerMode[index]=false; 
-  $scope.rowSavedMode[index]=true;
-  //General Spinner
-  $scope.saveSpinner=false;
+  $scope.rowSavedMode[index]=true;  
+
+  //Update SerialNo Info  
+  $scope.showSerialNo=angular.copy($scope.holdeSerialNoInfo); 
 }
 
 $scope.flipCheckBox=function(index){
-  if(!$scope.showSerialNo[index] && !$scope.rowsSelected[index] && !$scope.rowErrorMode[index] && !$scope.rowSpinnerMode[index] && !$scope.rowWarningMode[index] && !$scope.rowSavedMode[index] && !$scope.rowEditMode[index]){
+  //Gather Info whatever(Order is important, this should be first)
+  if(!$scope.showSerialNo[index]){
+    $scope.holdeSerialNoInfo[index]=true;
+  }else if($scope.showSerialNo[index]){
+    $scope.holdeSerialNoInfo[index]=false;
+  }
+
+  if(!$scope.showSerialNo[index] && !$scope.rowsSelected[index]){
     $scope.showSerialNo[index]=true;
-  }else if($scope.showSerialNo[index] ){
+  }else if($scope.showSerialNo[index]){
     $scope.showSerialNo[index]=false;
-  }  
+  }    
 };
+
+function nullifyCommonErrorInfo(){
+  $scope.commonSpinner=false;
+  $scope.commonSaved=false;
+  $scope.commonError=null;
+  $scope.commonWarning=null;  
+}
 
 function showSaveIconInSecond(index){  
   rowSavedMode(index);
