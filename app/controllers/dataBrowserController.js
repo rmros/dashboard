@@ -2666,6 +2666,10 @@ $scope.addRow=function(){
   obj.set('updatedAt', new Date());     
   $scope.currentTableData.push(obj);
 
+  var index=$scope.currentTableData.indexOf(obj);
+  $scope.showSerialNo[index]=true;
+  $scope.holdeSerialNoInfo[index]=true;
+
   //Update Beacon
   if($scope.beacon && !$scope.beacon.firstRow){
     $scope.beacon.firstRow=true;
