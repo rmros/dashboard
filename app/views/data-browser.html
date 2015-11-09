@@ -1136,8 +1136,8 @@
                          <div ng-repeat="eachGeo in eachRow.document[column.name] track by $index">
                             <div class="list-geopoint">
                               <div>
-                                { <span>{{eachGeo.latitude}}</span>,&nbsp;
-                                <span>{{eachGeo.longitude}}</span> }
+                                { <span>{{eachGeo.longitude}}</span>,&nbsp;
+                                <span>{{eachGeo.latitude}}</span> }
                               </div>
                             </div>                         
 
@@ -1194,8 +1194,8 @@
                   <div ng-show="eachRow.document[column.name]" class="real-content geopoint-wrapper pull-left flex-general-row-wrapper-center"> 
 
                     <div  class="geopoint">
-                      { <span>{{eachRow.get(column.name).latitude}}</span>,&nbsp;
-                      <span>{{eachRow.get(column.name).longitude}}</span> }
+                      { <span>{{eachRow.get(column.name).longitude}}</span>,&nbsp;
+                      <span>{{eachRow.get(column.name).latitude}}</span> }
                     </div> 
                    
 
@@ -2537,8 +2537,11 @@
                       <div class="m-data-container cf" style="height:35px;">
 
                         <div class="m-real-content-cmn-types pull-left"> 
-                          <!--Diaply Mode-->
-                          <input ng-if="!relationShowInput[relCol.name]" type="text" value="*****" ng-click="holdRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name])" class="m-commontypes-aura" >
+                          <!--Display Mode when there is NO data-->
+                          <input ng-if="!relationShowInput[relCol.name] && !relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]" type="text"  ng-click="holdRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name])" class="m-commontypes-aura" >
+
+                          <!--Display Mode when there is a data-->
+                          <input ng-if="!relationShowInput[relCol.name] && relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name]" type="text" value="*****" ng-click="holdRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,relatedTableRecordArray[relatedTableRecordArray.length-1].document[relCol.name])" class="m-commontypes-aura" >
 
                           <!--Edit Mode-->
                           <input focus-on="{{relCol.name}}relcol" ng-if="relationShowInput[relCol.name]" type="text" ng-model="relationHoldData[column.name]" ng-blur="setRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,relationHoldData[column.name])" class="m-commontypes-aura">
@@ -2699,8 +2702,8 @@
 
                         <div class="m-real-geopoint pull-left">
                           <div class="m-geopoint">
-                            { <span>{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).latitude}}</span>,&nbsp;
-                            <span>{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).longitude}}</span> }
+                            { <span>{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).longitude}}</span>,&nbsp;
+                            <span>{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).latitude}}</span> }
                           </div>                           
 
                         </div>
@@ -2853,8 +2856,8 @@
 
                             <div class="m-relationid id-show" ng-click="showRelationList(relatedTableRecordArray[relatedTableRecordArray.length-1],relCol,'modify',eachGeopoint,$index)">
                               <div>
-                                { <span>{{eachGeopoint.latitude}}</span>,&nbsp;
-                                <span>{{eachGeopoint.longitude}}</span> }
+                                { <span>{{eachGeopoint.longitude}}</span>,&nbsp;
+                                <span>{{eachGeopoint.latitude}}</span> }
                               </div>  
                             </div>
 
@@ -4039,8 +4042,8 @@
 
                   <div class="m-relationid id-show" ng-click="editListGeoPoint($index)">
                     <div ng-click="editListGeoPoint($index)">
-                      { <span>{{eachGeopoint.latitude}}</span>,&nbsp;
-                      <span>{{eachGeopoint.longitude}}</span> }
+                      { <span>{{eachGeopoint.longitude}}</span>,&nbsp;
+                      <span>{{eachGeopoint.latitude}}</span> }
                     </div>  
                   </div>
 

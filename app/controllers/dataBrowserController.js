@@ -1405,6 +1405,7 @@ $scope.setRelationData=function(cloudObject,column,data){
       $scope.relationShowInput[column.name]=false;
     }else if(!$scope.relationError[column.name]){
       cloudObject.set(column.name,data);
+      $scope.relationShowInput[column.name]=false;
     }
     $scope.nullAccepted=true;      
   }else if(column.document.dataType=="List"){//List
