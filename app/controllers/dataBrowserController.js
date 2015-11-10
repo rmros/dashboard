@@ -2468,7 +2468,8 @@ $scope.addColumn = function(valid) {
     $('#scrollbar-wrapper').scrollTo('#extra-col-th',400,{axis:'x',duration:5000}); 
 
     tableService.saveTable($rootScope.currentProject.currentTable)
-    .then(function(table){  
+    .then(function(table){
+      $rootScope.currentProject.currentTable=table;  
       $('#scrollbar-wrapper').scrollTo('#extra-col-th',400,{axis:'x',duration:5000});       
       $scope.newColumnObj=null;
       $scope.commonSpinner=false; 
