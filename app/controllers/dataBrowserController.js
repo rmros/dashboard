@@ -16,7 +16,8 @@ $resource,
 $timeout,
 $filter,
 focus,
-beaconService) {
+beaconService,
+filterService) {
 
 //Init
 var id;
@@ -27,9 +28,16 @@ $rootScope.isFullScreen=true;
 //Column specific
 $scope.showColOptions=[];
 $scope.showHiddenColList=false;
+$scope.showFilterList=false;
 $scope.showAddColPopUp=false;
 $scope.hideColumn=[];
 $scope.editColumn=[];
+$scope.filtersList=[{
+  contriant:"Where",
+  column:null, 
+  filter:null,
+  value:null
+}];
 
 /***Errors,Spinners,Warnings,SavedTick***/
 //Array Types
@@ -110,7 +118,9 @@ $scope.init = function() {
   }
 
   //get beacon
-  getBeacon();     
+  getBeacon();
+  //Get FilterTypes
+  $scope.filterTypes=filterService.getFilterTypes();     
 };
 
 $scope.loadTableData = function(t,orderBy,orderByType,limit,skip) {          
@@ -2803,6 +2813,14 @@ $scope.toggleHiddenColShow=function(){
   
 };
 
+$scope.toggleFilterShow=function(){
+  if($scope.showFilterList==true){
+    $scope.showFilterList=false;
+  }else if($scope.showFilterList==false){
+    $scope.showFilterList=true;
+  }  
+};
+
 $scope.editThisColumn=function(column){
   var i = $scope.currentProject.currentTable.columns.indexOf(column);       
   $scope.editColumn[i]=true;
@@ -2990,6 +3008,12 @@ $scope.closeTableMenu=function(){
 $scope.closeHideColBox=function(){
   if($scope.showHiddenColList==true){
     $scope.showHiddenColList=false;
+  }
+};
+
+$scope.closeFilterBox=function(){
+  if($scope.showFilterList==true){
+    $scope.showFilterList=false;
   }
 };
 

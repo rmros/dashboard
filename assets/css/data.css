@@ -1775,6 +1775,18 @@
     border-right: 1px solid #DBDBDB;
     border-bottom: 1px solid #DBDBDB;    
 }
+
+.hidden-col-container-filter{
+    position: absolute; 
+    z-index: 9;   
+    background-color: white;
+    width: 498.7px;
+    top: -2.6px; 
+    border-top: 1px solid #DBDBDB;
+    border-left: 1px solid #DBDBDB;
+    border-right: 1px solid #DBDBDB;
+    border-bottom: 1px solid #DBDBDB;    
+}
 .hidden-col-short-btnwrapper{
     padding: 7px;
 }
@@ -1794,8 +1806,25 @@
     margin-top: 8px; 
     padding-bottom: 5px;   
 }
+.list-hidden-col-wrapper-filter{
+    width: 498.2px;   
+    height:120px;
+    margin-top: 8px; 
+    padding-bottom: 5px;   
+}
 .list-hidden-col-container{
     width: 180px;      
+}
+
+.list-hidden-col-container-filter{
+    width: 475px;
+    padding-left: 15px;
+    margin-top: 3px;
+}
+.filter-item{
+    height:26px;
+    border-radius: 3px;
+    border: 1px solid #E2E0E0;
 }
 
 .hidden-col-chbx-div{
@@ -2322,4 +2351,22 @@
 .cb-md-custom-width {
   width: 46%;
   max-width: none;
+}
+.hide-col-btn-group{
+    margin-left: 1.5px;
+}
+
+.filter-select{
+    border: none;
+    width: 100%;
+    height:100%;
+}
+.filter-select:focus{
+    outline: 0;  
+}
+.constraint-select{
+    background-color:#F5F5F5;
+}
+.column-select{
+    padding-left: 12px;    
 }

@@ -113,6 +113,7 @@
           <i class="fa fa-trash-o"></i>
         Delete rows
         </button>
+        <!--/Delete rows-->
 
         <!--Hide columns-->
         <div class="hide-col-btn-group">
@@ -167,6 +168,97 @@
           </div>            
           
         </div>
+        <!--/Hide columns-->
+
+        <!--Filter columns-->
+        <div class="hide-col-btn-group">
+          <!--Button-->
+          <button type="button" id="filter-hide-col-btn-id" class="hide-col-btn" ng-click="toggleFilterShow()">
+            <div class="pull-left">
+              <div style="margin-left:10px;" ng-class='{hiddencolindicator : hiddenColumnCount>0}'>
+                <i class="fa fa-filter"></i>&nbsp;                             
+                <span>Filters</span>               
+              </div>           
+            </div>
+            <div class="pull-right"> 
+              <span class="caret"></span>
+            </div>
+          </button>
+          <!--Button-->
+
+          <div class="hidden-col-wrapper" ng-show="showFilterList" id="filter-hide-col-box" click-outside="closeFilterBox()" outside-if-not="filter-hide-col-btn-id">
+            <div class="hidden-col-container-filter">              
+              <!--show all and hide all button-->
+              <div class="hidden-col-short-btnwrapper" style="width:89%;">
+                <div>
+                  <button type="button" style="width:99.99%" class="hidden-col-short-btn">Add Filter</button>
+                </div>
+              </div>
+              <!--/show all and hide all button-->
+                
+              <!--columns which are hidden-->
+              <div class="list-hidden-col-wrapper-filter" malihuscrollbar-for-popup>
+
+                <div class="list-hidden-col-container-filter">
+
+                  <div ng-repeat="eachFilter in filtersList" class="filter-item flex-general-row-wrapper"> 
+
+                    <!--Constraint-->
+                    <div style="width:63px;background-color:#F5F5F5;height:24px;border-right:1px solid #E2E0E0;">
+                      <!--First-->
+                      <select ng-if="filtersList.length==1" class="filter-select constraint-select" ng-model="eachFilter.contriant">
+                        <option ng-selected="eachFilter.contriant=='Where'" value="Where">Where</option>                 
+                      </select>
+                      <!--/First-->
+
+                      <!--More Than One-->
+                      <select ng-if="filtersList.length>1" class="filter-select constraint-select" ng-model="eachFilter.contriant">
+                        <option ng-selected="eachFilter.contriant=='And'" value="And">And</option>
+                        <option ng-selected="eachFilter.contriant=='Or'" value="Or">Or</option>
+                      </select> 
+                      <!--/More Than One--> 
+                    </div> 
+                    <!--/Constraint-->
+
+                    <!--Column Name-->
+                    <div style="width:123px;height:24px;border-right:1px solid #E2E0E0;">
+                      <select  class="filter-select column-select" ng-model="eachFilter.column">
+                        <option ng-repeat="column in currentProject.currentTable.columns" ng-selected="eachFilter.column.name=column.name" value="column">{{column.name}}</option>
+                      </select>
+                    </div>
+                    <!--/Column Name-->
+
+                    <!--Filter-->
+                    <div style="width:100px;height:24px;border-right:1px solid #E2E0E0;">
+                      <div>
+                        <select  class="filter-select column-select">
+                          <option></option>
+                        </select>
+                      </div>
+                    </div>
+                    <!--/Filter-->
+
+                    <!--Value-->
+                    <div>
+                    </div>
+                    <!--/Value-->
+
+                    <!--Delete-->
+                    <div>
+                    </div>
+                    <!--/Delete-->                
+                  </div>                                    
+
+                </div>             
+
+              </div> 
+              <!--/columns which are hidden-->  
+
+            </div>
+          </div>            
+          
+        </div>
+        <!--/Filter columns-->
 
       </div>
       <div class="table-strip-info flex-general-row-wrapper pull-right cf">          
