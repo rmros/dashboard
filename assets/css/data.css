@@ -1751,7 +1751,7 @@
     margin-right: 23px;
 }
 
-.hide-col-btn{
+.hide-col-btn,.filter-hide-col-btn{
     background-color: white;
     color: black;
     border: 1px solid #DBDBDB;
@@ -1761,7 +1761,13 @@
 .hide-col-btn:focus{
     outline: none;    
 }
+.filter-hide-col-btn:focus{
+    outline: none;    
+}
 .hidden-col-wrapper{
+    position: relative;    
+}
+.filter-hidden-col-wrapper{
     position: relative;    
 }
 .hidden-col-container{
@@ -1780,7 +1786,7 @@
     position: absolute; 
     z-index: 9;   
     background-color: white;
-    width: 498.7px;
+    width: 598.7px;
     top: -2.6px; 
     border-top: 1px solid #DBDBDB;
     border-left: 1px solid #DBDBDB;
@@ -1789,6 +1795,12 @@
 }
 .hidden-col-short-btnwrapper{
     padding: 7px;
+}
+.filter-short-btnwrapper{
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 13px;
+    padding-right: 9px;
 }
 .hidden-col-short-btn{
     background-color: white;
@@ -1807,7 +1819,7 @@
     padding-bottom: 5px;   
 }
 .list-hidden-col-wrapper-filter{
-    width: 498.2px;   
+    width: 598.2px;   
     height:120px;
     margin-top: 8px; 
     padding-bottom: 5px;   
@@ -1817,7 +1829,7 @@
 }
 
 .list-hidden-col-container-filter{
-    width: 475px;
+    width: 575px;
     padding-left: 15px;
     margin-top: 3px;
 }
@@ -1825,6 +1837,7 @@
     height:26px;
     border-radius: 3px;
     border: 1px solid #E2E0E0;
+    margin-top: 3px;
 }
 
 .hidden-col-chbx-div{
@@ -2352,7 +2365,7 @@
   width: 46%;
   max-width: none;
 }
-.hide-col-btn-group{
+.hide-col-btn-group,.filter-hide-col-btn-group{
     margin-left: 1.5px;
 }
 
@@ -2369,4 +2382,31 @@
 }
 .column-select{
     padding-left: 12px;    
+}
+.filterValueTxt{
+    border: none;
+    width: 99.99%;
+    height:100%;
+    padding-left: 2px;
+    padding-right: 1px;    
+}
+.filterValueTxt:focus{
+    outline: 0;  
+}
+.filterdel{
+    width: 25px;
+}
+.geo-filter-txt{
+    border: none; 
+    padding-left: 1.5px;  
+}
+.geo-filter-txt:focus{
+    outline: 0;  
+}
+.list-filter-txt{
+    border: none !important;
+    padding-left: 1.5px
+}
+.list-filter-txt:focus{
+    outline: 0;  
 }

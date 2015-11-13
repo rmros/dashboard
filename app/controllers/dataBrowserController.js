@@ -32,12 +32,8 @@ $scope.showFilterList=false;
 $scope.showAddColPopUp=false;
 $scope.hideColumn=[];
 $scope.editColumn=[];
-$scope.filtersList=[{
-  contriant:"Where",
-  column:null, 
-  filter:null,
-  value:null
-}];
+$scope.filtersList=[];
+$scope.filterSpinner=[];
 
 /***Errors,Spinners,Warnings,SavedTick***/
 //Array Types
@@ -180,6 +176,23 @@ $scope.queryTableByName = function(tableName) {
   var q=$q.defer();
     
     var query = new CB.CloudQuery(tableName);       
+    query.find({
+    success : function(records){ 
+      q.resolve(records);                 
+
+    }, error : function(error){                
+      q.reject(error);
+    }}); 
+
+  return  q.promise;           
+};
+
+$scope.filterQuery = function(table,filterList) {          
+  var q=$q.defer();    
+
+    //Add Filters To query(Private function to loop over)     
+    var query=addFiltersToQuery(table,filterList); 
+
     query.find({
     success : function(records){ 
       q.resolve(records);                 
@@ -2335,9 +2348,24 @@ function getProjectTables(){
       $rootScope.currentProject.currentTable= _.first(_.where($rootScope.currentProject.tables, {name: tableName}));      
     }
 
+    var templColumn=angular.copy($rootScope.currentProject.currentTable.columns);
     for(var i=0;i<$rootScope.currentProject.currentTable.columns.length;++i){
       $scope.hideColumn[i]=true;
-    }
+    }    
+    //For Filters
+    var column=_.first(_.where(templColumn, {name: "createdAt",dataType:"DateTime"}));
+    var defaultFilterColumn={
+      contriant:"And",
+      colName:column.name, 
+      colDataType:column.dataType,
+      colRelatedTo:column.relatedTo,
+      filter:null,
+      value:null,
+      longitude:null,
+      latitude:null,
+      arrayValue:[]
+    };
+    $scope.filtersList.push(defaultFilterColumn);
 
     return $scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0);
 
@@ -2479,6 +2507,7 @@ $scope.addColumn = function(valid) {
 
     tableService.saveTable($rootScope.currentProject.currentTable)
     .then(function(table){  
+      $rootScope.currentProject.currentTable=table; 
       $('#scrollbar-wrapper').scrollTo('#extra-col-th',400,{axis:'x',duration:5000});       
       $scope.newColumnObj=null;
       $scope.commonSpinner=false; 
@@ -3011,19 +3040,199 @@ $scope.closeHideColBox=function(){
   }
 };
 
-$scope.closeFilterBox=function(){
-  if($scope.showFilterList==true){
-    $scope.showFilterList=false;
-  }
-};
-
 $scope.closeColConfig=function(index){
   $scope.showColOptions[index]=false;
 };
 $scope.closeAddCol=function(){
   $scope.showAddColPopUp=false;
 };
+
+$scope.closeFilterBox=function(){
+  if($scope.showFilterList==true){
+    $scope.showFilterList=false;
+  }
+};
+$scope.addFilter=function(){
+  var newFilterColumn={
+    contriant:"And",
+    colName:null, 
+    colDataType:null,
+    colRelatedTo:null,
+    filter:null,
+    value:null,
+    longitude:null,
+    latitude:null,
+    arrayValue:[]
+  };
+
+  $scope.filtersList.push(newFilterColumn);  
+};
+
+$scope.removeFilter=function(index){
+  
+  $scope.filtersList.splice(index,1);
+
+  $scope.filterSpinner[index]=true; 
+  $scope.filterQuery($rootScope.currentProject.currentTable,$scope.filtersList)
+  .then(function(cbObjects){   
+    $scope.currentTableData=cbObjects; 
+    $scope.filterSpinner[index]=false;                                         
+  },
+  function(error){ 
+    $scope.filterSpinner[index]=false; 
+    errorNotify('We cannot load your project at this point in time. Please try again later.');        
+  });
+    
+};
+
+$scope.popUpFilterTypes=function(eachFilter,index){
+  var templColumn=angular.copy($rootScope.currentProject.currentTable.columns);
+  var column=_.first(_.where(templColumn, {name: eachFilter.colName}));
+
+  $scope.filtersList[index].colDataType=column.dataType;
+  $scope.filtersList[index].colRelatedTo=column.relatedTo;
+
+  if(eachFilter.colDataType!="Boolean" && (!eachFilter.value || eachFilter.value=="false")){
+    eachFilter.value=null;
+  }
+  if(eachFilter.colDataType=="Boolean" && (eachFilter.value!=true && eachFilter.value!=null)){
+    eachFilter.value=false;
+  }else if(eachFilter.colDataType=="Boolean" && (eachFilter.value!=true && eachFilter.value!=false)){
+    eachFilter.value=null;
+  }
+ 
+  //DateTime
+  if(eachFilter.colDataType=="DateTime" && eachFilter.value){
+    eachFilter.value = new Date(eachFilter.value);
+  }
+
+  if(((eachFilter.value || eachFilter.colDataType=="Boolean")  && eachFilter.filter && eachFilter.colName)|| eachFilter.filter=="exists"|| eachFilter.filter=="doesNotExists"){
+    $scope.filterSpinner[index]=true;
+    $scope.filterQuery($rootScope.currentProject.currentTable,$scope.filtersList)
+    .then(function(cbObjects){   
+      $scope.currentTableData=cbObjects; 
+      $scope.filterSpinner[index]=false;                                          
+    },
+    function(error){ 
+      $scope.filterSpinner[index]=false;
+      errorNotify('We cannot load your project at this point in time. Please try again later.');        
+    });
+  }  
+
+};
+
 //End Toggling popups
+
+function addFiltersToQuery(table,filterList){
+    var currentQuery = new CB.CloudQuery(table.name);
+    for(var i=0;i<filterList.length;++i){
+
+      if(filterList[i].contriant=="And"){ 
+        if(filterList[i].filter=="equalTo"){
+          currentQuery.equalTo(filterList[i].colName, filterList[i].value); 
+        }
+        if(filterList[i].filter=="notEqualTo"){
+          currentQuery.notEqualTo(filterList[i].colName, filterList[i].value); 
+        } 
+        if(filterList[i].filter=="containedIn"){
+          currentQuery.containedIn(filterList[i].colName, filterList[i].arrayValue); 
+        } 
+        if(filterList[i].filter=="containsAll"){
+          currentQuery.containsAll(filterList[i].colName, filterList[i].arrayValue); 
+        } 
+        if(filterList[i].filter=="notContainedIn"){
+          currentQuery.notContainedIn(filterList[i].colName, filterList[i].arrayValue); 
+        } 
+        if(filterList[i].filter=="greaterThan"){
+          currentQuery.greaterThan(filterList[i].colName, filterList[i].value); 
+        } 
+        if(filterList[i].filter=="greaterThanEqualTo"){
+          currentQuery.greaterThanEqualTo(filterList[i].colName, filterList[i].value); 
+        }
+        if(filterList[i].filter=="lessThan"){
+          currentQuery.lessThan(filterList[i].colName, filterList[i].value); 
+        } 
+        if(filterList[i].filter=="lessThanEqualTo"){
+          currentQuery.lessThanEqualTo(filterList[i].colName, filterList[i].value); 
+        } 
+        if(filterList[i].filter=="startsWith"){
+          currentQuery.startsWith(filterList[i].colName, filterList[i].value); 
+        } 
+        if(filterList[i].filter=="exists"){
+          currentQuery.exists(filterList[i].colName); 
+        } 
+        if(filterList[i].filter=="doesNotExists"){
+          currentQuery.doesNotExists(filterList[i].colName); 
+        } 
+        if(filterList[i].filter=="near"){
+          filterList[i].longitude=parseInt(filterList[i].longitude);
+          filterList[i].latitude=parseInt(filterList[i].latitude);
+          filterList[i].value=parseInt(filterList[i].value);
+
+          var loc = new CB.CloudGeoPoint(filterList[i].longitude,filterList[i].latitude);
+          currentQuery.near(filterList[i].colName,loc, filterList[i].value); 
+        }
+        if(filterList[i].filter=="geoWithin"){
+          //currentQuery.geoWithin(filterList[i].colName, filterList[i].value); 
+        }    
+      }
+
+      if(filterList[i].contriant=="Or"){   
+        var query = new CB.CloudQuery(table.name); 
+
+        if(filterList[i].filter=="equalTo"){
+          query.equalTo(filterList[i].colName, filterList[i].value); 
+        }
+        if(filterList[i].filter=="notEqualTo"){
+          query.notEqualTo(filterList[i].colName, filterList[i].value); 
+        } 
+        if(filterList[i].filter=="containedIn"){
+          query.containedIn(filterList[i].colName, filterList[i].arrayValue); 
+        } 
+        if(filterList[i].filter=="containsAll"){
+          query.containsAll(filterList[i].colName, filterList[i].arrayValue); 
+        } 
+        if(filterList[i].filter=="notContainedIn"){
+          query.notContainedIn(filterList[i].colName, filterList[i].arrayValue); 
+        } 
+        if(filterList[i].filter=="greaterThan"){
+          query.greaterThan(filterList[i].colName, filterList[i].value); 
+        } 
+        if(filterList[i].filter=="greaterThanEqualTo"){
+          query.greaterThanEqualTo(filterList[i].colName, filterList[i].value); 
+        }
+        if(filterList[i].filter=="lessThan"){
+          query.lessThan(filterList[i].colName, filterList[i].value); 
+        } 
+        if(filterList[i].filter=="lessThanEqualTo"){
+          query.lessThanEqualTo(filterList[i].colName, filterList[i].value); 
+        } 
+        if(filterList[i].filter=="startsWith"){
+          query.startsWith(filterList[i].colName, filterList[i].value); 
+        } 
+        if(filterList[i].filter=="exists"){
+          query.exists(filterList[i].colName); 
+        } 
+        if(filterList[i].filter=="doesNotExists"){
+          query.doesNotExists(filterList[i].colName); 
+        } 
+        if(filterList[i].filter=="near"){
+          filterList[i].longitude=parseInt(filterList[i].longitude);
+          filterList[i].latitude=parseInt(filterList[i].latitude);
+          filterList[i].value=parseInt(filterList[i].value);
+
+          var loc = new CB.CloudGeoPoint(filterList[i].longitude,filterList[i].latitude);
+          currentQuery.near(filterList[i].colName,loc, filterList[i].value); 
+        }
+        if(filterList[i].filter=="geoWithin"){
+          //query.geoWithin(filterList[i].colName, filterList[i].value); 
+        }
+        currentQuery = CB.CloudQuery.or(currentQuery, query);
+      }    
+    }
+
+    return currentQuery;
+}
 
 $scope.goToDocumentation=function(){
   //Update Beacon
