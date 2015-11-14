@@ -173,7 +173,7 @@
         <!--Filter columns-->
         <div class="filter-hide-col-btn-group">
           <!--Button-->
-          <button type="button" id="filterbtn-id" class="filter-hide-col-btn" ng-click="toggleFilterShow()">
+          <button type="button" id="filterbtnid" class="filter-hide-col-btn" ng-click="toggleFilterShow()">
             <div class="pull-left">
               <div style="margin-left:10px;" ng-class='{hiddencolindicator : filtersList.length>1}'>
                 <i class="fa fa-filter"></i>&nbsp;                             
@@ -186,7 +186,7 @@
           </button>
           <!--Button-->
 
-          <div class="filter-hidden-col-wrapper" ng-show="showFilterList" id="filtercol-box" click-outside="closeFilterBox()" outside-if-not="filterbtn-id">
+          <div class="filter-hidden-col-wrapper" ng-show="showFilterList" id="filtercol-box" click-outside="closeFilterBox()" outside-if-not="filterbtnid">
             <div class="hidden-col-container-filter">              
               <!--show all and hide all button-->
               <div class="filter-short-btnwrapper" style="width:89%;">
@@ -197,11 +197,12 @@
               <!--/show all and hide all button-->
                 
               <!--columns which are hidden-->
-              <div class="list-hidden-col-wrapper-filter" malihuscrollbar-for-popup>
+              <div class="list-hidden-col-wrapper-filter">
 
-                <div class="list-hidden-col-container-filter">
+                <div ng-repeat="eachFilter in filtersList" class="list-hidden-col-container-filter" style="">                
 
-                  <div ng-repeat="eachFilter in filtersList" class="filter-item flex-general-row-wrapper"> 
+                    <!--Each Box-->
+                    <div class="filter-item flex-general-row-wrapper">
 
                     <!--Constraint-->
                     <div style="width:63px;background-color:#F5F5F5;height:24px;border-right:1px solid #E2E0E0;">
@@ -271,17 +272,17 @@
                           <div ng-show="eachFilter.colDataType=='GeoPoint' && eachFilter.filter=='near'" class="flex-general-row-wrapper">
                             <!--Longititude-->
                             <div style="width:35%;height:100%;;padding-top:1px;border-right:1px solid #DDDDDD;">
-                              <input type="text"  class="geo-filter-txt" ng-model="eachFilter.longitude"  placeholder="Longitude" style="width:99.99%;">
+                              <input type="text"  class="geo-filter-txt" ng-model="eachFilter.longitude"  placeholder="Longitude" style="width:99.99%;" ng-change="popUpFilterTypes(eachFilter,$index)">
                             </div>
 
                             <!--Latitude-->
                             <div style="width:35%;height:100%;padding-top:1px;border-right:1px solid #DDDDDD;">
-                              <input type="text"  class="geo-filter-txt" ng-model="eachFilter.latitude"  placeholder="Latitude" style="width:99.99%;">
+                              <input type="text"  class="geo-filter-txt" ng-model="eachFilter.latitude"  placeholder="Latitude" style="width:99.99%;" ng-change="popUpFilterTypes(eachFilter,$index)">
                             </div>
 
                             <!--Value-->
                             <div style="width:30%;height:100%;;padding-top:1px;border-right:1px solid #DDDDDD;">
-                              <input type="text" class="geo-filter-txt" ng-model="eachFilter.value"  placeholder="Dist(m)" style="width:99.99%;">
+                              <input type="text" class="geo-filter-txt" ng-model="eachFilter.value"  placeholder="Dist(m)" style="width:99.99%;" ng-change="popUpFilterTypes(eachFilter,$index)">
                             </div>  
                           </div>
                           <!--/GeoPoint-->
@@ -289,22 +290,75 @@
                         </div>
 
                         <!--Array of Items-->
-                        <div ng-show="eachFilter.colDataType=='List'" style="width:99.99%;height:100%;border:1px solid #4892F9;" class="flex-general-row-wrapper">
+                        <div ng-show="eachFilter.colDataType=='List'" style="width:99.99%;height:100%;border:1px solid #4892F9;position:relative !important;">
+
+                          <!--Defaultview-->
                           <div class="flex-general-row-wrapper" style="width:99.99%;height:100%;border-right:1px solid #DDDDDD;">
 
                             <!--Plus-->
                             <div style="width:10%;height:100%;" class="flex-general-column-wrapper-center">
-                              <i class="fa fa-plus"></i>
+                              <i class="fa fa-plus filterlistoflistaddbtn"  ng-click="addNewFilterListValue(eachFilter,$index)"></i>
                             </div> 
 
                             <!--Content-->
                             <div style="width:89%;height:100%;border-left:1px solid #DDDDDD;padding-top:1.5px;">
-                              <input type="text" ng-model="eachFilter.value" style="width:99.99%;" placeholder="Value" class="list-filter-txt">
+
+                              <!--Diplay-->
+                              <div  ng-show="!filterListOfList[$index] && eachFilter.arrayValue.length>0" class="flex-general-row-wrapper" style="width:100%;overflow:hidden;height:19px;">
+
+                                <div ng-repeat="item in eachFilter.arrayValue track by $index"  style="height:17px;background-color:#E0EDFF;border-radius:2px;margin-left:5px;padding-left:3px;padding-right:3px;" ng-click="addNewFilterListValue(eachFilter,$index)" class="filterlistoflistaddbtn">           
+                                  {{item}}                 
+                                </div>
+
+                              </div>
+                                
+                              <!--Edit Mode-->  
+                              <div  class="filterlistoflistaddbtn" ng-show="filterListOfList[$index] || eachFilter.arrayValue.length==0">
+                                <!--Text,Number,Email,URL-->   
+                                <div ng-show="eachFilter.colRelatedTo!='Boolean'"> 
+                                  <input type="text" ng-model="eachFilter.value" style="width:99.99%;" placeholder="Value" class="list-filter-txt">
+                                </div>
+
+                                <!--Boolean-->   
+                                <div ng-show="eachFilter.colRelatedTo=='Boolean'" class="flex-general-column-wrapper-center"> 
+                                  <input type="checkbox" ng-model="eachFilter.value" style="margin-top:2px;">
+                                </div>
+
+                              </div>
                             </div> 
 
                           </div>
-                           
-                        </div>  
+                          <!--/Defaultview-->
+
+                          <!--DropDownList-->
+                          <div ng-show="filterListOfList[$index]" class="listfilter-bx filterlistoflisbx" style="background-color:white;" click-outside="closeFilterListOfListBox($index)" outside-if-not="filterlistoflistaddbtn">
+
+                            <div ng-repeat="item in eachFilter.arrayValue track by $index" class="flex-general-row-wrapper" style="height:24px;width:99.98%;border-bottom:1px solid #DDDDDD;">
+
+                              <!--Minus-->
+                              <div style="width:10%;height:100%;" class="flex-general-column-wrapper-center">
+                                <i class="fa fa-minus" ng-click="removeFilterListValue($parent.$index,$index)"></i>
+                              </div> 
+
+                              <!--Content-->
+                              <div style="width:89%;height:100%;border-left:1px solid #DDDDDD;padding-top:1.5px;">
+                                <!--Text,Number,Email,URL-->
+                                <div ng-show="eachFilter.colRelatedTo!='Boolean'">
+                                   <input type="text" ng-model="item" style="width:99.99%;" placeholder="Value" class="list-filter-txt">
+                                </div>
+
+                                <!--Boolean-->
+                                <div ng-show="eachFilter.colRelatedTo=='Boolean'" class="flex-general-column-wrapper-center">
+                                   <input type="checkbox" ng-model="item" style="margin-top:2px;">
+                                </div>
+                              </div>
+
+                            </div>
+
+                          </div>
+                          <!--/DropDownList-->                                                                                  
+
+                        </div>                             
                        
                       </div>
 
@@ -319,13 +373,12 @@
                         <i class="icon ion-close" ng-click="removeFilter($index)"></i>
                     </div>
                     <!--/Remove-->                
-                  </div>                                    
+                  </div>
+                  <!--/Each Box-->                                    
 
                 </div> 
-
-
               </div> 
-              <!--/columns which are hidden-->               
+              <!--/columns which are hidden-->                                         
 
             </div>
           </div>            

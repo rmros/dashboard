@@ -1820,10 +1820,13 @@
 }
 .list-hidden-col-wrapper-filter{
     width: 598.2px;   
-    height:120px;
+    height:auto;
+    min-height: 140px;
+    max-height: 400px;
     margin-top: 8px; 
-    padding-bottom: 5px;   
+    padding-bottom: 10px;
 }
+
 .list-hidden-col-container{
     width: 180px;      
 }
@@ -1832,6 +1835,8 @@
     width: 575px;
     padding-left: 15px;
     margin-top: 3px;
+    height: auto !important;
+    
 }
 .filter-item{
     height:26px;
@@ -2409,4 +2414,14 @@
 }
 .list-filter-txt:focus{
     outline: 0;  
+}
+
+.listfilter-bx{    
+    height:140px !important;
+    width:101%; 
+    left:-1px;   
+    position: absolute !important;
+    z-index: 10 !important;     
+    border:1px solid #4892F9 !important; 
+    overflow: auto;
 }

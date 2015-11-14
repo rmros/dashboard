@@ -34,6 +34,7 @@ $scope.hideColumn=[];
 $scope.editColumn=[];
 $scope.filtersList=[];
 $scope.filterSpinner=[];
+$scope.filterListOfList=[];
 
 /***Errors,Spinners,Warnings,SavedTick***/
 //Array Types
@@ -3106,7 +3107,16 @@ $scope.popUpFilterTypes=function(eachFilter,index){
     eachFilter.value = new Date(eachFilter.value);
   }
 
-  if(((eachFilter.value || eachFilter.colDataType=="Boolean")  && eachFilter.filter && eachFilter.colName)|| eachFilter.filter=="exists"|| eachFilter.filter=="doesNotExists"){
+  //List&Number
+  if(eachFilter.colDataType=="List" && eachFilter.colRelatedTo=="Number"){
+    for(var i=0;i<eachFilter.arrayValue.length;++i){
+      if(typeof eachFilter.arrayValue[i]=="String"){
+        eachFilter.arrayValue[i]=parseInt(eachFilter.arrayValue[i]);
+      }
+    }
+  }  
+
+  if(((eachFilter.value || eachFilter.arrayValue.length>0 || eachFilter.colDataType=="Boolean")  && eachFilter.filter && eachFilter.colName)|| eachFilter.filter=="exists"|| eachFilter.filter=="doesNotExists"){
     $scope.filterSpinner[index]=true;
     $scope.filterQuery($rootScope.currentProject.currentTable,$scope.filtersList)
     .then(function(cbObjects){   
@@ -3122,6 +3132,32 @@ $scope.popUpFilterTypes=function(eachFilter,index){
 };
 
 //End Toggling popups
+
+$scope.addNewFilterListValue=function(eachFilter,index){
+  if(eachFilter.value){
+    $scope.filtersList[index].arrayValue.push(eachFilter.value);
+    eachFilter.value=null;    
+    $scope.filterListOfList[index]=true;
+    $scope.popUpFilterTypes(eachFilter,index);
+  }
+
+  if(!eachFilter.value && eachFilter.arrayValue.length>0){
+    $scope.filterListOfList[index]=true;
+  }
+};
+
+$scope.removeFilterListValue=function(parentIndex,childIndex){
+  $scope.filtersList[parentIndex].arrayValue.splice(childIndex,1);
+  if($scope.filtersList[parentIndex].arrayValue.length==0){
+    $scope.filterListOfList[parentIndex]=false;
+  }
+};
+
+$scope.closeFilterListOfListBox=function(index){
+  if($scope.filterListOfList[index]==true){
+    $scope.filterListOfList[index]=false;
+  }
+};
 
 function addFiltersToQuery(table,filterList){
     var currentQuery = new CB.CloudQuery(table.name);
