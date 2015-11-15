@@ -3,18 +3,19 @@
     return {
         restrict: 'A',
         link: function(scope, element, attrs){
-            $(element).hover(function(){
-            	var index=$(this).data("index");
-            	var targetScope=angular.element($(".fixedTd")).scope();
-		        targetScope.showSerialNo[index]=true;
-		        targetScope.$digest();
-		    }, function(){
-		        var index=$(this).data("index");		
-		      	var targetScope=angular.element($(".fixedTd")).scope();
-		        targetScope.showSerialNo[index]=false;
-		        targetScope.$digest();
-		    });   	         
+            $(element).datetimepicker();   	         
         }
     };
 });
 */
+
+app.directive('datetimepicker', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){
+            $(element).datetimepicker({format:"Y-m-d H:i:s",
+            	closeOnDateSelect:false
+        	});   	         
+        }
+    };
+});

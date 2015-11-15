@@ -1786,7 +1786,7 @@
     position: absolute; 
     z-index: 9;   
     background-color: white;
-    width: 598.7px;
+    width: 618.7px;
     top: -2.6px; 
     border-top: 1px solid #DBDBDB;
     border-left: 1px solid #DBDBDB;
@@ -1799,8 +1799,8 @@
 .filter-short-btnwrapper{
     padding-top: 7px;
     padding-bottom: 7px;
-    padding-left: 13px;
-    padding-right: 9px;
+    padding-left:3px;
+    padding-right: 10px;
 }
 .hidden-col-short-btn{
     background-color: white;
@@ -1825,6 +1825,7 @@
     max-height: 400px;
     margin-top: 8px; 
     padding-bottom: 10px;
+    overflow: hidden;    
 }
 
 .list-hidden-col-container{
@@ -1832,7 +1833,7 @@
 }
 
 .list-hidden-col-container-filter{
-    width: 575px;
+    width: 598px;
     padding-left: 15px;
     margin-top: 3px;
     height: auto !important;

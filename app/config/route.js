@@ -113,5 +113,3 @@ app.filter('getTextFromArray', function() {
     
   }
 });
-
-
