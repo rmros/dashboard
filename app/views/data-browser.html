@@ -113,6 +113,7 @@
           <i class="fa fa-trash-o"></i>
         Delete rows
         </button>
+        <!--/Delete rows-->
 
         <!--Hide columns-->
         <div class="hide-col-btn-group">
@@ -167,6 +168,271 @@
           </div>            
           
         </div>
+        <!--/Hide columns-->
+
+        <!--Filter columns-->
+        <div class="filter-hide-col-btn-group">
+          <!--Button-->
+          <button type="button"  class="filter-hide-col-btn filterbtnid" ng-click="toggleFilterShow()">
+            <div class="pull-left">
+              <div style="margin-left:10px;" ng-class='{hiddencolindicator : filtersList.length>1}'>
+                <i class="fa fa-filter"></i>&nbsp;                             
+                <span>Filters</span>               
+              </div>           
+            </div>
+            <div class="pull-right"> 
+              <span class="caret"></span>
+            </div>
+          </button>
+          <!--Button-->
+
+          <div class="filter-hidden-col-wrapper" ng-show="showFilterList" id="filtercol-box" click-outside="closeFilterBox()" outside-if-not="filterbtnid">
+            <div class="hidden-col-container-filter">              
+              <!--show all and hide all button-->
+              <div class="filter-short-btnwrapper" style="width:93%;">
+                <div>
+                  <button type="button" style="width:99.99%" ng-click="addFilter()" class="hidden-col-short-btn">Add Filter</button>
+                </div>
+              </div>
+              <!--/show all and hide all button-->
+
+              <!--Notification-->
+              <div ng-show="filterNotify" style="width:width:99.99%;padding:5px;" class="flex-general-column-wrapper-center">
+                <p style="font-size:12px;">                 
+                  <span>{{filterNotify}}</span>
+                </p>
+              </div>  
+              <!--/Notification-->
+                
+              <!--columns which are hidden-->
+              <div class="list-hidden-col-wrapper-filter">
+
+                <div ng-repeat="eachFilter in filtersList" class="list-hidden-col-container-filter" style="">                
+
+                    <!--Each Box-->
+                    <div class="filter-item flex-general-row-wrapper">
+
+                    <!--Constraint-->
+                    <div style="width:63px;background-color:#F5F5F5;height:24px;border-right:1px solid #E2E0E0;">
+                      <!--First-->                      
+                      <div  ng-show="$index==0" style="padding-left:7px;padding-top:3px;">
+                        Where
+                      </div>  
+                      <!--/First-->
+
+                      <!--More Than One-->
+                      <select ng-show="$index!=0" class="filter-select constraint-select" ng-model="eachFilter.contriant" ng-change="popUpFilterTypes(eachFilter,$index)">
+                        <option ng-selected="eachFilter.contriant=='And'" value="And">And</option>
+                        <option ng-selected="eachFilter.contriant=='Or'" value="Or">Or</option>
+                      </select> 
+                      <!--/More Than One--> 
+                    </div> 
+                    <!--/Constraint-->
+
+                    <!--Column Name-->
+                    <div style="width:126px;height:24px;border-right:1px solid #E2E0E0;">
+                      <select  class="filter-select column-select" ng-model="eachFilter.colName" ng-change="changeFilterColumn(eachFilter,$index)">
+                        <option ng-repeat="column in currentProject.currentTable.columns" ng-show="column.dataType!='Id' && column.dataType!='ACL' && column.dataType!='Relation'" ng-selected="eachFilter.colName==column.name && eachFilter.colDataType==column.dataType" value="{{column.name}}">{{column.name}}</option>
+                      </select>
+                    </div>
+                    <!--/Column Name-->
+
+                    <!--Filter-->
+                    <div style="width:134px;height:24px;border-right:1px solid #E2E0E0;">
+
+                      <div ng-repeat="type in filterTypes" ng-show="type.dataType==eachFilter.colDataType && type.relatedTo==eachFilter.colRelatedTo" style="width:100%;height:100%;">
+
+                        <select  class="filter-select column-select" ng-model="eachFilter.filter" ng-change="changeFilterFilterType(eachFilter,$parent.$index)">
+                          <option  ng-repeat="eachType in type.filters" ng-selected="eachType==eachFilter.filter" value="{{eachType}}">{{eachType}}</option>
+                        </select>
+
+                      </div>
+
+                    </div>
+                    <!--/Filter-->
+
+                    <!--Value-->
+                    <div class="flex-general-row-wrapper" style="width:233px;height:24px;border-right:1px solid #E2E0E0;">
+
+                      <div class="flex-general-column-wrapper-center" style="width:91%;height:100%;">
+                        <!--Single Item-->
+                        <div ng-show="eachFilter.colDataType!='List' && eachFilter.filter!='geoWithin'"  style="width:99.99%;"> 
+
+                          <!--Except Boolean,DateTime,GeoPoint--> 
+                          <div ng-show="eachFilter.colDataType!='Boolean' && eachFilter.colDataType!='DateTime' && eachFilter.colDataType!='GeoPoint'">
+                            <input type="text" ng-disabled="eachFilter.filter=='exists' || eachFilter.filter=='doesNotExists'" class="filterValueTxt" ng-model="eachFilter.value" ng-change="popUpFilterTypes(eachFilter,$index)">
+                          </div>
+                          <!--/Except Boolean,DateTime,GeoPoint--> 
+
+                          <!--Boolean--> 
+                          <div ng-show="eachFilter.colDataType=='Boolean'" class="flex-general-column-wrapper-center">
+                              <input type="checkbox" ng-model="eachFilter.value" ng-change="popUpFilterTypes(eachFilter,$index)" ng-disabled="eachFilter.filter=='exists' || eachFilter.filter=='doesNotExists'" style="margin-top:-1px;">
+                          </div>
+                          <!--/Boolean-->
+
+                          <!--DateTime--> 
+                          <div ng-show="eachFilter.colDataType=='DateTime'" class="flex-general-column-wrapper-center">        
+                            <input type="text" datetimepicker class="filterValueTxt" ng-model="eachFilter.value" ng-change="popUpFilterTypes(eachFilter,$index)">
+                          </div>
+                          <!--/DateTime-->
+
+                          <!--GeoPoint--> 
+                          <div ng-show="eachFilter.colDataType=='GeoPoint' && eachFilter.filter=='near'" class="flex-general-row-wrapper">
+                            <!--Longititude-->
+                            <div style="width:35%;height:100%;;padding-top:1px;border-right:1px solid #DDDDDD;">
+                              <input type="text"  class="geo-filter-txt" ng-model="eachFilter.longitude"  placeholder="Longitude" style="width:99.99%;" ng-change="popUpFilterTypes(eachFilter,$index)">
+                            </div>
+
+                            <!--Latitude-->
+                            <div style="width:35%;height:100%;padding-top:1px;border-right:1px solid #DDDDDD;">
+                              <input type="text"  class="geo-filter-txt" ng-model="eachFilter.latitude"  placeholder="Latitude" style="width:99.99%;" ng-change="popUpFilterTypes(eachFilter,$index)">
+                            </div>
+
+                            <!--Value-->
+                            <div style="width:30%;height:100%;;padding-top:1px;border-right:1px solid #DDDDDD;">
+                              <input type="text" class="geo-filter-txt" ng-model="eachFilter.value"  placeholder="Dist(m)" style="width:99.99%;" ng-change="popUpFilterTypes(eachFilter,$index)">
+                            </div>  
+                          </div>
+                          <!--/GeoPoint-->
+
+                        </div>
+
+                        <!--Array of Items-->
+                        <div ng-show="eachFilter.colDataType=='List' || (eachFilter.colDataType=='GeoPoint' && eachFilter.filter=='geoWithin')" style="width:99.99%;height:100%;border:1px solid #4892F9;position:relative !important;">
+
+                          <!--Defaultview-->
+                          <div class="flex-general-row-wrapper" style="width:99.99%;height:100%;border-right:1px solid #DDDDDD;">
+
+                            <!--Plus-->
+                            <div style="width:10%;height:100%;" class="flex-general-column-wrapper-center">
+                              <i class="fa fa-plus filterlistoflistaddbtn"  ng-click="addNewFilterListValue(eachFilter,$index)"></i>
+                            </div> 
+
+                            <!--Content-->
+                            <div style="width:89%;height:100%;border-left:1px solid #DDDDDD;padding-top:1.5px;">
+
+                              <!--Diplay-->
+                              <div  ng-show="!filterListOfList[$index] && eachFilter.arrayValue.length>0" class="flex-general-row-wrapper" style="width:100%;overflow:hidden;height:19px;">
+
+                                <div ng-repeat="item in eachFilter.arrayValue track by $index"  style="height:17px;background-color:#E0EDFF;border-radius:2px;margin-left:5px;padding-left:3px;padding-right:3px;" ng-click="addNewFilterListValue(eachFilter,$index)" class="filterlistoflistaddbtn">           
+                                  <span ng-show="eachFilter.colDataType!='GeoPoint' && eachFilter.colRelatedTo!='DateTime'">{{item}}</span> 
+                                  <span ng-show="eachFilter.colDataType!='GeoPoint' && eachFilter.colRelatedTo=='DateTime'">{{item | date:"MM/dd/yyyy h:mma"}}</span>
+                                  <span ng-show="eachFilter.colDataType=='GeoPoint'">{{item.longitude}},{{item.latitude}}</span>                
+                                </div>
+
+                              </div>
+                                
+                              <!--Edit Mode-->  
+                              <div  class="filterlistoflistaddbtn" ng-show="filterListOfList[$index] || eachFilter.arrayValue.length==0">
+                                <!--Text,Number,Email,URL-->   
+                                <div ng-show="eachFilter.colRelatedTo!='Boolean' && eachFilter.colRelatedTo!='DateTime' && eachFilter.colRelatedTo!='GeoPoint' && eachFilter.colDataType!='GeoPoint'"> 
+                                  <input type="text" ng-model="eachFilter.value" style="width:99.99%;" placeholder="Value" class="list-filter-txt">
+                                </div>
+
+                                <!--Boolean-->   
+                                <div ng-show="eachFilter.colRelatedTo=='Boolean' && eachFilter.colDataType!='GeoPoint'" class="flex-general-column-wrapper-center"> 
+                                  <input type="checkbox" ng-model="eachFilter.value" style="margin-top:2px;">
+                                </div>
+
+                                <!--DateTime-->   
+                                <div ng-show="eachFilter.colRelatedTo=='DateTime' && eachFilter.colDataType!='GeoPoint'" class="flex-general-column-wrapper-center"> 
+                                  <input type="text" datetimepicker class="filterValueTxt" ng-model="eachFilter.value">
+                                </div>
+
+                                <!--GeoPoint--> 
+                                <div ng-show="eachFilter.colDataType=='GeoPoint' && eachFilter.filter=='geoWithin'" class="flex-general-row-wrapper">
+                                  <!--Longititude-->
+                                  <div style="width:49.98%;height:100%;;padding-top:1px;border-right:1px solid #DDDDDD;">
+                                    <input type="text"  class="geo-filter-txt" ng-model="eachFilter.longitude"  placeholder="Longitude" style="width:99.99%;">
+                                  </div>
+
+                                  <!--Latitude-->
+                                  <div style="width:49.98%;height:100%;padding-top:1px;">
+                                    <input type="text"  class="geo-filter-txt" ng-model="eachFilter.latitude"  placeholder="Latitude" style="width:99.99%;">
+                                  </div>  
+                                </div>
+                                <!--/GeoPoint-->
+
+                              </div>
+                            </div> 
+
+                          </div>
+                          <!--/Defaultview-->
+
+                          <!--DropDownList-->
+                          <div ng-show="filterListOfList[$index]" class="listfilter-bx filterlistoflisbx filterlistoflistaddbtn" style="background-color:white;" click-outside="closeFilterListOfListBox($index)" outside-if-not="filterlistoflistaddbtn">
+
+                            <div ng-repeat="item in eachFilter.arrayValue track by $index" class="flex-general-row-wrapper" style="height:24px;width:99.98%;border-bottom:1px solid #DDDDDD;">
+
+                              <!--Minus-->
+                              <div style="width:10%;height:100%;" class="flex-general-column-wrapper-center filterbtnid">
+                                <i class="fa fa-minus filterlistoflistaddbtn" ng-click="removeFilterListValue($parent.$index,$index)"></i>
+                              </div> 
+
+                              <!--Content-->
+                              <div style="width:89%;height:100%;border-left:1px solid #DDDDDD;padding-top:1.5px;">
+                                <!--Text,Number,Email,URL-->
+                                <div ng-show="eachFilter.colRelatedTo!='Boolean' && eachFilter.colRelatedTo!='DateTime' && eachFilter.colDataType!='GeoPoint'">
+                                   <input type="text" ng-model="item" style="width:99.99%;" placeholder="Value" class="list-filter-txt filterlistoflistaddbtn"  ng-change="filtersListOfListUpdate(eachFilter,$parent.$index,item,$index)">
+                                </div>
+
+                                <!--Boolean-->
+                                <div ng-show="eachFilter.colRelatedTo=='Boolean' && eachFilter.colDataType!='GeoPoint'" class="flex-general-column-wrapper-center">
+                                   <input type="checkbox" ng-model="item" style="margin-top:2px;" ng-change="filtersListOfListUpdate(eachFilter,$parent.$index,item,$index)" class="filterlistoflistaddbtn">
+                                </div>
+
+                                <!--DateTime-->
+                                <div ng-show="eachFilter.colRelatedTo=='DateTime' && eachFilter.colDataType!='GeoPoint'" class="flex-general-column-wrapper-center esp-datatimefilter">                                   
+                                   <input type="text" datetimepicker class="filterValueTxt filterlistoflistaddbtn" ng-model="item" ng-change="filtersListOfListUpdate(eachFilter,$parent.$index,item,$index)">
+                                </div>
+
+                                <!--GeoPoint--> 
+                                <div ng-show="eachFilter.colDataType=='GeoPoint' && eachFilter.filter=='geoWithin'" class="flex-general-row-wrapper">
+                                  <!--Longititude-->
+                                  <div style="width:49.98%;height:100%;;padding-top:1px;border-right:1px solid #DDDDDD;">
+                                    <input type="text"  class="geo-filter-txt filterlistoflistaddbtn" ng-model="item.longitude"  placeholder="Longitude" style="width:99.99%;" ng-change="filtersListOfListUpdate(eachFilter,$parent.$index,item,$index)">
+                                  </div>
+
+                                  <!--Latitude-->
+                                  <div style="width:49.98%;height:100%;padding-top:1px;">
+                                    <input type="text"  class="geo-filter-txt filterlistoflistaddbtn" ng-model="item.latitude"  placeholder="Latitude" style="width:99.99%;" ng-change="filtersListOfListUpdate(eachFilter,$parent.$index,item,$index)">
+                                  </div>  
+                                </div>
+                                <!--/GeoPoint-->
+                              </div>
+
+                            </div>
+
+                          </div>
+                          <!--/DropDownList-->                                                                                  
+
+                        </div>                             
+                       
+                      </div>
+
+                      <div class="flex-general-column-wrapper-center" style="height:24px;width:17px;">
+                        <i class="fa fa-spinner fa-spin" ng-show="filterSpinner[$index]"></i>
+                      </div>  
+                    </div>
+                    <!--/Value-->
+
+                    <!--Remove-->
+                    <div class="flex-general-column-wrapper-center filterdel filterbtnid" style="background-color:#F5F5F5 !important;height:24px;width:25px;">
+                        <i class="icon ion-close" ng-click="removeFilter($index)"></i>
+                    </div>
+                    <!--/Remove-->                
+                  </div>
+                  <!--/Each Box-->                                    
+
+                </div> 
+              </div> 
+              <!--/columns which are hidden-->                                         
+
+            </div>
+          </div>            
+          
+        </div>
+        <!--/Filter columns-->
 
       </div>
       <div class="table-strip-info flex-general-row-wrapper pull-right cf">          
