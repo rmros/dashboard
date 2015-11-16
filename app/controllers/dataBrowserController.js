@@ -36,6 +36,7 @@ $scope.filtersList=[];
 $scope.filterSpinner=[];
 $scope.filterListOfList=[];
 $scope.filterNotify=null;
+$scope.isSearchBoxOpen=false;
 
 /***Errors,Spinners,Warnings,SavedTick***/
 //Array Types
@@ -202,6 +203,24 @@ $scope.filterQuery = function(table,filterList) {
     }, error : function(error){                
       q.reject(error);
     }}); 
+
+  return  q.promise;           
+};
+
+$scope.cloudSearch = function(table,columnArray,searchValue) {          
+  var q=$q.defer();    
+
+    var cs = new CB.CloudSearch(table.name);
+    cs.searchQuery = new CB.SearchQuery();
+
+    cs.searchQuery.searchOn(columnArray, searchValue);
+    cs.search({
+      success : function(list){
+        q.resolve(list); 
+      },error : function(error){
+        q.reject(error);
+      }
+    }); 
 
   return  q.promise;           
 };
@@ -3114,7 +3133,9 @@ $scope.changeFilterFilterType=function(eachFilter,index){
   }
 };
 
-$scope.popUpFilterTypes=function(eachFilter,index){   
+$scope.popUpFilterTypes=function(eachFilter,index){  
+  //Nullify CloudSearch Value 
+  $scope.cloudSearchText=null;
 
   //List&Number
   if(eachFilter.colDataType=="List" && eachFilter.colRelatedTo=="Number"){
@@ -3350,6 +3371,37 @@ function addFiltersToQuery(table,filterList){
 
     return currentQuery;
 }
+
+//Search Related
+$scope.openSearchBox=function(){
+  $scope.isSearchBoxOpen=true;
+};
+
+$scope.closeSearchBox=function(){
+  if($scope.isSearchBoxOpen==true && !$scope.cloudSearchText){
+    $scope.isSearchBoxOpen=false;
+  }
+};
+
+$scope.updatedCloudSearch=function(){
+  if($scope.cloudSearchText){
+    $scope.filtersList=[];
+    var allColumnNames=_.pluck($scope.currentProject.currentTable.columns, 'name');
+    
+    $scope.cloudSearchSpinner=true;
+    //CloudSearch
+    $scope.cloudSearch($rootScope.currentProject.currentTable,allColumnNames,$scope.cloudSearchText)
+    .then(function(cbObjects){   
+      $scope.currentTableData=cbObjects;
+      $scope.cloudSearchSpinner=false;                                              
+    },
+    function(error){ 
+      $scope.cloudSearchSpinner=false;               
+    });
+    //CloudSearch
+    
+  }
+};
 
 $scope.goToDocumentation=function(){
   //Update Beacon

@@ -2371,7 +2371,7 @@
   width: 46%;
   max-width: none;
 }
-.hide-col-btn-group,.filter-hide-col-btn-group{
+.hide-col-btn-group,.filter-hide-col-btn-group,.search-hide-col-btn-group{
     margin-left: 1.5px;
 }
 
@@ -2425,4 +2425,23 @@
     z-index: 10 !important;     
     border:1px solid #4892F9 !important; 
     overflow: auto;
+}
+
+.grande-search-btn{
+    border: none;
+    background-color: transparent;        
+}
+
+.grande-search-btn:focus{
+    outline: none;    
+}
+.cb-searchbx{
+    border: 1px solid #DBDBDB;
+    background-color: white; 
+}
+.grande-search-text{
+    border: none;   
+}
+.grande-search-text:focus{
+    outline: none;
 }

@@ -434,6 +434,28 @@
         </div>
         <!--/Filter columns-->
 
+        <!--Big Search-->
+        <div class="search-hide-col-btn-group" style="height:28px;" id="grandesearchwrapper" click-outside="closeSearchBox()" outside-if-not="grandesearchfun">
+          <div class="flex-general-row-wrapper" ng-class='{"cb-searchbx" : isSearchBoxOpen}' style="height:28px !important;">
+            <!--Search & Spinner Icon-->
+            <div class="flex-general-column-wrapper-center"  style="height:100%;">
+              
+              <!--Search  Icon-->
+              <button ng-show="!cloudSearchSpinner" type="button" class="grande-search-btn grandesearchfun"  ng-click="openSearchBox()" style="padding-bottom:2px;"><i class="icon ion-ios-search-strong" style="font-size: 26px;"></i></button>
+
+              <!--Spinner  Icon-->
+              <button ng-show="cloudSearchSpinner && isSearchBoxOpen" type="button" class="grande-search-btn grandesearchfun"  ng-click="openSearchBox()"><i class="fa fa-spinner fa-spin" style="font-size: 18px;"></i></button>
+            </div>
+
+            <!--Search Box-->
+            <div class="grandesearchfun" ng-show="isSearchBoxOpen"  style="height:26px !important;width:165px;">
+              <input type="text" class="grande-search-text" ng-model="cloudSearchText" ng-change="updatedCloudSearch()" style="width:100%;height:100%;" placeholder="Search">
+            </div>
+
+          </div>         
+        </div>
+        <!--/Big Search-->
+
       </div>
       <div class="table-strip-info flex-general-row-wrapper pull-right cf">          
         <div class="pull-right;" style="width:99.99%;">       
