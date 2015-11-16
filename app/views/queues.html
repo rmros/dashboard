@@ -1,0 +1,138 @@
+  
+<div class="cl-mcont queues-page" ng-init="init()">
+  <div class="row"> 
+
+    <!--Queues List-->
+    <div class="col-sm-12 col-md-6 col-lg-5">
+      <div class="" style="height:auto;width:100%;">
+        <!--Create Queue-->
+
+        <!--Just Disaply-->
+        <div ng-show="!showCreateQueueBox" class="create-queue-dispplay-wrapper">          
+          <div style="height:100%;width:100%;">
+           <input type="text" class="createqueue-display-input createqueuefun" value="Create Queue here" ng-click="openCreateQueueBox()">
+          </div>          
+        </div> 
+        <!--/Just Disaply-->
+
+        <!--Open form to create-->
+        <div ng-show="showCreateQueueBox" class="create-queue-open-wrapper createqueuefun" click-outside="closeCreateQueueBox()" outside-if-not="createqueuefun">     
+          <div class="createqueue-openform">
+            <div class="createqueue-open-input-wrap" style="height:33px;width:100%;">
+              <input type="text" class="createqueue-open-input" placeholder="Queue Name">
+            </div>
+
+            <div style="height:35px;width:100%;">
+              <div class="pull-right cf" style="width:48%;height:23px !important;margin-right:6px;margin-top:6px;">
+
+                <div class="pull-left cf" style="height:100%;width:120px;">
+                  <select class="select-queuetype">
+                    <option>Pull</option>
+                    <option>Push</option>                    
+                  </select>  
+                </div> 
+
+                <div class="pull-right" style="height:100%;width:94px; margin-left:5px;">
+                  <button type="submit" class="create-queue-btn" ng-click="createQueue()">Create</button>
+                </div>
+
+              </div>  
+            </div>
+
+          </div>
+        </div>
+        <!--/Open form to create-->
+
+        <!--/Create Queue--> 
+
+
+        <!--Rolling queue list--> 
+        <div class="rolling-queuelist-wrap">
+          <div style="height:auto;background-color:white;">
+            <table class="queue-list-table">
+              <tr ng-repeat="eachQueue in queueList">
+                <td>
+                  <div class="queue-content-wrap">
+                    <div class="flex-general-row-wrapper">
+                      <div class="queue-logo">
+                        <img src="assets/images/cloudqueue.png" style="width:50px;height:50px;">
+                      </div>
+                      <div class="queue-content">
+                        <div class="queue-data-wrap">
+                          <span class="queue-data" style="font-size:14px; font-weight:600 !important; color:black !important;">Queue Name</span>
+                          <span class="queue-data" style="font-weight:600 !important; color:black !important;">(Push)</span>
+                        </div>
+
+                        <div class="queue-acl-wrap" style="padding-top:3px;">
+                          <span style="margin-top:1px !important;color:black !important;">Public Read And Write</span>  <span style="font-size:12px; font-style: italic;margin-left:3px;color:#ABACAD !important;">@ Jan,2015 12:30 PM</span>
+                        </div>
+                         
+                      </div>
+                      <div class="queue-settings">
+                        <span>
+                          <i class="icon ion-android-more-vertical" style="font-size:24px !important;color:#999B9B !important;"></i>
+                        </span>  
+                      </div>  
+                    </div>  
+                  </div>  
+                </td>  
+              </tr> 
+
+              <tr>
+                <td>
+                  <div class="queue-content-wrap">
+                    <div class="flex-general-row-wrapper">
+                      <div class="queue-logo">
+                        <img src="assets/images/cloudqueue.png" style="width:50px;height:50px;">
+                      </div>
+                      <div class="queue-content">
+                        <div class="queue-data-wrap">
+                          <span class="queue-data" style="font-size:14px; font-weight:600 !important; color:black !important;">Queue Name</span>
+                          <span class="queue-data" style="font-weight:600 !important; color:black !important;">(Push)</span>
+                        </div>
+
+                        <div class="queue-acl-wrap" style="padding-top:3px;">
+                          <span style="margin-top:1px !important;color:black !important;">Public Read And Write</span>  <span style="font-size:12px; font-style: italic;margin-left:3px;color:#ABACAD !important;">@ Jan,2015 12:30 PM</span>
+                        </div>
+                         
+                      </div>
+                      <div class="queue-settings">
+                        <span>
+                          <i class="icon ion-android-more-vertical" style="font-size:24px !important;color:#999B9B !important;"></i>
+                        </span>  
+                      </div>  
+                    </div>  
+                  </div>  
+                </td>  
+              </tr>
+
+            </table>  
+          </div>  
+        </div> 
+        <!--/Rolling queue list--> 
+
+      </div>  
+    </div>
+    <!--/Queues List--> 
+
+    <!--Queue Details-->
+    <div class="col-sm-12 col-md-6 col-lg-7">
+      <div style="height:400px;background-color:white;">
+      </div>
+    </div>
+    <!--/Queue Details-->
+
+  </div>    
+</div>
+
+<!--Slack chat-->
+<a href="http://slack.cloudboost.io" target="_blank">
+    <div class="intercomm flex-general-column-wrapper-center">    
+        <i class="icon ion-ios-chatboxes" style="font-size:26px !important; color:white;margin-top:3px;"></i>
+    </div> 
+</a>
+<!--/Slack chat-->
+
+   
+  
+  

@@ -37,6 +37,12 @@ app.config([
         controller: 'pricingController'
     });
 
+    $stateProvider.state('queues', {
+        url: '/:appId/queues',
+        templateUrl: 'app/views/queues.html',
+        controller: 'queuesController'
+    });
+
   //cors.
   $httpProvider.defaults.withCredentials = true;
   $httpProvider.defaults.useXDomain = true;
