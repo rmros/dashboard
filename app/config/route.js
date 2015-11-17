@@ -43,6 +43,12 @@ app.config([
         controller: 'queuesController'
     });
 
+    $stateProvider.state('cache', {
+        url: '/:appId/cache',
+        templateUrl: 'app/views/cache.html',
+        controller: 'cacheController'
+    });
+
   //cors.
   $httpProvider.defaults.withCredentials = true;
   $httpProvider.defaults.useXDomain = true;

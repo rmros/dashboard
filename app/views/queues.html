@@ -49,9 +49,10 @@
         <!--Rolling queue list--> 
         <div class="rolling-queuelist-wrap">
           <div style="height:auto;background-color:white;">
-            <table class="queue-list-table">
-              <tr ng-repeat="eachQueue in queueList">
+            <table class="queue-list-table table-hover">
+              <tr ng-repeat="eachQ in queueList">
                 <td>
+
                   <div class="queue-content-wrap">
                     <div class="flex-general-row-wrapper">
                       <div class="queue-logo">
@@ -59,52 +60,85 @@
                       </div>
                       <div class="queue-content">
                         <div class="queue-data-wrap">
-                          <span class="queue-data" style="font-size:14px; font-weight:600 !important; color:black !important;">Queue Name</span>
-                          <span class="queue-data" style="font-weight:600 !important; color:black !important;">(Push)</span>
+                          <span class="queue-data" style="font-size:14px; font-weight:500 !important; color:black !important;">Queue Name</span>
+                          <span class="queue-data" style="font-weight:400 !important; color:black !important;">(Push)</span>
                         </div>
 
                         <div class="queue-acl-wrap" style="padding-top:3px;">
-                          <span style="margin-top:1px !important;color:black !important;">Public Read And Write</span>  <span style="font-size:12px; font-style: italic;margin-left:3px;color:#ABACAD !important;">@ Jan,2015 12:30 PM</span>
+
+                          <div class="flex-general-row-wrapper">
+                            <!--ACLs-->
+                            <div>
+                              <div class="cf">
+                                <div class="flex-general-column-wrapper-center pull-left" style="height:18px;width:18px;background-color:gray;border-radius:25px;margin-top:2.5px;">
+                                  <span style="font-size:12px;color:white;margin-top:3px;">W</span>
+                                </div>
+
+                                <div class="pull-left" style="margin-left:4px;margin-top:2.3px;color:gray !important;">
+                                  <span>3</span>&nbsp;<span>Users</span>
+                                </div>
+
+                                <div class="pull-left" style="margin-left:3px;margin-top:2.3px;color:gray !important;">
+                                  ,<span>2</span>&nbsp;<span>Roles</span>
+                                </div>
+
+                              </div>
+                            </div>
+                            <!--ACLs-->
+
+                            <!--Time-->
+                            <div style="margin-top:2px;">
+                              <span style="font-size:12px; font-style: italic;margin-left:3px;color:#ABACAD !important;">@ Jan,2015 12:30 PM</span>
+                            </div>  
+                            <!--Time-->
+                          </div>                         
+
                         </div>
                          
                       </div>
-                      <div class="queue-settings">
-                        <span>
+                      <div class="queue-settings" style="position:relative;">
+                        <span class="settingsqueuefun" ng-click="queueSettings[$index]=!queueSettings[$index]">
                           <i class="icon ion-android-more-vertical" style="font-size:24px !important;color:#999B9B !important;"></i>
-                        </span>  
+                        </span> 
+
+                        <!--Settings popup-->
+                        <div class="queuesetting-popup settingsqueuefun" ng-show="queueSettings[$index]" click-outside="closeQueueSettings($index)" outside-if-not="settingsqueuefun">
+                          <div style="">
+
+                            <div class="flex-general-row-wrapper setting-menu-item" style="padding-left:7px;padding-top:3px;">
+                              <div>
+                              </div> 
+                              <div>
+                                Edit
+                              </div> 
+                            </div> 
+
+                            <div class="flex-general-row-wrapper setting-menu-item" style="padding-left:7px;padding-top:3px;">
+                              <div>
+                              </div> 
+                              <div>
+                                Delete
+                              </div> 
+                            </div>
+
+                            <div class="flex-general-row-wrapper setting-menu-item" style="padding-left:7px;padding-top:3px;">
+                              <div>
+                              </div> 
+                              <div>
+                                Manage ACL
+                              </div> 
+                            </div> 
+                          </div>  
+                        </div>
+                        <!--/Settings popup-->
+
                       </div>  
                     </div>  
-                  </div>  
+                  </div> 
+
                 </td>  
               </tr> 
 
-              <tr>
-                <td>
-                  <div class="queue-content-wrap">
-                    <div class="flex-general-row-wrapper">
-                      <div class="queue-logo">
-                        <img src="assets/images/cloudqueue.png" style="width:50px;height:50px;">
-                      </div>
-                      <div class="queue-content">
-                        <div class="queue-data-wrap">
-                          <span class="queue-data" style="font-size:14px; font-weight:600 !important; color:black !important;">Queue Name</span>
-                          <span class="queue-data" style="font-weight:600 !important; color:black !important;">(Push)</span>
-                        </div>
-
-                        <div class="queue-acl-wrap" style="padding-top:3px;">
-                          <span style="margin-top:1px !important;color:black !important;">Public Read And Write</span>  <span style="font-size:12px; font-style: italic;margin-left:3px;color:#ABACAD !important;">@ Jan,2015 12:30 PM</span>
-                        </div>
-                         
-                      </div>
-                      <div class="queue-settings">
-                        <span>
-                          <i class="icon ion-android-more-vertical" style="font-size:24px !important;color:#999B9B !important;"></i>
-                        </span>  
-                      </div>  
-                    </div>  
-                  </div>  
-                </td>  
-              </tr>
 
             </table>  
           </div>  
@@ -116,8 +150,108 @@
     <!--/Queues List--> 
 
     <!--Queue Details-->
-    <div class="col-sm-12 col-md-6 col-lg-7">
-      <div style="height:400px;background-color:white;">
+    <div class="col-sm-12 col-md-7 col-lg-7" style="background-color:white;">
+
+      <div class="col-sm-12 col-md-6 col-lg-6" style="margin-top:20px;">
+        <div class="col-sm-12 col-md-12 col-lg-12"   style="background-color:#4892F9;color:white;">
+            <div class="cf flex-general-column-wrapper-center" style="padding-top:10px;padding-left:10px;">        
+              <div>
+                <p style="font-size:30px;font-weight:700;">12000</p>
+              </div> 
+              <div>
+                <p style="font-size:22px;">Queue Size</p>
+              </div> 
+            </div> 
+        </div>
+      </div>      
+        
+      <div class="col-sm-12 col-md-6 col-lg-6" style="margin-top:20px;">
+        <div class="col-sm-12 col-md-12 col-lg-12"  style="background-color:#4892F9;color:white;">
+            <div class="cf flex-general-column-wrapper-center" style="padding-top:10px;padding-left:10px;">        
+              <div>
+                <p style="font-size:30px;font-weight:700;">12000</p>
+              </div> 
+              <div>
+                <p style="font-size:22px;">Messages All Time</p>
+              </div> 
+            </div> 
+        </div>
+      </div>         
+    
+      <div style="height:auto;"> 
+        
+          <div class="col-sm-12 col-md-12 col-lg-12" style="background-color:white;margin-top:50px;">
+          <div class="queue-msg-list">
+
+            <div class="cf" style=" border-bottom:1px solid #C6C4C4;">
+
+              <div class="pull-left">
+                <p style="font-size:25px;">Messsage List</p>
+              </div>
+
+              <div class="pull-right">
+                <button type="button" class="addmsg-init-btn" ng-click="initAddNewMessage()">Add New Message</button>
+              </div> 
+
+            </div>           
+
+            <div class="queue-msg-table">
+              <table class="table table-hover" border="0">
+                <thead>
+                  <tr>
+                    <th>SNo</th> 
+                    <th>Message</th>
+                    <th class="table-TxtAlign-center">Timeout</th>
+                    <th class="table-TxtAlign-center">Delay</th> 
+                    <th class="table-TxtAlign-center">Expires</th> 
+                  </tr>  
+                </thead>
+
+                <tbody class="queue-msg-tbody">
+                  <tr>
+                    <td width="7%">1</td> 
+                    <td width="33%">Jsdhghsdg</td> 
+                    <td class="table-TxtAlign-center" width="16%">2300</td> 
+                    <td class="table-TxtAlign-center" width="16%">4500</td> 
+                    <td class="table-TxtAlign-center" width="28%">12th,June 2015,10:30 PM</td>                    
+                  </tr>
+                  <tr>
+                    <td width="7%">1</td> 
+                    <td width="33%">Jsdhghsdg</td> 
+                    <td class="table-TxtAlign-center" width="16%">2300</td> 
+                    <td class="table-TxtAlign-center" width="16%">4500</td> 
+                    <td class="table-TxtAlign-center" width="28%">12th,June 2015,10:30 PM</td>                    
+                  </tr>
+                  <tr>
+                    <td width="7%">1</td> 
+                    <td width="33%">Jsdhghsdg</td> 
+                    <td class="table-TxtAlign-center" width="16%">2300</td> 
+                    <td class="table-TxtAlign-center" width="16%">4500</td> 
+                    <td class="table-TxtAlign-center" width="28%">12th,June 2015,10:30 PM</td>                    
+                  </tr>
+                  <tr>
+                    <td width="7%">1</td> 
+                    <td width="33%">Jsdhghsdg</td> 
+                    <td class="table-TxtAlign-center" width="16%">2300</td> 
+                    <td class="table-TxtAlign-center" width="16%">4500</td> 
+                    <td class="table-TxtAlign-center" width="28%">12th,June 2015,10:30 PM</td>                    
+                  </tr>
+                  <tr>
+                    <td width="7%">1</td> 
+                    <td width="33%">Jsdhghsdg</td> 
+                    <td class="table-TxtAlign-center" width="16%">2300</td> 
+                    <td class="table-TxtAlign-center" width="16%">4500</td> 
+                    <td class="table-TxtAlign-center" width="28%">12th,June 2015,10:30 PM</td>                    
+                  </tr>              
+                </tbody>
+
+              </table>  
+            </div>
+
+          </div>
+          </div>
+          
+         
       </div>
     </div>
     <!--/Queue Details-->
@@ -133,6 +267,99 @@
 </a>
 <!--/Slack chat-->
 
-   
+
+<!--Add New Msg modal-->
+<div class="modal fade colored-header primary" id="md-addnewmsg" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+      <div style="height:55px; width:100%;padding:13px;">
+        <div class="pull-left" style="padding-left:8px;">
+          <span style="font-size:18px;">Add New Message</span>
+        </div>          
+      </div>
+
+      <!--Saving Errors--> 
+      <div style="width:100%;">
+        <div  ng-show="columnDeleteModalError" style="width:100%;height:30px;background-color:#C40101;color:white;padding-left:5px;padding-right:5px;padding-top:3.5px;" ng-class="{animated:columnDeleteModalError}" class="fadeIn">
+
+          <div class="pull-left" style="padding-top:1px;">                
+            <span>{{columnDeleteModalError}}</span>
+          </div>
+
+          <div class="pull-right" ng-click="columnDeleteModalError=!columnDeleteModalError">
+            <i class="icon ion-android-close" style="font-size:16px;color:white;"></i>
+          </div>  
+
+        </div>  
+      </div>  
+      <!--/Saving Errors-->
+      
+      <div class="modal-body" style="border-top:1px solid #dddbdb;">
+        <div class="flex-general-column-wrapper-center" style="width:100%;">
+          
+          <div class="flex-general-row-wrapper" style="width:88%;">
+            <div class="" style="width:13.5%;height:29px;">
+              <p class="pull-right" style="font-size:14px;">Message</p>              
+            </div> 
+
+            <div class="" style="width:81%;margin-left:10px;">           
+              <div class="" style="width:100%;border:1px solid #ADABAB;">
+                <textarea rows="4" cols="50" class="defaultInput-txt" style="width:100%;height:100%;resize: none;"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex-general-row-wrapper" style="width:88%;margin-top:7px;">
+            <div class="" style="width:13.5%;height:29px;">
+              <p class="pull-right" style="font-size:14px;">Timeout</p>              
+            </div> 
+
+            <div class="" style="width:81%;margin-left:10px;">           
+              <div class="" style="width:100%;height:29px;border:1px solid #ADABAB;">
+                <input type="text" class="defaultInput-txt" style="width:100%;height:100%;">
+              </div>
+            </div>
+          </div>
+
+          <div class="flex-general-row-wrapper" style="width:88%;margin-top:7px;">
+            <div class="" style="width:13.5%;height:29px;">
+              <p class="pull-right" style="font-size:14px;">Delay</p>              
+            </div> 
+
+            <div class="" style="width:81%;margin-left:10px;">           
+              <div class="" style="width:100%;height:29px;border:1px solid #ADABAB;">
+                <input type="text" class="defaultInput-txt" style="width:100%;height:100%;">
+              </div>
+            </div>
+          </div>
+          <div class="flex-general-row-wrapper" style="width:88%;margin-top:7px;">
+            <div class="" style="width:13.5%;height:29px;">
+              <p class="pull-right" style="font-size:14px;">Expires</p>              
+            </div> 
+
+            <div class="" style="width:81%;margin-left:10px;">           
+              <div class="" style="width:100%;height:29px;border:1px solid #ADABAB;">
+                <input type="text" datetimepicker class="defaultInput-txt" style="width:100%;height:100%;">
+              </div>
+            </div>
+          </div>
+
+
+        </div>  
+      </div>  
+
+      <div class="modal-footer">        
+        <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>        
+
+        <!--Add-->
+        <button type="button" class="btn btn-primary" style="width:120px; border-radius:3px !important;">Add Message</button>  
+ 
+      </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->   
+<!--/Add New Msg modal-->
   
   

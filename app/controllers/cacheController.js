@@ -1,26 +1,26 @@
-app.controller('queuesController',
+app.controller('cacheController',
 ['$scope',
 '$rootScope',
 '$stateParams', 
 '$location',
 'projectService',
-'queueService',
+'cacheService',
 function($scope,
 $rootScope,
 $stateParams,
 $location,
 projectService,
-queueService){	    
+cacheService){	    
 
   
   var id;
   $rootScope.isFullScreen=false;
-  $rootScope.page='queues';
+  $rootScope.page='cache';
 
   //Queues Specific
-  $scope.showCreateQueueBox=false;
-  $scope.queueList=[];
-  $scope.queueSettings=[];
+  $scope.showCreateCacheBox=false;
+  $scope.cacheList=[];
+  $scope.cacheSettings=[];
   
   $scope.init= function() {            
     id = $stateParams.appId;
@@ -35,32 +35,27 @@ queueService){
 
   $scope.createQueue=function(){
     var rt={id:2};
-    $scope.queueList.push(rt);
+    $scope.cacheList.push(rt);
   };
 
-  $scope.initAddNewMessage=function(){
-    $("#md-addnewmsg").modal();
+
+  $scope.initAddNewItem=function(){
+    $("#md-addnewitem").modal();
+  }; 
+
+  $scope.initDeleteCache=function(){
+    $("#md-deletecache").modal();
   };
 
-  $scope.openCreateQueueBox=function(){
-    if($scope.showCreateQueueBox==false){
-      $scope.showCreateQueueBox=true;
+  $scope.initClearCache=function(){
+    $("#md-clearcache").modal();
+  };   
+
+  $scope.closeCacheSettings=function(index){
+    if($scope.cacheSettings[index]==true){
+      $scope.cacheSettings[index]=false;
     }
   };
-
-  $scope.closeCreateQueueBox=function(){
-    if($scope.showCreateQueueBox==true){
-      $scope.showCreateQueueBox=false;
-    }
-  };  
-
-  $scope.closeQueueSettings=function(index){
-    if($scope.queueSettings[index]==true){
-      $scope.queueSettings[index]=false;
-    }
-  };
-
-
 
   //Private Functions
   function loadProject(id){
