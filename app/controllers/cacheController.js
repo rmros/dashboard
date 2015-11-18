@@ -27,7 +27,8 @@ cacheService){
 
     if($rootScope.currentProject && $rootScope.currentProject.appId === id){
       //if the same project is already in the rootScope, then dont load it.
-      initCB();                   
+      initCB(); 
+      $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;                   
     }else{
       loadProject(id);              
     }
@@ -67,7 +68,8 @@ cacheService){
       .then(function(currentProject){
         if(currentProject){
           $rootScope.currentProject=currentProject;
-          initCB();          
+          initCB(); 
+          $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;          
         }                              
       }, function(error){          
       });

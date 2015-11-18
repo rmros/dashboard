@@ -9,7 +9,7 @@ app.controller('indexController',
         if(!$.cookie('userId') || $.cookie('userId')=="null" || $.cookie('userId')=="undefined"){          
           window.location.href="/accounts";
         }else{
-           $scope.userFullname=$.cookie('userFullname'); 
+          $scope.userFullname=$.cookie('userFullname'); 
         }            
     });  
 

@@ -31,20 +31,21 @@ app.controller('appsController',
   toggleSideBar();
   
   $scope.init=function(){
-        //Hiding the Menu
-        $rootScope.page='apps';
-        $scope.isLoading = [];
-        $rootScope.dataLoading=true;
-        $rootScope.showMenu=false;
-        $rootScope.currentProject=null;
-        $scope.showSaveBtn = true;
-        $scope.appKeysText={
-          appId:"Copy",
-          masterKey:"Copy",
-          javascriptKey:"Copy"
-        };       
+    //Hiding the Menu
+    $rootScope.pageHeaderDisplay="Your Apps";
+    $rootScope.page='apps';
+    $scope.isLoading = [];
+    $rootScope.dataLoading=true;
+    $rootScope.showMenu=false;
+    $rootScope.currentProject=null;
+    $scope.showSaveBtn = true;
+    $scope.appKeysText={
+      appId:"Copy",
+      masterKey:"Copy",
+      javascriptKey:"Copy"
+    };       
 
-        projectList();
+    projectList();
                                    
   };
 

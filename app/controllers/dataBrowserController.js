@@ -339,7 +339,7 @@ $scope.showCommonTypes=function(row,column){
   }else if(column.document.dataType=="File"){
 
     $scope.editableFile=angular.copy(row.get(column.name));
-    $("#md-fileviewer").modal();
+    $("#md-fileviewer").modal();     
 
   }else if(column.document.dataType=="GeoPoint"){
 
@@ -920,45 +920,50 @@ $scope.fileSelected=function(selectedFile,fileName,fileObj){
   }
 };
 
-$scope.setAndSaveFile=function(){ 
+$scope.setAndSaveFile=function(fileObj){ 
   $("#md-fileviewer").modal("hide");   
-  if($scope.selectedFileObj) {
+  if(fileObj) {
 
-      getCBFile($scope.selectedFileObj)
-      .then(function(cloudBoostFile){
-          rowEditMode($scope.editableIndex);
-     
-          var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
-             if(everyCol.name!=$scope.editableColumnName && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
-               if(!$scope.editableRow.get(everyCol.name)){
-                return everyCol;
-               }          
-             }
-          });
 
-          $scope.editableRow.set($scope.editableColumnName,cloudBoostFile);
-          if(requiredField){
-                  
-            rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);
-          }else{
-            rowSpinnerMode($scope.editableIndex); 
-              
-              $scope.editableRow.set($scope.editableColumnName,cloudBoostFile);            
-              //Save Cloud Object
-              $scope.saveCloudObject($scope.editableRow)
-              .then(function(obj){                 
-                $scope.removeSelectdFile();
-                showSaveIconInSecond($scope.editableIndex);
-              }, function(error){                 
-                $scope.removeSelectdFile();                   
-                rowErrorMode($scope.editableIndex,error);
-              }); 
-          }             
+      //If List..Add it to List
+      if($scope.editableColumn && $scope.editableColumn.relatedTo=="File"){     
+        $scope.addListFile(fileObj);
+      }else{
+        getCBFile(fileObj)
+        .then(function(cloudBoostFile){
+            rowEditMode($scope.editableIndex);
+       
+            var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
+               if(everyCol.name!=$scope.editableColumnName && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
+                 if(!$scope.editableRow.get(everyCol.name)){
+                  return everyCol;
+                 }          
+               }
+            });
 
-      }, function(err){
-        rowErrorMode($scope.editableIndex,err);
-      });
-            
+            $scope.editableRow.set($scope.editableColumnName,cloudBoostFile);
+            if(requiredField){
+                    
+              rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumnName);
+            }else{
+              rowSpinnerMode($scope.editableIndex); 
+                
+                $scope.editableRow.set($scope.editableColumnName,cloudBoostFile);            
+                //Save Cloud Object
+                $scope.saveCloudObject($scope.editableRow)
+                .then(function(obj){                 
+                  $scope.removeSelectdFile();
+                  showSaveIconInSecond($scope.editableIndex);
+                }, function(error){                 
+                  $scope.removeSelectdFile();                   
+                  rowErrorMode($scope.editableIndex,error);
+                }); 
+            }             
+
+        }, function(err){
+          rowErrorMode($scope.editableIndex,err);
+        });
+    }                  
   }
 };
 
@@ -1930,9 +1935,9 @@ $scope.showListJsonObject=function(row,index){
   //$("#md-list-fileviewer").modal("show");
 //};
 
-$scope.addListFile=function(){   
+$scope.addListFile=function(fileObj){   
   //$("#md-list-fileviewer").modal("hide"); 
-  if($scope.selectedFileObj) {     
+  if(fileObj) {     
     if(!$scope.editableList || $scope.editableList.length==0){
       $scope.editableList=[];
     }
@@ -1941,7 +1946,7 @@ $scope.addListFile=function(){
     var index=$scope.editableList.indexOf(dummyObj);
     $scope.listFileSpinner[index]=true;
 
-    getCBFile($scope.selectedFileObj)
+    getCBFile(fileObj)
     .then(function(cloudBoostFile){     
       $scope.editableList[index]=cloudBoostFile;       
       //$scope.editableList.push(cloudBoostFile);      
@@ -2342,7 +2347,8 @@ function loadProject(id){
         if(currentProject){
           $rootScope.currentProject=currentProject;
           initCbApp();
-          getProjectTables();                                        
+          getProjectTables();  
+          $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;                                       
         }                                           
     },
     function(error){ 

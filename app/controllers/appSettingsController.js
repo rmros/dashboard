@@ -12,7 +12,8 @@ app.controller('appSettingsController',
 
        if($rootScope.currentProject && $rootScope.currentProject.appId === id){
           //if the same project is already in the rootScope, then dont load it. 
-          getProjectSettings($rootScope.currentProject.appId);             
+          getProjectSettings($rootScope.currentProject.appId); 
+          $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;            
         }else{
           loadProject(id);              
         }           
@@ -60,45 +61,42 @@ app.controller('appSettingsController',
 
     /* PRIVATE FUNCTIONS */
 
-        function loadProject(id){
+    function loadProject(id){
 
-            projectService.getProject(id).then(
-                     function(currentProject){
-                          if(currentProject){
-                            $rootScope.currentProject=currentProject; 
-                            getProjectSettings($rootScope.currentProject.appId);                          
-                          }                              
-                     },
-                     function(error){
-                         
-                        $.gritter.add({
-                            position: 'top-right',
-                            title: 'Sorry!',
-                            text: "We cannot load your project at this point in time. Please try again later.",
-                            class_name: 'danger'
-                        });
-                     }
-                   );
-        } 
+        projectService.getProject(id)
+        .then(function(currentProject){
+            if(currentProject){
+              $rootScope.currentProject=currentProject; 
+              getProjectSettings($rootScope.currentProject.appId);  
+              $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;                         
+            }                              
+        },function(error){
+           
+          $.gritter.add({
+              position: 'top-right',
+              title: 'Sorry!',
+              text: "We cannot load your project at this point in time. Please try again later.",
+              class_name: 'danger'
+          });
+       });
+    } 
 
-        function getProjectSettings(appId){
-            projectDetailsService.getProjectSettings(appId).then(
-                     function(projectSettings){
-                          if(projectSettings){                             
-                             $scope.projectSettings=projectSettings;                        
-                          } 
-                          $rootScope.dataLoading=false;                             
-                     },
-                     function(error){
-                        $rootScope.dataLoading=false;
-                        $.gritter.add({
-                            position: 'top-right',
-                            title: 'Sorry!',
-                            text: "We cannot load your project Settings at this point in time. Please try again later.",
-                            class_name: 'danger'
-                        });
-                     }
-                   );
-        }       
+    function getProjectSettings(appId){
+      projectDetailsService.getProjectSettings(appId)
+      .then(function(projectSettings){
+          if(projectSettings){                             
+             $scope.projectSettings=projectSettings;                        
+          } 
+          $rootScope.dataLoading=false;                             
+      },function(error){
+        $rootScope.dataLoading=false;
+        $.gritter.add({
+            position: 'top-right',
+            title: 'Sorry!',
+            text: "We cannot load your project Settings at this point in time. Please try again later.",
+            class_name: 'danger'
+        });
+      });
+    }       
 
 }]);

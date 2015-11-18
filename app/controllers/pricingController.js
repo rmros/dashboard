@@ -47,7 +47,8 @@ app.controller('pricingController',
 
       	if($rootScope.currentProject && $rootScope.currentProject.appId === id){
          //if the same project is already in the rootScope, then dont load it.            
-          getinvoiceSettings();                                      
+          getinvoiceSettings();
+          $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;                                        
         }else{
           loadProject(id);              
         }
@@ -259,7 +260,8 @@ app.controller('pricingController',
             .then(function(currentProject){
                 if(currentProject){
 	                $rootScope.currentProject=currentProject; 
-	                getinvoiceSettings();                               			                          
+	                getinvoiceSettings(); 
+	                $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;                                			                          
                 }                              
             },function(error){              
                 errorNotify("We cannot load your project at this point in time. Please try again later.");

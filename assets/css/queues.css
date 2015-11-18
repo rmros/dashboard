@@ -198,19 +198,11 @@
 	margin-top: 30px;
 }
 
-.cache-item-table th,td,tr{
-	border: 1px solid #CECCCC !important;
-}
-
-.cache-item-table tr td{
-	border: 1px solid #CECCCC !important;
-}
-
-.queue-msg-table th,td{
+.queue-thead-col,.queue-tbody-col{
 	border: none !important;
 }
 
-.queue-msg-tbody tr{
+.queue-tbody-row{
 	border-bottom: 1px solid #CECCCC !important;
 }
 

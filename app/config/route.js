@@ -49,6 +49,12 @@ app.config([
         controller: 'cacheController'
     });
 
+    $stateProvider.state('profile', {
+        url: '/profile',
+        templateUrl: 'app/views/profile.html',
+        controller: 'profileController'
+    });
+
   //cors.
   $httpProvider.defaults.withCredentials = true;
   $httpProvider.defaults.useXDomain = true;

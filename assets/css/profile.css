@@ -1,0 +1,10 @@
+.profile-photo{
+	width:100%;
+	height: auto;
+}
+.profile-pic-editsettings{
+	visibility: hidden;
+}
+.profile-pic-wrap:hover .profile-pic-editsettings{
+	visibility: visible;
+}

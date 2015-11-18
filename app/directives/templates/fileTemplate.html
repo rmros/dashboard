@@ -1,0 +1,123 @@
+<div class="modal-dialog">
+  <div class="modal-content">         
+
+    <div style="height:55px; width:100%;padding:13px;">
+      <div class="pull-left" style="padding-left:8px;">
+        <span style="font-size:18px;">Files</span>
+      </div>          
+    </div>
+    <span id="fakeclick"></span>
+    <div class="modal-body" style="border-top:1px solid #dddbdb;">
+
+      <div class="flex-general-row-wrapper-center">       
+        <!-- Add File D&D Markup -->
+        <div ng-show="!editableFile && (!fileInfo || !fileInfo.rawFile)" class="uploader" ddfile>
+          <div>Drag &amp; Drop Files Here</div>
+          <div class="or">-or-</div>
+          <div class="browser">
+            <label class="db-color-bg">
+              <span>Choose files</span>
+              <input type="file" name="files[]" multiple="multiple" title='Click to add Files'>
+            </label>
+          </div>
+        </div>
+        <!-- /Add File D&D Markup -->           
+
+        <div  ng-show="fileInfo && fileInfo.rawFile && fileInfo.extension">  
+          <!--View File for Images-->
+          <div ng-show="fileInfo.rawFile  && (fileInfo.extension=='jpeg' || fileInfo.extension=='jpg' || fileInfo.extension=='png' || fileInfo.extension=='tif' || fileInfo.extension=='gif')" class="modal-view-file flex-general-column-wrapper-center">  
+
+            <!--Image-->
+            <div class="">
+              <a class="modal-anchor">
+                <img src="{{fileInfo.rawFile}}">                  
+              </a>                  
+            </div>
+
+            <div class="flex-general-row-wrapper-center">
+              <span style="margin-top:12px;">{{fileInfo.obj.name}}</span> 
+            </div>
+
+          </div> 
+
+          <!--View File for Other Files-->
+          <div ng-show="fileInfo && fileInfo.rawFile  && (fileInfo.extension!='jpeg' && fileInfo.extension!='jpg' && fileInfo.extension!='png' && fileInfo.extension!='tif' && fileInfo.extension!='gif')" class="modal-view-other-file flex-general-column-wrapper-center">
+
+              <!--Image-->
+              <div>
+                <a class="modal-anchor flex-general-row-wrapper-center">
+                  <img src="assets/images/file2.png">                  
+                </a>                  
+              </div> 
+
+              <div class="flex-general-row-wrapper-center">
+                <span style="margin-top:12px;">{{fileInfo.obj.name}}</span> 
+              </div>               
+
+            </div>
+          
+        </div>
+
+        <div  ng-show="!fileInfo || fileInfo.rawFile">  
+          <!--View File for Images-->
+          <div ng-show="editableFile && editableFile.document.url && ((editableFile.document.name | extension)=='jpeg' || (editableFile.document.name | extension)=='jpg' || (editableFile.document.name | extension)=='png' || (editableFile.document.name | extension)=='tif' || (editableFile.document.name | extension)=='gif')" class="modal-view-file">
+
+            <!--Image-->
+            <div>
+              <a class="modal-anchor flex-general-row-wrapper-center">
+                <img ng-src="{{editableFile.document.url}}">                  
+              </a>                  
+            </div>
+            <div class="flex-general-row-wrapper-center">
+              <span style="margin-top:14px;">{{editableFile.document.name}}</span> 
+            </div>           
+
+          </div> 
+
+           <!--View File for Other Files-->
+          <div ng-show="editableFile && editableFile.document.url && ((editableFile.document.name | extension)!='jpeg' && (editableFile.document.name | extension)!='jpg' && (editableFile.document.name | extension)!='png' && (editableFile.document.name | extension)!='tif' && (editableFile.document.name | extension)!='gif')" class="modal-view-other-file">
+
+              <!--Image-->
+              <div>
+                <a class="modal-anchor flex-general-row-wrapper-center">
+                  <img src="assets/images/file2.png">                  
+                </a>                  
+              </div> 
+
+              <div class="flex-general-row-wrapper-center">
+                <span style="margin-top:14px;">{{editableFile.document.name}}</span>  
+              </div>             
+
+            </div>  
+        </div>     
+
+      </div>
+
+    </div>
+    <!--/model-body-->
+
+    <!--Footer-->
+    <div class="modal-footer">        
+      <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal" ng-click="closeModal()">Close</button>
+
+      <!--New File-->
+      <!--Save-->
+      <button type="button" ng-if="fileInfo && fileInfo.rawFile && fileInfo.extension" ng-click="saveFile()" class="btn btn-primary cb-modal-default-btn-long" ><i class="fa fa-floppy-o"></i>&nbsp;Save</button>
+
+      <!--Remove File-->
+      <button type="button" ng-if="fileInfo && fileInfo.rawFile && fileInfo.extension" ng-click="removeFile()" class="btn btn-danger cb-modal-default-btn-long" ><i class="fa fa-times-circle-o"></i>&nbsp;Remove</button> 
+      <!--/New File-->
+
+
+      <!--File View-->
+      <!--Save-->
+      <a ng-if="!selectedFile && editableFile && editableFile.document.url" href="{{editableFile.document.url}}" target="_blank" class="btn btn-primary cb-modal-default-btn-long" ><i class="fa fa-download"></i>&nbsp;Download</a>
+
+      <!--Remove File-->
+      <button ng-if="(!fileInfo || !fileInfo.rawFile) && editableFile && editableFile.document.url" type="button" ng-click="deleteFile()" class="btn btn-danger cb-modal-default-btn-long" ><i class="fa fa-trash-o"></i>&nbsp;Delete</button> 
+      <!--/File View-->
+
+    </div>
+
+  </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->

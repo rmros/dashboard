@@ -32,7 +32,8 @@ app.controller('tableDesignerController',
         if($rootScope.currentProject && $rootScope.currentProject.appId === id){
           //if the same project is already in the rootScope, then dont load it.
           initCB(); 
-          getProjectTables();              
+          getProjectTables(); 
+          $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;               
         }else{
           loadProject(id);              
         }
@@ -239,6 +240,7 @@ app.controller('tableDesignerController',
           $rootScope.currentProject=currentProject;
           initCB();
           getProjectTables();
+          $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;  
         }                              
       }, function(error){ 
        $rootScope.dataLoading=false;
