@@ -14,6 +14,10 @@ $location){
   
   $scope.init= function() {  
    $rootScope.pageHeaderDisplay="edit Profile"; 
-  };      				
+  }; 
+
+  $scope.openFileModal=function(){
+  	$("#md-fileviewer").modal();
+  };    				
 		
 }]);
