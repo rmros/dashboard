@@ -18,25 +18,6 @@ app.directive('dmuploader', function(){
     };
 });
 
-app.directive('ddfile', function(){
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs){        
-            $(element).dmUploader({               
-                onNewFile: function(id, file){                 
-                    
-                    var reader = new FileReader();
-                    reader.onload = function (e) {                       
-                        scope.fileSelected(reader.result,file);
-                    }
-                    reader.readAsDataURL(file);
-                    
-                }
-            });
-        }
-    };
-});
-
 //Especially for relation Files
 app.directive('reldmuploader', function(){
     return {
@@ -74,6 +55,26 @@ app.directive('listreldmuploader', function(){
                         scope.relListFileSelected(column,reader.result,file.name,file);
                     }
                     reader.readAsDataURL(file);                    
+                }
+            });
+        }
+    };
+});
+
+//File Directive
+app.directive('ddfile', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){        
+            $(element).dmUploader({               
+                onNewFile: function(id, file){                 
+                    
+                    var reader = new FileReader();
+                    reader.onload = function (e) {                       
+                        scope.fileSelected(reader.result,file);
+                    }
+                    reader.readAsDataURL(file);
+                    
                 }
             });
         }

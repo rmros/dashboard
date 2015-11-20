@@ -17,7 +17,8 @@ $timeout,
 $filter,
 focus,
 beaconService,
-filterService) {
+filterService,
+cloudBoostService) {
 
 //Init
 var id;
@@ -120,110 +121,7 @@ $scope.init = function() {
   getBeacon();
   //Get FilterTypes
   $scope.filterTypes=filterService.getFilterTypes();     
-};
-
-$scope.loadTableData = function(t,orderBy,orderByType,limit,skip) {          
-  var q=$q.defer();
-  if(t){   
-      var query = new CB.CloudQuery(t.name);
-
-      if(orderByType=="asc"){
-        query.orderByAsc(orderBy);
-      }
-      if(orderByType=="desc"){
-        query.orderByDesc(orderBy);
-      }
-        
-      query.setLimit(limit);
-      query.setSkip(skip);
-
-      for(var i=0;i<t.columns.length;++i){
-        if(t.columns[i].dataType=="File"){
-          query.include(t.columns[i].name);
-        }        
-      } 
-
-      query.find({success : function(list){ 
-        q.resolve(list);
-      }, error : function(error){ 
-        q.reject(error);             
-      }});       
-  }                  
-  return  q.promise;     
-};
-
-$scope.queryTableById = function(table,objectId) {          
-  var q=$q.defer();
-    
-    var query = new CB.CloudQuery(table.name); 
-    for(var i=0;i<table.columns.length;++i){
-      if(table.columns[i].dataType=="File"){
-        query.include(table.columns[i].name);
-      }else if(table.columns[i].dataType=="List" && table.columns[i].document.relatedTo!='Text' && table.columns[i].document.relatedTo!='EncryptedText' && table.columns[i].document.relatedTo!='Email' && table.columns[i].document.relatedTo!='Number' && table.columns[i].document.relatedTo!='URL' && table.columns[i].document.relatedTo!='DateTime' && table.columns[i].document.relatedTo!='Boolean' && table.columns[i].document.relatedTo!='File' && table.columns[i].document.relatedTo!='Object' && table.columns[i].document.relatedTo!='GeoPoint'){
-        query.include(table.columns[i].name);
-      }
-    }
-
-    query.findById(objectId,{
-    success : function(record){ 
-       q.resolve(record);                 
-
-    }, error : function(error){                
-       q.reject(error);
-    }}); 
-
-  return  q.promise;           
 }; 
-
-$scope.queryTableByName = function(tableName) {          
-  var q=$q.defer();
-    
-    var query = new CB.CloudQuery(tableName);       
-    query.find({
-    success : function(records){ 
-      q.resolve(records);                 
-
-    }, error : function(error){                
-      q.reject(error);
-    }}); 
-
-  return  q.promise;           
-};
-
-$scope.filterQuery = function(table,filterList) {          
-  var q=$q.defer();    
-
-    //Add Filters To query(Private function to loop over)     
-    var query=addFiltersToQuery(table,filterList); 
-
-    query.find({
-    success : function(records){ 
-      q.resolve(records);                 
-
-    }, error : function(error){                
-      q.reject(error);
-    }}); 
-
-  return  q.promise;           
-};
-
-$scope.cloudSearch = function(table,columnArray,searchValue) {          
-  var q=$q.defer();    
-
-    var cs = new CB.CloudSearch(table.name);
-    cs.searchQuery = new CB.SearchQuery();
-
-    cs.searchQuery.searchOn(columnArray, searchValue);
-    cs.search({
-      success : function(list){
-        q.resolve(list); 
-      },error : function(error){
-        q.reject(error);
-      }
-    }); 
-
-  return  q.promise;           
-};
 
 //Save Boolean
 $scope.setAndSaveBoolean=function(row,column){
@@ -237,14 +135,15 @@ $scope.setAndSaveBoolean=function(row,column){
        }          
      }
   });
-   row.set(column.name,!row.get(column.name));
+
+  row.set(column.name,!row.get(column.name));
   if(requiredField){      
     rowWarningMode(i,row,column.name);     
   }else{
     rowSpinnerMode(i);     
 
     //Save Cloud Object
-    $scope.saveCloudObject(row)
+    cloudBoostService.saveCloudObject(row)
     .then(function(obj){
         //scope.$digest();         
         if($scope.tableDef){
@@ -322,14 +221,14 @@ $scope.showCommonTypes=function(row,column){
         };
 
         //Getting Users For Autocomplete
-        $scope.queryTableByName("User")
+        cloudBoostService.queryTableByName("User")
         .then(function(userRecords){         
           $scope.userRecords=userRecords;        
         },function(error){         
         });
 
         //Getting Roles For Autocomplete
-        $scope.queryTableByName("Role")
+        cloudBoostService.queryTableByName("Role")
         .then(function(roleRecords){         
           $scope.roleRecords=roleRecords;  
         },function(error){ 
@@ -370,24 +269,20 @@ $scope.showCommonTypes=function(row,column){
       }
 
       //Array CloudObjects
-      var query = new CB.CloudQuery(column.document.relatedTo);      
-      query.containedIn('id', cbIdArray);
-      query.find({
-        success: function(list){
-          if(list && list.length>0){
-            $scope.editableList=list;
-            $scope.$digest();
-          }else{
-            $scope.editableList=null;
-            $scope.$digest();
-          }          
-          $("#md-list-commontypes").modal();          
-        },
-        error: function(err) {
+      cloudBoostService.queryContainedIn(column.document.relatedTo,'id',cbIdArray)
+      .then(function(list){
+        if(list && list.length>0){
+          $scope.editableList=list;
+          $scope.$digest();
+        }else{
           $scope.editableList=null;
-          $("#md-list-commontypes").modal();
-        }
-      });
+          $scope.$digest();
+        }          
+        $("#md-list-commontypes").modal();
+      },function(err){
+        $scope.editableList=null;
+        $("#md-list-commontypes").modal();
+      });      
       //Array CloudObjects
       
     }else{
@@ -544,7 +439,7 @@ function createACL(tableName,array,readOrWrite,permission){
     for(var i=0;i<array.length;++i){
       if(tableName,array[i]!="all"){
         var tableDef= _.first(_.where($rootScope.currentProject.tables, {name: tableName})); 
-        promises.push($scope.queryTableById(tableDef,array[i]));
+        promises.push(cloudBoostService.queryTableById(tableDef,array[i]));
       }else if(array[i]=="all"){         
 
           var jsonObj={};
@@ -851,7 +746,7 @@ $scope.setAndSaveJsonObject=function(){
           rowSpinnerMode($scope.editableIndex);        
       
           //Save Cloud Object
-          $scope.saveCloudObject($scope.editableRow)
+          cloudBoostService.saveCloudObject($scope.editableRow)
           .then(function(obj){           
             $scope.editableJsonObj=null;
             showSaveIconInSecond($scope.editableIndex);
@@ -888,7 +783,7 @@ $scope.setAndSaveACLObject=function(){
     rowSpinnerMode($scope.editableIndex);        
 
     //Save Cloud Object
-    $scope.saveCloudObject($scope.editableRow)
+    cloudBoostService.saveCloudObject($scope.editableRow)
     .then(function(obj){           
       $scope.editableJsonObj=null;
       showSaveIconInSecond($scope.editableIndex);
@@ -916,7 +811,7 @@ $scope.fileSelected=function(selectedFile,fileName,fileObj){
 
   //If List..Add it to List
   if($scope.editableColumn && $scope.editableColumn.relatedTo=="File"){     
-    $scope.addListFile();
+    $scope.addListFile(fileObj);
   }
 };
 
@@ -924,12 +819,11 @@ $scope.setAndSaveFile=function(fileObj){
   $("#md-fileviewer").modal("hide");   
   if(fileObj) {
 
-
       //If List..Add it to List
       if($scope.editableColumn && $scope.editableColumn.relatedTo=="File"){     
         $scope.addListFile(fileObj);
       }else{
-        getCBFile(fileObj)
+        cloudBoostService.getCBFile(fileObj)
         .then(function(cloudBoostFile){
             rowEditMode($scope.editableIndex);
        
@@ -950,7 +844,7 @@ $scope.setAndSaveFile=function(fileObj){
                 
                 $scope.editableRow.set($scope.editableColumnName,cloudBoostFile);            
                 //Save Cloud Object
-                $scope.saveCloudObject($scope.editableRow)
+                cloudBoostService.saveCloudObject($scope.editableRow)
                 .then(function(obj){                 
                   $scope.removeSelectdFile();
                   showSaveIconInSecond($scope.editableIndex);
@@ -1000,7 +894,7 @@ $scope.deleteFile=function(){
       rowSpinnerMode($scope.editableIndex);
                   
       //Save Cloud Object
-      $scope.saveCloudObject($scope.editableRow)
+      cloudBoostService.saveCloudObject($scope.editableRow)
       .then(function(obj){  
         $scope.editableFile=null;
         $scope.removeSelectdFile();
@@ -1014,27 +908,6 @@ $scope.deleteFile=function(){
 
     }
 };
-
-function getCBFile(fileObj){
-
-  var q=$q.defer();
-
-  var file = new CB.CloudFile(fileObj);
-  file.save({
-  success: function(newFile) {
-    //got the file object successfully with the url to the file
-    q.resolve(newFile); 
-  },
-  error: function(err) {
-   //error in uploading file
-    q.reject(err); 
-  }
-  });                
-
-  return  q.promise;
-}  
-
-//End of Files
 
 
 //Geo Point
@@ -1126,7 +999,7 @@ function saveGeopoint(){
     rowSpinnerMode($scope.editableIndex);
 
     //Save Cloud Object
-    $scope.saveCloudObject($scope.editableRow)
+    cloudBoostService.saveCloudObject($scope.editableRow)
     .then(function(obj){       
       $scope.editableGeopoint=null;
       showSaveIconInSecond($scope.editableIndex);
@@ -1193,7 +1066,7 @@ $scope.searchRelationDocs=function(){
   $("#md-reldocumentviewer").modal("hide");  
 
  //List Relations records 
-  $scope.loadTableData($scope.tableDef,"createdAt","asc",20,0)
+  cloudBoostService.loadTableData($scope.tableDef,"createdAt","asc",20,0)
   .then(function(list){        
        
    $scope.relationTableData=list;   
@@ -1230,7 +1103,7 @@ $scope.linkRecord=function(relationCBRecord){
       $("#md-searchreldocument").modal("hide");
                  
       //Save Cloud Object
-      $scope.saveCloudObject($scope.editableRow)
+      cloudBoostService.saveCloudObject($scope.editableRow)
       .then(function(obj){          
         showSaveIconInSecond(i);
         
@@ -1260,7 +1133,7 @@ $scope.viewRelationData=function(row,column,index){
     var tableDef=_.first(_.where($rootScope.currentProject.tables, {name: tableName})); 
     
     //get Table data
-    $scope.queryTableById(tableDef,rowId)
+    cloudBoostService.queryTableById(tableDef,rowId)
     .then(function(record){       
 
       if(record){
@@ -1341,7 +1214,7 @@ $scope.deleteRelLink=function(row,column){
       rowSpinnerMode(i);
                   
       //Save Cloud Object
-      $scope.saveCloudObject(row)
+      cloudBoostService.saveCloudObject(row)
       .then(function(obj){      
         $scope.relatedTableDefArray=[];
         $scope.relatedTableRecordArray=[];
@@ -1489,14 +1362,14 @@ $scope.showRelationModals=function(cloudObject,column){
         $scope.aclRoles=[];
 
         //Getting Users For Autocomplete
-        $scope.queryTableByName("User")
+        cloudBoostService.queryTableByName("User")
         .then(function(userRecords){         
           $scope.userRecords=userRecords;        
         },function(error){         
         });
 
         //Getting Roles For Autocomplete
-        $scope.queryTableByName("Role")
+        cloudBoostService.queryTableByName("Role")
         .then(function(roleRecords){         
           $scope.roleRecords=roleRecords;  
         },function(error){           
@@ -1559,7 +1432,7 @@ $scope.setRelFile=function(){
     //$("#md-rel-fileviewer").modal("hide");
     $scope.setRelFileSpinner[$scope.relEditableColumnName]=true;
 
-    getCBFile($scope.selectedFileObj)
+    cloudBoostService.getCBFile($scope.selectedFileObj)
     .then(function(cloudBoostFile){
     
         $scope.relEditableRow.set($scope.relEditableColumnName,cloudBoostFile);        
@@ -1694,50 +1567,6 @@ function convertFieldsISO2DateObj(){
     }    
   }      
 }
-
-/*
-$scope.addListItem=function(newListItem){
-  $scope.addListItemError=null;
-  if(newListItem || $scope.editableColumn.relatedTo=="Boolean" || $scope.editableColumn.relatedTo=="Object"){
-      if(!$scope.editableList || $scope.editableList.length==0){
-        $scope.editableList=[];
-      }
-      if( $scope.editableColumn.relatedTo=="DateTime"){    
-        newListItem=new Date(newListItem); 
-      }
-      if( $scope.editableColumn.relatedTo=="Object"){    
-        newListItem={}; 
-      }
-      if($scope.editableColumn.relatedTo=="Number"){ 
-        var tempData=newListItem;
-        newListItem=parseInt(newListItem);
-        if(newListItem.toString()==tempData){
-
-        }else{
-          newListItem=null;
-          $scope.addListItemError="Invalid Number";
-        }               
-      }
-      if($scope.editableColumn.relatedTo=="Email" && !validateEmail(newListItem)){     
-        newListItem=null;
-        $scope.addListItemError="Invalid Email";
-      }
-      if($scope.editableColumn.relatedTo=="URL" && !validateURL(newListItem)){     
-        newListItem=null;
-        $scope.addListItemError="Invalid URL";
-      }     
-
-      if($scope.editableColumn.relatedTo!='Text' && $scope.editableColumn.relatedTo!='Email' && $scope.editableColumn.relatedTo!='URL' && $scope.editableColumn.relatedTo!='Number' && $scope.editableColumn.relatedTo!='DateTime' && $scope.editableColumn.relatedTo!='Object' && $scope.editableColumn.relatedTo!='Boolean' && $scope.editableColumn.relatedTo!='File' && $scope.editableColumn.relatedTo!='GeoPoint'){
-        $("#md-searchlistdocument").modal("hide");
-      }
-
-      if(newListItem || $scope.editableColumn.relatedTo=="Boolean" || $scope.editableColumn.relatedTo=="Object"){
-        $scope.editableList.push(newListItem);
-        $scope.newListItem=null;
-      }                 
-  }
-  
-};*/
 
 $scope.addListItem=function(item){
   
@@ -1903,9 +1732,9 @@ $scope.setAndSaveList=function(){
       rowSpinnerMode($scope.editableIndex);
 
       //Save Cloud Object
-      $scope.saveCloudObject($scope.editableRow)
+      cloudBoostService.saveCloudObject($scope.editableRow)
       .then(function(obj){ 
-       
+        $scope.editableRow=obj;
         showSaveIconInSecond($scope.editableIndex);
 
         //$scope.$digest();  
@@ -1930,33 +1759,28 @@ $scope.showListJsonObject=function(row,index){
   $("#md-list-objectviewer").modal("show");
 };
 
-//List File
-//$scope.addListFileModal=function(){  
-  //$("#md-list-fileviewer").modal("show");
-//};
-
 $scope.addListFile=function(fileObj){   
   //$("#md-list-fileviewer").modal("hide"); 
   if(fileObj) {     
     if(!$scope.editableList || $scope.editableList.length==0){
       $scope.editableList=[];
     }
-    var dummyObj={};
+    var dummyObj={};    
     $scope.editableList.unshift(dummyObj);
+       
     var index=$scope.editableList.indexOf(dummyObj);
     $scope.listFileSpinner[index]=true;
+    $scope.$digest();
 
-    getCBFile(fileObj)
+    cloudBoostService.getCBFile(fileObj)
     .then(function(cloudBoostFile){     
       $scope.editableList[index]=cloudBoostFile;       
-      //$scope.editableList.push(cloudBoostFile);      
       $scope.removeSelectdFile();
-      $scope.listFileSpinner[index]=false;
+      $scope.listFileSpinner[index]=false;       
 
     }, function(err){
       $scope.listFileError[index]="Something went wrong. try again";
     });
-
   }
 };
 
@@ -1991,7 +1815,7 @@ $scope.relListFileSelected=function(column,selectedFile,fileName,fileObj){
   $scope.listFileSpinner[newIndex]=true;
   $scope.$digest();  
 
-  getCBFile($scope.selectedFileObj)
+  cloudBoostService.getCBFile($scope.selectedFileObj)
   .then(function(cloudBoostFile){   
         
     $scope.editableList[newIndex]=cloudBoostFile;      
@@ -2037,7 +1861,7 @@ $scope.showListFile=function(row,column,index){
 $scope.listSearchRelationDocs=function(){ 
   $scope.tableDef=_.first(_.where($rootScope.currentProject.tables, {name: $scope.editableColumn.relatedTo}));
   //List Relations records 
-  $scope.loadTableData($scope.tableDef,"createdAt","asc",20,0)
+  cloudBoostService.loadTableData($scope.tableDef,"createdAt","asc",20,0)
   .then(function(list){ 
     $scope.listRelationTableData=list; 
     $("#md-searchlistdocument").modal("show");         
@@ -2249,7 +2073,7 @@ function save(){
         rowSpinnerMode($scope.editableIndex);          
       
         //Save Cloud Object
-        $scope.saveCloudObject($scope.editableRow)
+        cloudBoostService.saveCloudObject($scope.editableRow)
         .then(function(obj){               
           showSaveIconInSecond($scope.editableIndex);
         }, function(error){                         
@@ -2288,7 +2112,7 @@ $scope.saveRelationObj=function(relCloudObject){
       $scope.relationSpinnerMode=true;      
 
       //Save Cloud Object
-      $scope.saveCloudObject(relCloudObject)
+      cloudBoostService.saveCloudObject(relCloudObject)
       .then(function(obj){
         //Convert ISO to dateObj 
         convertISO2DateObj(table,relCloudObject);
@@ -2318,21 +2142,6 @@ $scope.saveRelationObj=function(relCloudObject){
 $scope.removeRelErrors=function(){
   $scope.relationErrorMode=null;
 };
-
-$scope.saveCloudObject = function(obj){
-  var q=$q.defer(); 
-
-  //save the object.
-  obj.save({ success: function(newObj){ 
-    q.resolve(newObj);  
-  },error: function(err) {
-    q.reject(err);                  
-   //$scope.$digest();
-  }
-  });
-
-  return  q.promise;      
-}; 
 
 /* PRIVATE FUNCTIONS */
 
@@ -2396,7 +2205,7 @@ function getProjectTables(){
     };
     $scope.filtersList.push(defaultFilterColumn);
 
-    return $scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0);
+    return cloudBoostService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0);
 
   }).then(function(cbObjects){ 
     $scope.currentTableData=cbObjects;
@@ -2436,7 +2245,7 @@ $scope.addMoreRecords=function(){
   if($scope.currentTableData && $rootScope.currentProject && $rootScope.currentProject.currentTable){
     $scope.loadingRecords=true;
     //load more data
-    $scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,5,$scope.totalRecords)
+    cloudBoostService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,5,$scope.totalRecords)
     .then(function(list){
       if(list && list.length>0){
         if($scope.currentTableData.length>0){
@@ -2532,12 +2341,12 @@ $scope.addColumn = function(valid) {
       $("#scrollbar-wrapper").mCustomScrollbar("scrollTo",['top','right']); 
     }, 2000);*/
 
-    $('#scrollbar-wrapper').scrollTo('#extra-col-th',400,{axis:'x',duration:5000}); 
+    $('#scrollbar-wrapper').scrollTo('#extra-col-th',400,{axis:'x',duration:9000}); 
 
     tableService.saveTable($rootScope.currentProject.currentTable)
     .then(function(table){  
       $rootScope.currentProject.currentTable=table; 
-      $('#scrollbar-wrapper').scrollTo('#extra-col-th',400,{axis:'x',duration:5000});       
+      $('#scrollbar-wrapper').scrollTo('#extra-col-th',400,{axis:'x',duration:9000});       
       $scope.newColumnObj=null;
       $scope.commonSpinner=false; 
       $scope.commonSaved=true;
@@ -2675,7 +2484,7 @@ $scope.deleteSelectedRows=function(){
   var promises=[];
   for(var i=0;i<$scope.rowsSelected.length;++i){
     if($scope.rowsSelected[i]==true){        
-      promises.push($scope.deleteCloudObject($scope.currentTableData[i]));
+      promises.push(cloudBoostService.deleteCloudObject($scope.currentTableData[i]));
     }
   }
 
@@ -2717,17 +2526,6 @@ function deleteUnsavedRows(){
   }      
 }
 
-$scope.deleteCloudObject = function(obj){
-  var q=$q.defer();
-
-  obj.delete().then(function(obj){    
-    q.resolve(obj);
-  }, function(error){ 
-    q.reject(error);
-  });
-
-  return  q.promise;
-};
 //Row delete specific functions end  
 
 $scope.checkErrorsForCreate=function(name,arrayList,type){
@@ -2776,7 +2574,7 @@ $scope.sortASC=function(column){
     $scope.orderBy=column.name;
     $scope.orderByType="asc";    
 
-    $scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0)
+    cloudBoostService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0)
     .then(function(list){ 
 
        $scope.currentTableData=list; 
@@ -2803,7 +2601,7 @@ $scope.sortDESC=function(column){
 
     $scope.orderBy=column.name;
     $scope.orderByType="desc";
-    $scope.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0)
+    cloudBoostService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0)
     .then(function(list){ 
 
        $scope.currentTableData=list; 
@@ -3169,7 +2967,7 @@ $scope.popUpFilterTypes=function(eachFilter,index){
 function processFilterQuery(index){
   $scope.filterSpinner[index]=true;
   $scope.filterNotify=null;
-  $scope.filterQuery($rootScope.currentProject.currentTable,$scope.filtersList)
+  cloudBoostService.filterQuery($rootScope.currentProject.currentTable,$scope.filtersList)
   .then(function(cbObjects){   
     $scope.currentTableData=cbObjects; 
     $scope.filterSpinner[index]=false;                                          
@@ -3226,157 +3024,6 @@ $scope.closeFilterListOfListBox=function(index){
     $scope.filterListOfList[index]=false;
   }
 };
-
-function addFiltersToQuery(table,filterList){
-    var currentQuery = new CB.CloudQuery(table.name);
-    for(var i=0;i<filterList.length;++i){
-
-      var queryValue;
-      if(filterList[i].colDataType=="DateTime"){
-        queryValue=new Date(filterList[i].value);
-      }else{
-        queryValue=filterList[i].value;
-      }
-
-      var queryArrayValue=[];
-      if(filterList[i].colDataType=="List" && filterList[i].colRelatedTo=="DateTime"){
-        for(var d=0;d<filterList[i].arrayValue.length;++d){
-          queryArrayValue.push(new Date(filterList[i].arrayValue[d]));
-        }
-      }else{
-        queryArrayValue=filterList[i].arrayValue;
-      }
-
-      if(filterList[i].contriant=="And"){ 
-        if(filterList[i].filter=="equalTo"){
-          currentQuery.equalTo(filterList[i].colName, queryValue); 
-        }
-        if(filterList[i].filter=="notEqualTo"){
-          currentQuery.notEqualTo(filterList[i].colName, queryValue); 
-        } 
-        if(filterList[i].filter=="containedIn"){
-          currentQuery.containedIn(filterList[i].colName, queryArrayValue); 
-        } 
-        if(filterList[i].filter=="containsAll"){
-          currentQuery.containsAll(filterList[i].colName, queryArrayValue); 
-        } 
-        if(filterList[i].filter=="notContainedIn"){
-          currentQuery.notContainedIn(filterList[i].colName, queryArrayValue); 
-        } 
-        if(filterList[i].filter=="greaterThan"){
-          currentQuery.greaterThan(filterList[i].colName, queryValue); 
-        } 
-        if(filterList[i].filter=="greaterThanEqualTo"){
-          currentQuery.greaterThanEqualTo(filterList[i].colName, queryValue); 
-        }
-        if(filterList[i].filter=="lessThan"){
-          currentQuery.lessThan(filterList[i].colName, queryValue); 
-        } 
-        if(filterList[i].filter=="lessThanEqualTo"){
-          currentQuery.lessThanEqualTo(filterList[i].colName, queryValue); 
-        } 
-        if(filterList[i].filter=="startsWith"){
-          currentQuery.startsWith(filterList[i].colName, queryValue); 
-        } 
-        if(filterList[i].filter=="exists"){
-          currentQuery.exists(filterList[i].colName); 
-        } 
-        if(filterList[i].filter=="doesNotExists"){
-          currentQuery.doesNotExists(filterList[i].colName); 
-        } 
-        if(filterList[i].filter=="near"){
-          filterList[i].longitude=parseInt(filterList[i].longitude);
-          filterList[i].latitude=parseInt(filterList[i].latitude);
-          filterList[i].value=parseInt(filterList[i].value);
-
-          var loc = new CB.CloudGeoPoint(filterList[i].longitude,filterList[i].latitude);
-          currentQuery.near(filterList[i].colName,loc, filterList[i].value); 
-        }
-        if(filterList[i].filter=="geoWithin"){
-          if(filterList[i].arrayValue.length>2){
-            var geoPointsCB=[];
-            for(var g=0;g<filterList[i].arrayValue.length;++g){
-
-              var longitude=parseInt(filterList[i].arrayValue[g].longitude);
-              var latitude=parseInt(filterList[i].arrayValue[g].latitude);
-
-              var loc = new CB.CloudGeoPoint(longitude,latitude);              
-              geoPointsCB.push(loc);
-            }
-            currentQuery.geoWithin(filterList[i].colName, geoPointsCB); 
-          }
-          
-        }    
-      }
-
-      if(filterList[i].contriant=="Or"){   
-        var query = new CB.CloudQuery(table.name); 
-
-        if(filterList[i].filter=="equalTo"){
-          query.equalTo(filterList[i].colName, queryValue); 
-        }
-        if(filterList[i].filter=="notEqualTo"){
-          query.notEqualTo(filterList[i].colName, queryValue); 
-        } 
-        if(filterList[i].filter=="containedIn"){
-          query.containedIn(filterList[i].colName, queryArrayValue); 
-        } 
-        if(filterList[i].filter=="containsAll"){
-          query.containsAll(filterList[i].colName, queryArrayValue); 
-        } 
-        if(filterList[i].filter=="notContainedIn"){
-          query.notContainedIn(filterList[i].colName, queryArrayValue); 
-        } 
-        if(filterList[i].filter=="greaterThan"){
-          query.greaterThan(filterList[i].colName, queryValue); 
-        } 
-        if(filterList[i].filter=="greaterThanEqualTo"){
-          query.greaterThanEqualTo(filterList[i].colName, queryValue); 
-        }
-        if(filterList[i].filter=="lessThan"){
-          query.lessThan(filterList[i].colName, queryValue); 
-        } 
-        if(filterList[i].filter=="lessThanEqualTo"){
-          query.lessThanEqualTo(filterList[i].colName, queryValue); 
-        } 
-        if(filterList[i].filter=="startsWith"){
-          query.startsWith(filterList[i].colName, queryValue); 
-        } 
-        if(filterList[i].filter=="exists"){
-          query.exists(filterList[i].colName); 
-        } 
-        if(filterList[i].filter=="doesNotExists"){
-          query.doesNotExists(filterList[i].colName); 
-        } 
-        if(filterList[i].filter=="near"){
-          filterList[i].longitude=parseInt(filterList[i].longitude);
-          filterList[i].latitude=parseInt(filterList[i].latitude);
-          filterList[i].value=parseInt(filterList[i].value);
-
-          var loc = new CB.CloudGeoPoint(filterList[i].longitude,filterList[i].latitude);
-          query.near(filterList[i].colName,loc, filterList[i].value); 
-        }
-        if(filterList[i].filter=="geoWithin"){
-          if(filterList[i].arrayValue.length>2){
-            var geoPointsCB=[];
-            for(var g=0;g<filterList[i].arrayValue.length;++g){
-
-              var longitude=parseInt(filterList[i].arrayValue[g].longitude);
-              var latitude=parseInt(filterList[i].arrayValue[g].latitude);
-
-              var loc = new CB.CloudGeoPoint(longitude,latitude);
-              geoPointsCB.push(loc);
-            }
-            query.geoWithin(filterList[i].colName, geoPointsCB); 
-          }
-        }
-
-        currentQuery = CB.CloudQuery.or(currentQuery, query);
-      }    
-    }
-
-    return currentQuery;
-}
 
 //Search Related
 $scope.openSearchBox=function(){
@@ -3442,7 +3089,7 @@ $scope.updatedCloudSearch=function(){
     
     $scope.cloudSearchSpinner=true;
     //CloudSearch
-    $scope.cloudSearch($rootScope.currentProject.currentTable,allColumnNames,tempData)
+    cloudBoostService.cloudSearch($rootScope.currentProject.currentTable,allColumnNames,tempData)
     .then(function(cbObjects){   
       $scope.currentTableData=cbObjects;
       $scope.cloudSearchSpinner=false;                                              
@@ -3450,8 +3097,7 @@ $scope.updatedCloudSearch=function(){
     function(error){ 
       $scope.cloudSearchSpinner=false;               
     });
-    //CloudSearch
-    
+    //CloudSearch    
   }
 };
 
