@@ -84,21 +84,32 @@ app.service('userService', function($q,$http){
    };
 
   this.activate=function(code){
-       var q=$q.defer();
+    var q=$q.defer();
 
-       $http.post(serverURL+'/user/activate', {code:code}).
-         success(function(data, status, headers, config) {
-           console.log(data);
-           q.resolve(data);
-         }).
-         error(function(data, status, headers, config) {
-               q.reject(data);
-         });
+    $http.post(serverURL+'/user/activate', {code:code}).
+    success(function(data, status, headers, config) {     
+      q.resolve(data);
+    }).
+    error(function(data, status, headers, config) {
+      q.reject(data);
+    });
 
-       return q.promise;
+    return q.promise;
   }
 
+  this.resendVerificationEmail=function(email){
+    var q=$q.defer();
 
+    $http.post(serverURL+'/user/resendverification', {email:email}).
+    success(function(data, status, headers, config) {     
+      q.resolve(data);
+    }).
+    error(function(data, status, headers, config) {
+      q.reject(data);
+    });
+
+    return q.promise;
+  }
 
   this.facebookSignUp=function(){
       var q=$q.defer();

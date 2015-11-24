@@ -2,35 +2,27 @@ app.controller('signupController',
   ['$scope','userService','$rootScope',
   function($scope,userService,$rootScope){   
 
+      $scope.isUserSignedUp=false;
+
       $scope.init = function(){             
-          $scope.showSpinner=false;                  
+        $scope.showSpinner=false;                  
       };
 
       $scope.signUp=function(isValid){
 
-        if(isValid)
-          {
-
-              $scope.showSpinner=true;
-
-              var signUpPromise=userService.signUp($scope.name,$scope.email,$scope.password);
-              signUpPromise
-              .then(function(data){
-                 //$scope.showSpinner=false;                 
-                $.cookie('userId', data._id, { path: '/' });
-                $.cookie('userFullname', data.name, { path: '/' });
-                $.cookie('email', data.email, { path: '/' });
-                $.cookie('createdAt', data.createdAt, { path: '/' });
-
-                window.location.href=dashboardURL;
-              },function(error){
-                    $scope.showSpinner=false;
-                    $scope.err=error;
-              });
-
-          }
+        if(isValid){
+          $scope.showSpinner=true;
+          $scope.err=null;
+          userService.signUp($scope.name,$scope.email,$scope.password)             
+          .then(function(data){
+            $scope.showSpinner=false;
+            $scope.isUserSignedUp=true;
+          },function(error){
+            $scope.showSpinner=false;
+            $scope.err=error;
+          });
+        }
       };
-
 
 
       $scope.facebookSignUp=function(){

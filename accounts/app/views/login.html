@@ -36,7 +36,7 @@
 					</div>	
 
 					<!--If Feed Doesn't ,Default-->	
-					<div ng-if="!feed && !isBlogLoading" style="margin-top:80px;margin-left:20px; padding-bottom:100px;">
+					<div ng-if="!feed && !isBlogLoading" style="margin-top:80px;margin-left:18px; padding-bottom:100px;">
 					<div>
 						<span>WHAT'S IN IT FOR YOU?</span>
 					</div>
@@ -74,48 +74,84 @@
 
 				</div>	
 
-				<div class="col-md-6">
-					<form style="margin-bottom:20px !important; margin-top:40px !important; border-left:1px solid #E5E5E5;" class="form-horizontal" name="userForm" ng-submit="logIn(userForm.$valid)">
-					<div class="content">						
 
-						<div ng-show="showSpinner" class="flex-general-column-wrapper-center" style="height:200px;">
-							<div>    			
-	              			 <i class="fa fa-spinner fa-pulse fa-3x"></i>
-	              			</div>	              			
+				<div class="col-md-6">
+					<!--Normal Login Form-->
+					<form ng-show="accountVerified" style="margin-bottom:20px !important; margin-top:40px !important; border-left:1px solid #E5E5E5;" class="form-horizontal" name="userForm" ng-submit="logIn(userForm.$valid)">
+						<div class="content">						
+
+							<div ng-show="showSpinner" class="flex-general-column-wrapper-center" style="height:200px;">
+								<div>    			
+		              			 <i class="fa fa-spinner fa-pulse fa-3x"></i>
+		              			</div>	              			
+							</div>
+
+							<h4 ng-show="!showSpinner" class="title"><b>Welcome back! Glad to see you again.</b></h4>
+
+							<p ng-hide="showSpinner" class="text-center" style="color:red;">{{err}}</p>
+							
+							<div ng-show="!showSpinner">
+								<div class="form-group">
+									<div class="col-sm-12">
+										<div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-user"></i></span>
+											<input type="email" placeholder="Email" id="username" class="form-control"  required  ng-model="email">
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-12">
+										<div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+											<input type="password" placeholder="Password" id="password" class="form-control" required  ng-model="password">
+										</div>
+									</div>
+								</div>
+								 <p class="forgot-password">
+								 	<a href="#/forgotpassword">Forgot password?</a>
+								 </p>
+							</div>	
+								
+						</div>
+						<div class="foot" ng-show="!showSpinner">
+							<a class="btn btn-default" href="#/signup">Create a free account</a>
+							<button class="btn btn-primary"  type="submit">Log in</button>
+						</div>
+					</form>
+					<!--/Normal Login Form-->
+
+					<!--Account Activation is needed-->					
+					<div ng-show="!accountVerified" style="margin-bottom:20px !important; margin-top:110px !important; border-left:1px solid #E5E5E5;" class="form-horizontal">
+						<div class="content">						
+
+							<div ng-show="showSpinner" class="flex-general-column-wrapper-center" style="height:100px;">
+								<div>    			
+		              			 <i class="fa fa-spinner fa-pulse fa-3x"></i>
+		              			</div>	              			
+							</div>
+
+							<div style="width:100%;" ng-show="!showSpinner && !resentCode" class="flex-general-column-wrapper-center">
+								<span style="color:#4892F9;font-size:16px;font-weight:700;">
+									You email is not verified yet!
+								</span>
+								<span  style="font-size:12px;color:gray;">If you want us to send verification again <a style="cursor:pointer;" ng-click="resendVerificationEmail()">click here</a></span>
+							</div>
+							
+							<div style="width:100%;" ng-show="!showSpinner && resentCode" class="flex-general-column-wrapper-center">
+								<span style="color:#4892F9;font-size:14px;font-weight:700;">
+									We have sent you verification email again
+								</span>
+								<span  style="font-size:12px;color:gray;">If you still didn't recieve it. <a style="cursor:pointer;" ng-click="resendVerificationEmail()">click here</a> to resend</span>
+							</div>			
+								
 						</div>
 
-						<h4 ng-show="!showSpinner" class="title"><b>Welcome back! Glad to see you again.</b></h4>
+						<div class="flex-general-column-wrapper-center" ng-show="!showSpinner" style="margin-top:16px;">							
+							<button class="btn btn-primary"  type="button" ng-click="resendVerificationEmail()">Resend Verification Email</button>
+						</div>
+					</div>							
+					<!--/Account Activation is needed-->
 
-						<p ng-hide="showSpinner" class="text-center" style="color:red;">{{err}}</p>
-						
-						<div ng-show="!showSpinner">
-							<div class="form-group">
-								<div class="col-sm-12">
-									<div class="input-group">
-										<span class="input-group-addon"><i class="fa fa-user"></i></span>
-										<input type="email" placeholder="Email" id="username" class="form-control"  required  ng-model="email">
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="col-sm-12">
-									<div class="input-group">
-										<span class="input-group-addon"><i class="fa fa-lock"></i></span>
-										<input type="password" placeholder="Password" id="password" class="form-control" required  ng-model="password">
-									</div>
-								</div>
-							</div>
-							 <p class="forgot-password">
-							 	<a href="#/forgotpassword">Forgot password?</a>
-							 </p>
-						</div>	
-							
-					</div>
-					<div class="foot" ng-show="!showSpinner">
-						<a class="btn btn-default" href="#/signup">Create a free account</a>
-						<button class="btn btn-primary"  type="submit">Log in</button>
-					</div>
-				</form>
 			   </div>		
 			</div>
 		</div>

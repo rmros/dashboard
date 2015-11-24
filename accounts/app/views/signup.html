@@ -29,10 +29,11 @@
 						<br/>								
 						
 					</div>
-				</div>		
+				</div>	
+
 				<div class="col-md-7">
-							
-					<form style="margin-bottom: 30px !important; margin-top: 30px !important; border-left:1px solid #E2E2E2;" class="form-horizontal"  name="userForm" ng-submit="signUp(userForm.$valid)">
+					<!--Form Block-->			
+					<form ng-show="!isUserSignedUp" style="margin-bottom: 30px !important; margin-top: 30px !important; border-left:1px solid #E2E2E2;" class="form-horizontal"  name="userForm" ng-submit="signUp(userForm.$valid)">
 						<div class="content">						
 
 							<div ng-show="showSpinner" class="flex-general-column-wrapper-center spinner-signup"> 
@@ -45,7 +46,6 @@
 	              			</div>
 
 	              			<p ng-hide="showSpinner" class="text-center" ng-show="err" style="color:red;">{{err}}</p>
-	              				
 	              			<!--no spinner-->		
 	              			<div ng-hide="showSpinner">	
 								<div class="form-group">
@@ -77,16 +77,35 @@
 									</div>
 								
 								</div>
-				             <p class="spacer">By creating an account, you agree with the <a href="https://www.cloudboost.io/terms" target="_blank">Terms and Conditions.</a></p>
-				            <button class="btn btn-block btn-success btn-rad btn-lg" type="submit">Sign Up</button>
-								
-							  <p class="spacer">Already have an account? <a class="login-link" id="login-link" href="/accounts">Log in</a></p>	
+					             <p class="spacer">By creating an account, you agree with the <a href="https://www.cloudboost.io/terms" target="_blank">Terms and Conditions.</a></p>
+					            <button class="btn btn-block btn-success btn-rad btn-lg" type="submit">Sign Up</button>
+									
+								  <p class="spacer">Already have an account? <a class="login-link" id="login-link" href="/accounts">Log in</a></p>	
 
-						</div>
-						<!--no spinner-->	
-				 </div>	  
-				</div>
-			  </form>
+							</div>
+							<!--no spinner-->	              				
+						</div>			
+			        </form>
+			        <!--/Form Block-->
+
+			        <!--Once Sign up is done-->	
+			        <div ng-show="isUserSignedUp" style="margin-bottom: 30px !important; margin-top: 30px !important; border-left:1px solid #E2E2E2;height:379px;" class="flex-general-column-wrapper-center">
+			        	<div class="flex-general-column-wrapper-center">
+			        		<span style="font-size:18px;font-weight:700;color:#4892F9;">You have successfully signed up!</span>
+			        		<span style="font-size:12px;margin-top:2px;">We have sent you a verification email. Verify your email to login</span>
+			        		<span style="font-size:12px;margin-top:2px;color:gray;">(make sure you check your spam)</span>
+			        		
+			        	</div>
+
+			        	<div class="flex-general-column-wrapper-center" style="margin-top:80px;">
+			        		<span style="font-size:14px;">Back to login page? <a style="cursor:pointer;" href="/accounts">click here</a></span>
+			        	</div>
+			        	<div>
+			        		
+			        	</div>		
+			       	</div> 	
+			        <!--/Once Sign up is done-->	
+			   </div>
 
 			</div>
 		</div>

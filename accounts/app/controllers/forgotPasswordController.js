@@ -8,7 +8,6 @@ app.controller('forgotPasswordController',
           }else{
             $scope.showNewPasswordForm = false;
           }
-
       };
 
       $scope.requestResetPassword = function(isValid){

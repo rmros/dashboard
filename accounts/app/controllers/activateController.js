@@ -8,17 +8,23 @@ app.controller('activateController',
 
             userService.activate($location.search().code).then(function(data){
               $scope.showSpinner=false;
-               $scope.err = "Thank you! We successfully activated your account.";
-               //window.location.href=dashboardURL;
+              $scope.err = "Thank you! We successfully activated your account.";
+               
+              $.cookie('userId', data._id, { path: '/' });
+              $.cookie('userFullname', data.name, { path: '/' });
+              $.cookie('email', data.email, { path: '/' });
+              $.cookie('createdAt', data.createdAt, { path: '/' });
+
+              window.location.href=dashboardURL;
+              
             }, function(error){
                 $scope.showSpinner=false;
-                $scope.err = "We're sorry, but we can't activate your account at this point in time. Please try again later";
-                console.log(error);
+                $scope.err = "We're sorry, but we can't activate your account at this point in time. Please try again later";                
             });
             
           }else{
-               $scope.showSpinner=false;
-               $scope.err = "We're sorry, but we can't activate your account at this point in time. Please try again later";
+            $scope.showSpinner=false;
+            $scope.err = "We're sorry, We can't activate your account at this point in time. Please try again later";
           }        
 
       }

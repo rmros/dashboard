@@ -3,7 +3,7 @@
 <div id="cl-wrapper" class="forgotpassword-container" ng-init="init()">
 
 	<div class="middle">
-		<div class="block-flat">
+		<div class="block-flat" style="height:500px;">
 			<div class="header">							
 				<h3 class="text-center">
 					<a href="https://www.cloudboost.io">
@@ -12,18 +12,23 @@
 				</h3>
 			</div>
 		
-			<h5 class="title text-center">
-				<strong>Activating your account.</strong>
-			</h5>
-    		<p class="intro text-center" ng-show="showSpinner">It'll take a second.</p>
+			<div class="flex-general-column-wrapper-center" style="height:420px;">
+				<h4 class="title text-center">
+					<strong style="color:#4892F9;">Activating your account..</strong>
+				</h4>
+	    		<p class="intro text-center" ng-show="showSpinner">It'll take a second.</p>
 
-            <div class="row">
-                <div class="text-center" ng-show="showSpinner">
-                	<i class="fa fa-spin fa-4x fa-spinner"></i></div>
-                <div ng-hide="showSpinner" class="form-container col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
-                    <p class="text-center">{{err}}</p>
-                </div>
-            </div><!--//row-->	
+	    		<!--row-->	
+	            <div>
+	                <div class="text-center" ng-show="showSpinner">
+	                	<i class="fa fa-spin fa-4x fa-spinner"></i>
+	                </div>
+	                <div ng-hide="showSpinner" class="form-container col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+	                    <p class="text-center">{{err}}</p>
+	                </div>
+	            </div>
+	            <!--//row-->	
+        	</div>
 
 		</div>
 		<div class="text-center out-links"><a href="www.cloudboost.io">&copy; 2014 cloudboost</a></div>

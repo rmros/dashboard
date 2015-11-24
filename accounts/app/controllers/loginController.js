@@ -2,6 +2,8 @@ app.controller('loginController',
   ['$scope','userService','$http','$cookies','$rootScope',
   function($scope,userService,$http,$cookies,$rootScope){
 
+  $scope.accountVerified=true; 
+  $scope.resentCode=false; 
   $scope.init=function()  {   
     $scope.showSpinner=false;
     loadBlog();          
@@ -23,9 +25,29 @@ app.controller('loginController',
         //$scope.showSpinner=false;
       }, function(error){
         $scope.showSpinner=false;
-        $scope.err=error.message;
+        if(error.message=="Account verification needed"){
+          $scope.accountVerified=false;
+        }else{
+          $scope.err=error.message;
+        }
+        
       });
     }
+  };
+
+  $scope.resendVerificationEmail=function(){
+   
+    $scope.showSpinner=true;
+    $scope.err=null;
+    userService.resendVerificationEmail($scope.email)
+    .then(function(data){ 
+      $scope.resentCode=true; 
+      $scope.showSpinner=false;       
+    }, function(error){
+      $scope.showSpinner=false;
+      $scope.err=error.message;        
+    });
+    
   };
 
   function loadBlog(){ 
