@@ -1,84 +1,137 @@
   
-<div class="cl-mcont profile-page" ng-init="init()"  style="background-color:white;">
+<div class="cl-mcont profile-page" ng-init="init()">
   <div class="row">
-    <div class="col-sm-12 col-md-12 col-lg-12">
+
+    <div class="col-sm-12 col-md-2 col-lg-2">
+    </div>
       
-      <div class="flex-general-row-wrapper">
+    <div class="col-sm-12 col-md-8 col-lg-8">
 
-        <!--Profile Pic-->
-        <div class=""> 
-          <!--Default Pic-->
-          <div class="profile-pic-wrap" style="height:auto;position:relative;"> 
-            <div class="flex-general-column-wrapper-center" style="height:auto;width:120px;">           
-              <img src="assets/images/anonymous.jpg" class="profile-photo"> 
-            </div> 
+      <div class="flex-general-row-wrapper" style="width:100%;"> 
 
-            <!--Edit Setting-->
-            <div class="profile-pic-editsettings" style="position:absolute;bottom:4px;right:4px;">
-              <div class="flex-general-column-wrapper-center" style="width:25px;height:25px;background-color:black;opacity:0.6;border-radius:25px;">
-                <i class="icon ion-edit" style="color:white;font-size:14px;" ng-click="openFileModal()"></i>
-              </div>  
-            </div> 
-             
-          </div> 
-          <!--/Default Pic-->         
+        <!--navigation-->
+        <div class="" style="background-color:white;width:24%;">
+          <div style="width:100%;height:auto;">
+             <div class="profile-navlinks flex-general-column-wrapper-center">
+              <span>User Information</span>
+             </div>
+             <div class="profile-navlinks flex-general-column-wrapper-center">
+              <span>Credit Card details</span>
+             </div>                          
+          </div>  
         </div>
+        <!--navigation-->  
 
-        <!--Personal Info-->
-        <div class="flex-general-row-wrapper" style="margin-left:17px;">  
 
-            <!--Key-->
-            <div>
+        <div class="flex-general-row-wrapper" style="margin-left:17px;background-color:white;white;width:73%;padding:14px;border-radius:2px;height:80vh;">
 
-              <div class="cf" style="width:70px;height:24px;">
-                <div class="pull-right">
-                  <span style="font-size:14px; font-weight:700;">Name:</span>
-                </div>  
-              </div>
+          <div  class="flex-general-column-wrapper-center" style="width:99.99%;">
+            <!--Profile Pic-->
+            <div class="flex-general-column-wrapper-center" style="width:100%;margin-top:150px;"> 
 
-              <div class="cf" style="width:70px;height:24px;">
-                <div class="pull-right">
-                  <span style="font-size:14px; font-weight:700;">Email:</span>
-                </div>  
-              </div>
-             
+              <!--Default Pic-->
+              <div ng-show="!file" class="profile-pic-wrap" style="height:auto;position:relative;"> 
+                <div class="flex-general-column-wrapper-center" style="height:auto;width:120px;">           
+                  <img src="assets/images/anonymous.jpg" class="profile-photo"> 
+                </div> 
 
-              <div class="cf" style="width:70px;height:24px;">
-                <div class="pull-right">
-                  <span style="font-size:14px; font-weight:700;">Password:</span>
-                </div>  
+                <!--Edit Setting-->
+                <div class="profile-pic-editsettings" style="position:absolute;bottom:4px;right:4px;">
+                  <div class="flex-general-column-wrapper-center" style="width:25px;height:25px;background-color:black;opacity:0.6;border-radius:25px;">
+                    <i class="icon ion-edit" style="color:white;font-size:14px;" ng-click="openFileModal()"></i>
+                  </div>  
+                </div> 
+                 
               </div> 
+              <!--/Default Pic--> 
+
+
+              <!--Pic-->
+              <div ng-show="file" class="profile-pic-wrap" style="height:auto;position:relative;"> 
+                <div class="flex-general-column-wrapper-center" style="height:auto;width:120px;">           
+                  <img src="{{file.document.url}}" class="profile-photo"> 
+                </div> 
+
+                <!--Edit Setting-->
+                <div class="profile-pic-editsettings" style="position:absolute;bottom:4px;right:4px;">
+                  <div class="flex-general-column-wrapper-center" style="width:25px;height:25px;background-color:black;opacity:0.6;border-radius:25px;">
+                    <i class="icon ion-edit" style="color:white;font-size:14px;" ng-click="openFileModal()"></i>
+                  </div>  
+                </div> 
+                 
+              </div> 
+              <!--/Pic-->
 
             </div>
+            <!--/Profile Pic-->
 
-            <!--Value-->
-            <div style="margin-left:4px;">
+            <!--Personal Info-->
+            <div class="flex-general-column-wrapper-center" style="width:100%;margin-top:20px;">             
+                
+                <div class="flex-general-row-wrapper">  
+                  <!--Key-->
+                  <div>
 
-              <div class="cf" style="height:24px;">
-                <div class="pull-left">
-                  <span style="font-size:14px;">Nawaz Dhandala</span>
-                </div>  
-              </div>
+                    <div class="cf" style="width:70px;height:24px;">
+                      <div class="pull-right">
+                        <span style="font-size:14px; font-weight:700;">Name:</span>
+                      </div>  
+                    </div>
 
-              <div class="cf" style="height:24px;">
-                <div class="pull-left">
-                  <span style="font-size:14px;">hello@cloudbost.io</span>
-                </div>  
-              </div>
-             
+                    <div class="cf" style="width:70px;height:24px;">
+                      <div class="pull-right">
+                        <span style="font-size:14px; font-weight:700;">Email:</span>
+                      </div>  
+                    </div>
+                   
 
-              <div class="cf" style="height:24px;">
-                <div class="pull-left">
-                  <span style="font-size:14px;">******</span>
-                </div>  
-              </div> 
+                    <div class="cf" style="width:70px;height:24px;">
+                      <div class="pull-right">
+                        <span style="font-size:14px; font-weight:700;">Password:</span>
+                      </div>  
+                    </div> 
 
-            </div>    
+                  </div>
+
+                  <!--Value-->
+                  <div style="margin-left:4px;">
+
+                    <div class="cf  profile-value" style="height:24px;">
+                      <div class="pull-left">
+                        <span style="font-size:14px;">{{user.name}}</span>
+                        &nbsp;<span class="profile-edit-pencil" ng-click="initEditProfile('name')"> <i class="fa fa-pencil"></i></span>
+                      </div>  
+                    </div>
+
+                    <div class="cf" style="height:24px;">
+                      <div class="pull-left">
+                        <span style="font-size:14px;">{{user.email}}</span>
+                      </div>  
+                    </div>
+                   
+
+                    <div class="cf  profile-value" style="height:24px;">
+                      <div class="pull-left">
+                        <span style="font-size:14px;">******</span>
+                        &nbsp;<span class="profile-edit-pencil" ng-click="initEditProfile('password')"> <i class="fa fa-pencil"></i></span>
+                      </div>  
+                    </div> 
+
+                  </div>
+                </div>     
+            </div>
+            <!--/Personal Info-->
+          </div>
+
         </div>
 
       </div>             
-
+           
     </div>
+
+    <div class="col-sm-12 col-md-2 col-lg-2">
+    </div>
+
   </div>    
 </div>
 
@@ -92,9 +145,118 @@
 
 <!--File Directive -->
 <div class="modal fade colored-header danger" id="md-fileviewer" tabindex="-1" role="dialog">
-  <cb-file edit="editableFile" delete="deleteFile()" save="setAndSaveFile(fileObj)"></cb-file>
+  <cb-file edit="editableFile" delete="deleteFile()" save="saveFile(fileObj)"></cb-file>
 </div> 
 <!--/File Directive --> 
+
+
+<!--Change ProfileInfo-->
+<div class="modal fade colored-header primary" id="md-changeprofile" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+      <div style="height:55px; width:100%;padding:13px;">
+        <div class="pull-left" style="padding-left:8px;">
+          <span style="font-size:18px;">{{editType}}</span>
+        </div>          
+      </div>
+
+      <!--Saving Errors--> 
+      <div style="width:100%;">
+        <div  ng-show="modifyModalError" style="width:100%;height:30px;background-color:#C40101;color:white;padding-left:5px;padding-right:5px;padding-top:3.5px;" ng-class="{animated:modifyModalError}" class="fadeIn">
+
+          <div class="pull-left" style="padding-top:1px;">                
+            <span>{{modifyModalError}}</span>
+          </div>
+
+          <div class="pull-right" ng-click="modifyModalError=!modifyModalError">
+            <i class="icon ion-android-close" style="font-size:16px;color:white;"></i>
+          </div>  
+
+        </div>  
+      </div>  
+      <!--/Saving Errors-->
+      
+      <div class="modal-body" style="border-top:1px solid #dddbdb;">
+        <div class="flex-general-column-wrapper-center" style="width:100%;">
+          
+          <!--Change Name-->
+          <div ng-show="editType=='Change Name'" class="flex-general-row-wrapper" style="width:88%;">
+            <div class="" style="width:35%;height:29px;">
+              <p class="pull-right" style="font-size:14px;">New Name</p>              
+            </div> 
+
+            <div class="" style="width:55%;margin-left:10px;">           
+              <div class="" style="width:100%;height:29px;border:1px solid #ADABAB;">
+                <input type="text" ng-model="editUser.name" class="defaultInput-txt" style="width:100%;height:100%;">
+              </div>
+            </div>
+          </div>
+
+
+          <!--Password Set-->
+          <div ng-show="editType=='Change Password'" style="width:100%;">
+          <!--Old Password-->
+          <div class="flex-general-row-wrapper" style="width:88%;margin-top:2px;">
+            <div class="" style="width:35%;height:29px;">
+              <p class="pull-right" style="font-size:14px;">Old Password</p>              
+            </div> 
+
+            <div class="" style="width:55%;margin-left:10px;">           
+              <div class="" style="width:100%;height:29px;border:1px solid #ADABAB;">
+                <input type="text" ng-model="editUser.oldPassword" class="defaultInput-txt" style="width:100%;height:100%;">
+              </div>
+            </div>
+          </div>
+
+          <!--New Password-->
+          <div class="flex-general-row-wrapper" style="width:88%;margin-top:25px;">
+            <div class="" style="width:35%;height:29px;">
+              <p class="pull-right" style="font-size:14px;">New Password</p>              
+            </div> 
+
+            <div class="" style="width:55%;margin-left:10px;">           
+              <div class="" style="width:100%;height:29px;border:1px solid #ADABAB;">
+                <input type="text" ng-model="editUser.newPassword" class="defaultInput-txt" style="width:100%;height:100%;">
+              </div>
+            </div>
+          </div>
+
+          <!--Confirm New Password-->
+          <div class="flex-general-row-wrapper" style="width:88%;margin-top:7px;">
+            <div class="" style="width:35%;height:29px;">
+              <p class="pull-right" style="font-size:14px;">Confirm New Password</p>              
+            </div> 
+
+             <div class="" style="width:55%;margin-left:10px;">           
+              <div class="" style="width:100%;height:29px;border:1px solid #ADABAB;">
+                <input type="text" ng-model="editUser.newConfirmPassword" class="defaultInput-txt" style="width:100%;height:100%;">
+              </div>
+            </div>           
+          </div>
+          </div>         
+
+        </div>  
+      </div>  
+
+      <div class="modal-footer">        
+        <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>        
+
+        <!--Disabled-->
+        <button type="button" ng-show="modifyModalError && !modifySpinner" style="color:gray;cursor:pointer !important; width:124px;" class="btn">Change</button>
+
+        <!--Delete-->
+        <button type="button" ng-show="!modifySpinner && !modifyModalError" ng-click="updateUserInfo()" class="btn btn-primary" style="width:120px; border-radius:3px !important;">Change</button>  
+
+         <!--While Deleting-->
+        <button type="button" ng-show="modifySpinner" class="btn btn-primary" style="width:142px; border-radius:3px !important;"><i class="fa fa-spinner fa-spin"></i>&nbsp;Modifying..</button>  
+ 
+      </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->   
+<!--/Change Password-->
 
 
 

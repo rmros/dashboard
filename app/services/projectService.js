@@ -20,8 +20,8 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
     };
 
     global.createProject = function(name,appId){
-       var q=$q.defer();
-       $http.post(serverURL+'/app/create', {name:name,appId:appId}).
+        var q=$q.defer();
+        $http.post(serverURL+'/app/create', {name:name,appId:appId}).
          success(function(data, status, headers, config) {
            q.resolve(data);
 

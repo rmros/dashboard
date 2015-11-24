@@ -5,6 +5,31 @@
 .profile-pic-editsettings{
 	visibility: hidden;
 }
+.profile-pic-wrap{
+	border:6px solid #F0F0F0;
+	border-radius: 3px;
+}
 .profile-pic-wrap:hover .profile-pic-editsettings{
 	visibility: visible;
+}
+.profile-edit-pencil{
+	visibility: hidden;
+	color: gray;
+	cursor: pointer;
+}
+.profile-value:hover .profile-edit-pencil{
+	visibility: visible;
+}
+
+.profile-navlinks{
+	padding: 4px;
+	cursor: pointer;
+	border-bottom: 1px solid #F0F0F0;	
+}
+.profile-navlinks span{
+	font-size: 12px;	
+}
+.profile-navlinks:hover{
+	background-color:#4892F9; 
+	color: white;	
 }
