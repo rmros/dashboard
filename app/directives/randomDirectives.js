@@ -19,3 +19,14 @@ app.directive('datetimepicker', function(){
         }
     };
 });
+
+
+app.directive('imgliquidify', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){
+            $(element).naturalHeight;
+            console.log($(element).naturalHeight);            
+        }
+    };
+});

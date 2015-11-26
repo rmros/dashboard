@@ -315,13 +315,8 @@ app.controller('pricingController',
                 	$scope.autoScale=false;                	
                 }  	
                   	                   
-               }, function(error){                                             
-                    $.gritter.add({
-                      position: 'top-right',
-                      title: 'Opps! something went wrong',
-                      text: "We cannot load your credit card at this point in time. Please try again later.",
-                      class_name: 'danger'
-                  });
+               }, function(error){                 
+                  errorNotify("We cannot load your credit card at this point in time. Please try again later.");
                });
         }     
 

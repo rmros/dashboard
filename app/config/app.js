@@ -21,7 +21,7 @@ var app=angular.module('CloudBoostDashboard',
     'focusOn',    
     'ui.ace',    
     'angular-click-outside',
-    'lrInfiniteScroll',    
+    'lrInfiniteScroll'
     ]);
 
 app.value('THROTTLE_MILLISECONDS', 1250);
