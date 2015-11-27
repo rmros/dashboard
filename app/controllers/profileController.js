@@ -17,6 +17,7 @@ paymentService){
   $rootScope.page='profile';
 
   //Profile Specific
+  $rootScope.profilePic=null; 
   $scope.loadingProfile=false; 
   $scope.editableFile=null;
   $scope.editType=null;
@@ -98,7 +99,8 @@ paymentService){
       if(editType=="Change Password"){        
         $rootScope.logOut();
       }else if(editType=="Change Name"){
-        $scope.user.name=obj.name; 
+        $scope.user.name=obj.name;
+        $rootScope.userFullname=obj.name; 
         $scope.editUser=null;        
       }     
       successNotify("Changed Password Successfully!");  
@@ -126,6 +128,7 @@ paymentService){
     .then(function(obj){   
       getImgSize(obj.document.url);        
       $scope.file=obj;
+      $rootScope.profilePic=obj; 
       $scope.user.fileId=obj.document.id;      
     }, function(error){          
       errorNotify(error);     
@@ -140,6 +143,7 @@ paymentService){
       .then(function(resp){           
         $scope.file=null;
         $scope.user.fileId=null;
+        $rootScope.profilePic=null; 
       }, function(error){          
         errorNotify(error);     
       });
@@ -201,6 +205,7 @@ paymentService){
       if(obj.file){
         getImgSize(obj.file.document.url);
         $scope.file=obj.file;
+        $rootScope.profilePic=obj.file; 
       }else{
         $scope.file=null;
       }      
@@ -219,8 +224,10 @@ paymentService){
         
         if(width>height){
           $(".profile-photo").css({"width":"auto","height":"150px"});
+          $(".profile-avatar").css({"width":"auto","height":"28px"});
         }else if(height>width){
           $(".profile-photo").css({"width":"150px","height":"auto"});
+          $(".profile-avatar").css({"width":"28px","height":"auto"});
         }
         $scope.loadingProfile=false; 
         $scope.$digest();

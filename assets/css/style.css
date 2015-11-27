@@ -8675,3 +8675,13 @@ ul.timeline li > .date {
   right: 20px;
   bottom: 20px;
 }
+.avatar-wrap{
+  width:28px;
+  height:28px;
+  border-radius:25px;  
+  overflow: hidden;
+  margin-top: -2.6px;
+}
+.profile-avatar-toggle{
+  margin-top: 2.5%;
+}
