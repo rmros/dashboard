@@ -208,6 +208,7 @@ paymentService){
         $rootScope.profilePic=obj.file; 
       }else{
         $scope.file=null;
+        $scope.loadingProfile=false;
       }      
       
     }, function(error){          
