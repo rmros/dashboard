@@ -16,8 +16,7 @@ paymentService){
   $rootScope.isFullScreen=false;
   $rootScope.page='profile';
 
-  //Profile Specific
-  $rootScope.profilePic=null; 
+  //Profile Specific  
   $scope.loadingProfile=false; 
   $scope.editableFile=null;
   $scope.editType=null;
@@ -25,6 +24,7 @@ paymentService){
     profile:true,
     billing:false
   };
+  $scope.fileAllowedTypes="image/*";//Images
 
   $scope.cardAddEditText="Add Credit Card";
   //credit card info

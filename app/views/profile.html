@@ -155,7 +155,7 @@
 
                         <div class="" style="width:50%;margin-left:10px;">           
                           <div class="" style="width:100%;height:29px;border:1px solid #ADABAB;">
-                            <input type="text" ng-model="editUser.oldPassword" class="defaultInput-txt" style="width:100%;height:100%;">
+                            <input type="password" ng-model="editUser.oldPassword" class="defaultInput-txt" style="width:100%;height:100%;">
                           </div>
                         </div>
                       </div> 
@@ -171,7 +171,7 @@
 
                         <div class="" style="width:50%;margin-left:10px;">           
                           <div class="" style="width:100%;height:29px;border:1px solid #ADABAB;">
-                            <input type="text" ng-model="editUser.newPassword" class="defaultInput-txt" style="width:100%;height:100%;">
+                            <input type="password" ng-model="editUser.newPassword" class="defaultInput-txt" style="width:100%;height:100%;">
                           </div>
                         </div>
                       </div> 
@@ -187,7 +187,7 @@
 
                         <div class="" style="width:50%;margin-left:10px;">           
                           <div class="" style="width:100%;height:29px;border:1px solid #ADABAB;">
-                            <input type="text" ng-model="editUser.newConfirmPassword" class="defaultInput-txt" style="width:100%;height:100%;">
+                            <input type="password" ng-model="editUser.newConfirmPassword" class="defaultInput-txt" style="width:100%;height:100%;">
                           </div>
                         </div>
                       </div> 
@@ -361,7 +361,7 @@
 
 <!--File Directive -->
 <div class="modal fade colored-header danger" id="md-fileviewer" tabindex="-1" role="dialog">
-  <cb-file edit="editableFile" delete="deleteFile()" save="saveFile(fileObj)"></cb-file>
+  <cb-file filetype="fileAllowedTypes" edit="editableFile" delete="deleteFile()" save="saveFile(fileObj)"></cb-file>
 </div> 
 <!--/File Directive --> 
 

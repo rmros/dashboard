@@ -4,6 +4,7 @@ app.directive('cbFile', function(){
         restrict: 'E',
         transclude: true, 
         scope: {
+          'allowedFileTypes': '=filetype',
           'editableFile': '=edit', 
           'deleteFile': '&delete', 
           'save': '&save'

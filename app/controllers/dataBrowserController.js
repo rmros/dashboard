@@ -88,6 +88,7 @@ $scope.relFileProgress=null;
 $scope.currentTableData=[]; 
 $scope.modifyListItemError=[];
 $scope.isFileSelected=false;
+$scope.fileAllowedTypes="*";//All
 $scope.listFileSpinner=[];
 $scope.listFileError=[];
 

@@ -65,8 +65,18 @@ app.directive('listreldmuploader', function(){
 app.directive('ddfile', function(){
     return {
         restrict: 'A',
-        link: function(scope, element, attrs){        
-            $(element).dmUploader({               
+        link: function(scope, element, attrs){ 
+            var allowedTypes="*";
+            var reqAllowedTypes=$(element).data("types"); 
+
+            if(scope.allowedFileTypes){
+                allowedTypes=scope.allowedFileTypes;
+            }else if(reqAllowedTypes){
+                allowedTypes=reqAllowedTypes;
+            }   
+
+            $(element).dmUploader({ 
+                allowedTypes:allowedTypes,              
                 onNewFile: function(id, file){                 
                     
                     var reader = new FileReader();
