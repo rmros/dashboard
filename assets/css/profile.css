@@ -45,7 +45,7 @@
 }
 .profile-tab-links{
 	height:40px;
-	margin-top:12px;	
+	margin-top:1px;		
 }
 .profile-tab-links a{	
 	font-size:15px !important;
@@ -62,5 +62,4 @@
 	width:100%;
 	border-bottom:1px solid #E2E0E0;
 	height:35.5px;
-
 }

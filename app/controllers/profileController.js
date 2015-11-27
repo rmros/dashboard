@@ -192,7 +192,7 @@ paymentService){
 
     paymentService.getCrediCardInfo()
     .then(function(data){
-        if(data){                 
+      if(data){                 
         
         var number="************"+data.stripeCardObject.last4;
 
@@ -209,30 +209,9 @@ paymentService){
         $scope.creditcardInfo.address_city=data.stripeCardObject.address_city;
         $scope.creditcardInfo.address_state=data.stripeCardObject.address_state;
         $scope.creditcardInfo.address_zip=data.stripeCardObject.address_zip;
-        $scope.creditcardInfo.address_country=data.stripeCardObject.address_country;
-
-        $scope.cardAddEditText="Securely Update CreditCard";
-        $scope.cardAddEditBtn="Edit Credit Card";
-        $scope.isCardAdded=true;                 
-        
-
-        if($scope.invoiceSettings.spendingLimit>0){
-          $scope.autoScale=false;                                                               
-        }else if($scope.invoiceSettings.spendingLimit==0){                
-          if($scope.isCardAdded){
-            $scope.autoScale=true;
-          }else{
-            $scope.autoScale=false;
-          }
-        }                            
+        $scope.creditcardInfo.address_country=data.stripeCardObject.address_country;                                
           
-      }else{
-        
-        $scope.cardAddEditText="Securely Add CreditCard";
-        $scope.cardAddEditBtn="Add Credit Card";
-        $scope.isCardAdded=false;
-        $scope.autoScale=false;                 
-      }   
+      }  
                              
      }, function(error){                                          
         

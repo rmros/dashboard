@@ -17,9 +17,9 @@
 
            
               <!-- Nav tabs -->
-              <div class="ul-wrapper">
-                <center>  
-                <ul class="nav nav-tabs profile-tab-links" role="tablist" style="width:40%;">
+              <div class="ul-wrapper flex-general-column-wrapper-center">
+                
+                <ul class="nav nav-tabs profile-tab-links" role="tablist">
 
                   <li  ng-class="{profileActive:profileTabs.profile}">
                     <a  class="nav-profile-tabs" role="tab" data-toggle="tab" ng-class="{profileActiveAnchor:profileTabs.profile}" ng-click="toggleTabs('profile')">
@@ -32,7 +32,7 @@
                   </li>  
 
                 </ul>
-                </center>
+                
               </div>
            
 
@@ -41,7 +41,7 @@
               <div role="tabpanel" class="tab-pane" ng-class="{active:profileTabs.profile}" style="height:100% !important;padding-top:25px;padding-left:20px;">
 
                 <!--Block1-->
-                <div  ng-show="!loadingProfile"  class="flex-general-row-wrapper pull-left" style="width:22.99%;height:auto;">
+                <div  ng-show="!loadingProfile"  class="flex-general-row-wrapper pull-left" style="width:23.99%;height:auto;">
                   <!--Profile Pic-->
                   <div class="flex-general-column-wrapper-center" style="width:100%;margin-left:10px;"> 
 
