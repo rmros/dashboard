@@ -26,6 +26,7 @@ paymentService){
     billing:false
   };
 
+  $scope.cardAddEditText="Add Credit Card";
   //credit card info
   $scope.creditcardInfo={  
     "object": "card",
