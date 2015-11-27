@@ -74,8 +74,8 @@ app.controller('pricingController',
 		if(valid){
 			if($scope.isCardAdded){
 				$scope.spendingLimitSpinner=true;
-				invoiceService.addOrRemoveSpendingLimit($rootScope.currentProject.appId,$scope.invoiceSettings.spendingLimit).then(
-	             function(data){
+				invoiceService.addOrRemoveSpendingLimit($rootScope.currentProject.appId,$scope.invoiceSettings.spendingLimit)
+				.then(function(data){
 	             	$("#spending-limit").modal("hide");
 	             	$scope.spendingLimitSpinner=false; 
 

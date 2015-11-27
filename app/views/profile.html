@@ -10,7 +10,7 @@
       <div class="flex-general-row-wrapper" style="width:90%;">         
 
           
-        <div style="background-color:white;white;width:100%;height:80vh;border:1px solid #DBD9D9;border-radius:20px;">
+        <div style="background-color:white;white;width:100%;height:auto;border:1px solid #DBD9D9;border-radius:20px;">
 
 
           <div class="profile-tabs" style="height:100%;">
@@ -37,97 +37,301 @@
            
 
             <!-- Tab panes -->
-            <div class="tab-content"  style="height:100% !important; padding:0 !important;">
-              <div role="tabpanel" class="tab-pane" ng-class="{active:profileTabs.profile}" style="height:100% !important;padding-top:25px;padding-left:20px;">
+            <div class="tab-content"  style="height:auto; padding:0 !important;border:none;">
+              <div role="tabpanel" class="tab-pane" ng-class="{active:profileTabs.profile}" class="profile-tab" style="height:80vh !important;padding-top:25px;padding-left:20px;padding-right:20px;padding-bottom:20px;">
 
-                <!--Block1-->
-                <div  ng-show="!loadingProfile"  class="flex-general-row-wrapper pull-left" style="width:23.99%;height:auto;">
-                  <!--Profile Pic-->
-                  <div class="flex-general-column-wrapper-center" style="width:100%;margin-left:10px;"> 
+                <div ng-show="!loadingProfile" class="cf" style="width:100%;">
+                  <!--Block1-->
+                  <div    class="flex-general-row-wrapper pull-left" style="width:23.99%;height:auto;">
+                    <!--Profile Pic-->
+                    <div class="flex-general-column-wrapper-center" style="width:100%;margin-left:10px;"> 
 
-                    <!--Default Pic-->
-                    <div ng-show="!file" class="profile-pic-wrap" style="position:relative;"> 
-                      <div class="flex-general-column-wrapper-center">           
-                        <img src="assets/images/anonymous.jpg" class="profile-photo" style="width:150px;height:150px;"> 
-                      </div>                 
-                       
-                      <!--Edit Setting--> 
-                      <div class="profile-pic-editsettings flex-general-column-wrapper-center" style="position:absolute;"> 
-                        <div class="flex-general-column-wrapper-center" style="width:35px;height:35px;background-color:#111111;border-radius:25px;opacity:0.8;">
-                          <i class="icon ion-edit" style="color:white;font-size:18px;" ng-click="openFileModal()"></i>
-                        </div>           
-                      </div>
+                      <!--Default Pic-->
+                      <div ng-show="!file" class="profile-pic-wrap" style="position:relative;"> 
+                        <div class="flex-general-column-wrapper-center">           
+                          <img src="assets/images/anonymous.jpg" class="profile-photo" style="width:150px;height:150px;"> 
+                        </div>                 
+                         
+                        <!--Edit Setting--> 
+                        <div class="profile-pic-editsettings flex-general-column-wrapper-center" style="position:absolute;"> 
+                          <div class="flex-general-column-wrapper-center" style="width:35px;height:35px;background-color:#111111;border-radius:25px;opacity:0.8;">
+                            <i class="icon ion-edit" style="color:white;font-size:18px;" ng-click="openFileModal()"></i>
+                          </div>           
+                        </div>
 
-                    </div> 
-                    <!--/Default Pic--> 
-
-
-                    <!--Pic-->
-                    <div ng-show="file" class="profile-pic-wrap" style="position:relative;"> 
-                      <div class="flex-general-column-wrapper-center">           
-                        <img src="{{file.document.url}}" class="profile-photo"> 
                       </div> 
+                      <!--/Default Pic--> 
 
-                      <!--Edit Setting-->
-                      <div class="profile-pic-editsettings flex-general-column-wrapper-center" style="position:absolute;"> 
-                        <div class="flex-general-column-wrapper-center" style="width:35px;height:35px;background-color:#111111;border-radius:25px;opacity:0.8;">
-                          <i class="icon ion-edit" style="color:white;font-size:18px;" ng-click="openFileModal()"></i>
-                        </div>           
-                      </div>
-                       
-                    </div> 
-                    <!--/Pic-->
+
+                      <!--Pic-->
+                      <div ng-show="file" class="profile-pic-wrap" style="position:relative;"> 
+                        <div class="flex-general-column-wrapper-center">           
+                          <img src="{{file.document.url}}" class="profile-photo"> 
+                        </div> 
+
+                        <!--Edit Setting-->
+                        <div class="profile-pic-editsettings flex-general-column-wrapper-center" style="position:absolute;"> 
+                          <div class="flex-general-column-wrapper-center" style="width:35px;height:35px;background-color:#111111;border-radius:25px;opacity:0.8;">
+                            <i class="icon ion-edit" style="color:white;font-size:18px;" ng-click="openFileModal()"></i>
+                          </div>           
+                        </div>
+                         
+                      </div> 
+                      <!--/Pic-->
+
+                    </div>
+                    <!--/Profile Pic-->            
 
                   </div>
-                  <!--/Profile Pic-->            
+                  <!--Block1-->                
 
-                </div>
-                <!--Block1-->                
+                  <!--Block2-->
+                  <div class="flex-general-column-wrapper-center pull-left" style="margin-top:1%;margin-left:3%;">           
+                    <div class="check">
 
-                <!--Block2-->
-                <div class="flex-general-column-wrapper-center pull-left" style="margin-top:5%;">           
-                  <div class="check">
+                      <div class="profile-value" style="position:relative;margin-top:12px;">
+                        <span style="color:#B2B0B0;font-size:12px;font-weight:600;">
+                          NAME
+                        </span><br/>
 
-                    <div class="" style="position:relative;margin-top:12px;">
-                      <span style="position:absolute;bottom:2px;left:30px;color:gray;font-size:12px;font-weight:600;">
-                        NAME:
-                      </span>&nbsp;
+                        <span class="" style="color:black;font-size:30px;color:gray;cursor:pointer;font-weight:500;" ng-click="initEditProfile('Change Name')">
+                          {{user.name}}
+                        </span>
 
-                      <span style="color:black;font-size:30px;color:gray;font-weight:700;margin-left:75px;">
-                        RT Bathula
-                      </span>
-
-                      <span style="position:absolute;bottom:4px;margin-left:4px;">
-                        <span class="flex-general-column-wrapper-center" style="height:20px;width:20px;border-radius:25px;background-color:#F0F0F0;">
-                          <i class="fa fa-pencil" style="color:gray;"></i>
-                        </span>  
-                      </span>
-                        
-                    </div>                     
+                        <span style="position:absolute;bottom:4px;margin-left:4px;">
+                          <span class="flex-general-column-wrapper-center profile-edit-pencil" style="height:20px;width:20px;border-radius:25px;background-color:gray;" ng-click="initEditProfile('Change Name')">
+                            <i class="fa fa-pencil" style="color:white;"></i>
+                          </span>  
+                        </span>
+                          
+                      </div>                     
 
 
-                    <div class="" style="position:relative;">
-                      <span style="position:absolute;bottom:2px;left:30px;color:gray;font-size:12px;font-weight:600;">
-                        EMAIL:
-                      </span>&nbsp;
+                      <div class="" style="position:relative;margin-top:1%;">
+                        <span style="color:#B2B0B0;font-size:12px;font-weight:600;">
+                          EMAIL
+                        </span><br/>
 
-                      <span style="color:black;font-size:22px;color:gray;font-weight:500;margin-left:75px;">
-                        battu@gmail.com
-                      </span>
+                        <span style="color:black;font-size:22px;color:gray;font-weight:500;">
+                           {{user.email}}
+                        </span>
 
-                      <span>
-                      </span>
-                        
-                    </div>
+                        <span>
+                        </span>
+                          
+                      </div>
 
-                   
+                     
+                    </div>  
                   </div>  
-                </div>  
-                <!--/Block2-->
+                  <!--/Block2-->
+                </div>
+
+                <!--/Spinner-->
+                <div ng-show="loadingProfile" style="height:151px;width:100%;" class="flex-general-column-wrapper-center">
+                  <div>
+                    <i class="fa fa-spinner fa-spin" style="font-size:20px;"></i>
+                  </div>  
+                </div> 
+                <!--/Spinner--> 
+
+                <div style="width:100%;margin-top:35px;margin-bottom:5px;border-bottom:1px solid #F0F0F0;">
+                </div> 
+
+                <!--Block3-->
+                <div class="change-password-block"> 
+
+                  <div style="width:100%;">
+                    <p style="font-size:20px;font-weight:500;margin-left:2%;">Change Password</p>
+                  </div>                 
+
+                  <div style="width:100%;margin-top:5%;"> 
+                    <!--Edit Box-->
+                    <div class="pull-left" style="width:80%;">
+                      <div class="flex-general-row-wrapper" style="width:100%;">
+                        <div class="" style="width:33%;height:29px;">
+                          <p class="pull-right" style="font-size:14px;">Old Password</p>              
+                        </div> 
+
+                        <div class="" style="width:50%;margin-left:10px;">           
+                          <div class="" style="width:100%;height:29px;border:1px solid #ADABAB;">
+                            <input type="text" ng-model="editUser.oldPassword" class="defaultInput-txt" style="width:100%;height:100%;">
+                          </div>
+                        </div>
+                      </div> 
+                    </div>
+                    <!--/Edit Box-->
+
+                    <!--Edit Box-->
+                    <div class="pull-left" style="width:80%;margin-top:20px;">
+                      <div class="flex-general-row-wrapper" style="width:100%;">
+                        <div class="" style="width:33%;height:29px;">
+                          <p class="pull-right" style="font-size:14px;">New Password</p>              
+                        </div> 
+
+                        <div class="" style="width:50%;margin-left:10px;">           
+                          <div class="" style="width:100%;height:29px;border:1px solid #ADABAB;">
+                            <input type="text" ng-model="editUser.newPassword" class="defaultInput-txt" style="width:100%;height:100%;">
+                          </div>
+                        </div>
+                      </div> 
+                    </div>
+                    <!--/Edit Box-->
+
+                    <!--Edit Box-->
+                    <div class="pull-left" style="width:80%;margin-top:5px;">
+                      <div class="flex-general-row-wrapper" style="width:100%;">
+                        <div class="" style="width:33%;height:29px;">
+                          <p class="pull-right" style="font-size:14px;">Confirm New Password</p>              
+                        </div> 
+
+                        <div class="" style="width:50%;margin-left:10px;">           
+                          <div class="" style="width:100%;height:29px;border:1px solid #ADABAB;">
+                            <input type="text" ng-model="editUser.newConfirmPassword" class="defaultInput-txt" style="width:100%;height:100%;">
+                          </div>
+                        </div>
+                      </div> 
+                    </div>
+                    <!--/Edit Box--> 
+
+                    <!--Button Box-->
+                    <div class="pull-left" style="width:80%;margin-top:9px;">
+                      <div class="flex-general-row-wrapper" style="width:100%;">
+                        <div class="" style="width:33%;height:29px;">
+                                   
+                        </div> 
+
+                        <div class="" style="width:50%;margin-left:10px;">           
+                          <div class="pull-right">
+                            <!--Change-->
+                            <button class="btn btn-primary" ng-show="!modifySpinner || (modifySpinner && editType=='Change Name')" ng-click="updateUserInfo('Change Password')" style="width:120px; border-radius:3px !important;">Change</button>
+                            <!--While Changing-->
+                            <button type="button" ng-show="modifySpinner && editType=='Change Password'" class="btn btn-primary" style="width:142px; border-radius:3px !important;"><i class="fa fa-spinner fa-spin"></i>&nbsp;Modifying..</button> 
+                          </div>
+                        </div>
+                      </div> 
+                    </div>
+                    <!--/Button Box-->                    
+                  </div> 
+
+                </div> 
+
               </div>
 
               <div role="tabpanel" class="tab-pane" ng-class="{active:profileTabs.billing}">
-             
+                <div class="billing-tab">                 
+
+                  <form role="form" name="cardForm" ng-submit="addOrEditCreditCard(cardForm.$valid)">                       
+                      <div class="modal-body form">
+                        <div class="form-group">
+                          <span class="billing-card-labels">Full Name on Card</span> 
+                          <input type="text" ng-model="creditcardInfo.name" class="form-control" placeholder="John Smith" required>
+                        </div>
+                        <div class="form-group">
+                          <span class="billing-card-labels">Card Number</span> 
+                          <input type="name" ng-model="creditcardInfo.number" maxlength="16" minlength="16" class="form-control" placeholder="Card Number" required>
+                        </div>
+                        <div class="row">
+                          <div class="form-group col-md-3 no-margin">
+                            <span class="billing-card-labels">Exp.Month</span>
+                          </div>
+                           <div class="form-group col-md-3 no-margin">
+                            <span class="billing-card-labels">Exp.Year</span>
+                          </div>
+                           <div class="form-group col-md-3 no-margin">
+                            <span class="billing-card-labels">Security Code</span>
+                          </div>
+                        </div>
+                        <div class="row no-margin-y">
+                          <div class="form-group col-md-3 col-sm-3  col-xs-3 no-margin">
+                            <input type="name" ng-model="creditcardInfo.exp_month" class="form-control" placeholder="MM" maxlength="2" minlength="1" required>
+                          </div>
+                          <div class="form-group col-md-3 col-sm-3  col-xs-3 no-margin">
+                            <input type="name" ng-model="creditcardInfo.exp_year" class="form-control" placeholder="YYYY" maxlength="4" minlength="4" required>
+                          </div>
+                          <div class="form-group col-md-3 col-sm-3  col-xs-3 no-margin">
+                            <input type="password" ng-model="creditcardInfo.cvc" class="form-control" placeholder="CVC" maxlength="3" minlength="3" required>
+                          </div>
+                        </div>
+                        
+                        <div style="width:100%;margin-top:40px;margin-bottom:10px;border-bottom:1px solid #F0F0F0;">
+                        </div> 
+
+                        <div class="row">                         
+
+                          <div class="form-group col-md-6 no-margin">
+                            <div class="form-group">
+                            <span class="billing-card-labels">Address Line1</span> 
+                            <input type="text" ng-model="creditcardInfo.address_line1" class="form-control" placeholder="Address Line1" required>
+                          </div>
+                          </div>
+                           <div class="form-group col-md-6 no-margin">
+                            <div class="form-group">
+                            <span class="billing-card-labels">Address Line2</span> 
+                            <input type="text" ng-model="creditcardInfo.address_line2" class="form-control" placeholder="Address Line2" required>
+                          </div>
+                          </div>          
+                        </div>
+                        <div class="row">
+                          <div class="form-group col-md-6 no-margin">
+                            <div class="form-group">
+                            <span class="billing-card-labels">City</span> 
+                            <input type="text" ng-model="creditcardInfo.address_city" class="form-control" placeholder="City" required>
+                          </div>          
+                          </div>
+                           <div class="form-group col-md-6 no-margin">
+                            <div class="form-group">
+                            <span class="billing-card-labels">State</span> 
+                            <input type="text" ng-model="creditcardInfo.address_state" class="form-control" placeholder="State" required>
+                          </div>
+                          </div>          
+                        </div>
+                        <div class="row">
+                          <div class="form-group col-md-6 no-margin">
+                            <div class="form-group">
+                            <span class="billing-card-labels">Country</span> 
+                            <input type="text" ng-model="creditcardInfo.address_country" class="form-control" placeholder="Country" required>
+                          </div>          
+                          </div>
+
+                           <div class="form-group col-md-6 no-margin">
+                            <div class="form-group">
+                            <span class="billing-card-labels">Zip</span> 
+                            <input type="text" ng-model="creditcardInfo.address_zip" class="form-control" placeholder="Zip" required>
+                          </div>
+                          </div>          
+                        </div>
+
+                        <div class="row">
+                          <div class="form-group col-md-6 no-margin">                                    
+                          </div>
+
+                          <div class="form-group col-md-6 no-margin">                            
+
+                            <!--<div class="pull-right" style="margin-left:10px;">
+                             <!--Remove Card-->
+                             <!--<button type="button" ng-show="isCardAdded" ng-disabled="validCardShowSpinner" class="btn btn-default btn-flat md-close">Remove</button>
+
+                            </div>-->
+
+                            <div class="pull-right">
+                             <!--Before validation-->
+                             <button type="submit" ng-show="!validCardShowSpinner" class="btn btn-primary btn-flat md-close">{{cardAddEditText}}</button>
+
+                             <!--validating-->
+                             <button type="button" ng-show="validCardShowSpinner" class="btn btn-primary btn-flat md-close">
+                              <i class="fa fa-spinner fa-spin"></i>&nbsp;Processing..</button>
+
+                            </div> 
+
+                                                      
+                          </div>                          
+
+                        </div>
+                      </div>
+                      
+                    </form>                    
+                </div>             
               </div>  
 
             </div>
@@ -141,6 +345,7 @@
     </div>
 
     <div class="col-sm-12 col-md-2 col-lg-2">
+
     </div>
 
   </div>    
@@ -213,10 +418,10 @@
         <!--Disabled-->
         <button type="button" ng-show="modifyModalError && !modifySpinner" style="color:gray;cursor:pointer !important; width:124px;" class="btn">Change</button>
 
-        <!--Delete-->
+        <!--Change-->
         <button type="button" ng-show="!modifySpinner && !modifyModalError" ng-click="updateUserInfo('Change Name')" class="btn btn-primary" style="width:120px; border-radius:3px !important;">Change</button>  
 
-         <!--While Deleting-->
+        <!--While Changing-->
         <button type="button" ng-show="modifySpinner" class="btn btn-primary" style="width:142px; border-radius:3px !important;"><i class="fa fa-spinner fa-spin"></i>&nbsp;Modifying..</button>  
  
       </div>

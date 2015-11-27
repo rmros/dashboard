@@ -40,6 +40,7 @@ paymentService){
     "address_zip": null,
     "address_country": null   
   };
+  $scope.isCardAdded=false;
 
   $scope.showInputForEdit={
     email:false,
@@ -58,6 +59,7 @@ paymentService){
     $scope.editUser.oldPassword=null;
     $scope.editUser.newPassword=null;
     $scope.editUser.newConfirmPassword=null;
+    $scope.modifyModalError=null;
     $("#md-changeprofile").modal();
   };
 
@@ -70,13 +72,15 @@ paymentService){
          } 
          modifyUser(editType);
       }else{
-        $scope.modifyModalError="Password doesn't match or empty";   
+        $scope.modifyModalError="Password doesn't match or empty"; 
+        errorNotify("Password doesn't match or empty");   
       }
     }else if(editType=="Change Name"){
       if($scope.editUser.name){
         modifyUser(editType);
       }else{
-        $scope.modifyModalError="Name shouldn't be empty";  
+        $scope.modifyModalError="Name shouldn't be empty"; 
+        errorNotify("Name shouldn't be empty");  
       }
     }
   };
@@ -97,10 +101,11 @@ paymentService){
         $scope.user.name=obj.name; 
         $scope.editUser=null;        
       }     
-      
+      successNotify("Changed Password Successfully!");  
     }, function(error){     
       $scope.modifySpinner=false;      
-      $scope.modifyModalError=error;    
+      errorNotify(error);  
+      $scope.modifyModalError=error;  
     });
   }  
 
@@ -123,7 +128,7 @@ paymentService){
       $scope.file=obj;
       $scope.user.fileId=obj.document.id;      
     }, function(error){          
-      console.log(error);     
+      errorNotify(error);     
     });
   }; 
 
@@ -136,8 +141,54 @@ paymentService){
         $scope.file=null;
         $scope.user.fileId=null;
       }, function(error){          
-        console.log(error);     
+        errorNotify(error);     
       });
+    }
+  };
+
+  $scope.addOrEditCreditCard=function(valid){   
+    if(valid){
+      $scope.validCardShowSpinner=true; 
+      var validation=validateCrediCardInfo();
+
+      if(validation.isValid){
+
+        paymentService.addOrEditCreditCard($scope.creditcardInfo)
+        .then( function(data){
+          if(data){                      
+
+            var number="************"+data.stripeCardObject.last4;
+          
+            $scope.creditcardInfo.number=number;
+            $scope.creditcardInfo.cvc="###";
+            $scope.creditcardInfo.name=data.stripeCardObject.name;
+
+            $scope.creditcardInfo.exp_month=data.stripeCardObject.exp_month;
+            $scope.creditcardInfo.exp_year=data.stripeCardObject.exp_year;   
+
+            $scope.creditcardInfo.address_line1=data.stripeCardObject.address_line1;
+            $scope.creditcardInfo.address_line2=data.stripeCardObject.address_line2;
+
+            $scope.creditcardInfo.address_city=data.stripeCardObject.address_city;
+            $scope.creditcardInfo.address_state=data.stripeCardObject.address_state;
+            $scope.creditcardInfo.address_zip=data.stripeCardObject.address_zip;
+            $scope.creditcardInfo.address_country=data.stripeCardObject.address_country;
+
+            $scope.cardAddEditText="Securely Update CreditCard";             
+            $scope.isCardAdded=true; 
+            successNotify("Successfully Done!");                     
+          }
+          $scope.validCardShowSpinner=false;                                      
+         },
+         function(error){                    
+           errorNotify(error);
+           $scope.validCardShowSpinner=false;    
+        });
+
+      }else{         
+        errorNotify(validation.message);
+        $scope.validCardShowSpinner=false;    
+      }
     }
   };
 
@@ -155,7 +206,7 @@ paymentService){
       }      
       
     }, function(error){          
-      console.log(error);     
+      errorNotify(error);     
     });
   }  
 
@@ -209,13 +260,99 @@ paymentService){
         $scope.creditcardInfo.address_city=data.stripeCardObject.address_city;
         $scope.creditcardInfo.address_state=data.stripeCardObject.address_state;
         $scope.creditcardInfo.address_zip=data.stripeCardObject.address_zip;
-        $scope.creditcardInfo.address_country=data.stripeCardObject.address_country;                                
+        $scope.creditcardInfo.address_country=data.stripeCardObject.address_country;   
+
+        $scope.cardAddEditText="Securely Update Card";       
+        $scope.isCardAdded=true;                                              
           
       }  
                              
      }, function(error){                                          
-        
+        errorNotify(error);
      });
   }
 
+  function validateCrediCardInfo(){
+    var validation={
+      isValid:true,
+      message:null
+    };
+
+    if(!Stripe.card.validateCardNumber($scope.creditcardInfo.number)){
+      $scope.validCardShowSpinner=false;
+      $("#credit-card").modal("hide");
+
+      validation.isValid=false;
+      validation.message='Please enter card number with no letters, spaces and special characters.';
+
+      return validation;
+    }
+    if(!Stripe.card.validateExpiry($scope.creditcardInfo.exp_month, $scope.creditcardInfo.exp_year)){
+      $scope.validCardShowSpinner=false;
+      $("#credit-card").modal("hide");
+
+      validation.isValid=false;
+      validation.message='Please enter the correct month and year of expiry';
+      
+      return validation;
+    } 
+    
+    if(!Stripe.card.validateCVC($scope.creditcardInfo.cvc)){
+      $scope.validCardShowSpinner=false;
+      $("#credit-card").modal("hide");
+
+      validation.isValid=false;
+      validation.message='Please enter the valid CVC.';
+      
+      return validation;        
+    }
+    if(!Stripe.card.cardType($scope.creditcardInfo.number)){
+      $scope.validCardShowSpinner=false;
+      $("#credit-card").modal("hide");
+
+      validation.isValid=false;
+      validation.message='The card is unknown. We accept Visa, MasterCard, American Express, Discover, Diners Club, and JCB';
+      
+      return validation;        
+    }
+
+    return validation;
+  }
+
+  //Notification
+    function errorNotify(errorMsg){
+      $.amaran({
+          'theme'     :'colorful',
+          'content'   :{
+             bgcolor:'#EE364E',
+             color:'#fff',
+             message:errorMsg
+          },
+          'position'  :'top right'
+      });
+    }
+
+    function successNotify(successMsg){
+      $.amaran({
+          'theme'     :'colorful',
+          'content'   :{
+             bgcolor:'#19B698',
+             color:'#fff',
+             message:successMsg
+          },
+          'position'  :'top right'
+      });
+    }
+
+    function WarningNotify(WarningMsg){
+      $.amaran({
+          'theme'     :'colorful',
+          'content'   :{
+             bgcolor:'#EAC004',
+             color:'#fff',
+             message:WarningMsg
+          },
+          'position'  :'top right'
+      });
+    } 
 }]);

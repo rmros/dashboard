@@ -23,18 +23,18 @@
 	visibility: visible;
 }
 .profile-edit-pencil{
-	visibility: hidden;
-	color: gray;
-	cursor: pointer;
+	visibility: hidden;	
 }
 .profile-value:hover .profile-edit-pencil{
 	visibility: visible;
 }
+
 .nav-profile-tabs{
 	cursor: pointer;
 	font-weight: 500;
 	color: black;
 }
+
 
 .profileActive{
 	color:#4892F9 !important;
@@ -45,7 +45,7 @@
 }
 .profile-tab-links{
 	height:40px;
-	margin-top:1px;		
+	margin-top:15px;		
 }
 .profile-tab-links a{	
 	font-size:15px !important;
@@ -61,5 +61,26 @@
 .ul-wrapper{
 	width:100%;
 	border-bottom:1px solid #E2E0E0;
-	height:35.5px;
+	height:49.7px;
+}
+.change-password-block{
+	width:100%;	
+	margin-top:5%;
+}
+.profile-tab{
+	height:80vh !important;
+	padding-top:25px;
+	padding-left:20px;
+	padding-right:20px;
+	padding-bottom:20px;	
+	border: none !important;
+}
+.billing-tab{	
+	height:100%;
+	padding:14px;
+	border: none !important;
+}
+.billing-card-labels{
+	font-size:16px;
+	font-weight:500;
 }
