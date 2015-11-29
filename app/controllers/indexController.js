@@ -62,20 +62,20 @@ app.controller('indexController',
   }
 
   $scope.toggleSideMenu=function(){     
-      /*Collapse sidebar*/
-      toggleSideBar();         
-    }; 
+    /*Collapse sidebar*/
+    toggleSideBar();         
+  }; 
 
-    function toggleSideBar(_this){
-      var b = $("#sidebar-collapse")[0];
-      var w = $("#cl-wrapper");
-      var s = $(".cl-sidebar");
-     
-      $(".fa",b).removeClass("fa-angle-left").addClass("fa-angle-right");
-      w.addClass("sb-collapsed");
-      $.cookie('FLATDREAM_sidebar','closed',{expires:365, path:'/'});         
-      //updateHeight();
-    } 
+  function toggleSideBar(_this){
+    var b = $("#sidebar-collapse")[0];
+    var w = $("#cl-wrapper");
+    var s = $(".cl-sidebar");
+   
+    $(".fa",b).removeClass("fa-angle-left").addClass("fa-angle-right");
+    w.addClass("sb-collapsed");
+    $.cookie('FLATDREAM_sidebar','closed',{expires:365, path:'/'});         
+    //updateHeight();
+  } 
       				
 		
 }]);

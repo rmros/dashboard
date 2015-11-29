@@ -8685,3 +8685,7 @@ ul.timeline li > .date {
 .profile-avatar-toggle{
   margin-top: 2.5%;
 }
+.profile-main-sidemenu{
+  position: absolute;
+  bottom: 0;  
+}
