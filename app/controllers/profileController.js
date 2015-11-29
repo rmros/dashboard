@@ -24,6 +24,7 @@ paymentService){
     profile:true,
     billing:false
   };
+  $scope.savePicSpinner=false;
   $scope.fileAllowedTypes="image/*";//Images
 
   $scope.cardAddEditText="Add Credit Card";
@@ -125,28 +126,39 @@ paymentService){
   $scope.saveFile=function(fileObj){
     $("#md-fileviewer").modal("hide");
 
+    $scope.savePicSpinner=true;
+    $scope.loadingProfile=true; 
     userService.upsertFile(fileObj)
-    .then(function(obj){   
-      getImgSize(obj.document.url);        
-      $scope.file=obj;
-      $rootScope.profilePic=obj; 
-      $scope.user.fileId=obj.document.id;      
+    .then(function(obj){ 
+      if(obj && obj.document.url){
+        getImgSize(obj.document.url);
+        $scope.file=obj;
+        $rootScope.profilePic=obj;
+        $scope.user.fileId=obj.document.id;    
+      }  
+      
+      $scope.savePicSpinner=false;     
     }, function(error){          
-      errorNotify(error);     
+      errorNotify(error);    
+      $scope.savePicSpinner=false;
+      $scope.loadingProfile=false;  
     });
   }; 
 
   $scope.deleteFile=function(){
     $("#md-fileviewer").modal("hide");
 
+    $scope.savePicSpinner=true;
     if($scope.user && $scope.file){
       userService.deleteFileById($scope.file.document.id)
       .then(function(resp){           
         $scope.file=null;
         $scope.user.fileId=null;
         $rootScope.profilePic=null; 
+        $scope.savePicSpinner=false; 
       }, function(error){          
-        errorNotify(error);     
+        errorNotify(error); 
+        $scope.savePicSpinner=false;    
       });
     }
   };

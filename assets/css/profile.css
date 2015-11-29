@@ -19,6 +19,15 @@
 	visibility: hidden;
 }
 
+.profile-pic-spinner{
+	border-radius:75px !important;
+	height:150px;
+	width:150px;	
+	overflow: hidden;	
+	top: 0;
+	left: 0;	
+}
+
 .profile-pic-wrap:hover .profile-pic-editsettings{
 	visibility: visible;
 }

@@ -53,9 +53,16 @@
                         </div>                 
                          
                         <!--Edit Setting--> 
-                        <div class="profile-pic-editsettings flex-general-column-wrapper-center" style="position:absolute;"> 
+                        <div ng-show="!savePicSpinner" class="profile-pic-editsettings flex-general-column-wrapper-center" style="position:absolute;"> 
                           <div class="flex-general-column-wrapper-center" style="width:35px;height:35px;background-color:#111111;border-radius:25px;opacity:0.8;">
                             <i class="icon ion-edit" style="color:white;font-size:18px;" ng-click="openFileModal()"></i>
+                          </div>           
+                        </div>
+
+                        <!--Spinner--> 
+                        <div ng-show="savePicSpinner" class="profile-pic-spinner flex-general-column-wrapper-center" style="position:absolute;"> 
+                          <div class="flex-general-column-wrapper-center" style="width:35px;height:35px;border-radius:25px;opacity:0.8; background-color: #e3e3e3;">                            
+                            <i class="fa fa-spinner fa-spin" style="color:black;font-size:22px;"></i>
                           </div>           
                         </div>
 
@@ -70,9 +77,16 @@
                         </div> 
 
                         <!--Edit Setting-->
-                        <div class="profile-pic-editsettings flex-general-column-wrapper-center" style="position:absolute;"> 
+                        <div ng-show="!savePicSpinner" class="profile-pic-editsettings flex-general-column-wrapper-center" style="position:absolute;"> 
                           <div class="flex-general-column-wrapper-center" style="width:35px;height:35px;background-color:#111111;border-radius:25px;opacity:0.8;">
                             <i class="icon ion-edit" style="color:white;font-size:18px;" ng-click="openFileModal()"></i>
+                          </div>           
+                        </div>
+
+                         <!--Spinner--> 
+                        <div ng-show="savePicSpinner" class="profile-pic-spinner flex-general-column-wrapper-center" style="position:absolute;"> 
+                          <div class="flex-general-column-wrapper-center" style="width:35px;height:35px;border-radius:25px;opacity:0.8;background-color: #e3e3e3;">                            
+                            <i class="fa fa-spinner fa-spin" style="color:black;font-size:22px;"></i>
                           </div>           
                         </div>
                          

@@ -66,14 +66,11 @@ app.directive('ddfile', function(){
     return {
         restrict: 'A',
         link: function(scope, element, attrs){ 
-            var allowedTypes="*";
-            var reqAllowedTypes=$(element).data("types"); 
+            var allowedTypes="*";            
 
             if(scope.allowedFileTypes){
                 allowedTypes=scope.allowedFileTypes;
-            }else if(reqAllowedTypes){
-                allowedTypes=reqAllowedTypes;
-            }   
+            }  
 
             $(element).dmUploader({ 
                 allowedTypes:allowedTypes,              
