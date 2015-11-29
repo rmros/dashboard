@@ -1,3 +1,8 @@
+.profile-page{	
+	height: 89.4vh;
+	overflow: auto;
+}
+
 .profile-pic-wrap{	
 	border-radius:75px !important;
 	height:150px;
