@@ -83,6 +83,9 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
           <!--/SideBar Logo--> 
           </a>        
 
+          <div class="flex-general-column-wrapper-center mainmenu-subcat-heading" style="margin-top:3px;">
+            <span>MAIN</span>
+          </div>
           <ul class="cl-vnavigation">
             <li  ng-class="{active:page=='apps','menu-active':page=='apps'}" data-toggle="tooltip" data-placement="right" title="Apps" tooltip>
               <a href="#/"><i class="fa fa-th-large"></i><span>Apps</span></a>           
@@ -93,9 +96,15 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
                 <i class="fa fa-book" ></i>
                 <span>Quickstart</span>
               </a>
-            </li>
+            </li>            
+          </ul> 
 
-            <li ng-class="{active:page=='tableDesigner','menu-active':page=='tableDesigner'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Table Designer" tooltip>
+          <div ng-show="currentProject" class="flex-general-column-wrapper-center mainmenu-subcat-heading" style="border-top:2px solid rgba(188, 180, 176, 0.23);">
+            <span>APP</span>
+          </div>
+          <ul class="cl-vnavigation">         
+
+            <li ng-class="{active:page=='tableDesigner','menu-active':page=='tableDesigner'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Tables" tooltip>
               <a href="#/{{currentProject.appId}}/table"  ng-click="toggleSideMenu()"><i class="fa fa-table"></i><span>Table Designer</span></a>   
             </li>                       
 
@@ -105,14 +114,16 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
 
             <li ng-class="{active:page=='appSettings','menu-active':page=='appSettings'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Settings" tooltip>
               <a href="#/{{currentProject.appId}}/settings" ng-click="toggleSideMenu()"><i class="fa fa-cog"></i><span>Settings</span></a>   
-            </li>
-            
-          </ul>            
+            </li>            
+          </ul>           
 
         </div>
       </div>
 
-      <div class="text-right profile-main-sidemenu">        
+      <div class="text-right profile-main-sidemenu"> 
+        <div class="flex-general-column-wrapper-center mainmenu-subcat-heading" style="border-top:2px solid rgba(188, 180, 176, 0.23);">
+          <span>PROFILE</span>
+        </div>       
         <ul class="cl-vnavigation">         
           <li  ng-class="{active:page=='profile','menu-active':page=='profile'}" data-toggle="tooltip" data-placement="right" title="Profile" tooltip>
               <a href="#/profile"><i class="fa fa-user"></i><span>Profile</span></a>           

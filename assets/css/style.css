@@ -8689,3 +8689,11 @@ ul.timeline li > .date {
   position: absolute;
   bottom: 0;  
 }
+.mainmenu-subcat-heading{
+  width:100%;  
+  color:#A7A8AA;
+  padding-top: 5px;
+  padding-bottom: 2px;  
+  font-weight: bold;
+  font-size: 10px;
+}
