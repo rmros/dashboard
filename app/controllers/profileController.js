@@ -127,7 +127,7 @@ paymentService){
     $("#md-fileviewer").modal("hide");
 
     $scope.savePicSpinner=true;
-    $scope.loadingProfile=true; 
+   
     userService.upsertFile(fileObj)
     .then(function(obj){ 
       if(obj && obj.document.url){
@@ -140,8 +140,7 @@ paymentService){
       $scope.savePicSpinner=false;     
     }, function(error){          
       errorNotify(error);    
-      $scope.savePicSpinner=false;
-      $scope.loadingProfile=false;  
+      $scope.savePicSpinner=false;       
     });
   }; 
 
