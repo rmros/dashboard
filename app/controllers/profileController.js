@@ -135,9 +135,8 @@ paymentService){
         $scope.file=obj;
         $rootScope.profilePic=obj;
         $scope.user.fileId=obj.document.id;    
-      }  
-      
-      $scope.savePicSpinner=false;     
+      }      
+           
     }, function(error){          
       errorNotify(error);    
       $scope.savePicSpinner=false;       
@@ -243,6 +242,7 @@ paymentService){
           $(".profile-avatar").css({"width":"28px","height":"auto"});
         }
         $scope.loadingProfile=false; 
+        $scope.savePicSpinner=false;
         $scope.$digest();
       }
 
