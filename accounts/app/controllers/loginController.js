@@ -6,7 +6,8 @@ app.controller('loginController',
   $scope.resentCode=false; 
   $scope.init=function()  {   
     $scope.showSpinner=false;
-    loadBlog();          
+    loadBlog();
+    trackMixpanel();          
   }
 
   $scope.logIn=function(isValid){
@@ -32,6 +33,12 @@ app.controller('loginController',
         }
         
       });
+
+      if(!__isDevelopment){
+        /****Tracking*********/          
+         mixpanel.track('Portal:Clicked LogIn Button', { "Clicked": "LogIn Button in portal!"});
+        /****End of Tracking*****/
+      } 
     }
   };
 
@@ -87,6 +94,14 @@ app.controller('loginController',
       }
     }
     return res;
+  }
+
+  function trackMixpanel(){
+    if(!__isDevelopment){
+      /****Tracking*********/          
+       mixpanel.track('Portal:Visited LogIn Page', { "Visited": "Visited Log In page in portal!"});
+      /****End of Tracking*****/
+    } 
   }
 
  }]);

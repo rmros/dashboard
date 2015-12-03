@@ -5,7 +5,8 @@ app.controller('signupController',
       $scope.isUserSignedUp=false;
 
       $scope.init = function(){             
-        $scope.showSpinner=false;                  
+        $scope.showSpinner=false;
+        trackMixpanel();                  
       };
 
       $scope.signUp=function(isValid){
@@ -21,46 +22,54 @@ app.controller('signupController',
             $scope.showSpinner=false;
             $scope.err=error;
           });
+
+          if(!__isDevelopment){
+            /****Tracking*********/          
+             mixpanel.track('Portal:Clicked SignUp Button', { "Clicked": "SignUp Button in portal!"});
+            /****End of Tracking*****/
+          } 
         }
       };
 
 
       $scope.facebookSignUp=function(){
 
-              $scope.showSpinner=true;
+        $scope.showSpinner=true;
 
-              var facebookSignUpPromise=userService.facebookSignUp();
-              facebookSignUpPromise.then(
-                  function(data){
-                    console.log(data);
-                     $scope.showSpinner=false;
-                        //console.log(data);
-                  },
-                  function(error){
-                        $scope.showSpinner=false;
-                        $scope.err=error;
-                  }
-              );
+        var facebookSignUpPromise=userService.facebookSignUp();
+        facebookSignUpPromise
+        .then(function(data){
+          console.log(data);
+          $scope.showSpinner=false;
+          //console.log(data);
+        },function(error){
+          $scope.showSpinner=false;
+          $scope.err=error;
+        });
 
       };
 
       $scope.googleSignUp=function(){
         
-              $scope.showSpinner=true;
-              var facebookSignUpPromise=userService.facebookSignUp();
-              facebookSignUpPromise.then(
-                  function(data){
-                    console.log(data);
-                     $scope.showSpinner=false;
-                        //console.log(data);
-                  },
-                  function(error){
-                        $scope.showSpinner=false;
-                        $scope.err=error;
-                  }
-              );
-
+        $scope.showSpinner=true;
+        var facebookSignUpPromise=userService.facebookSignUp();
+        facebookSignUpPromise
+        .then(function(data){
+          console.log(data);
+          $scope.showSpinner=false;
+          //console.log(data);
+        },function(error){
+            $scope.showSpinner=false;
+            $scope.err=error;
+        });
       };
 
+      function trackMixpanel(){
+        if(!__isDevelopment){
+          /****Tracking*********/          
+           mixpanel.track('Portal:Visited SignUp Page', { "Visited": "Visited Sign Up page in portal!"});
+          /****End of Tracking*****/
+        } 
+      }
 
  }]);

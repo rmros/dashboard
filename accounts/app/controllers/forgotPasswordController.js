@@ -8,6 +8,7 @@ app.controller('forgotPasswordController',
           }else{
             $scope.showNewPasswordForm = false;
           }
+          trackMixpanel();
       };
 
       $scope.requestResetPassword = function(isValid){
@@ -20,26 +21,45 @@ app.controller('forgotPasswordController',
           }, function(error){
             $scope.showSpinner = false;
             $scope.err = error;
-          })
+          });
+          if(!__isDevelopment){
+            /****Tracking*********/          
+             mixpanel.track('Portal:Clicked ResetPassword Button', { "Clicked": "ResetPassword Button in portal!"});
+            /****End of Tracking*****/
+          }
         }
       };
 
       $scope.changePassword = function(isValid){      
         if(isValid){
           if($scope.password==$scope.confirmPassword){
-                $scope.showSpinner = true;
-                userService.changePassword($location.search().code, $scope.password, $scope.confirmPassword)
-                .then(function(){
-                  $scope.showSpinner = false;
-                   window.location.href="/accounts";
-                }, function(error){
-                  $scope.showSpinner = false;
-                  $scope.err = error;
-                });
+              $scope.showSpinner = true;
+              userService.changePassword($location.search().code, $scope.password, $scope.confirmPassword)
+              .then(function(){
+                $scope.showSpinner = false;
+                 window.location.href="/accounts";
+              }, function(error){
+                $scope.showSpinner = false;
+                $scope.err = error;
+              });
+
+              if(!__isDevelopment){
+                /****Tracking*********/          
+                 mixpanel.track('Portal:Clicked ChangePassword Button', { "Clicked": "ChangePassword Button in portal!"});
+                /****End of Tracking*****/
+              } 
           }else{
             $scope.err = "password doesn't match with confirm password";
           }          
         }
       };
+
+      function trackMixpanel(){
+        if(!__isDevelopment){
+          /****Tracking*********/          
+           mixpanel.track('Portal:Visited ForgotPassword Page', { "Visited": "Visited ForgotPassword page in portal!"});
+          /****End of Tracking*****/
+        } 
+      }
      
  }]);
