@@ -16,6 +16,12 @@ app.directive('cbSearchObjects', function(){
             $scope.link({cbRecord:record});
           };
 
+          $scope.goToDataBrowser=function(t){  
+            $("#md-searchreldocument").modal("hide"); 
+            $("#md-searchlistdocument").modal("hide");     
+            window.location.href="#/"+$rootScope.currentProject.appId+"/table/"+t.name;
+          };
+
         }]    
     };
 });
