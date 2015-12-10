@@ -21,6 +21,8 @@ queueService){
   $scope.showCreateQueueBox=false;
   $scope.queueList=[];
   $scope.queueSettings=[];
+  $scope.newQueueType="pull";//Default
+  $scope.creatingQueue=false;
   
   $scope.init= function() {            
     id = $stateParams.appId;
@@ -28,6 +30,7 @@ queueService){
     if($rootScope.currentProject && $rootScope.currentProject.appId === id){
       //if the same project is already in the rootScope, then dont load it.
       initCB(); 
+      getAllQueues();
       $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;                    
     }else{
       loadProject(id);              
@@ -35,8 +38,19 @@ queueService){
   };  
 
   $scope.createQueue=function(){
-    var rt={id:2};
-    $scope.queueList.push(rt);
+    if($scope.newQueueName){
+      $scope.creatingQueue=true;
+      queueService.createQueue($scope.newQueueName,$scope.newQueueType)
+      .then(function(queueObj){
+        $scope.queueList.push(queueObj);
+        $scope.creatingQueue=false; 
+        $scope.newQueueName=null;                                   
+      }, function(error){ 
+        $scope.creatingQueue=false; 
+        errorNotify(error);        
+      });
+    }
+    
   };
 
   $scope.initAddNewMessage=function(){
@@ -61,19 +75,28 @@ queueService){
     }
   };
 
-
+  function getAllQueues(){
+    queueService.getAllQueues()
+    .then(function(list){
+      $scope.queueList=list;                                   
+    }, function(error){      
+      errorNotify(error);        
+    });
+  }
 
   //Private Functions
   function loadProject(id){
     
     if($rootScope.currentProject){
-      initCB();      
+      initCB();
+      getAllQueues()      
     }else{
       projectService.getProject(id)
       .then(function(currentProject){
         if(currentProject){
           $rootScope.currentProject=currentProject;
-          initCB();   
+          initCB();
+          getAllQueues()   
           $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;         
         }                              
       }, function(error){          
@@ -84,6 +107,42 @@ queueService){
 
   function initCB(){
     CB.CloudApp.init($rootScope.currentProject.appId, $rootScope.currentProject.keys.master);
+  }
+
+  function errorNotify(errorMsg){
+    $.amaran({
+        'theme'     :'colorful',
+        'content'   :{
+           bgcolor:'#EE364E',
+           color:'#fff',
+           message:errorMsg
+        },
+        'position'  :'top right'
+    });
+  }
+
+  function successNotify(successMsg){
+    $.amaran({
+        'theme'     :'colorful',
+        'content'   :{
+           bgcolor:'#19B698',
+           color:'#fff',
+           message:successMsg
+        },
+        'position'  :'top right'
+    });
+  }
+
+  function WarningNotify(WarningMsg){
+    $.amaran({
+        'theme'     :'colorful',
+        'content'   :{
+           bgcolor:'#EAC004',
+           color:'#fff',
+           message:WarningMsg
+        },
+        'position'  :'top right'
+    });
   }    				
 		
 }]);

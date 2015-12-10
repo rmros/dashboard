@@ -19,21 +19,24 @@
         <div ng-show="showCreateQueueBox" class="create-queue-open-wrapper createqueuefun" click-outside="closeCreateQueueBox()" outside-if-not="createqueuefun">     
           <div class="createqueue-openform">
             <div class="createqueue-open-input-wrap" style="height:33px;width:100%;">
-              <input type="text" class="createqueue-open-input" placeholder="Queue Name">
+              <input type="text" class="createqueue-open-input" placeholder="Queue Name" ng-model="newQueueName">
             </div>
 
             <div style="height:35px;width:100%;">
               <div class="pull-right cf" style="width:48%;height:23px !important;margin-right:6px;margin-top:6px;">
 
                 <div class="pull-left cf" style="height:100%;width:120px;">
-                  <select class="select-queuetype">
-                    <option>Pull</option>
-                    <option>Push</option>                    
+                  <select class="select-queuetype" ng-model="newQueueType">
+                    <option ng-selected="newQueueType=='pull'">Pull</option>
+                    <!--<option>Push</option>-->                    
                   </select>  
                 </div> 
 
                 <div class="pull-right" style="height:100%;width:94px; margin-left:5px;">
-                  <button type="submit" class="create-queue-btn" ng-click="createQueue()">Create</button>
+                  <button ng-show="!creatingQueue" type="button" class="create-queue-btn" ng-click="createQueue()">Create</button>
+                  <button ng-show="creatingQueue" type="button" class="create-queue-btn">
+                    <i class="fa fa-spinner fa-spin"></i>&nbsp;Creating..
+                  </button>
                 </div>
 
               </div>  
@@ -60,8 +63,8 @@
                       </div>
                       <div class="queue-content">
                         <div class="queue-data-wrap">
-                          <span class="queue-data" style="font-size:14px; font-weight:500 !important; color:black !important;">Queue Name</span>
-                          <span class="queue-data" style="font-weight:400 !important; color:black !important;">(Push)</span>
+                          <span class="queue-data" style="font-size:14px; font-weight:500 !important; color:black !important;">{{eachQ.name}}</span>
+                          <span class="queue-data" style="font-weight:400 !important; color:black !important;">({{eachQ.type}})</span>
                         </div>
 
                         <div class="queue-acl-wrap" style="padding-top:3px;">
@@ -88,7 +91,7 @@
 
                             <!--Time-->
                             <div style="margin-top:2px;">
-                              <span style="font-size:12px; font-style: italic;margin-left:3px;color:#ABACAD !important;">@ Jan,2015 12:30 PM</span>
+                              <span style="font-size:12px; font-style: italic;margin-left:3px;color:#ABACAD !important;">@ {{eachQ.createdAt}}</span>
                             </div>  
                             <!--Time-->
                           </div>                         
