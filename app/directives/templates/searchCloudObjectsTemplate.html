@@ -1,0 +1,76 @@
+<div class="modal-dialog">
+  <div class="modal-content"> 
+
+    <div class="" style="background-color: #F0F0F0;border-top-left-radius:5px;border-top-right-radius:5px;">
+
+      <div  class="search-rel-wrapper cf" style="background-color:white;border-top-left-radius:5px;border-top-right-radius:5px;">
+          <div class="rel-search-btn-wrapper flex-general-row-wrapper pull-left" style="width:96%;">
+            <div class="rel-searchIcon">
+              <i class="fa fa-search"></i>
+            </div>
+            <div class="rel-searchBx">
+              <input type="text" ng-model="searchRelDocId" placeholder="Find a record to link">
+            </div>                
+          </div>                                
+      </div>
+      
+      <!--List-->
+      <div ng-show="!searchRelDocsError && relationTableData.length>0" class="md-search-relation-wrapper">
+        
+        <div class="relationid-list-wrapper" malihuscrollbar-for-popup>
+
+            <!--show list-->
+            <div ng-show="relationTableData.length>0" ng-repeat="eachRelRow in relationTableData | filter:searchRelDocId" class="relationid-list">
+
+              <div class="m-relationid" ng-click="linkRecord(eachRelRow)">
+                 <div class="neorel-wrapper cf">
+
+                  <div class="pull-left" ng-repeat="fileCol in (filterImages=(tableDef.columns | getImageFromArray))">
+
+                    <div ng-show="eachRelRow.get(fileCol.name) && ((eachRelRow.get(fileCol.name).document.name | extension)=='jpeg' || (eachRelRow.get(fileCol.name).document.name | extension)=='jpg' || (eachRelRow.get(fileCol.name).document.name | extension)=='png' || (eachRelRow.get(fileCol.name).document.name | extension)=='tif' || (eachRelRow.get(fileCol.name).document.name | extension)=='gif')" style="margin-right:5px;">  
+                                             
+                      <img  ng-src="{{eachRelRow.get(fileCol.name).document.url}}" class="neorel-img">
+                    </div>
+
+                  </div>
+
+                  <div class="pull-left" style="padding-top:4px; padding-bottom:2px;padding-left:2px;">
+                    <div style="font-size:14px;">{{eachRelRow.get('id')}}</div>     
+
+                    <div style="font-size:12px;" ng-repeat="textCol in (Texts=(tableDef.columns | getTextFromArray))" ng-show="eachRelRow.get(textCol.name)">{{eachRelRow.get(textCol.name)}}</div>
+                  
+                    <div style="margin-top:3.5px;color:#A09F9F;font-style: italic;">{{eachRelRow.get('createdAt') | date:'medium'}}</div>
+                  </div>
+
+                 </div>
+              </div>
+
+            </div>                       
+
+        </div>  
+      </div>          
+
+      <!--no records-->
+      <div ng-show="!searchRelDocsError && (!relationTableData || relationTableData.length==0)" class="relationid-list-empty flex-general-column-wrapper-center" style="margin-top:20px;">
+        <div class="flex-general-column-wrapper-center">                  
+            <p style="font-size:16px; color:gray;">Table {{tableDef.name}} has no records</p>
+            <p>                 
+              <button type="button" ng-click="goToDataBrowser(tableDef)" class="btn db-color-bg" style="border-radius:3px;color:white;border:none;">Add Records</button>
+            </p>                  
+        </div>                              
+      </div>
+
+      <!--Error-->
+      <div style="width: 100%;height:250px;background-color: #F0F0F0;" class="flex-general-column-wrapper-center" ng-if="searchRelDocsError">
+        <div class="flex-general-column-wrapper-center">
+          <p style="color:gray;font-size:14px;">{{searchRelDocsError}}</p>
+        </div> 
+      </div>  
+
+    </div>
+    <div class="modal-footer">        
+      <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+    </div>
+  </div><!-- /.modal-content -->
+  
+</div><!-- /.modal-dialog -->
