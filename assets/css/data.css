@@ -1978,8 +1978,8 @@
     font-size:15px;
 }
 .table-wrapper{   
-    height: 89.60vh;
-    overflow: auto;
+    height: 73vh;
+    overflow: auto;   
 }
 .list-file-display{
     position: relative;
@@ -2444,4 +2444,27 @@
 }
 .grande-search-text:focus{
     outline: none;
+}
+.search-tables-input{
+    border: none;   
+    background-color: transparent;
+    padding-left: 2px;
+    font-size: 18px;
+}
+.search-tables-input:focus{
+  outline: none;  
+}
+.addborderbottom{
+   border-bottom:1px solid gray;
+}
+.table-search-wrap{
+   border:1px solid #bcb4b0;
+   height: 35px;
+   margin-top:4px;
+   border-radius: 14px;
+   padding-top: 3px;
+   padding-left: 5px;
+   padding-right: 5px;
+   padding-bottom: 3px;
+   background-color: #F0F0F0;
 }

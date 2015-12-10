@@ -1,12 +1,33 @@
-<div class="cl-mcont table-wrapper" style="background-color:#F4F6F7;" ng-init="initialize()"> 
 
-    <div ng-if="!dataLoading && !loadingError" class="row">  
-      <div class="col-md-12"> 
-          <div class="tablename-header">
-              <h1>Tables</h1>
-          </div>              
-      </div>  
+<div class="" style="padding:7px !important;"> 
+
+    <div class="flex-general-column-wrapper-center" style="">       
+      <div>
+        <div class="flex-general-column-wrapper-center" style="width:240px;">
+          <h1>Tables</h1>
+        </div>  
+
+          <!--Search Box-->
+          <div class="flex-general-row-wrapper table-search-wrap">
+            <!--Search Icon-->           
+            <i class="icon ion-ios-search-strong searchtablefun" style="font-size: 28px;margin-top: -7px !important;color:#bcb4b0;" ></i>     
+
+            <!--Search Input-->
+            <div class="searchtablefun"  style="height:100%">
+              <input type="text" class="search-tables-input" style="width:240px;height:100%;" placeholder="Search Table" ng-model="searchThisName">
+            </div>
+
+            <!--Cross Icon-->           
+            <i class="icon ion-close searchtablefun" ng-click="clearSearchText()" style="font-size: 17px; margin-top: 2px !important;color:#bcb4b0;" ></i>
+
+          </div> 
+
+      </div>         
     </div>
+
+</div>
+
+<div class="cl-mcont table-wrapper" ng-init="initialize()">    
 
     <div ng-if="!dataLoading && !loadingError" class="row table-items" style="margin-top:15px;">  
       <div class="col-md-12">  
@@ -16,7 +37,7 @@
                   <div class="flex-general-row-wrapper-center table-tiles">
 
                     <!--loop-->
-                    <div class="tableBx" ng-repeat="t in currentProject.tables">
+                    <div class="tableBx" ng-repeat="t in currentProject.tables | filter:searchThisName">
                         <!--Table Display-->
                         <div class="tableApp cf " ng-show="!tableCreateSpinner[$index] && !tableCreatedTick[$index]" style="background-color:#1476ff" ng-click="goToDataBrowser(t)">
 
@@ -207,7 +228,7 @@
       <div class="modal-body" style="border-top:1px solid #dddbdb;">
         <div class="text-center">
                  
-          <p>To delete, type in the table name.</p>
+          <p>To delete <span style="font-weight:700;">{{selectedTable.name}}</span>, type in the table name.</p>
           <center>
             <input type="text" class="form-control" ng-model="confirmTableName" required style="width:400px;"/>
           </center>                   
