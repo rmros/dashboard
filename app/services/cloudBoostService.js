@@ -66,8 +66,7 @@ app.factory('cloudBoostService', ['$q','$http','$rootScope',function ($q,$http,$
       for(var i=0;i<table.columns.length;++i){
         if(table.columns[i].dataType=="File"){
           query.include(table.columns[i].name);
-        }else if(table.columns[i].dataType=="List" && table.columns[i].document.relatedTo!='Text' && table.columns[i].document.relatedTo!='EncryptedText' && table.columns[i].document.relatedTo!='Email' && table.columns[i].document.relatedTo!='Number' && table.columns[i].document.relatedTo!='URL' && table.columns[i].document.relatedTo!='DateTime' && table.columns[i].document.relatedTo!='Boolean'  && table.columns[i].document.relatedTo!='Object' && table.columns[i].document.relatedTo!='GeoPoint'){
-          //Relations or Files
+        }else if(table.columns[i].dataType=="List" && table.columns[i].document.relatedTo!='Text' && table.columns[i].document.relatedTo!='EncryptedText' && table.columns[i].document.relatedTo!='Email' && table.columns[i].document.relatedTo!='Number' && table.columns[i].document.relatedTo!='URL' && table.columns[i].document.relatedTo!='DateTime' && table.columns[i].document.relatedTo!='Boolean' && table.columns[i].document.relatedTo!='File' && table.columns[i].document.relatedTo!='Object' && table.columns[i].document.relatedTo!='GeoPoint'){
           query.include(table.columns[i].name);
         }
       }
