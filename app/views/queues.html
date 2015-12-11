@@ -1,4 +1,4 @@
-  
+ 
 <div class="cl-mcont queues-page" ng-init="init()">
   <div class="row"> 
 
@@ -106,15 +106,7 @@
 
                         <!--Settings popup-->
                         <div class="queuesetting-popup settingsqueuefun" ng-show="queueSettings[$index]" click-outside="closeQueueSettings($index)" outside-if-not="settingsqueuefun">
-                          <div style="">
-
-                            <div class="flex-general-row-wrapper setting-menu-item" style="padding-left:7px;padding-top:3px;">
-                              <div>
-                              </div> 
-                              <div>
-                                Edit
-                              </div> 
-                            </div> 
+                          <div style="">                          
 
                             <div ng-click="deleteQueue(eachQ); $event.stopPropagation()" class="flex-general-row-wrapper setting-menu-item" style="padding-left:7px;padding-top:3px;">
                               <div>
@@ -336,4 +328,5 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->   
 <!--/Add New Msg modal-->
+  
   
