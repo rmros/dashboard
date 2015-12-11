@@ -21,6 +21,7 @@ queueService){
   $scope.showCreateQueueBox=false;
   $scope.queueList=[];
   $scope.queueSettings=[];
+  $scope.activeQueue=[];
   $scope.newQueueType="pull";//Default
   $scope.creatingQueue=false;
   
@@ -53,6 +54,39 @@ queueService){
     
   };
 
+  $scope.openQueueDetails=function(queue){
+    if($scope.previousIndex==0 || $scope.previousIndex>0){
+      $scope.activeQueue.splice($scope.previousIndex,1);
+    }
+
+    var index=$scope.queueList.indexOf(queue);
+
+    if(index!=$scope.previousIndex){
+      $scope.previousIndex=index;           
+
+      queueService.getQueueInfo(queue)
+      .then(function(queueInfo){        
+        $scope.activeQueue[index]=queueInfo; 
+      }, function(error){       
+        errorNotify(error);        
+      });
+    }
+
+    
+  };
+
+  $scope.deleteQueue=function(queue){
+    var index=$scope.queueList.indexOf(queue);
+    $scope.closeQueueSettings(index);
+
+    queueService.deleteQueue(queue)
+    .then(function(resp){
+      $scope.queueList.splice(index,1); 
+    }, function(error){       
+      errorNotify(error);        
+    });
+  };
+
   $scope.initAddNewMessage=function(){
     $("#md-addnewmsg").modal();
   };
@@ -69,6 +103,12 @@ queueService){
     }
   };  
 
+  $scope.openQueueSettings=function(index){
+    if(!$scope.queueSettings[index] || $scope.queueSettings[index]==false){
+      $scope.queueSettings[index]=true;
+    }
+  };
+
   $scope.closeQueueSettings=function(index){
     if($scope.queueSettings[index]==true){
       $scope.queueSettings[index]=false;
@@ -78,7 +118,16 @@ queueService){
   function getAllQueues(){
     queueService.getAllQueues()
     .then(function(list){
-      $scope.queueList=list;                                   
+      $scope.queueList=list; 
+
+      /*list[0].push("como estas nawaz bhai", {
+        success : function(queueMessage){
+         console.log(queueMessage);  
+        }, error : function(error){
+          console.log(error);
+        }
+      }); */
+
     }, function(error){      
       errorNotify(error);        
     });
