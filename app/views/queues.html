@@ -116,7 +116,7 @@
                               </div> 
                             </div>
 
-                            <div class="flex-general-row-wrapper setting-menu-item" style="padding-left:7px;padding-top:3px;">
+                            <div ng-click="editQueueACL(eachQ); $event.stopPropagation()" class="flex-general-row-wrapper setting-menu-item" style="padding-left:7px;padding-top:3px;">
                               <div>
                               </div> 
                               <div>
@@ -329,4 +329,8 @@
 </div><!-- /.modal -->   
 <!--/Add New Msg modal-->
   
-  
+<!--ACL Directive -->
+<div class="modal fade colored-header danger" id="md-aclviewer" tabindex="-1" role="dialog">
+  <cb-acl save="saveQueueACL(cbaclobject)"></cb-acl>
+</div> 
+<!--/ACL Directive -->  

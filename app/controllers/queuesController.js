@@ -5,12 +5,14 @@ app.controller('queuesController',
 '$location',
 'projectService',
 'queueService',
+'sharedDataService',
 function($scope,
 $rootScope,
 $stateParams,
 $location,
 projectService,
-queueService){      
+queueService,
+sharedDataService){      
 
   
   var id;
@@ -71,8 +73,27 @@ queueService){
         errorNotify(error);        
       });
     }
-
     
+  };
+
+  $scope.editQueueACL=function(queue){
+    $scope.editedIndex=$scope.queueList.indexOf(queue);
+    $scope.closeQueueSettings($scope.editedIndex);
+    $scope.queueAclObj=queue.ACL;    
+    sharedDataService.aclObject=$scope.queueAclObj;
+    $("#md-aclviewer").modal();  
+  };
+
+  $scope.saveQueueACL=function(updatedQueueACL){
+    $("#md-aclviewer").modal("hide"); 
+     
+    $scope.queueList[$scope.editedIndex].ACL=updatedQueueACL;
+    queueService.updateQueue(queue)
+    .then(function(resp){
+       
+    }, function(error){       
+      errorNotify(error);        
+    });
   };
 
   $scope.deleteQueue=function(queue){
