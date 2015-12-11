@@ -1,4 +1,4 @@
-app.directive('autokomplete', function(){
+app.directive('autokomplete', function($timeout){
     return {
         restrict: 'A',
         link: function(scope, element, attrs){
@@ -70,9 +70,9 @@ app.directive('autokomplete', function(){
 
                             scope.addACL.push(aclObj);
                             $("#acl-search-id").val(null);
-                            setTimeout(function(){ 
-                                $("#acl-search-id").val(null); 
-                                scope.newACLSpinner=false;
+                            $timeout(function(){ 
+                              $("#acl-search-id").val(null); 
+                              scope.newACLSpinner=false;          
                             }, 500);   
                         }
                         scope.newACLSpinner=false;
@@ -87,11 +87,11 @@ app.directive('autokomplete', function(){
                         aclObj.write=null;
 
                         scope.addACL.push(aclObj); 
-                        $("#acl-search-id").val(null);
-                        setTimeout(function(){ 
-                            $("#acl-search-id").val(null); 
-                            scope.newACLSpinner=false;
-                        }, 500); 
+                        $("#acl-search-id").val(null);                       
+                        $timeout(function(){ 
+                          $("#acl-search-id").val(null); 
+                          scope.newACLSpinner=false;          
+                        }, 500);
                     }                
                 }
             });
