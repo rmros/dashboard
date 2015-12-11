@@ -1,18 +1,22 @@
 app.controller('queuesController',
 ['$scope',
+'$q',
 '$rootScope',
 '$stateParams', 
 '$location',
 'projectService',
 'queueService',
 'sharedDataService',
+'tableService',
 function($scope,
+$q,  
 $rootScope,
 $stateParams,
 $location,
 projectService,
 queueService,
-sharedDataService){      
+sharedDataService,
+tableService){      
 
   
   var id;
@@ -77,20 +81,24 @@ sharedDataService){
   };
 
   $scope.editQueueACL=function(queue){
-    $scope.editedIndex=$scope.queueList.indexOf(queue);
-    $scope.closeQueueSettings($scope.editedIndex);
-    $scope.queueAclObj=queue.ACL;    
-    sharedDataService.aclObject=$scope.queueAclObj;
-    $("#md-aclviewer").modal();  
+    var index=$scope.queueList.indexOf(queue);
+    $scope.closeQueueSettings(index);
+    $scope.editableQueue=queue;   
+      
+    sharedDataService.aclObject=queue.ACL;
+    $("#md-queueaclviewer").modal();  
   };
 
   $scope.saveQueueACL=function(updatedQueueACL){
-    $("#md-aclviewer").modal("hide"); 
-     
-    $scope.queueList[$scope.editedIndex].ACL=updatedQueueACL;
-    queueService.updateQueue(queue)
+    $("#md-queueaclviewer").modal("hide"); 
+    $scope.editableQueue.ACL=updatedQueueACL;
+    sharedDataService.aclObject=null;
+
+    queueService.updateQueue($scope.editableQueue)
     .then(function(resp){
-       
+      var index=$scope.queueList.indexOf($scope.editableQueue);
+      $scope.queueList[index].ACL=updatedQueueACL;
+      $scope.editableQueue=null;
     }, function(error){       
       errorNotify(error);        
     });
@@ -159,14 +167,16 @@ sharedDataService){
     
     if($rootScope.currentProject){
       initCB();
-      getAllQueues()      
+      getAllQueues();
+      getProjectTables();      
     }else{
       projectService.getProject(id)
       .then(function(currentProject){
         if(currentProject){
           $rootScope.currentProject=currentProject;
           initCB();
-          getAllQueues()   
+          getAllQueues();
+          getProjectTables();   
           $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;         
         }                              
       }, function(error){          
@@ -174,6 +184,22 @@ sharedDataService){
     }
     
   }
+
+  function getProjectTables(){
+  var promises=[];  
+
+  if(!$rootScope.currentProject.tables || $rootScope.currentProject.tables.length==0){    
+    promises.push(tableService.getProjectTables());     
+  }  
+
+  $q.all(promises).then(function(list){
+    if(list.length==1){      
+      $rootScope.currentProject.tables=list[0];           
+    }
+  }, function(err){      
+  });
+
+}
 
   function initCB(){
     CB.CloudApp.init($rootScope.currentProject.appId, $rootScope.currentProject.keys.master);

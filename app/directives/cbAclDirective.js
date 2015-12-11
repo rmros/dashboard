@@ -363,7 +363,7 @@ app.directive('cbAcl', function(){
               if(array.length>0){
                 var promises=[];
                 for(var i=0;i<array.length;++i){
-                  if(tableName,array[i]!="all"){
+                  if(tableName && array[i]!="all"){
                     var tableDef= _.first(_.where($rootScope.currentProject.tables, {name: tableName})); 
                     promises.push(cloudBoostService.queryTableById(tableDef,array[i]));
                   }else if(array[i]=="all"){         
