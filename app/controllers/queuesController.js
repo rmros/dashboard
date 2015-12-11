@@ -21,9 +21,6 @@ queueService){
   $scope.showCreateQueueBox=false;
   $scope.queueList=[];
   $scope.queueSettings=[];
-  $scope.activeQueue=[];
-  $scope.newQueueType="pull";//Default
-  $scope.creatingQueue=false;
   
   $scope.init= function() {            
     id = $stateParams.appId;
@@ -31,7 +28,6 @@ queueService){
     if($rootScope.currentProject && $rootScope.currentProject.appId === id){
       //if the same project is already in the rootScope, then dont load it.
       initCB(); 
-      getAllQueues();
       $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;                    
     }else{
       loadProject(id);              
@@ -39,52 +35,8 @@ queueService){
   };  
 
   $scope.createQueue=function(){
-    if($scope.newQueueName){
-      $scope.creatingQueue=true;
-      queueService.createQueue($scope.newQueueName,$scope.newQueueType)
-      .then(function(queueObj){
-        $scope.queueList.push(queueObj);
-        $scope.creatingQueue=false; 
-        $scope.newQueueName=null;                                   
-      }, function(error){ 
-        $scope.creatingQueue=false; 
-        errorNotify(error);        
-      });
-    }
-    
-  };
-
-  $scope.openQueueDetails=function(queue){
-    if($scope.previousIndex==0 || $scope.previousIndex>0){
-      $scope.activeQueue.splice($scope.previousIndex,1);
-    }
-
-    var index=$scope.queueList.indexOf(queue);
-
-    if(index!=$scope.previousIndex){
-      $scope.previousIndex=index;           
-
-      queueService.getQueueInfo(queue)
-      .then(function(queueInfo){        
-        $scope.activeQueue[index]=queueInfo; 
-      }, function(error){       
-        errorNotify(error);        
-      });
-    }
-
-    
-  };
-
-  $scope.deleteQueue=function(queue){
-    var index=$scope.queueList.indexOf(queue);
-    $scope.closeQueueSettings(index);
-
-    queueService.deleteQueue(queue)
-    .then(function(resp){
-      $scope.queueList.splice(index,1); 
-    }, function(error){       
-      errorNotify(error);        
-    });
+    var rt={id:2};
+    $scope.queueList.push(rt);
   };
 
   $scope.initAddNewMessage=function(){
@@ -103,49 +55,25 @@ queueService){
     }
   };  
 
-  $scope.openQueueSettings=function(index){
-    if(!$scope.queueSettings[index] || $scope.queueSettings[index]==false){
-      $scope.queueSettings[index]=true;
-    }
-  };
-
   $scope.closeQueueSettings=function(index){
     if($scope.queueSettings[index]==true){
       $scope.queueSettings[index]=false;
     }
   };
 
-  function getAllQueues(){
-    queueService.getAllQueues()
-    .then(function(list){
-      $scope.queueList=list; 
 
-      /*list[0].push("como estas nawaz bhai", {
-        success : function(queueMessage){
-         console.log(queueMessage);  
-        }, error : function(error){
-          console.log(error);
-        }
-      }); */
-
-    }, function(error){      
-      errorNotify(error);        
-    });
-  }
 
   //Private Functions
   function loadProject(id){
     
     if($rootScope.currentProject){
-      initCB();
-      getAllQueues()      
+      initCB();      
     }else{
       projectService.getProject(id)
       .then(function(currentProject){
         if(currentProject){
           $rootScope.currentProject=currentProject;
-          initCB();
-          getAllQueues()   
+          initCB();   
           $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;         
         }                              
       }, function(error){          
@@ -156,42 +84,6 @@ queueService){
 
   function initCB(){
     CB.CloudApp.init($rootScope.currentProject.appId, $rootScope.currentProject.keys.master);
-  }
-
-  function errorNotify(errorMsg){
-    $.amaran({
-        'theme'     :'colorful',
-        'content'   :{
-           bgcolor:'#EE364E',
-           color:'#fff',
-           message:errorMsg
-        },
-        'position'  :'top right'
-    });
-  }
-
-  function successNotify(successMsg){
-    $.amaran({
-        'theme'     :'colorful',
-        'content'   :{
-           bgcolor:'#19B698',
-           color:'#fff',
-           message:successMsg
-        },
-        'position'  :'top right'
-    });
-  }
-
-  function WarningNotify(WarningMsg){
-    $.amaran({
-        'theme'     :'colorful',
-        'content'   :{
-           bgcolor:'#EAC004',
-           color:'#fff',
-           message:WarningMsg
-        },
-        'position'  :'top right'
-    });
   }    				
 		
 }]);

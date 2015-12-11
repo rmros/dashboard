@@ -1,0 +1,43 @@
+<div class="modal-dialog">
+  <div class="modal-content">        
+    <div style="height:55px; width:100%;padding:13px;">
+      <div class="pull-left" style="padding-left:8px;">
+        <span style="font-size:18px;">{{editableColumn.name}}</span>
+      </div>          
+    </div>
+
+    <!--Saving Errors--> 
+    <div style="width:100%;">
+      <div ng-show="commonError" style="width:100%;height:30px;background-color:#C40101;color:white;padding-left:5px;padding-right:5px;padding-top:3.5px;" ng-class="{animated:commonError}" class="fadeIn">
+
+        <div class="pull-left" style="padding-top:1px;">                
+          <span>{{commonError}}</span>
+        </div>
+
+        <div class="pull-right" ng-click="commonError=!commonError">
+          <i class="icon ion-android-close" style="font-size:16px;color:white;"></i>
+        </div>  
+
+      </div>  
+    </div>  
+    <!--/Saving Errors-->
+
+    <div style="border-top:1px solid #dddbdb;">        
+     
+      <div ui-ace="{ mode: 'json', theme: 'chrome' }" ng-model="editableJsonObj">
+      </div>
+      
+    </div>
+    
+    <div class="modal-footer">        
+      <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+
+      <!--Disabled Save-->
+      <button type="button" ng-show="commonError" style="color:gray;cursor:pointer !important;" class="btn btn-default cb-modal-default-btn">Save</button>
+
+      <!--Enabled Save-->
+      <button type="button" ng-show="!commonError" ng-click="setAndSaveJsonObject()" class="btn btn-primary cb-modal-default-btn" >Save</button>   
+    </div>
+
+  </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->

@@ -5,9 +5,8 @@ app.controller('indexController',
     getUserInfo();
 
     $scope.$watch(function(scope) {
-     return $location.path()
-     },
-      function(newPath,oldPath) {
+      return $location.path();
+    },function(newPath,oldPath) {
         if(!$.cookie('userId') || $.cookie('userId')=="null" || $.cookie('userId')=="undefined"){          
           window.location.href="/accounts";
         }else{
