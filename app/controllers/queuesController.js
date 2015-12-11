@@ -10,7 +10,7 @@ $rootScope,
 $stateParams,
 $location,
 projectService,
-queueService){	    
+queueService){      
 
   
   var id;
@@ -192,6 +192,6 @@ queueService){
         },
         'position'  :'top right'
     });
-  }    				
-		
+  }           
+    
 }]);
