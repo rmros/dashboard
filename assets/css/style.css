@@ -8697,3 +8697,9 @@ ul.timeline li > .date {
   font-weight: bold;
   font-size: 10px;
 }
+.newServerWizard-wrap{  
+  margin-top: 15px;
+}
+.wizard-conten-wrapper{
+  height:320px;  
+}

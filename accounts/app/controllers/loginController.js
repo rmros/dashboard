@@ -1,13 +1,13 @@
 app.controller('loginController',
-  ['$scope','userService','$http','$cookies','$rootScope',
-  function($scope,userService,$http,$cookies,$rootScope){
+  ['$scope','userService','$http','$cookies','$rootScope','cloudboostServerService',
+  function($scope,userService,$http,$cookies,$rootScope,cloudboostServerService){
 
   $scope.accountVerified=true; 
   $scope.resentCode=false; 
   $scope.init=function()  {   
     $scope.showSpinner=false;
     loadBlog();
-    trackMixpanel();          
+    trackMixpanel();           
   }
 
   $scope.logIn=function(isValid){
@@ -102,6 +102,6 @@ app.controller('loginController',
        mixpanel.track('Portal:Visited LogIn Page', { "Visited": "Visited Log In page in portal!"});
       /****End of Tracking*****/
     } 
-  }
+  } 
 
  }]);

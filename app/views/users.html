@@ -1,0 +1,184 @@
+  
+<div class="cl-mcont" ng-init="init()">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <div class="" style="height:120px;width:100%;background-color:white;padding:5px;">
+
+        <div class="cf" style="padding-top:7px;padding-left:10px;">
+
+          <div class="pull-left" style="margin-top: 8px; width:60px;">
+            <switch  ng-model="enabled" class="green switch"></switch>
+          </div>
+
+          <div class="pull-left" style="margin-left: 7px;margin-top: -10px;">
+            <h3 style="color:gray;">Allow people to signup?</h3>
+          </div>
+
+        </div> 
+
+        <div class="cf" style="padding-top:7px;padding-left:10px;">
+
+          <div class="pull-left" style="margin-top: 8px;width:60px;">
+            <switch  ng-model="enabled" class="green switch"></switch>
+          </div>
+
+          <div class="pull-left" style="margin-left: 7px;margin-top: -10px;">
+            <h3 style="color:gray;">Charge People individually?</h3>
+          </div>
+
+        </div>
+
+      </div>  
+    </div>  
+  </div> 
+
+  <div class="row">
+    <div class="col-sm-12 col-md-4 col-lg-4">
+      <div style="height:300px; background-color:white;padding:10px;">
+        <p style="font-size:20px;">Add User</p>
+        <div style="border-bottom:1px solid #ddd;width:100%;"></div>
+
+        <div style="margin-top:30px;">
+          <!--Form-->   
+          <div ng-show="!showSpinner">  
+            <div class="form-group">
+              <div class="col-sm-12">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                  <input type="text" name="nick"  placeholder="Your name" class="form-control" required  ng-model="userData.name">
+                </div>
+                  <div id="nick-error"></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-12">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                  <input type="email" name="email"  placeholder="E-mail" class="form-control" required  ng-model="userData.email">
+                </div>
+                <div id="email-error"></div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-12">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                  <input id="pass1" type="password" placeholder="Password" class="form-control" required  ng-model="userData.password">
+                </div>
+                <div id="password-error"></div>
+              </div>
+            
+            </div>
+
+            <div class="flex-general-column-wrapper-center" style="width:100%;">
+              <div style="width:93.6%;">
+              <button class="btn btn-block btn-success btn-rad btn-lg" type="button">Add User
+              </button>
+            </div>    
+          </div>                        
+
+          </div>
+          <!--Form-->
+        </div>  
+
+      </div>  
+    </div>
+
+    <div class="col-sm-12 col-md-8 col-lg-8">
+        <div style="height:300px; background-color:white;padding:10px;">
+        <p style="font-size:20px;">Users</p>
+        <div style="border-bottom:1px solid #ddd;width:100%;"></div>
+
+        <div style="margin-top:20px;padding-left:10px;padding-right:10px;padding-bottom:10px;">
+          <table class="users-table">
+            <thead class="users-table-thead">
+              <tr>
+                <th>
+                  <div class="users-head-funname">
+                    S.No
+                  </div>                   
+                </th>
+
+                <th>
+                 <div class="users-head-funname">
+                    User Name
+                  </div>
+                </th>
+
+                <th>
+                  <div class="users-head-funname">
+                    Role
+                  </div>
+                </th>
+
+                <th class="table-TxtAlign-center">
+                  <div class="users-head-funname">
+                    Active?
+                  </div>
+                </th>
+
+                <th class="table-TxtAlign-center">
+                  <div class="users-head-funname">
+                    Remove
+                  </div>
+                </th>
+              </tr>  
+            </thead>
+
+            <tbody class="users-table-tbody">
+              <tr>
+                <td width="7%">
+                  <div class="users-body-funname">
+                    1
+                  </div>                   
+                </td>
+
+                <td width="40%">
+                 <div class="users-body-funname">
+                    Raviteja
+                  </div>
+                </td>
+
+                <td width="20%">
+                  <div class="users-body-funname">
+                    <select class="users-bodytd-select">
+                      <option>Admin</option>
+                      <option>User</option>
+                    </select>  
+                  </div>
+                </td>
+
+                <td class="table-TxtAlign-center" width="20%">
+                  <div class="users-body-funname">
+                    <checkbox  class="hidden-col-chbx chckbx-fix"  ng-model="rt"></checkbox>
+                  </div>
+                </td>
+
+                <td class="table-TxtAlign-center" width="13%">
+                  <div class="users-body-funname">
+                    <i class="icon ion-close-circled" style="font-size:16px;cursor:pointer;margin-top:3px;"></i>
+                  </div>
+                </td>
+              </tr>             
+
+            </tbody>  
+          </table>  
+        </div>
+          
+      </div>
+    </div>  
+  </div>   
+</div>
+
+<!--Slack chat-->
+<a href="http://slack.cloudboost.io" target="_blank">
+    <div class="intercomm flex-general-column-wrapper-center">    
+      <i class="icon ion-ios-chatboxes" style="font-size:26px !important; color:white;margin-top:3px;"></i>
+    </div> 
+</a>
+<!--/Slack chat-->
+
+
+  
+  

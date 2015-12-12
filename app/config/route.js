@@ -37,6 +37,19 @@ app.config([
         controller: 'pricingController'
     });
 
+    $stateProvider.state('users', {
+        url: '/users',
+        templateUrl: 'app/views/users.html',
+        controller: 'usersController',
+        resolve:{
+          validate:  function($rootScope) {
+            if($rootScope.user && !$rootScope.user.isAdmin){
+              $location.path('/');
+            }
+          }
+        }  
+    });
+
     $stateProvider.state('queues', {
         url: '/:appId/queues',
         templateUrl: 'app/views/queues.html',

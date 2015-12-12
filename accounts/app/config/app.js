@@ -7,7 +7,7 @@ if(window.location.host.indexOf('localhost') > -1){
 }
 
 var app = angular.module('cloudboostAccounts',
-    ['ui.router','ngCookies']);
+    ['ui.router','ngCookies','mgo-angular-wizard']);
 
 var serverURL = null, dashboardURL = null;
 
