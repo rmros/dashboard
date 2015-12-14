@@ -52,12 +52,51 @@
         <div class="" data-ng-class="{success : list.status.status === 'online' && !animateApp[$index], danger : list.status.status === 'offline' && !animateApp[$index],block: !animateApp[$index],'block-color': !animateApp[$index]}" ng-hide="showProject[$index]" style="height:330px;">
 
           <div ng-if="!animateApp[$index]" data-ng-class="{animated:isAppCreated==true,fadeIn:$index==0,slideInLeft:$index==1}"> 
-              <div class="header">
+              <div class="header" style="position:relative;">
                 <div class="actions">
-                  <a id="edit-app-btn{{$index}}" ng-click="toggleAppEdit($index)"><i class="fa fa-pencil" style="font-size:1.3em"></i></a>
+                  <a  id="app-todo-options-btn{{$index}}" class="app-todo-options-btn"  ng-click="toggleAppOptions($index)">
+                    <i class="fa fa-ellipsis-v" style="font-size:1.3em"></i>
+                  </a>
                 </div>     
                 <h3><i class="fa fa-cloud "></i>&nbsp;&nbsp;{{list.name}}</h3>
+
+                <!--Drop Down Options-->
+                <div ng-show="appOptions[$index]" class="app-todo-options" click-outside="closeAppOptions($index)" outside-if-not="app-todo-options-btn">
+                  <div style="width:100%;height:auto;" class="app-todo-options-btn">
+
+                    <div class="flex-general-row-wrapper app-options-item" style="padding-top:5px;padding-bottom:5px;padding-left:7px;padding-right:5px;" id="edit-app-btn{{$index}}" ng-click="toggleAppEdit($index); $event.stopPropagation()">
+                      <div>
+                        <i class="fa fa-pencil"></i>
+                      </div>
+                      <div>
+                        <span style="font-size:12px;">Edit App</span>
+                      </div>  
+                    </div>
+
+                    <div class="flex-general-row-wrapper app-options-item" style="padding-top:5px;padding-bottom:5px;padding-left:7px;padding-right:5px;" ng-click="changeAppKeysInit($index,list); $event.stopPropagation()">
+                      <div>
+                        <i class="fa fa-key"></i>
+                      </div>
+                      <div>
+                        <span style="font-size:12px;">Change App Keys</span>
+                      </div>  
+                    </div>
+
+                    <div class="flex-general-row-wrapper app-options-item" style="padding-top:5px;padding-bottom:5px;padding-left:7px;padding-right:5px;" ng-click="addDevelopersInit($index,list); $event.stopPropagation()">
+                      <div>
+                        <i class="icon ion-person-add"></i>
+                      </div>
+                      <div>
+                        <span style="font-size:12px;">Add Developers</span>
+                      </div>  
+                    </div>
+
+                  </div>  
+                </div>  
+                <!--/Drop Down Options-->
+
               </div>
+
               <div class="content">
                  <div class="alert alert-success alert-white rounded">
                   <div class="icon"><i class="fa fa-check"></i></div>
@@ -187,32 +226,54 @@
       </div>
       <div class="modal-body form">
        
-        <div class="form-group">
+        <div ng-show="!changeAppKeys" class="form-group">
           <label>App ID</label>        
           <div class="input-group">
-                <input type="text" class="form-control" ng-model="selectedProject.appId">
+                <div style="height: 34px;border: 1px solid #d4d5d6;padding:6px;">
+                  {{selectedProject.appId}}
+                </div> 
+
                 <span class="input-group-btn">
-                <button class="btn btn-prusia" type="button" clip-copy="selectedProject.appId" ng-click="copyKeys('appId')">{{appKeysText.appId}}</button>
+                  <button class="btn btn-prusia" type="button" clip-copy="selectedProject.appId" ng-click="copyKeys('appId')">{{appKeysText.appId}}</button>                  
                 </span>
           </div>
         </div>
 
         <div class="form-group">
           <label>Master key</label>         
-          <div class="input-group">
-                <input type="text" class="form-control" ng-model="selectedProject.keys.master">
+          <div class="input-group">                
+                <div style="height: 34px;border: 1px solid #d4d5d6;padding:6px;">
+                  {{selectedProject.keys.master}}
+                </div>
+
                 <span class="input-group-btn">
-                <button class="btn btn-prusia" type="button" clip-copy="selectedProject.keys.master" ng-click="copyKeys('masterKey')">{{appKeysText.masterKey}}</button>
+                  <button class="btn btn-prusia" type="button" clip-copy="selectedProject.keys.master" ng-click="copyKeys('masterKey')">{{appKeysText.masterKey}}</button>
+
+                  <button ng-show="!masterKeyChanging && changeAppKeys" class="btn btn-primary" type="button" style="margin-left:3px;" ng-click="changeMasterKey(selectedProject.appId)">Change</button>
+
+                  <button ng-show="masterKeyChanging && changeAppKeys" class="btn btn-primary" type="button" style="margin-left:3px;">
+                    <i class="fa fa-spinner fa-spin fa-2x"></i>&nbsp;Generating..
+                  </button>
                 </span>
           </div>
         </div>        
 
         <div class="form-group">
           <label>Client key</label>          
-          <div class="input-group">
-                <input type="text" class="form-control" ng-model="selectedProject.keys.js">
+          <div class="input-group">                
+                <div style="height: 34px;border: 1px solid #d4d5d6;padding:6px;">
+                  {{selectedProject.keys.js}}
+                </div>
+
                 <span class="input-group-btn">
                 <button class="btn btn-prusia" type="button" clip-copy="selectedProject.keys.js" ng-click="copyKeys('javascriptKey')">{{appKeysText.javascriptKey}}</button>
+
+                <button ng-show="!clientKeyChanging && changeAppKeys" class="btn btn-primary" type="button" ng-click="changeClientKey(selectedProject.appId)" style="margin-left:3px;">Change</button>
+
+                <button ng-show="clientKeyChanging && changeAppKeys" class="btn btn-primary" type="button" style="margin-left:3px;">
+                    <i class="fa fa-spinner fa-spin fa-2x"></i>&nbsp;Generating..
+                  </button>
+
                 </span>
           </div>
         </div>      
@@ -257,6 +318,37 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+
+<!-- Add Developers Modal -->
+<div class="modal fade colored-header" id="developersModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h3>Add Developers</h3>
+        <button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body form">
+       
+        <div class="form-group">
+          <div class="input-group">            
+
+            <span class="input-group-btn">
+              <button class="btn btn-prusia" type="button" ng-click="addDeveloper()">Add</button>                  
+            </span>
+
+          </div>
+        </div>              
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Close</button>  
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+<!-- /Add Developers Modal -->
 
 <!--Slack chat-->
 <a href="http://slack.cloudboost.io" target="_blank">

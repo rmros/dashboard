@@ -23,6 +23,7 @@ app.controller('appsController',
   $rootScope.isFullScreen=false;
   $scope.showProject=[];
   $scope.animateApp=[];
+  $scope.appOptions=[];  
   $scope.newApp={
     name:null,
     appId:null
@@ -213,9 +214,58 @@ app.controller('appsController',
      window.location.href="/#/"+projectObj.appId+"/table";     
   };
 
-  $scope.viewKeys=function(list){
+  $scope.addDevelopersInit=function(index,list){
+    $scope.appOptions[index]=false;
+    $('#developersModal').modal('show');    
+  };
+
+  $scope.changeAppKeysInit=function(index,list){    
+    $scope.appOptions[index]=false;
+    $scope.changeAppKeys=true;
+
     $scope.selectedProject=list;
     $('#keysModal').modal('show');
+  };
+
+  $scope.viewKeys=function(list){
+    $scope.selectedProject=list;  
+    $scope.changeAppKeys=false;
+
+    $('#keysModal').modal('show');
+  };
+
+  $scope.changeMasterKey=function(appId){
+    $scope.masterKeyChanging=true;
+    projectService.changeAppMasterKey(appId)         
+    .then(function(data){
+      if(data){
+        var index=$scope.projectListObj.indexOf($scope.selectedProject);
+        $scope.selectedProject.keys.master=data;
+        $scope.projectListObj[index]=$scope.selectedProject;
+      }   
+      $scope.masterKeyChanging=false;                        
+    },function(error){
+      $scope.masterKeyChanging=false; 
+      errorNotify('Cannot change the master key at this point of time.');             
+    });
+   
+  };
+
+  $scope.changeClientKey=function(appId){
+    $scope.clientKeyChanging=true;
+    projectService.changeAppClientKey(appId)         
+    .then(function(data){
+      if(data){
+        var index=$scope.projectListObj.indexOf($scope.selectedProject);
+        $scope.selectedProject.keys.js=data;
+        $scope.projectListObj[index]=$scope.selectedProject;
+      }   
+      $scope.clientKeyChanging=false;                        
+    },function(error){
+      $scope.clientKeyChanging=false; 
+      errorNotify('Cannot change the client key at this point of time.');             
+    });
+   
   };
 
   $scope.copyKeys=function(keyName){
@@ -239,7 +289,24 @@ app.controller('appsController',
       
   }; 
 
+  $scope.toggleAppOptions=function(index){
+    for(var i=0;i<$scope.appOptions.length;++i){
+      if(index!=i){
+        $scope.appOptions[i]=false;
+      }
+    }
+
+    if($scope.appOptions[index]){
+      $scope.appOptions[index]=false;
+    }else{
+      $scope.appOptions[index]=true;
+    }
+    
+  };
+
   $scope.toggleAppEdit=function(index){
+    $scope.appOptions[index]=false;
+
     for(var i=0;i<$scope.showProject.length;++i){
       if(index!=i){
         $scope.showProject[i]=false;
@@ -251,6 +318,10 @@ app.controller('appsController',
     }else if(!$scope.showProject[index] || $scope.showProject[index]==false){
       $scope.showProject[index]=true;
     }    
+  };
+
+  $scope.closeAppOptions=function(index){
+    $scope.appOptions[index]=false;
   };
 
   $scope.closeEditApp=function(index){

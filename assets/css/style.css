@@ -8697,3 +8697,37 @@ ul.timeline li > .date {
   font-weight: bold;
   font-size: 10px;
 }
+
+.app-todo-options{
+  position: absolute;
+  height: 93.4px;
+  width: 140px;
+  background-color: white;
+  z-index: 4;
+  -webkit-box-shadow: 0 0 1px 2px #C0C0C0;
+  -moz-box-shadow: 0 0 1px 2px #C0C0C0;
+  box-shadow: 0 0 1px 2px #C0C0C0;
+  right:1.5px;
+  top:44px;
+}
+
+.app-options-item{ 
+  cursor: pointer;
+}
+
+.app-options-item i{ 
+  color:gray;
+}
+
+.app-options-item span{ 
+  color: gray;
+  margin-left: 3px;
+}
+
+.app-options-item:hover{
+  background-color:#DDD;   
+}
+
+.app-options-item:hover span{ 
+  color: black;
+}

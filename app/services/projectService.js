@@ -89,6 +89,38 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
         return  q.promise;
      };
 
+    global.changeAppMasterKey = function(id){
+      var q=$q.defer();
+      $http.get(serverURL+'/app/'+id+'/change/masterkey').
+      success(function(data, status, headers, config) {
+        q.resolve(data);
+      }).
+      error(function(data, status, headers, config) {
+        q.reject(data);
+        if(status===401){
+          $rootScope.logOut();
+        }
+      });
+
+      return  q.promise;
+     };
+
+     global.changeAppClientKey = function(id){
+      var q=$q.defer();
+      $http.get(serverURL+'/app/'+id+'/change/clientkey').
+      success(function(data, status, headers, config) {
+        q.resolve(data);
+      }).
+      error(function(data, status, headers, config) {
+        q.reject(data);
+        if(status===401){
+          $rootScope.logOut();
+        }
+      });
+
+      return  q.promise;
+     };
+
      global.getProject = function(id){
         var q=$q.defer();
         $http.get(serverURL+'/app/'+id).
