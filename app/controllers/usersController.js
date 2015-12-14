@@ -4,11 +4,13 @@ app.controller('usersController',
 '$stateParams', 
 '$location',
 'userService',
+'cloudboostServerService',
 function($scope,
 $rootScope,
 $stateParams,
 $location,
-userService){  
+userService,
+cloudboostServerService){  
  
   $rootScope.isFullScreen=false;
   $rootScope.page='users';  
@@ -27,10 +29,12 @@ userService){
   $scope.limit=15;
   $scope.loadingUsers=false;
   $scope.updatingUser=[];
+  $scope.newlyAddedUserIds=[];
  
   $scope.init= function() {  
     $rootScope.pageHeaderDisplay="Manage Users";
-    getUserBySkipLimit($scope.skip,$scope.limit);  
+    getUserBySkipLimit($scope.skip,$scope.limit); 
+    getServerSettings(); 
   }; 
 
   $scope.addUser=function(){
@@ -50,6 +54,7 @@ userService){
         };
         
         if(addedUser){
+          $scope.newlyAddedUserIds.push(addedUser._id);
           $scope.usersList.unshift(addedUser);
         }
         
@@ -125,33 +130,55 @@ userService){
 
   $scope.loadMoreUsers=function(){    
     $scope.loadingUsers=true;
-    userService.getUserBySkipLimit($scope.limit,$scope.limit+10)
+    userService.getUserBySkipLimit($scope.limit,10,$scope.newlyAddedUserIds)
     .then(function(userList){ 
-      if(userList.length>0){
+      if(userList && userList.length>0){
+        $scope.limit=$scope.limit+userList.length;
 
         if($scope.usersList.length>0){
           $scope.usersList = $scope.usersList.concat(userList);           
         }else{
           $scope.usersList=userList;
-        }
-        
+        }        
       }  
       $scope.loadingUsers=false;   
     },function(error){
-      errorNotify(error);
+      errorNotify("Cannot Load more records..");
       $scope.loadingUsers=false;              
+    });
+  };
+
+  $scope.toggleAllowSignUp=function(){
+    cloudboostServerService.updateServerSettings($scope.serverSettings._id,$scope.serverSettings.allowSignUp)
+    .then(function(serverSettings){ 
+      $scope.serverSettings=serverSettings;         
+    },function(error){   
+      errorNotify(error);                  
     });
   };
 
   /********Private Functions**************/
   function getUserBySkipLimit(skip,limit){
-    userService.getUserBySkipLimit(skip,limit)
+    $scope.loadList=true;    
+    userService.getUserBySkipLimit(skip,limit,$scope.newlyAddedUserIds)
     .then(function(userList){ 
-      if(userList.length>0){
+      if(userList && userList.length>0){
         $scope.usersList=userList;
-      }          
+      } 
+      $scope.loadList=false;         
     },function(error){
-      errorNotify(error);                 
+      $scope.loadList=false;  
+      $scope.loadUsersError=error;                 
+    });
+  }
+
+  function getServerSettings(){
+       
+    cloudboostServerService.getServerSettings()
+    .then(function(serverSettings){ 
+      $scope.serverSettings=serverSettings;         
+    },function(error){   
+      errorNotify(error);                  
     });
   }
 

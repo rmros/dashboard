@@ -57,10 +57,10 @@ angular.module('CloudBoostDashboard')
         return  q.promise;
       };
 
-      global.getUserBySkipLimit = function(skip,limit){
+      global.getUserBySkipLimit = function(skip,limit,skipUserIds){
         var q=$q.defer();       
 
-        $http.get(serverURL+'/user/list/'+skip+'/'+limit).
+        $http.put(serverURL+'/user/list/'+skip+'/'+limit,{skipUserIds:skipUserIds}).
          success(function(data, status, headers, config) {
             q.resolve(data);
          }).

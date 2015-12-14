@@ -1,10 +1,10 @@
 
 app.service('cloudboostServerService', function($q,$http){ 
 
-  this.isNewServer=function(){
+  this.getServerSettings=function(){
     var q=$q.defer();
 
-    $http.get(serverURL+'/cloudboost/isNewServer').
+    $http.get(serverURL+'/cloudboost').
       success(function(data, status, headers, config) {
         q.resolve(data);
       }).
@@ -14,11 +14,10 @@ app.service('cloudboostServerService', function($q,$http){
     return q.promise;
   }
 
-
-  this.getServerSettings=function(){
+  this.updateServerSettings=function(id,allowedSignUp){
     var q=$q.defer();
 
-    $http.get(serverURL+'/cloudboost').
+    $http.post(serverURL+'/cloudboost',{id:id,allowedSignUp:allowedSignUp}).
       success(function(data, status, headers, config) {
         q.resolve(data);
       }).

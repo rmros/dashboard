@@ -7,7 +7,7 @@
         <div class="cf" style="padding-top:7px;padding-left:10px;">
 
           <div class="pull-left" style="margin-top: 8px; width:60px;">
-            <switch  ng-model="enabled" class="green switch"></switch>
+            <switch  ng-model="serverSettings.allowSignUp" class="green switch" ng-change="toggleAllowSignUp()"></switch>
           </div>
 
           <div class="pull-left" style="margin-left: 7px;margin-top: -10px;">
@@ -95,96 +95,112 @@
         <p style="font-size:20px;">Users</p>
         <div style="border-bottom:1px solid #ddd;width:100%;"></div>
 
-        <div class="users-table-wrapper" style="margin-top:20px;padding-left:10px;padding-right:10px;padding-bottom:10px;" lr-infinite-scroll="loadMoreUsers">
-          <table class="users-table">
-            <thead class="users-table-thead">
-              <tr>
-                <th class="table-TxtAlign-center">
-                  <div class="users-head-funname">
-                    S.No
-                  </div>                   
-                </th>
+        <!--Table-->
+        <div ng-show="!loadList && !loadUsersError">
+          <div class="users-table-wrapper" style="margin-top:20px;padding-left:10px;padding-right:10px;padding-bottom:10px;" lr-infinite-scroll="loadMoreUsers">
+            <table class="users-table">
+              <thead class="users-table-thead">
+                <tr>
+                  <th class="table-TxtAlign-center">
+                    <div class="users-head-funname">
+                      S.No
+                    </div>                   
+                  </th>
 
-                <th>
-                 <div class="users-head-funname">
-                    User Name
-                  </div>
-                </th>
+                  <th>
+                   <div class="users-head-funname">
+                      User Name
+                    </div>
+                  </th>
 
-                <th>
-                  <div class="users-head-funname">
-                    Role
-                  </div>
-                </th>
+                  <th>
+                    <div class="users-head-funname">
+                      Role
+                    </div>
+                  </th>
 
-                <th class="table-TxtAlign-center">
-                  <div class="users-head-funname">
-                    Active?
-                  </div>
-                </th>
+                  <th class="table-TxtAlign-center">
+                    <div class="users-head-funname">
+                      Active?
+                    </div>
+                  </th>
 
-                <th class="table-TxtAlign-center">
-                  <div class="users-head-funname">
-                    Remove
-                  </div>
-                </th>
-              </tr>  
-            </thead>
+                  <th class="table-TxtAlign-center">
+                    <div class="users-head-funname">
+                      Remove
+                    </div>
+                  </th>
+                </tr>  
+              </thead>
 
-            <tbody class="users-table-tbody">
-              <tr ng-repeat="eachUser in usersList">
-                <td width="7%" class="table-TxtAlign-center">
-                  <div class="users-body-funname">
-                    {{$index+1}}
-                  </div>                   
-                </td>
+              <tbody class="users-table-tbody">
+                <tr ng-repeat="eachUser in usersList">
+                  <td width="7%" class="table-TxtAlign-center">
+                    <div class="users-body-funname">
+                      {{$index+1}}
+                    </div>                   
+                  </td>
 
-                <td width="40%">
-                 <div class="users-body-funname">
-                    <span ng-show="eachUser._id==user._id" style="font-weight:500;">{{eachUser.name}}</span>
-                    <span ng-show="eachUser._id!=user._id">{{eachUser.name}}</span>
-                  </div>
-                </td>
+                  <td width="40%">
+                   <div class="users-body-funname">
+                      <span ng-show="eachUser._id==user._id" style="font-weight:500;">{{eachUser.name}}</span>
+                      <span ng-show="eachUser._id!=user._id">{{eachUser.name}}</span>
+                    </div>
+                  </td>
 
-                <td width="20%">
-                  <div class="users-body-funname">
-                    <select ng-disabled="eachUser._id==user._id" ng-class="{userDisabled:eachUser._id==user._id}" class="users-bodytd-select" ng-model="eachUser.isAdmin" ng-change="updateUserRole(eachUser._id,eachUser.isAdmin,$index)">
-                      <option ng-selected="eachUser.isAdmin" value="true">Admin</option>
-                      <option ng-selected="!eachUser.isAdmin" value="false">User</option>
-                    </select>  
-                  </div>
-                </td>
+                  <td width="20%">
+                    <div class="users-body-funname">
+                      <select ng-disabled="eachUser._id==user._id" ng-class="{userDisabled:eachUser._id==user._id}" class="users-bodytd-select" ng-model="eachUser.isAdmin" ng-change="updateUserRole(eachUser._id,eachUser.isAdmin,$index)">
+                        <option ng-selected="eachUser.isAdmin" value="true">Admin</option>
+                        <option ng-selected="!eachUser.isAdmin" value="false">User</option>
+                      </select>  
+                    </div>
+                  </td>
 
-                <td class="table-TxtAlign-center" width="20%">
-                  <div class="users-body-funname">
-                    <checkbox  ng-disabled="eachUser._id==user._id" class="hidden-col-chbx chckbx-fix"  ng-model="eachUser.isActive" ng-click="updateUserActive(eachUser._id,eachUser.isActive,$index)"></checkbox>
-                  </div>
-                </td>
+                  <td class="table-TxtAlign-center" width="20%">
+                    <div class="users-body-funname">
+                      <checkbox  ng-disabled="eachUser._id==user._id" class="hidden-col-chbx chckbx-fix"  ng-model="eachUser.isActive" ng-click="updateUserActive(eachUser._id,eachUser.isActive,$index)"></checkbox>
+                    </div>
+                  </td>
 
-                <td class="table-TxtAlign-center" width="13%">
-                  <div class="users-body-funname">
-                    <!--Remove-->
-                    <i ng-show="!updatingUser[$index] && eachUser._id!=user._id" ng-click="deleteUser(eachUser._id,$index)" class="icon ion-close-circled" style="font-size:16px;cursor:pointer;margin-top:3px;"></i>
+                  <td class="table-TxtAlign-center" width="13%">
+                    <div class="users-body-funname">
+                      <!--Remove-->
+                      <i ng-show="!updatingUser[$index] && eachUser._id!=user._id" ng-click="deleteUser(eachUser._id,$index)" class="ion-ios-trash-outline" style="font-size:16px;cursor:pointer;margin-top:3px;"></i>
 
-                    <span ng-show="eachUser._id==user._id" style="font-size:14px;">-</span>
+                      <span ng-show="eachUser._id==user._id" style="font-size:14px;">-</span>
 
-                    <!--Updating Spinner-->
-                    <i ng-show="updatingUser[$index]" class="fa fa-spinner fa-spin" style="font-size:16px;"></i>
+                      <!--Updating Spinner-->
+                      <i ng-show="updatingUser[$index]" class="fa fa-spinner fa-spin" style="font-size:16px;"></i>
 
-                  </div>
-                </td>
-              </tr>
-            </tbody> 
+                    </div>
+                  </td>
+                </tr>
+              </tbody> 
 
-          </table>  
+            </table>  
+          </div> 
+          <!--Loading more--> 
+          <div class="flex-general-column-wrapper-center" style="width:100%;padding-top:10px;height:30px;">
+            <span ng-show="loadingUsers" style="font-size:14px;font-weight:500;">
+              <i class="fa fa-spinner fa-spin" style="font-size:14px;"></i>&nbsp;Loading more..
+            </span>
+          </div> 
+          <!--/Loading more--> 
+
         </div> 
-        <!--Loading more--> 
-        <div class="flex-general-column-wrapper-center" style="width:100%;padding-top:10px;height:30px;">
-          <span ng-show="loadingUsers" style="font-size:14px;font-weight:500;">
-            <i class="fa fa-spinner fa-spin" style="font-size:14px;"></i>&nbsp;Loading more..
-          </span>
+        <!--/Table-->
+
+        <!--Spinners and errors-->
+        <div ng-show="loadList || loadUsersError" class="users-table-wrapper flex-general-column-wrapper-center">
+          <div ng-show="loadList">
+             <i class="fa fa-spinner fa-spin" style="font-size:25px;"></i>
+          </div> 
+          <div ng-show="!loadList && loadUsersError">
+            <span style="font-size:14px;color:gray;">{{loadUsersError}}</span>
+          </div> 
         </div> 
-        <!--/Loading more--> 
+        <!--/Spinners and errors--> 
 
       </div>
     </div>  
