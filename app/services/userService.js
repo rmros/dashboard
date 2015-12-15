@@ -86,6 +86,20 @@ angular.module('CloudBoostDashboard')
         return  q.promise;
       }; 
 
+       global.getUserListByIds = function(IdArray){
+        var q=$q.defer();       
+
+        $http.post(serverURL+'/user/list',{IdArray:IdArray}).
+         success(function(data, status, headers, config) {
+            q.resolve(data);
+         }).
+         error(function(data, status, headers, config) {
+            q.reject(data);
+         });
+       
+        return  q.promise;
+      };
+
     return global;
 
 }]);

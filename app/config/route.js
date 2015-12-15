@@ -62,6 +62,24 @@ app.config([
 
 }]);
 
+app.filter('validUser', function($rootScope) {
+  return function(app) {
+    if(app.developers && app.developers.length>0){
+
+      return _.find(app.developers, function(eachObj){ 
+        if(eachObj.userId==$rootScope.user._id){
+          return true;
+        }
+      });
+
+    }else {
+      return false;
+    }
+    
+  }
+});
+
+
 app.filter('debug', function() {
   return function(input) {
         console.log(input);

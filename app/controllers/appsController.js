@@ -5,20 +5,24 @@ app.controller('appsController',
    '$q',
    'projectService', 
    '$http',
+   '$filter',
    '$state',
    '$rootScope',    
    '$timeout',
    'tableService',
-   'beaconService',   
+   'beaconService',
+   'userService',   
   function ($scope,
   $q,
   projectService,
   $http,
+  $filter,
   $state,
   $rootScope,  
   $timeout,
   tableService,
-  beaconService) {
+  beaconService,
+  userService) {
 
   $rootScope.isFullScreen=false;
   $scope.showProject=[];
@@ -214,17 +218,35 @@ app.controller('appsController',
      window.location.href="/#/"+projectObj.appId+"/table";     
   };
 
+
   $scope.addDevelopersInit=function(index,list){
     $scope.appOptions[index]=false;
-    $('#developersModal').modal('show');    
+
+    if($filter('validUser')(list)){
+      $scope.selectedProject=list;
+
+      var devArray=_.pluck(list.developers, 'userId');     
+
+      userService.getUserListByIds(devArray)         
+      .then(function(devList){      
+        $scope.developers=devList;
+        $('#developersModal').modal('show');                        
+      },function(error){
+        console.log(error);           
+      });
+    }   
+       
   };
 
   $scope.changeAppKeysInit=function(index,list){    
     $scope.appOptions[index]=false;
-    $scope.changeAppKeys=true;
 
-    $scope.selectedProject=list;
-    $('#keysModal').modal('show');
+    if($filter('validUser')(list)){
+      $scope.changeAppKeys=true;
+      $scope.selectedProject=list;
+      $('#keysModal').modal('show');
+    } 
+    
   };
 
   $scope.viewKeys=function(list){
@@ -311,7 +333,7 @@ app.controller('appsController',
       if(index!=i){
         $scope.showProject[i]=false;
       }
-    }
+    }     
 
     if($scope.showProject[index]==true){
       $scope.showProject[index]=false;

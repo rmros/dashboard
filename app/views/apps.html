@@ -53,7 +53,7 @@
 
           <div ng-if="!animateApp[$index]" data-ng-class="{animated:isAppCreated==true,fadeIn:$index==0,slideInLeft:$index==1}"> 
               <div class="header" style="position:relative;">
-                <div class="actions">
+                <div class="actions" ng-show="list | validUser">
                   <a  id="app-todo-options-btn{{$index}}" class="app-todo-options-btn"  ng-click="toggleAppOptions($index)">
                     <i class="fa fa-ellipsis-v" style="font-size:1.3em"></i>
                   </a>
@@ -61,7 +61,7 @@
                 <h3><i class="fa fa-cloud "></i>&nbsp;&nbsp;{{list.name}}</h3>
 
                 <!--Drop Down Options-->
-                <div ng-show="appOptions[$index]" class="app-todo-options" click-outside="closeAppOptions($index)" outside-if-not="app-todo-options-btn">
+                <div ng-show="appOptions[$index] && (list | validUser)" class="app-todo-options" click-outside="closeAppOptions($index)" outside-if-not="app-todo-options-btn">
                   <div style="width:100%;height:auto;" class="app-todo-options-btn">
 
                     <div class="flex-general-row-wrapper app-options-item" style="padding-top:5px;padding-bottom:5px;padding-left:7px;padding-right:5px;" id="edit-app-btn{{$index}}" ng-click="toggleAppEdit($index); $event.stopPropagation()">
@@ -328,17 +328,41 @@
         <h3>Add Developers</h3>
         <button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
-      <div class="modal-body form">
+      <div class="modal-body form flex-general-column-wrapper-center">
        
+       <div style="width:80%;">
+
         <div class="form-group">
           <div class="input-group">            
-
+            <input type="text" class="form-control" placeholder="Search for...">
             <span class="input-group-btn">
               <button class="btn btn-prusia" type="button" ng-click="addDeveloper()">Add</button>                  
             </span>
 
           </div>
-        </div>              
+        </div>
+
+        <div class="showlist-developers">
+
+          <div ng-repeat="eachDev in developers" class="showlist-developers-email cf">
+            <div class="pull-left" style="padding-left:3px;">
+
+              <div>
+                {{eachDev.name}}
+              </div> 
+              <div style="color:#555">
+                {{eachDev.email}}
+              </div> 
+              
+            </div>  
+            <div class="pull-right">
+              <i class="icon ion-close"></i>
+            </div>            
+          </div>
+
+        </div>
+          
+       </div>               
 
       </div>
 
