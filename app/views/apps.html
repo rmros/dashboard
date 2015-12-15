@@ -334,9 +334,12 @@
 
         <div class="form-group">
           <div class="input-group">            
-            <input type="text" class="form-control" placeholder="Search for...">
+            <input type="text" class="form-control" placeholder="Search for..." devautokomplete>
+            <!--<autocomplete ng-model="yourchoice" data="listdevelopers" on-type="searchDevelopers" attr-class="letsz"></autocomplete>-->
             <span class="input-group-btn">
-              <button class="btn btn-prusia" type="button" ng-click="addDeveloper()">Add</button>                  
+              <button ng-show="!inviteUserSpinner" class="btn btn-prusia" type="button" ng-click="inviteUser()">Invite</button> 
+              <button ng-show="inviteUserSpinner" class="btn btn-prusia" type="button">
+                <i class="fa fa-spinner fa-spin"></i>&nbsp;Inviting..</button>                 
             </span>
 
           </div>
@@ -344,6 +347,7 @@
 
         <div class="showlist-developers">
 
+          <!--Developers-->
           <div ng-repeat="eachDev in developers" class="showlist-developers-email cf">
             <div class="pull-left" style="padding-left:3px;">
 
@@ -356,9 +360,30 @@
               
             </div>  
             <div class="pull-right">
-              <i class="icon ion-close"></i>
+              <i ng-show="!appDevSpinner[$index]" ng-click="removeUserFromProject($index,eachDev)" class="icon ion-close"></i>
+              <i ng-show="appDevSpinner[$index]" class="fa fa-spinner fa-spin"></i>
             </div>            
           </div>
+          <!--/Developers-->
+
+          <!--Invitees-->
+          <div ng-repeat="eachInvite in invitees" class="showlist-developers-email cf">
+            <div class="pull-left" style="padding-left:3px;">
+
+              <div>
+                {{eachInvite.name}}<span style="color: #337ab7; font-size:12px; font-style: italic;">&nbsp;invited..</span>
+              </div> 
+              <div style="color:#555">
+                {{eachInvite.email}}
+              </div> 
+              
+            </div>  
+            <div class="pull-right">
+              <i ng-show="!appDevSpinner[$index]"  class="icon ion-close"></i>
+              <i ng-show="appDevSpinner[$index]" class="fa fa-spinner fa-spin"></i>
+            </div>            
+          </div>
+          <!--/Invitees-->
 
         </div>
           

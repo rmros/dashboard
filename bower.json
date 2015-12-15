@@ -37,7 +37,8 @@
     "angu-fixed-header-table": "~1.2.0",
     "angular-click-outside": "~2.1.0",
     "jquery-progresstimer": "~1.0.5",
-    "angular-bootstrap-checkbox": "~0.3.1"
+    "angular-bootstrap-checkbox": "~0.3.1",
+    "angular-ui-switch": "~0.1.1"
   },
   "devDependencies": {}
 }

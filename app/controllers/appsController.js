@@ -32,6 +32,12 @@ app.controller('appsController',
     name:null,
     appId:null
   };
+  $scope.appDevSpinner=[];
+  $scope.searchedUsers=[];
+  $scope.requestInviteId;
+  $scope.developers=[];
+  $scope.invitees=[];
+
   /*Collapse sidebar*/           
   toggleSideBar();
   
@@ -225,17 +231,57 @@ app.controller('appsController',
     if($filter('validUser')(list)){
       $scope.selectedProject=list;
 
-      var devArray=_.pluck(list.developers, 'userId');     
+      var devArray=_.pluck(list.developers, 'userId');         
 
-      userService.getUserListByIds(devArray)         
-      .then(function(devList){      
-        $scope.developers=devList;
+      var promises=[];
+      promises.push(userService.getUserListByIds(devArray));
+      promises.push(userService.getUserListByIds(list.invited));
+
+      $q.all(promises).then(function(list){      
+        $scope.developers=list[0];
+        $scope.invitees=list[1];
         $('#developersModal').modal('show');                        
       },function(error){
         console.log(error);           
       });
     }   
        
+  };
+
+  $scope.removeUserFromProject=function(index,requestedUser){
+    $scope.appDevSpinner[index]=true;
+    projectService.removeUserFromProject($scope.selectedProject.appId,requestedUser._id)
+    .then(function(data){
+      if(data){
+        var appIndex=$scope.projectListObj.indexOf($scope.selectedProject); 
+        if(appIndex==0 || appIndex>0){
+          $scope.projectListObj.splice(appIndex,1);
+        }          
+
+        var devIndex=$scope.developers.indexOf(requestedUser); 
+        if(devIndex==0 || devIndex>0){
+          $scope.developers.splice(devIndex,1);
+        }          
+        $('#developersModal').modal('hide');
+      }  
+      $scope.appDevSpinner[index]=false;                     
+    },function(error){
+      $scope.appDevSpinner[index]=false;                   
+    });
+  };   
+
+  $scope.inviteUser=function(){
+    $scope.inviteUserSpinner=true;
+    projectService.inviteUser($scope.selectedProject.appId,$scope.requestInviteId)
+    .then(function(data){
+      if(data){
+        var newInvitee=_.find(_.where($scope.searchedUsers,{_id: $scope.requestInviteId}));
+        $scope.invitees.push(newInvitee);
+      } 
+      $scope.inviteUserSpinner=false;                          
+    },function(error){
+      $scope.inviteUserSpinner=false;                  
+    });
   };
 
   $scope.changeAppKeysInit=function(index,list){    

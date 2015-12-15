@@ -32,7 +32,10 @@ app.controller('indexController',
     //Private Functions
   function getUserInfo(){    
     userService.getUserInfo()
-    .then(function(obj){     
+    .then(function(obj){ 
+      if(obj && obj.user){
+        $rootScope.user=obj.user;       
+      }         
       if(obj && obj.file){
         getImgSize(obj.file.document.url);      
         $rootScope.profilePic=obj.file; 

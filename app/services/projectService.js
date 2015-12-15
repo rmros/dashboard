@@ -44,7 +44,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
          });
 
          return  q.promise;
-    };
+    };  
 
     global.deleteProject = function(appId){
         var q=$q.defer();
@@ -61,6 +61,26 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
                 /****End of Tracking*****/
               }  
              
+        }).
+        error(function(data, status, headers, config) {
+            q.reject(status);
+            if(status===401){
+              $rootScope.logOut();
+            }
+        });
+
+        return  q.promise;
+    };
+
+
+     global.removeUserFromProject = function(appId,userId){
+        var q=$q.defer();
+        $http.delete(serverURL+'/app/'+appId+'/removeuser/'+userId).
+        success(function(data, status, headers, config) {
+          if(status===200)
+            q.resolve(data);
+          else 
+            q.reject(data);            
         }).
         error(function(data, status, headers, config) {
             q.reject(status);
@@ -121,7 +141,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
       return  q.promise;
      };
 
-     global.getProject = function(id){
+      global.getProject = function(id){
         var q=$q.defer();
         $http.get(serverURL+'/app/'+id).
         success(function(data, status, headers, config) {
@@ -132,6 +152,36 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
               if(status===401){
                 $rootScope.logOut();
               }
+        });
+        return  q.promise;
+     };
+
+      global.inviteUser = function(appId,userId){
+        var q=$q.defer();
+        $http.get(serverURL+'/app/'+appId+'/invite/'+userId).
+        success(function(data, status, headers, config) {
+          q.resolve(data);
+        }).
+        error(function(data, status, headers, config) {
+          q.reject(status);
+          if(status===401){
+            $rootScope.logOut();
+          }
+        });
+        return  q.promise;
+      };
+
+      global.addDeveloper = function(appId,userId){
+        var q=$q.defer();
+        $http.get(serverURL+'/app/'+appId+'/adddeveloper/'+userId).
+        success(function(data, status, headers, config) {
+          q.resolve(data);
+        }).
+        error(function(data, status, headers, config) {
+          q.reject(status);
+          if(status===401){
+            $rootScope.logOut();
+          }
         });
         return  q.promise;
      };

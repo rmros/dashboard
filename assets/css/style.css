@@ -8753,3 +8753,21 @@ ul.timeline li > .date {
 .showlist-developers-email:first-child {   
     margin-top: 0px;
 }
+.newServerWizard-wrap{  
+  margin-top: 15px;
+}
+.wizard-conten-wrapper{
+  height:320px; 
+}
+
+.letsz ul{  
+  padding:0 !important;
+  margin:0 !important;
+  background-color:white !important;
+}
+.letsz li{ 
+ padding:6px !important;
+ list-style-type:none;
+ width:100%;;
+ cursor:pointer
+}

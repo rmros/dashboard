@@ -14,7 +14,9 @@ app.controller('signupController',
         if(isValid){
           $scope.showSpinner=true;
           $scope.err=null;
-          userService.signUp($scope.name,$scope.email,$scope.password)             
+          var isAdmin=false;
+          
+          userService.signUp($scope.name,$scope.email,$scope.password,isAdmin)             
           .then(function(data){
             $scope.showSpinner=false;
             $scope.isUserSignedUp=true;

@@ -17,7 +17,9 @@
 	<!--
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">-->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
-	<link rel="stylesheet" href="../bower_components/ionicons/css/ionicons.min.css">
+	<link rel="stylesheet" href="../bower_components/ionicons/css/ionicons.min.css">	
+	<link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/angular.wizard/latest/angular-wizard.min.css">
+
   	<link href="../assets/css/style.css" rel="stylesheet"/> 
   
   <!-- start Mixpanel -->
@@ -49,13 +51,15 @@ mixpanel.init("be05a4d590e8bc9d5f2cd6b3b3ffb78b");</script>
 <script src="../assets/js/jquery.pushmenu/js/jPushMenu.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nanoscroller/0.8.6/javascripts/jquery.nanoscroller.min.js"></script>	  
 <script type="text/javascript" src="https://cdn.lukej.me/jquery.gritter/1.7.4/js/jquery.gritter.min.js"></script>
+<script type="text/javascript" src="http://cdn.jsdelivr.net/angular.wizard/latest/angular-wizard.min.js"></script>
 
 <!--Angular Main-->
 <script type="text/javascript" src="app/config/app.js"></script>
 <script type="text/javascript" src="app/config/route.js"></script>
 
 <!-- Services -->
-<script src="app/services/userService.js"></script> 
+<script src="app/services/userService.js"></script>
+<script src="app/services/cloudboostServerService.js"></script>  
 
 <!--Controllers-->
 <script type="text/javascript" src="app/controllers/indexController.js"></script>
@@ -63,6 +67,7 @@ mixpanel.init("be05a4d590e8bc9d5f2cd6b3b3ffb78b");</script>
 <script type="text/javascript" src="app/controllers/signUpController.js"></script>
 <script type="text/javascript" src="app/controllers/forgotPasswordController.js"></script>
 <script type="text/javascript" src="app/controllers/activateController.js"></script>
+<script type="text/javascript" src="app/controllers/newServerController.js"></script>
 
 </body>
 

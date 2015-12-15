@@ -37,6 +37,19 @@ app.config([
         controller: 'pricingController'
     });
 
+    $stateProvider.state('users', {
+        url: '/users',
+        templateUrl: 'app/views/users.html',
+        controller: 'usersController',
+        resolve:{
+          validate:  function($rootScope) {
+            if($rootScope.user && !$rootScope.user.isAdmin){
+              $location.path('/');
+            }
+          }
+        }  
+    });
+
     $stateProvider.state('queues', {
         url: '/:appId/queues',
         templateUrl: 'app/views/queues.html',
@@ -64,7 +77,7 @@ app.config([
 
 app.filter('validUser', function($rootScope) {
   return function(app) {
-    if(app.developers && app.developers.length>0){
+    if(app.developers && app.developers.length>0 && $rootScope.user){
 
       return _.find(app.developers, function(eachObj){ 
         if(eachObj.userId==$rootScope.user._id){

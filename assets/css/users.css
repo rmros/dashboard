@@ -1,0 +1,33 @@
+.users-table{
+	border-collapse:collapse !important;
+}
+.users-table-thead{
+	border-bottom: 1px solid gray;
+}
+.users-table-thead tr,.users-table-thead th{
+	border: none !important;
+}
+.users-table-tbody tr{
+	border-bottom: 1px solid #E3E3E3;
+}
+.users-table-tbody td{
+	border: none !important;
+}
+.users-head-funname{
+	font-size: 14px;
+	font-weight: 500;
+}
+.users-bodytd-select{
+	width: 80px;
+}
+.users-bodytd-select:focus{
+	outline: none;
+}
+.users-table-wrapper{
+	height: 48vh;
+	overflow: auto;
+}
+
+.userDisabled{
+	background-color: #D4D5D6;
+}

@@ -27,6 +27,13 @@ function ($urlRouterProvider, $stateProvider, $httpProvider, $locationProvider) 
         controller:'activateController'
     });
 
+    $stateProvider.state('newserver',
+    {
+        url:'/newServer',
+        templateUrl: 'app/views/newserver.html',
+        controller:'newServerController'            
+    });
+
     //For to enable cross-origin resource sharing
     $httpProvider.defaults.withCredentials = true;
   	$httpProvider.defaults.useXDomain = true;
