@@ -73,9 +73,28 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
     };
 
 
-     global.removeUserFromProject = function(appId,userId){
+    global.removeDeveloperFromProject = function(appId,userId){
         var q=$q.defer();
-        $http.delete(serverURL+'/app/'+appId+'/removeuser/'+userId).
+        $http.delete(serverURL+'/app/'+appId+'/removedeveloper/'+userId).
+        success(function(data, status, headers, config) {
+          if(status===200)
+            q.resolve(data);
+          else 
+            q.reject(data);            
+        }).
+        error(function(data, status, headers, config) {
+            q.reject(status);
+            if(status===401){
+              $rootScope.logOut();
+            }
+        });
+
+        return  q.promise;
+    };
+
+    global.removeUserFromInvited = function(appId,email){
+        var q=$q.defer();
+        $http.post(serverURL+'/app/'+appId+'/removeinvitee',{email:email}).
         success(function(data, status, headers, config) {
           if(status===200)
             q.resolve(data);
@@ -156,9 +175,9 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
         return  q.promise;
      };
 
-      global.inviteUser = function(appId,userId){
+      global.inviteUser = function(appId,email){
         var q=$q.defer();
-        $http.get(serverURL+'/app/'+appId+'/invite/'+userId).
+        $http.post(serverURL+'/app/'+appId+'/invite',{email:email}).
         success(function(data, status, headers, config) {
           q.resolve(data);
         }).
@@ -171,9 +190,9 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
         return  q.promise;
       };
 
-      global.addDeveloper = function(appId,userId){
+      global.addDeveloper = function(appId,email){
         var q=$q.defer();
-        $http.get(serverURL+'/app/'+appId+'/adddeveloper/'+userId).
+        $http.get(serverURL+'/app/'+appId+'/adddeveloper/'+email).
         success(function(data, status, headers, config) {
           q.resolve(data);
         }).

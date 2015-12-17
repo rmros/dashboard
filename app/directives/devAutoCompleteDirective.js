@@ -6,7 +6,7 @@ app.directive('devautokomplete', function($timeout,userService){
             $(element).autocomplete({
                 source:  function (request, response) {
                                      
-
+                    scope.requestInviteEmail=request.term;
                     userService.searchDevelopers(request.term)
                     .then(function(list){
                         scope.searchedUsers=list;
@@ -14,9 +14,9 @@ app.directive('devautokomplete', function($timeout,userService){
                       var details;
                       if(list && list.length>0){
                         response($.map(list, function (value, key) { 
-                            details={
-                                value  : value._id, 
-                                label  : value.name+" ("+value.email+")"                              
+                            details={                               
+                                label  : value.name+" ("+value.email+")",
+                                useremail  : value.email                              
                             };                           
                                                  
                             return details;
@@ -29,10 +29,10 @@ app.directive('devautokomplete', function($timeout,userService){
                     });           
                   
                 },                
-                select: function (event, ui) {                   
-                  
-                    scope.requestInviteId=ui.item.value;
-
+                select: function (event, ui) { 
+                    if(ui.item.useremail){
+                        scope.requestInviteEmail=ui.item.useremail;
+                    }                      
                 }
             });
         }

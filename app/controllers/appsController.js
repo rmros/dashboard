@@ -33,8 +33,9 @@ app.controller('appsController',
     appId:null
   };
   $scope.appDevSpinner=[];
+  $scope.appInvitedSpinner=[];
   $scope.searchedUsers=[];
-  $scope.requestInviteId;
+  $scope.requestInviteEmail;
   $scope.developers=[];
   $scope.invitees=[];
 
@@ -230,16 +231,16 @@ app.controller('appsController',
 
     if($filter('validUser')(list)){
       $scope.selectedProject=list;
+      $scope.invitees=list.invited;
 
-      var devArray=_.pluck(list.developers, 'userId');         
+      var devArray=_.pluck(list.developers, 'userId');
 
       var promises=[];
-      promises.push(userService.getUserListByIds(devArray));
-      promises.push(userService.getUserListByIds(list.invited));
+      promises.push(userService.getUserListByIds(devArray));      
+      
 
       $q.all(promises).then(function(list){      
-        $scope.developers=list[0];
-        $scope.invitees=list[1];
+        $scope.developers=list[0];        
         $('#developersModal').modal('show');                        
       },function(error){
         console.log(error);           
@@ -248,40 +249,103 @@ app.controller('appsController',
        
   };
 
-  $scope.removeUserFromProject=function(index,requestedUser){
+  $scope.removeDeveloperFromProject=function(index,requestedUser){
+    $scope.removeDevIndex=index;
+    $scope.removeDevUser=requestedUser;
+
+    if(requestedUser._id==$rootScope.user._id){
+      var tempDevArray=angular.copy($scope.selectedProject.developers);
+      var index;
+      for(var i=0;i<$scope.selectedProject.developers.length;++i){
+        if($scope.selectedProject.developers[i].userId=requestedUser._id){
+          index=i;
+        }
+      }
+      if(index==0 || index>0){
+        tempDevArray.splice(index,1);
+      }
+      if(tempDevArray.length>0){
+        $scope.processRemoveDeveloper(index,requestedUser);
+      }else if(tempDevArray.length==0){
+        $("#removedevconform").modal();
+      }      
+    }    
+   
+  }; 
+
+  $scope.processRemoveDeveloper =function(index,requestedUser) {
+    $("#removedevconform").modal("hide");
+    
     $scope.appDevSpinner[index]=true;
-    projectService.removeUserFromProject($scope.selectedProject.appId,requestedUser._id)
+    projectService.removeDeveloperFromProject($scope.selectedProject.appId,requestedUser._id)
     .then(function(data){
       if(data){
-        var appIndex=$scope.projectListObj.indexOf($scope.selectedProject); 
-        if(appIndex==0 || appIndex>0){
-          $scope.projectListObj.splice(appIndex,1);
-        }          
+
+        if(requestedUser._id==$rootScope.user._id){
+          var appIndex=$scope.projectListObj.indexOf($scope.selectedProject); 
+          if(appIndex==0 || appIndex>0){
+            $scope.projectListObj.splice(appIndex,1);
+          }
+        }                  
 
         var devIndex=$scope.developers.indexOf(requestedUser); 
         if(devIndex==0 || devIndex>0){
           $scope.developers.splice(devIndex,1);
         }          
         $('#developersModal').modal('hide');
+        $scope.removeDevIndex=null;
+        $scope.removeDevUser=null;
       }  
       $scope.appDevSpinner[index]=false;                     
     },function(error){
       $scope.appDevSpinner[index]=false;                   
     });
-  };   
+  };
 
-  $scope.inviteUser=function(){
-    $scope.inviteUserSpinner=true;
-    projectService.inviteUser($scope.selectedProject.appId,$scope.requestInviteId)
+  $scope.removeUserFromInvited=function(index,requestedInvitee){
+    $scope.appInvitedSpinner[index]=true;
+    projectService.removeUserFromInvited($scope.selectedProject.appId,requestedInvitee)
     .then(function(data){
-      if(data){
-        var newInvitee=_.find(_.where($scope.searchedUsers,{_id: $scope.requestInviteId}));
-        $scope.invitees.push(newInvitee);
-      } 
-      $scope.inviteUserSpinner=false;                          
+      if(data){                 
+
+        var inviteeIndex=$scope.invitees.indexOf(requestedInvitee); 
+        if(inviteeIndex==0 || inviteeIndex>0){
+          $scope.invitees.splice(inviteeIndex,1);
+        }     
+        
+      }  
+      $scope.appInvitedSpinner[index]=false;                     
     },function(error){
-      $scope.inviteUserSpinner=false;                  
+      $scope.appInvitedSpinner[index]=false;                   
     });
+  };  
+
+  $scope.inviteUser=function(){ 
+
+    if($rootScope.user.email!=$scope.requestInviteEmail){
+
+      if(validateEmail($scope.requestInviteEmail)){
+
+        $scope.inviteUserSpinner=true;
+        projectService.inviteUser($scope.selectedProject.appId,$scope.requestInviteEmail)
+        .then(function(data){
+          if(data){          
+            $scope.invitees.push($scope.requestInviteEmail);
+          } 
+          $scope.inviteUserSpinner=false;                          
+        },function(error){
+          errorNotify("Already a developer, Check User!");
+          $scope.inviteUserSpinner=false;                  
+        });
+
+      }else{
+        WarningNotify("Enter Valid Email!");
+      }      
+
+    }else{
+      WarningNotify("Current User is already a Contributor");
+    }
+    
   };
 
   $scope.changeAppKeysInit=function(index,list){    
@@ -477,6 +541,16 @@ app.controller('appsController',
         addCircleToCreateApp(x);
         x++;
     }, 1200);
+  }
+
+  $scope.$on('addApp', function(event, args) {
+      var requestApp = args.app;
+      $scope.projectListObj.push(requestApp);      
+  });
+
+  function validateEmail(email) {
+      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
   }
 
   function addCircleToFirstApp(id) {

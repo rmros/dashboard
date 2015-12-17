@@ -92,6 +92,41 @@ app.filter('validUser', function($rootScope) {
   }
 });
 
+app.filter('checkUnseenNotifications', function($rootScope) {
+  return function(notifications) {
+    if(notifications && notifications.length>0){
+
+      return _.find(notifications, function(eachObj){ 
+        if(eachObj.seen==false){
+          return true;
+        }
+      });
+
+    }else {
+      return false;
+    }
+    
+  }
+});
+
+app.filter('countUnseenNotifications', function($rootScope) {
+  return function(notifications) {
+    if(notifications && notifications.length>0){
+      var count=0;
+      for(var i=0;i<notifications.length;++i){
+        if(notifications[i].seen==false){
+          ++count;
+        }
+      }
+     
+      return count;
+    }else {
+      return 0;
+    }
+    
+  }
+});
+
 
 app.filter('debug', function() {
   return function(input) {

@@ -8760,14 +8760,47 @@ ul.timeline li > .date {
   height:320px; 
 }
 
-.letsz ul{  
-  padding:0 !important;
-  margin:0 !important;
-  background-color:white !important;
+.notifybubble{
+  border-radius: 30px;
+  position: absolute;
+  top: 13px;
+  left: 31px;
 }
-.letsz li{ 
- padding:6px !important;
- list-style-type:none;
- width:100%;;
- cursor:pointer
+.notify-list{
+  width:300px;
+  padding: 7px;
+  max-height:150px;
+  overflow: auto;
+  overflow-x: hidden;
+}
+.notify-bx{
+  width: 100%;
+  padding:4px;  
+  background-color:#EEE;
+}
+.notify-bx .task-cbdesc{
+  width:100%;
+  word-break: break-all;
+  font-size: 12px;
+
+}
+.notifybtn{
+  height:24px;
+  padding-top:-4px !important;
+}
+.notifybtn:focus{
+  outline:none;
+}
+.notify-accept{
+  background-color:#4892F9; 
+  border:none;
+  color:white;
+}
+.notify-decline{
+  
+border:none;
+  
+border: 1px solid #ccc;
+  
+color:#555;
 }

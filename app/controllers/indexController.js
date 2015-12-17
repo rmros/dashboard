@@ -1,6 +1,6 @@
 app.controller('indexController',
-	['$scope','$rootScope','userService','$location',
-	function($scope,$rootScope,userService,$location){	
+	['$scope','$rootScope','userService','$location','notificationService','projectService',
+	function($scope,$rootScope,userService,$location,notificationService,projectService){	
 
     getUserInfo();
 
@@ -34,7 +34,8 @@ app.controller('indexController',
     userService.getUserInfo()
     .then(function(obj){ 
       if(obj && obj.user){
-        $rootScope.user=obj.user;       
+        $rootScope.user=obj.user; 
+        getNotifications();           
       }         
       if(obj && obj.file){
         getImgSize(obj.file.document.url);      
@@ -63,10 +64,58 @@ app.controller('indexController',
       newImg.src = imgSrc; // this must be done AFTER setting onload
   }
 
+  function getNotifications(){
+    notificationService.getNotifications() 
+    .then(function(list){ 
+      $rootScope.notifications=list;
+    }, function(error){         
+    });
+  }
+
   $scope.toggleSideMenu=function(){     
     /*Collapse sidebar*/
     toggleSideBar();         
   }; 
+
+  $scope.updateNotificationsSeen=function(){
+    notificationService.updateNotificationsSeen()
+    .then(function(list){    
+    }, function(error){         
+    });
+  };
+
+  $scope.addDeveloper=function(notifyObject) {
+    projectService.addDeveloper(notifyObject.appId,$rootScope.user.email)
+    .then(function(project){ 
+      var index=$rootScope.notifications.indexOf(notifyObject);
+      $rootScope.notifications.splice(index,1);
+
+      if($rootScope.notifications.length==0){
+        $(".notifytoggle").hide();
+      }
+
+      $rootScope.$broadcast('addApp', { app:project});
+    }, function(error){  
+      if($rootScope.notifications.length==0){
+        $(".notifytoggle").hide();
+      }
+      console.log(error);       
+    });
+
+  };
+
+  $scope.removeUserFromInvited=function(notifyObject){    
+    projectService.removeUserFromInvited(notifyObject.appId,$rootScope.user.email)
+    .then(function(data){ 
+      var index=$rootScope.notifications.indexOf(notifyObject);
+      $rootScope.notifications.splice(index,1); 
+      if($rootScope.notifications.length==0){
+        $(".notifytoggle").hide();
+      }                       
+    },function(error){ 
+      console.log(error);                     
+    });
+  };
 
   function toggleSideBar(_this){
     var b = $("#sidebar-collapse")[0];
