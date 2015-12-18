@@ -1,6 +1,10 @@
 app.controller('indexController',
-	['$scope','$rootScope','userService','$location','notificationService','projectService',
-	function($scope,$rootScope,userService,$location,notificationService,projectService){	
+	['$scope','$rootScope','userService','$location','notificationService','projectService','$sce',
+	function($scope,$rootScope,userService,$location,notificationService,projectService,$sce){	
+
+    $scope.acceptInvitationSpinner=[];
+    $scope.declineInvitationSpinner=[];
+    $scope.notifySpinner=false;
 
     getUserInfo();
 
@@ -30,12 +34,15 @@ app.controller('indexController',
     }; 
 
     //Private Functions
-  function getUserInfo(){    
+  function getUserInfo(){  
+    $scope.notifySpinner=true;  
     userService.getUserInfo()
     .then(function(obj){ 
       if(obj && obj.user){
         $rootScope.user=obj.user; 
         getNotifications();           
+      }else{
+        $scope.notifySpinner=false;
       }         
       if(obj && obj.file){
         getImgSize(obj.file.document.url);      
@@ -43,7 +50,8 @@ app.controller('indexController',
       }else{
         $rootScope.profilePic=null; 
       }      
-    }, function(error){         
+    }, function(error){ 
+      $scope.notifySpinner=false;        
     });
   }  
 
@@ -68,7 +76,9 @@ app.controller('indexController',
     notificationService.getNotifications() 
     .then(function(list){ 
       $rootScope.notifications=list;
-    }, function(error){         
+      $scope.notifySpinner=false;
+    }, function(error){   
+      $scope.notifySpinner=false;      
     });
   }
 
@@ -84,7 +94,8 @@ app.controller('indexController',
     });
   };
 
-  $scope.addDeveloper=function(notifyObject) {
+  $scope.addDeveloper=function(index,notifyObject) {
+    $scope.acceptInvitationSpinner[index]=true;
     projectService.addDeveloper(notifyObject.appId,$rootScope.user.email)
     .then(function(project){ 
       var index=$rootScope.notifications.indexOf(notifyObject);
@@ -94,27 +105,39 @@ app.controller('indexController',
         $(".notifytoggle").hide();
       }
 
-      $rootScope.$broadcast('addApp', { app:project});
+      if(project && project.appId){
+        $rootScope.$broadcast('addApp', { app:project});
+      }    
+      $scope.acceptInvitationSpinner[index]=false; 
+
     }, function(error){  
       if($rootScope.notifications.length==0){
         $(".notifytoggle").hide();
       }
+      $scope.acceptInvitationSpinner[index]=false; 
       console.log(error);       
     });
 
   };
 
-  $scope.removeUserFromInvited=function(notifyObject){    
+  $scope.removeUserFromInvited=function(index,notifyObject){  
+    $scope.declineInvitationSpinner[index]=true;  
     projectService.removeUserFromInvited(notifyObject.appId,$rootScope.user.email)
     .then(function(data){ 
       var index=$rootScope.notifications.indexOf(notifyObject);
       $rootScope.notifications.splice(index,1); 
       if($rootScope.notifications.length==0){
         $(".notifytoggle").hide();
-      }                       
+      }  
+      $scope.declineInvitationSpinner[index]=false;                        
     },function(error){ 
-      console.log(error);                     
+      console.log(error); 
+      $scope.declineInvitationSpinner[index]=false;                        
     });
+  };
+
+  $scope.renderHtml = function (htmlCode) {
+    return $sce.trustAsHtml(htmlCode);
   };
 
   function toggleSideBar(_this){

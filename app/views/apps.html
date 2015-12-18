@@ -330,12 +330,11 @@
       </div>
       <div class="modal-body form flex-general-column-wrapper-center">
        
-       <div style="width:80%;">
+       <div style="width:98%;">
 
         <div class="form-group">
           <div class="input-group">            
-            <input type="text" class="form-control" placeholder="Search for..." devautokomplete>
-            <!--<autocomplete ng-model="yourchoice" data="listdevelopers" on-type="searchDevelopers" attr-class="letsz"></autocomplete>-->
+            <input type="text" class="form-control" placeholder="Enter email to invite.." devautokomplete>
             <span class="input-group-btn">
               <button ng-show="!inviteUserSpinner" class="btn btn-prusia" type="button" ng-click="inviteUser()">Invite</button> 
               <button ng-show="inviteUserSpinner" class="btn btn-prusia" type="button">
@@ -345,42 +344,91 @@
           </div>
         </div>
 
-        <div class="showlist-developers">
+        <div class="new-showlist-developers">
+          <table>
+            <thead class="appdev-thead">
+              <tr>               
+                <th>
+                  <div>
+                    User
+                  </div>
+                </th>
+                <th>
+                  <div>
+                    Role
+                  </div>
+                </th>
+                <th>
+                  <div>
+                    Status
+                  </div>
+                </th>
+                <th class="table-TxtAlign-center">
+                  <div>
+                    Remove
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="appdev-tbody">
+              <!--Developers-->
+              <tr ng-repeat="eachDev in developers">                
+                <td width="47%">
+                  <div>
+                    <p style="padding: 0 !important;margin: 0 !important;">{{eachDev.name}}</p>
+                    <p style="padding: 0 !important;margin-top: -4px !important;margin-bottom:0 !important;">{{eachDev.email}}</p>
+                  </div>
+                </td>
+                <td width="20%">
+                  <div>
+                    <select class="users-bodytd-select" ng-model="eachDev.role" ng-change="changeDeveloperRole($index,eachDev)">
+                        <option  ng-selected="eachDev.role=='Admin'" value="Admin">Admin</option>
+                        <option  ng-selected="eachDev.role=='User'" value="User">User</option>
+                      </select>
+                  </div>
+                </td>
+                <td width="20%">
+                  <div>
+                    <span style="background-color: #e5e5e5; padding-left: 3px;padding-right: 3px; border-radius: 2px;color: #2e2e2e;">Accepted</span>
+                  </div>
+                </td>
+                <td class="table-TxtAlign-center" width="13%">
+                  <div>
+                    <i ng-show="!appDevSpinner[$index]"  ng-click="removeDeveloperFromProject($index,eachDev)" class="icon ion-close" style="font-size:12px;"></i>
+                    <i ng-show="appDevSpinner[$index]" class="fa fa-spinner fa-spin" style="font-size:12px;"></i>
+                  </div>
+                </td>
+              </tr>
+              <!--/Developers-->
 
-          <!--Developers-->
-          <div ng-repeat="eachDev in developers" class="showlist-developers-email cf">
-            <div class="pull-left" style="padding-left:3px;">
-
-              <div>
-                {{eachDev.name}}
-              </div> 
-              <div style="color:#555">
-                {{eachDev.email}}
-              </div> 
-              
-            </div>  
-            <div class="pull-right">
-              <i ng-show="!appDevSpinner[$index]" ng-click="removeDeveloperFromProject($index,eachDev)" class="icon ion-close"></i>
-              <i ng-show="appDevSpinner[$index]" class="fa fa-spinner fa-spin"></i>
-            </div>            
-          </div>
-          <!--/Developers-->
-
-          <!--Invitees-->
-          <div ng-repeat="eachInvite in invitees" class="showlist-developers-email cf">
-            <div class="pull-left" style="padding-left:3px;">              
-              <div style="color:#555">
-                {{eachInvite}}<span style="color: #337ab7; font-size:12px; font-style: italic;">&nbsp;invited..</span>
-              </div>              
-            </div>  
-            <div class="pull-right">
-              <i ng-show="!appInvitedSpinner[$index]"  ng-click="removeUserFromInvited($index,eachInvite)" class="icon ion-close"></i>
-              <i ng-show="appInvitedSpinner[$index]" class="fa fa-spinner fa-spin"></i>
-            </div>            
-          </div>
-          <!--/Invitees-->
-
-        </div>
+              <!--Invitees-->
+              <tr ng-repeat="eachInvite in invitees">                
+                <td width="47%">
+                  <div>                    
+                    <p style="padding: 0 !important;margin-top: -4px !important;margin-bottom:0 !important;">{{eachInvite}}</p>
+                  </div>
+                </td>
+                <td width="20%">
+                  <div>
+                   --
+                  </div>
+                </td>
+                <td width="20%">
+                  <div>
+                    <span style="background-color: #e5e5e5; padding-left: 3px;padding-right: 3px; border-radius: 2px;color: #549afc;">Invited..</span>
+                  </div>
+                </td>
+                <td class="table-TxtAlign-center" width="13%">
+                  <div>
+                    <i ng-show="!appInvitedSpinner[$index]"  ng-click="removeUserFromInvited($index,eachInvite)" class="icon ion-close" style="font-size:12px;"></i>
+                    <i ng-show="appInvitedSpinner[$index]" class="fa fa-spinner fa-spin" style="font-size:12px;"></i>
+                  </div>
+                </td>
+              </tr>
+              <!--/Invitees-->
+            </tbody>
+          </table>
+        </div>       
           
        </div>               
 

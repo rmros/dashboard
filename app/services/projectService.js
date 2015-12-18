@@ -83,7 +83,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
             q.reject(data);            
         }).
         error(function(data, status, headers, config) {
-            q.reject(status);
+            q.reject(data);
             if(status===401){
               $rootScope.logOut();
             }
@@ -102,7 +102,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
             q.reject(data);            
         }).
         error(function(data, status, headers, config) {
-            q.reject(status);
+            q.reject(data);
             if(status===401){
               $rootScope.logOut();
             }
@@ -182,7 +182,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
           q.resolve(data);
         }).
         error(function(data, status, headers, config) {
-          q.reject(status);
+          q.reject(data);
           if(status===401){
             $rootScope.logOut();
           }
@@ -197,7 +197,22 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
           q.resolve(data);
         }).
         error(function(data, status, headers, config) {
-          q.reject(status);
+          q.reject(data);
+          if(status===401){
+            $rootScope.logOut();
+          }
+        });
+        return  q.promise;
+      };
+
+      global.changeDeveloperRole = function(appId,userId,role){
+        var q=$q.defer();
+        $http.post(serverURL+'/app/changerole',{appId:appId,userId:userId,role:role}).
+        success(function(data, status, headers, config) {
+          q.resolve(data);
+        }).
+        error(function(data, status, headers, config) {
+          q.reject(data);
           if(status===401){
             $rootScope.logOut();
           }

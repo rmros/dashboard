@@ -578,8 +578,13 @@ pre {
 .navbar-default .navbar-nav > .open > a,
 .navbar-default .navbar-nav > .open > a:hover,
 .navbar-default .navbar-nav > .open > a:focus {
-  background-color: #549afc;
-  color: #fff;
+  background-color:transparent;
+  color: black;
+}
+.navbar-default .navbar-nav > .open > a  .alto-menu-item ,
+.navbar-default .navbar-nav > .open > a:hover .alto-menu-item ,
+.navbar-default .navbar-nav > .open > a:focus .alto-menu-item {  
+  color: black !important;
 }
 .not-nav > .open > a,
 .not-nav > .open > a:hover,
@@ -8737,6 +8742,10 @@ ul.timeline li > .date {
   overflow: auto;
   padding:7px;
 }
+.new-showlist-developers{
+  height: 200px;  
+  overflow: auto;  
+}
 
 .showlist-developers-email{
   height:auto;
@@ -8763,20 +8772,25 @@ ul.timeline li > .date {
 .notifybubble{
   border-radius: 30px;
   position: absolute;
-  top: 13px;
-  left: 31px;
+  top: 8px;
+  right: 1px;
 }
 .notify-list{
-  width:300px;
-  padding: 7px;
-  max-height:150px;
-  overflow: auto;
-  overflow-x: hidden;
+  width:400px;
+  padding: 0px;
+  height: auto;
+  top:67px;  
+}
+.notification-torrent{
+  overflow: -moz-scrollbars-vertical;
+  overflow-y: scroll;
+  height: 304px;
 }
 .notify-bx{
   width: 100%;
-  padding:4px;  
-  background-color:#EEE;
+  padding:12px;  
+  background-color:rgba(236, 236, 236, 0.4);
+  margin-top: 1px;  
 }
 .notify-bx .task-cbdesc{
   width:100%;
@@ -8796,11 +8810,27 @@ ul.timeline li > .date {
   border:none;
   color:white;
 }
-.notify-decline{
-  
-border:none;
-  
-border: 1px solid #ccc;
-  
-color:#555;
+.notify-decline{  
+  border:none;  
+  border: 1px solid #ccc;  
+  color:#555;
+}
+
+.users-table{
+  border-collapse:collapse !important;
+}
+.appdev-thead{
+  border-bottom: 1px solid gray;
+}
+.appdev-thead tr,.appdev-thead th{
+  border: none !important;
+}
+.appdev-tbody tr{
+  border-bottom: 1px solid #E3E3E3;
+}
+.appdev-tbody td{
+  border: none !important;
+}
+.alto-menu-item{
+  color:#AAA4A4;
 }

@@ -80,7 +80,7 @@ app.filter('validUser', function($rootScope) {
     if(app.developers && app.developers.length>0 && $rootScope.user){
 
       return _.find(app.developers, function(eachObj){ 
-        if(eachObj.userId==$rootScope.user._id){
+        if(eachObj.userId==$rootScope.user._id && eachObj.role=="Admin"){
           return true;
         }
       });
@@ -127,6 +127,11 @@ app.filter('countUnseenNotifications', function($rootScope) {
   }
 });
 
+app.filter("sanitize", ['$sce', function($sce) {
+  return function(htmlCode){
+    return $sce.trustAsHtml(htmlCode);
+  }
+}]);
 
 app.filter('debug', function() {
   return function(input) {

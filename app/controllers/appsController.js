@@ -237,10 +237,20 @@ app.controller('appsController',
 
       var promises=[];
       promises.push(userService.getUserListByIds(devArray));      
-      
 
-      $q.all(promises).then(function(list){      
-        $scope.developers=list[0];        
+      $q.all(promises).then(function(promiseList){ 
+        var devs=promiseList[0];
+        for(var i=0;i<devArray.length;++i){
+
+          for(var j=0;j<devs.length;++j){
+            if(devs[j]._id==list.developers[i].userId){
+              devs[j].role=list.developers[i].role;
+            } 
+          }
+                   
+        } 
+
+        $scope.developers=devs;        
         $('#developersModal').modal('show');                        
       },function(error){
         console.log(error);           
@@ -269,6 +279,8 @@ app.controller('appsController',
       }else if(tempDevArray.length==0){
         $("#removedevconform").modal();
       }      
+    }else{
+      $scope.processRemoveDeveloper(index,requestedUser);
     }    
    
   }; 
@@ -278,27 +290,54 @@ app.controller('appsController',
     
     $scope.appDevSpinner[index]=true;
     projectService.removeDeveloperFromProject($scope.selectedProject.appId,requestedUser._id)
-    .then(function(data){
-      if(data){
+    .then(function(data){     
 
-        if(requestedUser._id==$rootScope.user._id){
-          var appIndex=$scope.projectListObj.indexOf($scope.selectedProject); 
-          if(appIndex==0 || appIndex>0){
-            $scope.projectListObj.splice(appIndex,1);
+      if(requestedUser._id==$rootScope.user._id){
+        var appIndex=$scope.projectListObj.indexOf($scope.selectedProject); 
+        if(appIndex==0 || appIndex>0){
+          $scope.projectListObj.splice(appIndex,1);
+        }
+      }                  
+
+      var devIndex=$scope.developers.indexOf(requestedUser); 
+      if(devIndex==0 || devIndex>0){
+        $scope.developers.splice(devIndex,1);
+
+        var userIndexInApp;
+        for(var i=0;i<$scope.selectedProject.developers.length;++i){
+          if($scope.selectedProject.developers[i].userId==requestedUser._id){
+            userIndexInApp=i;
           }
-        }                  
-
-        var devIndex=$scope.developers.indexOf(requestedUser); 
-        if(devIndex==0 || devIndex>0){
-          $scope.developers.splice(devIndex,1);
-        }          
-        $('#developersModal').modal('hide');
-        $scope.removeDevIndex=null;
-        $scope.removeDevUser=null;
-      }  
+        }
+        $scope.selectedProject.developers.splice(userIndexInApp,1);
+      }          
+      //$('#developersModal').modal('hide');
+      $scope.removeDevIndex=null;
+      $scope.removeDevUser=null;
+      
       $scope.appDevSpinner[index]=false;                     
     },function(error){
-      $scope.appDevSpinner[index]=false;                   
+      $scope.appDevSpinner[index]=false; 
+      $scope.removeDevIndex=null;
+      $scope.removeDevUser=null;
+      errorNotify(error);                  
+    });
+  };
+
+  $scope.changeDeveloperRole=function(index,requestedUser){
+     $scope.appDevSpinner[index]=true;
+
+    projectService.changeDeveloperRole($scope.selectedProject.appId,requestedUser._id,requestedUser.role)
+    .then(function(data){      
+      $scope.appDevSpinner[index]=false;                     
+    },function(error){
+      $scope.appDevSpinner[index]=false;     
+      errorNotify(error);
+      if(requestedUser.role=="Admin"){
+        requestedUser.role="User";
+      }else if(requestedUser.role=="User"){
+        requestedUser.role="Admin";
+      }                  
     });
   };
 
@@ -332,7 +371,8 @@ app.controller('appsController',
           if(data){          
             $scope.invitees.push($scope.requestInviteEmail);
           } 
-          $scope.inviteUserSpinner=false;                          
+          $scope.inviteUserSpinner=false; 
+          $scope.requestInviteEmail=null;                         
         },function(error){
           errorNotify("Already a developer, Check User!");
           $scope.inviteUserSpinner=false;                  
