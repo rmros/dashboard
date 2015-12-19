@@ -2,9 +2,9 @@ app.factory('notificationService', ['$q','$http','$rootScope',function ($q,$http
 
     var global = {};
 
-    global.getNotifications = function(){
+    global.getNotifications = function(skip,limit){
       var q=$q.defer();
-      $http.get(serverURL+'/notification').
+      $http.get(serverURL+'/notification/'+skip+'/'+limit).
       success(function(data, status, headers, config) {
         q.resolve(data);
       }).

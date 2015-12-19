@@ -5,6 +5,8 @@ app.controller('indexController',
     $scope.acceptInvitationSpinner=[];
     $scope.declineInvitationSpinner=[];
     $scope.notifySpinner=false;
+    $scope.notificationsSkip=0;
+    $scope.notificationsLimit=5;
 
     getUserInfo();
 
@@ -72,8 +74,8 @@ app.controller('indexController',
       newImg.src = imgSrc; // this must be done AFTER setting onload
   }
 
-  function getNotifications(){
-    notificationService.getNotifications() 
+  function getNotifications(){    
+    notificationService.getNotifications($scope.notificationsSkip,$scope.notificationsLimit) 
     .then(function(list){ 
       $rootScope.notifications=list;
       $scope.notifySpinner=false;
@@ -81,6 +83,25 @@ app.controller('indexController',
       $scope.notifySpinner=false;      
     });
   }
+
+  $scope.loadMoreNotifications=function(){    
+    $scope.loadingMoreNotifications=true;
+    notificationService.getNotifications($scope.notificationsLimit,5)
+    .then(function(notifyList){ 
+      if(notifyList && notifyList.length>0){
+        $scope.notificationsLimit=$scope.notificationsLimit+notifyList.length;
+
+        if($rootScope.notifications.length>0){
+          $rootScope.notifications = $rootScope.notifications.concat(notifyList);           
+        }else{
+          $rootScope.notifications=notifyList;
+        }        
+      }  
+      $scope.loadingMoreNotifications=false;   
+    },function(error){      
+      $scope.loadingMoreNotifications=false;              
+    });
+  };
 
   $scope.toggleSideMenu=function(){     
     /*Collapse sidebar*/
@@ -98,8 +119,8 @@ app.controller('indexController',
     $scope.acceptInvitationSpinner[index]=true;
     projectService.addDeveloper(notifyObject.appId,$rootScope.user.email)
     .then(function(project){ 
-      var index=$rootScope.notifications.indexOf(notifyObject);
-      $rootScope.notifications.splice(index,1);
+      var notificationIndex=$rootScope.notifications.indexOf(notifyObject);
+      $rootScope.notifications.splice(notificationIndex,1);
 
       if($rootScope.notifications.length==0){
         $(".notifytoggle").hide();
@@ -114,8 +135,7 @@ app.controller('indexController',
       if($rootScope.notifications.length==0){
         $(".notifytoggle").hide();
       }
-      $scope.acceptInvitationSpinner[index]=false; 
-      console.log(error);       
+      $scope.acceptInvitationSpinner[index]=false;              
     });
 
   };
@@ -124,8 +144,8 @@ app.controller('indexController',
     $scope.declineInvitationSpinner[index]=true;  
     projectService.removeUserFromInvited(notifyObject.appId,$rootScope.user.email)
     .then(function(data){ 
-      var index=$rootScope.notifications.indexOf(notifyObject);
-      $rootScope.notifications.splice(index,1); 
+      var notificationIndex=$rootScope.notifications.indexOf(notifyObject);
+      $rootScope.notifications.splice(notificationIndex,1); 
       if($rootScope.notifications.length==0){
         $(".notifytoggle").hide();
       }  
