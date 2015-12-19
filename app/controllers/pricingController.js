@@ -16,6 +16,13 @@ app.controller('pricingController',
 		
 	var id;
 
+	$scope.labels2 = ["January", "February", "March", "April", "May", "June", "July"];
+	$scope.series2 = ['Series A', 'Series B'];
+	$scope.data2 = [
+	    [65, 59, 80, 81, 56, 55, 40],
+	    [28, 48, 40, 19, 86, 27, 90]
+	];
+
 	//credit card info
 	$scope.creditcardInfo={	 
 	  "object": "card",
@@ -366,52 +373,7 @@ app.controller('pricingController',
           
         }
 
-		function validateCrediCardInfo(){
-			var validation={
-				isValid:true,
-				message:null
-			};
-
-			if(!Stripe.card.validateCardNumber($scope.creditcardInfo.number)){
-				$scope.validCardShowSpinner=false;
-				$("#credit-card").modal("hide");
-
-				validation.isValid=false;
-				validation.message='Please enter card number with no letters, spaces and special characters.';
-
-				return validation;
-			}
-			if(!Stripe.card.validateExpiry($scope.creditcardInfo.exp_month, $scope.creditcardInfo.exp_year)){
-				$scope.validCardShowSpinner=false;
-				$("#credit-card").modal("hide");
-
-				validation.isValid=false;
-				validation.message='Please enter the correct month and year of expiry';
-				
-				return validation;
-			} 
-			
-			if(!Stripe.card.validateCVC($scope.creditcardInfo.cvc)){
-				$scope.validCardShowSpinner=false;
-				$("#credit-card").modal("hide");
-
-				validation.isValid=false;
-				validation.message='Please enter the valid CVC.';
-				
-				return validation;				
-			}
-			if(!Stripe.card.cardType($scope.creditcardInfo.number)){
-				$scope.validCardShowSpinner=false;
-				$("#credit-card").modal("hide");
-
-				validation.isValid=false;
-				validation.message='The card is unknown. We accept Visa, MasterCard, American Express, Discover, Diners Club, and JCB';
-				
-				return validation;				
-			}
-
-			return validation;
-        }
+		
 
         function nextBillingCycleDays(){
 			var one_day=1000*60*60*24;
@@ -468,6 +430,52 @@ app.controller('pricingController',
 	        
 		}
 
+		function validateCrediCardInfo(){
+			var validation={
+				isValid:true,
+				message:null
+			};
+
+			if(!Stripe.card.validateCardNumber($scope.creditcardInfo.number)){
+				$scope.validCardShowSpinner=false;
+				$("#credit-card").modal("hide");
+
+				validation.isValid=false;
+				validation.message='Please enter card number with no letters, spaces and special characters.';
+
+				return validation;
+			}
+			if(!Stripe.card.validateExpiry($scope.creditcardInfo.exp_month, $scope.creditcardInfo.exp_year)){
+				$scope.validCardShowSpinner=false;
+				$("#credit-card").modal("hide");
+
+				validation.isValid=false;
+				validation.message='Please enter the correct month and year of expiry';
+				
+				return validation;
+			} 
+			
+			if(!Stripe.card.validateCVC($scope.creditcardInfo.cvc)){
+				$scope.validCardShowSpinner=false;
+				$("#credit-card").modal("hide");
+
+				validation.isValid=false;
+				validation.message='Please enter the valid CVC.';
+				
+				return validation;				
+			}
+			if(!Stripe.card.cardType($scope.creditcardInfo.number)){
+				$scope.validCardShowSpinner=false;
+				$("#credit-card").modal("hide");
+
+				validation.isValid=false;
+				validation.message='The card is unknown. We accept Visa, MasterCard, American Express, Discover, Diners Club, and JCB';
+				
+				return validation;				
+			}
+
+			return validation;
+        }
 		//Notification
 		function errorNotify(errorMsg){
 		  $.amaran({

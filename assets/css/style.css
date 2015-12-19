@@ -8228,47 +8228,7 @@ ul.timeline li > .date {
   width:100%;
 } 
 
-.bill-category-bx{
-  margin-top: 25px;
-}
-.billing-details-Bx{
-  background-color: white; 
-  padding:30px !important; 
-}
-.billing-det-head{
-  color:black;
-  font-size: 16px;
-} 
 
-
-/* Flex rules */
-.bill-usage-bar{
-    display: flex;
-    display:-webkit-flex;
-    display:-moz-flex;
-
-    flex-flow:row wrap;
-    justify-content:space-between;
-    align-items:flex-start;
-    
-    
-    -moz-flex-flow:row wrap;
-    -moz-justify-content: space-between;
-    
-    -webkit-flex-flow:row wrap;
-    -webkit-justify-content: space-between;
-    -webkit-align-items:flex-start; 
-    background-color:gray;
-    padding-top: 5px;
-    padding-left: 20px;
-       
-}
-
-.bar{
-  flex:1;
-  -moz-flex:1;
-  -webkit-flex:1;  
-}
 .charge{
  margin-left: 150px !important;
 }
@@ -8283,20 +8243,7 @@ ul.timeline li > .date {
   min-width:40px;  
   float:right;
 }
-.bill-usage-txt{  
-  padding: 0 !important;
-  margin: 0 !important;
-  display: inline;
-}
-.bill-usage-txt span{  
-  padding: 0 !important;
-  margin: 0 !important;
-  font-size: 14px;
-  text-indent:0 !important;
-  text-align: left !important;
-  display: inline;
 
-}
 .total-bx{
   margin-top: 25px;
 
@@ -8833,4 +8780,23 @@ ul.timeline li > .date {
 }
 .alto-menu-item{
   color:#AAA4A4;
+}
+
+.billing-details-Bx{
+  background-color: white;
+  padding: 10px;
+}
+
+.api-category-name,.api-total-count,.api-total-cost{
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.api-category-value,.api-total-count-value,.api-total-cost-value{
+  font-size: 20px;
+  margin-left: 4px; 
+}
+
+.api-total-currency{
+  font-size: 20px;
 }

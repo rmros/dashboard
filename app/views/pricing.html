@@ -61,30 +61,52 @@
     <div class="row">
     	<div class="col-md-12">
     		<div class="billing-details-Bx">
-    				<p class="billing-det-head">Your usage details</p>
+    				<p style="font-size:18px;">Your usage details</p>
+
     				<!--bill-category-->
-    				<div class="bill-category-bx cf" ng-repeat="eachInvoiceDet in invoice.invoiceDetails">
-    					<b><h3 class="bill-category-name">{{eachInvoiceDet.category | uppercase}}</h3></b>
-              <!--usage metrics-->
-    					<div class="bill-usage-bx cf" ng-repeat="eachUsageMetric in eachInvoiceDet.usageMetrics">
-    						
-                  <div class="bill-usage-bar cf">
-      							<div class="bar">
-      								<p class="usage">{{eachUsageMetric.usage}}</p>
-      							</div>
-      							<div class="bar">
-      								<p class="price">${{eachUsageMetric.charged}}</p>
-      							</div>	
+    				<div class="" style="margin-top:40px;">
+              <div class="flex-general-row-wrapper">
+
+                <div class="cf" style="width:30%;"> 
+                  <div class="pull-left api-category-name"> 
+                    Category:               
                   </div>
-    						 
-                <div  class="bill-usage-txt">
-                <span>{{eachUsageMetric.description}}</span>
-                </div>   							
-    					</div>
-              
-              <!--/usage metrics-->
-    				</div>
-            
+                  <div class="pull-left api-category-value"> 
+                    Search API               
+                  </div>
+                </div>
+
+                <div class="cf" style="width:30%;"> 
+                  <div class="pull-left api-total-count"> 
+                    API Count:               
+                  </div>
+                  <div class="pull-left api-total-count-value"> 
+                    40030303              
+                  </div>
+                </div>
+
+                <div class="cf" style="width:30%;"> 
+                  <div class="pull-left api-total-cost"> 
+                    Cost:               
+                  </div>
+                  <div class="pull-left"> 
+                   <span class="api-total-cost-value">30</span> 
+                   <span class="api-total-currency">USD</span>              
+                  </div>
+                </div>
+               
+              </div> 
+
+              <!--Graph-->
+              <div style="height:400px;width:100%;">
+                <canvas id="line" class="chart chart-line" chart-data="{{data2}}"
+                  chart-labels="{{labels2}}" chart-legend="false" chart-series="{{series2}}" ng-show="true" tyle="height:350px;width:100%;">
+                </canvas> 
+
+                <canvas  id="doughnut" class="chart chart-doughnut" data="data" width="685" height="800" labels="labels" colours="colours"></canvas>
+              </div>
+
+    				</div>            
     				<!--/bill-category-->
     					
     		</div>	
