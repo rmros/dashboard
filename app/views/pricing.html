@@ -1,4 +1,4 @@
-<div class="cl-mcont" ng-init="init()">
+<div class="cl-mcont queues-page" ng-init="init()">
 
     <div class="row">
       <!--No spending Limit-->		
@@ -63,51 +63,153 @@
     		<div class="billing-details-Bx">
     				<p style="font-size:18px;">Your usage details</p>
 
-    				<!--bill-category-->
-    				<div class="" style="margin-top:40px;">
-              <div class="flex-general-row-wrapper">
+            <div ng-show="!usageSpinner">
+      				<!--bill-category-->
+      				<div class="" style="margin-top:40px;margin-bottom:20px;">
+                <div class="flex-general-row-wrapper">
 
-                <div class="cf" style="width:30%;"> 
-                  <div class="pull-left api-category-name"> 
-                    Category:               
+                  <div class="cf" style="width:30%;"> 
+                    <div class="pull-left api-category-name"> 
+                      Category:               
+                    </div>
+                    <div class="pull-left api-category-value"> 
+                      {{apiUsage.category}}               
+                    </div>
                   </div>
-                  <div class="pull-left api-category-value"> 
-                    Search API               
+
+                  <div class="cf" style="width:30%;"> 
+                    <div class="pull-left api-total-count"> 
+                      API Count:               
+                    </div>
+                    <div class="pull-left api-total-count-value"> 
+                      {{apiUsage.totalApiCount}}              
+                    </div>
                   </div>
+
+                  <div class="cf" style="width:30%;"> 
+                    <div class="pull-left api-total-cost"> 
+                      Cost:               
+                    </div>
+                    <div class="pull-left"> 
+                     <span class="api-total-cost-value">{{apiUsage.totalCost}} </span> 
+                     <span class="api-total-currency">USD</span>              
+                    </div>
+                  </div>
+                 
+                </div> 
+
+                <!--Graph-->
+                <div ng-show="apiUsage.displayGraph" style="height:200px;width:100%;padding:10px;">
+                  <canvas  class="chart chart-line" chart-data="apiData"
+                    chart-labels="apiLabels" chart-legend="false" style="height:200px;width:100%;">
+                  </canvas>                                
                 </div>
+                <!--/Graph-->
 
-                <div class="cf" style="width:30%;"> 
-                  <div class="pull-left api-total-count"> 
-                    API Count:               
+      				</div>            
+      				<!--/bill-category-->
+
+              <div style=";margin-top:40px; padding:10px;border-bottom:1px solid rgba(238, 238, 238, 0.67);"></div>
+
+              <!--bill-category-->
+              <div  class="" style="margin-top:40px;margin-bottom:20px;">
+                <div class="flex-general-row-wrapper">
+
+                  <div class="cf" style="width:30%;"> 
+                    <div class="pull-left api-category-name"> 
+                      Category:               
+                    </div>
+                    <div class="pull-left api-category-value"> 
+                      {{searchUsage.category}}               
+                    </div>
                   </div>
-                  <div class="pull-left api-total-count-value"> 
-                    40030303              
+
+                  <div class="cf" style="width:30%;"> 
+                    <div class="pull-left api-total-count"> 
+                      API Count:               
+                    </div>
+                    <div class="pull-left api-total-count-value"> 
+                      {{searchUsage.totalApiCount}}              
+                    </div>
                   </div>
+
+                  <div class="cf" style="width:30%;"> 
+                    <div class="pull-left api-total-cost"> 
+                      Cost:               
+                    </div>
+                    <div class="pull-left"> 
+                     <span class="api-total-cost-value">{{searchUsage.totalCost}} </span> 
+                     <span class="api-total-currency">USD</span>              
+                    </div>
+                  </div>
+                 
+                </div> 
+
+                <!--Graph-->
+                <div ng-show="searchUsage.displayGraph" style="height:200px;width:100%;padding:10px;">
+                  <canvas  class="chart chart-line" chart-data="searchData"
+                    chart-labels="searchLabels" chart-legend="false" style="height:200px;width:100%;">
+                  </canvas>                                
                 </div>
+                <!--/Graph-->
 
-                <div class="cf" style="width:30%;"> 
-                  <div class="pull-left api-total-cost"> 
-                    Cost:               
+              </div>            
+              <!--/bill-category-->
+
+              <div style=";margin-top:40px; padding:10px;border-bottom:1px solid rgba(238, 238, 238, 0.67);"></div>
+
+              <!--bill-category-->
+              <div  class="" style="margin-top:50px;margin-bottom:20px;">
+                <div class="flex-general-row-wrapper">
+
+                  <div class="cf" style="width:30%;"> 
+                    <div class="pull-left api-category-name"> 
+                      Category:               
+                    </div>
+                    <div class="pull-left api-category-value"> 
+                      {{queuesUsage.category}}               
+                    </div>
                   </div>
-                  <div class="pull-left"> 
-                   <span class="api-total-cost-value">30</span> 
-                   <span class="api-total-currency">USD</span>              
+
+                  <div class="cf" style="width:30%;"> 
+                    <div class="pull-left api-total-count"> 
+                      API Count:               
+                    </div>
+                    <div class="pull-left api-total-count-value"> 
+                      {{queuesUsage.totalApiCount}}              
+                    </div>
                   </div>
+
+                  <div class="cf" style="width:30%;"> 
+                    <div class="pull-left api-total-cost"> 
+                      Cost:               
+                    </div>
+                    <div class="pull-left"> 
+                     <span class="api-total-cost-value">{{queuesUsage.totalCost}} </span> 
+                     <span class="api-total-currency">USD</span>              
+                    </div>
+                  </div>
+                 
+                </div> 
+
+                <!--Graph-->
+                <div ng-show="queuesUsage.displayGraph" style="height:200px;width:100%;padding:10px;">
+                  <canvas  class="chart chart-line" chart-data="queuesData"
+                    chart-labels="queuesLabels" chart-legend="false" style="height:200px;width:100%;">
+                  </canvas>                                
                 </div>
-               
-              </div> 
+                <!--/Graph-->
 
-              <!--Graph-->
-              <div style="height:400px;width:100%;">
-                <canvas id="line" class="chart chart-line" chart-data="{{data2}}"
-                  chart-labels="{{labels2}}" chart-legend="false" chart-series="{{series2}}" ng-show="true" tyle="height:350px;width:100%;">
-                </canvas> 
+              </div>            
+              <!--/bill-category-->
 
-                <canvas  id="doughnut" class="chart chart-doughnut" data="data" width="685" height="800" labels="labels" colours="colours"></canvas>
-              </div>
+            </div>
 
-    				</div>            
-    				<!--/bill-category-->
+            <div ng-show="usageSpinner" style="width:100%;height:100px;" class="flex-general-column-wrapper-center">
+                <div>
+                  <i class="fa fa-spinner fa-spin fa-2x"></i>&nbsp;&nbsp;<span style="font-size:20px;">Loading.. </span>
+                </div>         
+            </div>
     					
     		</div>	
     	</div>		

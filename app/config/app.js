@@ -29,6 +29,7 @@ app.value('THROTTLE_MILLISECONDS', 1250);
 
 var serverURL = null; 
 var landingURL = null;
+var analyticsURL = null;
 if(__isVM){
 	serverURL = window.location.host + ":3000";
 	landingURL = "https://www.cloudboost.io";
@@ -38,6 +39,7 @@ if(__isVM){
 	if(__isDevelopment){
 	    serverURL="http://localhost:3000";
 	    landingURL = "http://localhost:1444";
+        analyticsURL="http://localhost:5555";
 	    CB.serverUrl ='http://localhost:4730';
 	    CB.apiUrl = CB.serverUrl;
         CB.serviceUrl=serverURL;
