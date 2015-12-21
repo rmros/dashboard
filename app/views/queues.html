@@ -1,4 +1,4 @@
-  
+ 
 <div class="cl-mcont queues-page" ng-init="init()">
   <div class="row"> 
 
@@ -19,21 +19,24 @@
         <div ng-show="showCreateQueueBox" class="create-queue-open-wrapper createqueuefun" click-outside="closeCreateQueueBox()" outside-if-not="createqueuefun">     
           <div class="createqueue-openform">
             <div class="createqueue-open-input-wrap" style="height:33px;width:100%;">
-              <input type="text" class="createqueue-open-input" placeholder="Queue Name">
+              <input type="text" class="createqueue-open-input" placeholder="Queue Name" ng-model="newQueueName">
             </div>
 
             <div style="height:35px;width:100%;">
               <div class="pull-right cf" style="width:48%;height:23px !important;margin-right:6px;margin-top:6px;">
 
                 <div class="pull-left cf" style="height:100%;width:120px;">
-                  <select class="select-queuetype">
-                    <option>Pull</option>
-                    <option>Push</option>                    
+                  <select class="select-queuetype" ng-model="newQueueType">
+                    <option ng-selected="newQueueType=='pull'">Pull</option>
+                    <!--<option>Push</option>-->                    
                   </select>  
                 </div> 
 
                 <div class="pull-right" style="height:100%;width:94px; margin-left:5px;">
-                  <button type="submit" class="create-queue-btn" ng-click="createQueue()">Create</button>
+                  <button ng-show="!creatingQueue" type="button" class="create-queue-btn" ng-click="createQueue()">Create</button>
+                  <button ng-show="creatingQueue" type="button" class="create-queue-btn">
+                    <i class="fa fa-spinner fa-spin"></i>&nbsp;Creating..
+                  </button>
                 </div>
 
               </div>  
@@ -53,15 +56,15 @@
               <tr ng-repeat="eachQ in queueList">
                 <td>
 
-                  <div class="queue-content-wrap">
+                  <div class="queue-content-wrap" ng-click="openQueueDetails(eachQ)">
                     <div class="flex-general-row-wrapper">
                       <div class="queue-logo">
                         <img src="assets/images/cloudqueue.png" style="width:50px;height:50px;">
                       </div>
                       <div class="queue-content">
                         <div class="queue-data-wrap">
-                          <span class="queue-data" style="font-size:14px; font-weight:500 !important; color:black !important;">Queue Name</span>
-                          <span class="queue-data" style="font-weight:400 !important; color:black !important;">(Push)</span>
+                          <span class="queue-data" style="font-size:14px; font-weight:500 !important; color:black !important;">{{eachQ.name}}</span>
+                          <span class="queue-data" style="font-weight:400 !important; color:black !important;">({{eachQ.type}})</span>
                         </div>
 
                         <div class="queue-acl-wrap" style="padding-top:3px;">
@@ -88,7 +91,7 @@
 
                             <!--Time-->
                             <div style="margin-top:2px;">
-                              <span style="font-size:12px; font-style: italic;margin-left:3px;color:#ABACAD !important;">@ Jan,2015 12:30 PM</span>
+                              <span style="font-size:12px; font-style: italic;margin-left:3px;color:#ABACAD !important;">@ {{eachQ.createdAt}}</span>
                             </div>  
                             <!--Time-->
                           </div>                         
@@ -97,23 +100,15 @@
                          
                       </div>
                       <div class="queue-settings" style="position:relative;">
-                        <span class="settingsqueuefun" ng-click="queueSettings[$index]=!queueSettings[$index]">
+                        <span class="settingsqueuefun" ng-click="openQueueSettings($index); $event.stopPropagation()">
                           <i class="icon ion-android-more-vertical" style="font-size:24px !important;color:#999B9B !important;"></i>
                         </span> 
 
                         <!--Settings popup-->
                         <div class="queuesetting-popup settingsqueuefun" ng-show="queueSettings[$index]" click-outside="closeQueueSettings($index)" outside-if-not="settingsqueuefun">
-                          <div style="">
+                          <div style="">                          
 
-                            <div class="flex-general-row-wrapper setting-menu-item" style="padding-left:7px;padding-top:3px;">
-                              <div>
-                              </div> 
-                              <div>
-                                Edit
-                              </div> 
-                            </div> 
-
-                            <div class="flex-general-row-wrapper setting-menu-item" style="padding-left:7px;padding-top:3px;">
+                            <div ng-click="deleteQueue(eachQ); $event.stopPropagation()" class="flex-general-row-wrapper setting-menu-item" style="padding-left:7px;padding-top:3px;">
                               <div>
                               </div> 
                               <div>
@@ -121,7 +116,7 @@
                               </div> 
                             </div>
 
-                            <div class="flex-general-row-wrapper setting-menu-item" style="padding-left:7px;padding-top:3px;">
+                            <div ng-click="editQueueACL(eachQ); $event.stopPropagation()" class="flex-general-row-wrapper setting-menu-item" style="padding-left:7px;padding-top:3px;">
                               <div>
                               </div> 
                               <div>
@@ -150,7 +145,7 @@
     <!--/Queues List--> 
 
     <!--Queue Details-->
-    <div class="col-sm-12 col-md-7 col-lg-7" style="background-color:white;">
+    <div ng-show="activeQueue.length>0" class="col-sm-12 col-md-7 col-lg-7" style="background-color:white;">
 
       <div class="col-sm-12 col-md-6 col-lg-6" style="margin-top:20px;">
         <div class="col-sm-12 col-md-12 col-lg-12"   style="background-color:#4892F9;color:white;">
@@ -208,7 +203,7 @@
                 </thead>
 
                 <tbody class="queue-msg-tbody">
-                  <tr class="queue-tbody-row">
+                  <tr ng-repeat="eachItem in cacheItemsList" class="queue-tbody-row">
                     <td class="queue-tbody-col" width="7%">1</td> 
                     <td class="queue-tbody-col" width="33%">Jsdhghsdg</td> 
                     <td class="queue-tbody-col table-TxtAlign-center" width="16%">2300</td> 
@@ -334,4 +329,8 @@
 </div><!-- /.modal -->   
 <!--/Add New Msg modal-->
   
-  
+<!--ACL Directive -->
+<div class="modal fade colored-header danger" id="md-queueaclviewer" tabindex="-1" role="dialog">
+  <cb-acl save="saveQueueACL(cbaclobject)"></cb-acl>
+</div> 
+<!--/ACL Directive -->  
