@@ -2238,7 +2238,7 @@ function getProjectTableByName(tableDefName){
 }  
 
 function initCbApp(){
-  CB.CloudApp.init($rootScope.currentProject.appId,$rootScope.currentProject.keys.master);    
+  CB.CloudApp.init(SERVER_URL,$rootScope.currentProject.appId,$rootScope.currentProject.keys.master);    
 }
 
 $scope.addMoreRecords=function(){  

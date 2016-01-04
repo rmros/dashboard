@@ -276,7 +276,7 @@ app.controller('appsController',
   function addDefaultTables(project){
     var q=$q.defer();
 
-      CB.CloudApp.init(project.appId, project.keys.master);
+      CB.CloudApp.init(SERVER_URL,project.appId, project.keys.master);
 
       var roleTable = new CB.CloudTable("Role"); 
 

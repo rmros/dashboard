@@ -4,7 +4,7 @@ app.factory('queueService', ['$q','$http','$rootScope',function ($q,$http,$rootS
 
     global.getBeacon = function(){
         var q=$q.defer();
-        $http.get(serverURL+'/beacon/get').
+        $http.get(frontendServerURL+'/beacon/get').
           success(function(data, status, headers, config) {
               q.resolve(data);
           }).
@@ -20,7 +20,7 @@ app.factory('queueService', ['$q','$http','$rootScope',function ($q,$http,$rootS
 
     global.updateBeacon = function(beaconObj){
         var q=$q.defer();
-        $http.post(serverURL+'/beacon/update',beaconObj).
+        $http.post(frontendServerURL+'/beacon/update',beaconObj).
         success(function(data, status, headers, config) {
             q.resolve(data);
         }).

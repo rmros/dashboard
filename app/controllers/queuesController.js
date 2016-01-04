@@ -83,7 +83,7 @@ queueService){
   }
 
   function initCB(){
-    CB.CloudApp.init($rootScope.currentProject.appId, $rootScope.currentProject.keys.master);
+    CB.CloudApp.init(SERVER_URL,$rootScope.currentProject.appId, $rootScope.currentProject.keys.master);
   }    				
 		
 }]);

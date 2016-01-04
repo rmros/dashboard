@@ -5,7 +5,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
     global.projectList = function(){
       var q=$q.defer();
 
-      $http.get(serverURL+'/app').
+      $http.get(frontendServerURL+'/app').
       success(function(data, status, headers, config) {
         q.resolve(data);
       }).
@@ -21,7 +21,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
     global.createProject = function(name,appId){
         var q=$q.defer();
-        $http.post(serverURL+'/app/create', {name:name,appId:appId}).
+        $http.post(frontendServerURL+'/app/create', {name:name,appId:appId}).
          success(function(data, status, headers, config) {
            q.resolve(data);
 
@@ -48,7 +48,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
     global.deleteProject = function(appId){
         var q=$q.defer();
-        $http.delete(serverURL+'/app/'+appId).
+        $http.delete(frontendServerURL+'/app/'+appId).
         success(function(data, status, headers, config) {
             if(status===200)
               q.resolve(status);
@@ -75,7 +75,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
     global.editProject = function(id,name){
         var q=$q.defer();
-        $http.put(serverURL+'/app/'+id, {name:name}).
+        $http.put(frontendServerURL+'/app/'+id, {name:name}).
         success(function(data, status, headers, config) {
           q.resolve(data);
         }).
@@ -91,7 +91,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
      global.getProject = function(id){
         var q=$q.defer();
-        $http.get(serverURL+'/app/'+id).
+        $http.get(frontendServerURL+'/app/'+id).
         success(function(data, status, headers, config) {
               q.resolve(data);
         }).
