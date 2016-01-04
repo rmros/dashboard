@@ -310,8 +310,19 @@ app.controller('appsController',
           }
         }
         $scope.selectedProject.developers.splice(userIndexInApp,1);
-      }          
-      //$('#developersModal').modal('hide');
+      }  
+
+      //Find Atleast one admin
+      var atleastOneAdmin=_.find($scope.selectedProject.developers, function(eachObj){ 
+        if(eachObj.role=="Admin"){ 
+          return;          
+        }
+      });
+
+      if($scope.selectedProject.developers.length==0 || !atleastOneAdmin){
+        $('#developersModal').modal('hide');
+      }        
+      
       $scope.removeDevIndex=null;
       $scope.removeDevUser=null;
       
@@ -519,7 +530,7 @@ app.controller('appsController',
   function addDefaultTables(project){
     var q=$q.defer();
 
-      CB.CloudApp.init(project.appId, project.keys.master);
+      CB.CloudApp.init(SERVER_URL,project.appId, project.keys.master);
 
       var roleTable = new CB.CloudTable("Role"); 
 

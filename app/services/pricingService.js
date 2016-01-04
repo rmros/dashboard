@@ -14,10 +14,7 @@ app.factory('pricingService', ['$q','$http','$rootScope',function ($q,$http,$roo
     });
 
     return  q.promise;
-  }; 
-
-          
-      
+  };       
    
   return global;
 

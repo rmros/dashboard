@@ -186,23 +186,22 @@ tableService){
   }
 
   function getProjectTables(){
-  var promises=[];  
+    var promises=[];  
 
-  if(!$rootScope.currentProject.tables || $rootScope.currentProject.tables.length==0){    
-    promises.push(tableService.getProjectTables());     
-  }  
+    if(!$rootScope.currentProject.tables || $rootScope.currentProject.tables.length==0){    
+      promises.push(tableService.getProjectTables());     
+    }  
 
-  $q.all(promises).then(function(list){
-    if(list.length==1){      
-      $rootScope.currentProject.tables=list[0];           
-    }
-  }, function(err){      
-  });
-
-}
+    $q.all(promises).then(function(list){
+      if(list.length==1){      
+        $rootScope.currentProject.tables=list[0];           
+      }
+    }, function(err){      
+    });
+  }
 
   function initCB(){
-    CB.CloudApp.init($rootScope.currentProject.appId, $rootScope.currentProject.keys.master);
+    CB.CloudApp.init(SERVER_URL,$rootScope.currentProject.appId, $rootScope.currentProject.keys.master);
   }
 
   function errorNotify(errorMsg){
@@ -242,3 +241,4 @@ tableService){
   }           
     
 }]);
+

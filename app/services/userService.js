@@ -5,7 +5,7 @@ angular.module('CloudBoostDashboard')
 
     global.signUp=function(name,email,password,isAdmin){
       var q=$q.defer();
-      $http.post(serverURL+'/user/signup', {name:name,email:email,password:password,isAdmin:isAdmin}).
+      $http.post(frontendServerURL+'/user/signup', {name:name,email:email,password:password,isAdmin:isAdmin}).
         success(function(data, status, headers, config) {
               q.resolve(data);
 
@@ -31,7 +31,7 @@ angular.module('CloudBoostDashboard')
      global.logOut = function(){
         var q=$q.defer();
 
-        $http.post(serverURL+'/user/logout').
+        $http.post(frontendServerURL+'/user/logout').
          success(function(data, status, headers, config) {
             q.resolve(data);
          }).
@@ -46,7 +46,7 @@ angular.module('CloudBoostDashboard')
       global.getUserInfo = function(){
         var q=$q.defer();       
 
-        $http.get(serverURL+'/user').
+        $http.get(frontendServerURL+'/user').
          success(function(data, status, headers, config) {
             q.resolve(data);
          }).
@@ -60,7 +60,7 @@ angular.module('CloudBoostDashboard')
       global.getUserBySkipLimit = function(skip,limit,skipUserIds){
         var q=$q.defer();       
 
-        $http.put(serverURL+'/user/list/'+skip+'/'+limit,{skipUserIds:skipUserIds}).
+        $http.put(frontendServerURL+'/user/list/'+skip+'/'+limit,{skipUserIds:skipUserIds}).
          success(function(data, status, headers, config) {
             q.resolve(data);
          }).
@@ -74,7 +74,7 @@ angular.module('CloudBoostDashboard')
       global.updateUserActive = function(userId,isActive){
         var q=$q.defer();       
 
-        $http.get(serverURL+'/user/active/'+userId+'/'+isActive).
+        $http.get(frontendServerURL+'/user/active/'+userId+'/'+isActive).
          success(function(data, status, headers, config) {
             q.resolve(data);
          }).
@@ -88,7 +88,7 @@ angular.module('CloudBoostDashboard')
        global.updateUserRole = function(userId,isAdmin){
             var q=$q.defer();       
 
-            $http.get(serverURL+'/user/changerole/'+userId+'/'+isAdmin).
+            $http.get(frontendServerURL+'/user/changerole/'+userId+'/'+isAdmin).
              success(function(data, status, headers, config) {
                 q.resolve(data);
              }).
@@ -102,7 +102,7 @@ angular.module('CloudBoostDashboard')
 
         global.searchDevelopers = function(keyword){
             var q=$q.defer();
-            $http.post(serverURL+'/user/list/bykeyword', {keyword:keyword}).
+            $http.post(frontendServerURL+'/user/list/bykeyword', {keyword:keyword}).
              success(function(data, status, headers, config) {
                q.resolve(data);
              }).
@@ -122,7 +122,7 @@ angular.module('CloudBoostDashboard')
 
         global.deleteUser = function(userId){
             var q=$q.defer();
-            $http.delete(serverURL+'/user/'+userId).
+            $http.delete(frontendServerURL+'/user/'+userId).
             success(function(data, status, headers, config) { 
                 q.resolve(status);                 
             }).
@@ -138,7 +138,7 @@ angular.module('CloudBoostDashboard')
 
         global.getUserByIdByAdmin = function(email){
             var q=$q.defer();
-            $http.post(serverURL+'/user/byadmin',{email:email}).
+            $http.post(frontendServerURL+'/user/byadmin',{email:email}).
             success(function(data, status, headers, config) { 
                 q.resolve(data);                 
             }).
@@ -160,7 +160,7 @@ angular.module('CloudBoostDashboard')
         newData.oldPassword=oldPassword;
         newData.newPassword=newPassword;
         
-        $http.post(serverURL+'/user/update',newData).
+        $http.post(frontendServerURL+'/user/update',newData).
          success(function(data, status, headers, config) {
             q.resolve(data);
          }).
@@ -177,7 +177,7 @@ angular.module('CloudBoostDashboard')
         var fd = new FormData();
         fd.append('file', file);
 
-        $http.post(serverURL+'/file',fd,{
+        $http.post(frontendServerURL+'/file',fd,{
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
         }).
@@ -195,7 +195,7 @@ angular.module('CloudBoostDashboard')
       global.deleteFileById = function(fileId){
         var q=$q.defer();       
 
-        $http.delete(serverURL+'/file/'+fileId).
+        $http.delete(frontendServerURL+'/file/'+fileId).
          success(function(data, status, headers, config) {
             q.resolve(data);
          }).
@@ -209,7 +209,7 @@ angular.module('CloudBoostDashboard')
        global.getUserListByIds = function(IdArray){
         var q=$q.defer();       
 
-        $http.post(serverURL+'/user/list',{IdArray:IdArray}).
+        $http.post(frontendServerURL+'/user/list',{IdArray:IdArray}).
          success(function(data, status, headers, config) {
             q.resolve(data);
          }).

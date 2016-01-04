@@ -5,7 +5,7 @@ app.factory('invoiceService', ['$q','$http','$rootScope',function ($q,$http,$roo
       global.getinvoiceSettings = function(appId){
          var q=$q.defer();
 
-         $http.get(serverURL+'/'+appId+'/invoice/settings').
+         $http.get(frontendServerURL+'/'+appId+'/invoice/settings').
            success(function(data, status, headers, config) {
                 q.resolve(data);
            }).
@@ -23,7 +23,7 @@ app.factory('invoiceService', ['$q','$http','$rootScope',function ($q,$http,$roo
       global.getinvoice = function(appId){
          var q=$q.defer();
 
-          $http.get(serverURL+'/'+appId+'/invoice').
+          $http.get(frontendServerURL+'/'+appId+'/invoice').
           success(function(data, status, headers, config) {
               q.resolve(data);
           }).
@@ -40,7 +40,7 @@ app.factory('invoiceService', ['$q','$http','$rootScope',function ($q,$http,$roo
       global.addOrRemoveSpendingLimit = function(appId,spendingLimit){
         var q=$q.defer();
 
-          $http.put(serverURL+'/'+appId+'/invoice/settings', {spendingLimit:spendingLimit}).
+          $http.put(frontendServerURL+'/'+appId+'/invoice/settings', {spendingLimit:spendingLimit}).
            success(function(data, status, headers, config) {
               q.resolve(data);
           }).

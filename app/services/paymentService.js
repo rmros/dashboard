@@ -4,7 +4,7 @@ app.factory('paymentService', ['$q','$http','$rootScope',function ($q,$http,$roo
       global.getCrediCardInfo = function(){
         var q=$q.defer();
 
-         $http.get(serverURL+'/user/card').
+         $http.get(frontendServerURL+'/user/card').
            success(function(data, status, headers, config) {
               q.resolve(data);
            }).
@@ -34,7 +34,7 @@ app.factory('paymentService', ['$q','$http','$rootScope',function ($q,$http,$roo
                 }
                   
                 //Hit Server
-                $http.put(serverURL+'/user/card',serverObj).
+                $http.put(frontendServerURL+'/user/card',serverObj).
                  success(function(data, status, headers, config) {                  
                     q.resolve(data);
 

@@ -5,7 +5,7 @@ app.factory('projectDetailsService', ['$q','$http','$rootScope',function ($q,$ht
     global.getProjectSettings = function(appId){
          var q=$q.defer();
 
-         $http.get(serverURL+'/app/'+appId+'/details').
+         $http.get(frontendServerURL+'/app/'+appId+'/details').
            success(function(data, status, headers, config) {
                  q.resolve(data);
            }).
@@ -22,7 +22,7 @@ app.factory('projectDetailsService', ['$q','$http','$rootScope',function ($q,$ht
 
     global.saveSettings = function(data){
        var q=$q.defer();
-       $http.put(serverURL+'/app/'+data.appId+'/details',data).
+       $http.put(frontendServerURL+'/app/'+data.appId+'/details',data).
          success(function(data, status, headers, config) {
                q.resolve(data);
 

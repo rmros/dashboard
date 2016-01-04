@@ -1,10 +1,9 @@
 app.factory('queueService', ['$q','$http','$rootScope',function ($q,$http,$rootScope) {
 
-    var global = {};    
+    var global = {};  
 
     global.createQueue = function(name,type){
       var q=$q.defer();
-
       var queue = new CB.CloudQueue(name);
       queue.create({
           success : function(queueObject){

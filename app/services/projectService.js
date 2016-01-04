@@ -5,7 +5,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
     global.projectList = function(){
       var q=$q.defer();
 
-      $http.get(serverURL+'/app').
+      $http.get(frontendServerURL+'/app').
       success(function(data, status, headers, config) {
         q.resolve(data);
       }).
@@ -21,7 +21,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
     global.createProject = function(name,appId){
         var q=$q.defer();
-        $http.post(serverURL+'/app/create', {name:name,appId:appId}).
+        $http.post(frontendServerURL+'/app/create', {name:name,appId:appId}).
          success(function(data, status, headers, config) {
            q.resolve(data);
 
@@ -48,7 +48,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
     global.deleteProject = function(appId){
         var q=$q.defer();
-        $http.delete(serverURL+'/app/'+appId).
+        $http.delete(frontendServerURL+'/app/'+appId).
         success(function(data, status, headers, config) {
             if(status===200)
               q.resolve(status);
@@ -75,7 +75,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
     global.removeDeveloperFromProject = function(appId,userId){
         var q=$q.defer();
-        $http.delete(serverURL+'/app/'+appId+'/removedeveloper/'+userId).
+        $http.delete(frontendServerURL+'/app/'+appId+'/removedeveloper/'+userId).
         success(function(data, status, headers, config) {
           if(status===200)
             q.resolve(data);
@@ -94,7 +94,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
     global.removeUserFromInvited = function(appId,email){
         var q=$q.defer();
-        $http.post(serverURL+'/app/'+appId+'/removeinvitee',{email:email}).
+        $http.post(frontendServerURL+'/app/'+appId+'/removeinvitee',{email:email}).
         success(function(data, status, headers, config) {
           if(status===200)
             q.resolve(data);
@@ -114,7 +114,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
     global.editProject = function(id,name){
         var q=$q.defer();
-        $http.put(serverURL+'/app/'+id, {name:name}).
+        $http.put(frontendServerURL+'/app/'+id, {name:name}).
         success(function(data, status, headers, config) {
           q.resolve(data);
         }).
@@ -130,7 +130,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
     global.changeAppMasterKey = function(id){
       var q=$q.defer();
-      $http.get(serverURL+'/app/'+id+'/change/masterkey').
+      $http.get(frontendServerURL+'/app/'+id+'/change/masterkey').
       success(function(data, status, headers, config) {
         q.resolve(data);
       }).
@@ -146,7 +146,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
      global.changeAppClientKey = function(id){
       var q=$q.defer();
-      $http.get(serverURL+'/app/'+id+'/change/clientkey').
+      $http.get(frontendServerURL+'/app/'+id+'/change/clientkey').
       success(function(data, status, headers, config) {
         q.resolve(data);
       }).
@@ -162,7 +162,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
       global.getProject = function(id){
         var q=$q.defer();
-        $http.get(serverURL+'/app/'+id).
+        $http.get(frontendServerURL+'/app/'+id).
         success(function(data, status, headers, config) {
               q.resolve(data);
         }).
@@ -177,7 +177,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
       global.inviteUser = function(appId,email){
         var q=$q.defer();
-        $http.post(serverURL+'/app/'+appId+'/invite',{email:email}).
+        $http.post(frontendServerURL+'/app/'+appId+'/invite',{email:email}).
         success(function(data, status, headers, config) {
           q.resolve(data);
         }).
@@ -192,7 +192,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
       global.addDeveloper = function(appId,email){
         var q=$q.defer();
-        $http.get(serverURL+'/app/'+appId+'/adddeveloper/'+email).
+        $http.get(frontendServerURL+'/app/'+appId+'/adddeveloper/'+email).
         success(function(data, status, headers, config) {
           q.resolve(data);
         }).
@@ -207,7 +207,7 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
       global.changeDeveloperRole = function(appId,userId,role){
         var q=$q.defer();
-        $http.post(serverURL+'/app/changerole',{appId:appId,userId:userId,role:role}).
+        $http.post(frontendServerURL+'/app/changerole',{appId:appId,userId:userId,role:role}).
         success(function(data, status, headers, config) {
           q.resolve(data);
         }).

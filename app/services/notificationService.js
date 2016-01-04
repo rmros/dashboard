@@ -4,7 +4,7 @@ app.factory('notificationService', ['$q','$http','$rootScope',function ($q,$http
 
     global.getNotifications = function(skip,limit){
       var q=$q.defer();
-      $http.get(serverURL+'/notification/'+skip+'/'+limit).
+      $http.get(frontendServerURL+'/notification/'+skip+'/'+limit).
       success(function(data, status, headers, config) {
         q.resolve(data);
       }).
@@ -20,7 +20,7 @@ app.factory('notificationService', ['$q','$http','$rootScope',function ($q,$http
 
     global.updateNotificationsSeen = function(){
       var q=$q.defer();
-      $http.get(serverURL+'/notification/seen').
+      $http.get(frontendServerURL+'/notification/seen').
       success(function(data, status, headers, config) {
         q.resolve(data);
       }).

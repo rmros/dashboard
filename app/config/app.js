@@ -27,24 +27,27 @@ var app=angular.module('CloudBoostDashboard',
 
 app.value('THROTTLE_MILLISECONDS', 1250);
 
-var serverURL = null; 
+var frontendServerURL = null; 
 var landingURL = null;
 var analyticsURL = null;
+var SERVER_URL=null;
+
 if(__isVM){
-	serverURL = window.location.host + ":3000";
+	frontendServerURL = window.location.host + ":3000";
 	landingURL = "https://www.cloudboost.io";
 	CB.serverUrl = window.location.host + ":4730";
 	CB.apiUrl = CB.serverUrl;
 }else{
 	if(__isDevelopment){
-	    serverURL="http://localhost:3000";
+        SERVER_URL="http://localhost:4730";
+	    frontendServerURL="http://localhost:3000";
 	    landingURL = "http://localhost:1444";
         analyticsURL="http://localhost:5555";
 	    CB.serverUrl ='http://localhost:4730';
 	    CB.apiUrl = CB.serverUrl;
-        CB.serviceUrl=serverURL;
+        CB.serviceUrl=frontendServerURL;
 	}else{
-	    serverURL = "https://service.cloudboost.io";
+	    frontendServerURL = "https://service.cloudboost.io";
 	    landingURL = "https://www.cloudboost.io";
 	}
 }
