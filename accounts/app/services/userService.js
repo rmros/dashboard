@@ -3,25 +3,25 @@ app.service('userService', function($q,$http){
 
     this.signUp=function(name,email,password,isAdmin){
       var q=$q.defer();
-      $http.post(serverURL+'/user/signup', {name:name,email:email,password:password,isAdmin:isAdmin}).
+      $http.post(frontendServerURL+'/user/signup', {name:name,email:email,password:password,isAdmin:isAdmin}).
         success(function(data, status, headers, config) {
-              q.resolve(data);
+          q.resolve(data);
 
-              if(!__isDevelopment){
-                /****Tracking*********/                
-                 mixpanel.alias(data._id);
+          if(!__isDevelopment){
+            /****Tracking*********/                
+             mixpanel.alias(data._id);
 
-                 mixpanel.people.set({ "Name": data.name,"$email": data.email});
-                 //mixpanel.identify(data._id);
+             mixpanel.people.set({ "Name": data.name,"$email": data.email});
+             //mixpanel.identify(data._id);
 
-                 mixpanel.register({ "Name": data.name,"Email": data.email});
-                 mixpanel.track('Signup', { "Name": data.name,"Email": data.email});
-                /****End of Tracking*****/
-              }
+             mixpanel.register({ "Name": data.name,"Email": data.email});
+             mixpanel.track('Signup', { "Name": data.name,"Email": data.email});
+            /****End of Tracking*****/
+          }
               
         }).
         error(function(data, status, headers, config) {
-              q.reject(data);
+          q.reject(data);
         });
       return q.promise;
     }
@@ -29,7 +29,7 @@ app.service('userService', function($q,$http){
     this.logIn=function(email,password){
        var q=$q.defer();
 
-       $http.post(serverURL+'/user/signin', {email:email,password:password}).
+       $http.post(frontendServerURL+'/user/signin', {email:email,password:password}).
          success(function(data, status, headers, config) {          
            q.resolve(data);
 
@@ -52,7 +52,7 @@ app.service('userService', function($q,$http){
    this.requestResetPassword = function(email){
       var q=$q.defer();
 
-       $http.post(serverURL+'/user/ResetPassword', {email:email}).
+       $http.post(frontendServerURL+'/user/ResetPassword', {email:email}).
          success(function(data, status, headers, config) {
            q.resolve();
          }).
@@ -71,7 +71,7 @@ app.service('userService', function($q,$http){
         return q.promise;
       }
 
-      $http.post(serverURL+'/user/updatePassword', {code:code, password:newPass}).
+      $http.post(frontendServerURL+'/user/updatePassword', {code:code, password:newPass}).
       success(function(data, status, headers, config) {
           q.resolve();
       }).
@@ -86,7 +86,7 @@ app.service('userService', function($q,$http){
   this.activate=function(code){
     var q=$q.defer();
 
-    $http.post(serverURL+'/user/activate', {code:code}).
+    $http.post(frontendServerURL+'/user/activate', {code:code}).
     success(function(data, status, headers, config) {     
       q.resolve(data);
     }).
@@ -100,7 +100,7 @@ app.service('userService', function($q,$http){
   this.resendVerificationEmail=function(email){
     var q=$q.defer();
 
-    $http.post(serverURL+'/user/resendverification', {email:email}).
+    $http.post(frontendServerURL+'/user/resendverification', {email:email}).
     success(function(data, status, headers, config) {     
       q.resolve(data);
     }).
@@ -112,29 +112,31 @@ app.service('userService', function($q,$http){
   }
 
   this.facebookSignUp=function(){
-      var q=$q.defer();
+    var q=$q.defer();
 
-      $http.get(serverURL+'/auth/facebook').
-        success(function(data, status, headers, config) {
-              q.resolve(data);
-        }).
-        error(function(data, status, headers, config) {
-              q.reject(data);
-        });
-      return q.promise;
+    $http.get(frontendServerURL+'/auth/facebook').
+    success(function(data, status, headers, config) {
+          q.resolve(data);
+    }).
+    error(function(data, status, headers, config) {
+          q.reject(data);
+    });
+
+    return q.promise;
   }
 
   this.googleSignUp=function(){
-     var q=$q.defer();
+    var q=$q.defer();
 
-     $http.get(serverURL+'/auth/google').
-       success(function(data, status, headers, config) {
-             q.resolve(data);
-       }).
-       error(function(data, status, headers, config) {
-             q.reject(data);
-       });
-     return q.promise;
+    $http.get(frontendServerURL+'/auth/google').
+    success(function(data, status, headers, config) {
+         q.resolve(data);
+    }).
+    error(function(data, status, headers, config) {
+         q.reject(data);
+    });
+
+    return q.promise;
  }
 
 });

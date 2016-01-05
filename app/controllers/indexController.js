@@ -123,7 +123,7 @@ app.controller('indexController',
       $rootScope.notifications.splice(notificationIndex,1);
 
       if($rootScope.notifications.length==0){
-        $(".notifytoggle").hide();
+        $(".notify-menu-anchor").click();
       }
 
       if(project && project.appId){
@@ -133,7 +133,7 @@ app.controller('indexController',
 
     }, function(error){  
       if($rootScope.notifications.length==0){
-        $(".notifytoggle").hide();
+        $(".notify-menu-anchor").click();
       }
       $scope.acceptInvitationSpinner[index]=false;              
     });
@@ -147,7 +147,7 @@ app.controller('indexController',
       var notificationIndex=$rootScope.notifications.indexOf(notifyObject);
       $rootScope.notifications.splice(notificationIndex,1); 
       if($rootScope.notifications.length==0){
-        $(".notifytoggle").hide();
+        $(".notify-menu-anchor").click();
       }  
       $scope.declineInvitationSpinner[index]=false;                        
     },function(error){ 

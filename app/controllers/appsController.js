@@ -336,11 +336,27 @@ app.controller('appsController',
   };
 
   $scope.changeDeveloperRole=function(index,requestedUser){
-     $scope.appDevSpinner[index]=true;
+    $scope.appDevSpinner[index]=true;
 
     projectService.changeDeveloperRole($scope.selectedProject.appId,requestedUser._id,requestedUser.role)
     .then(function(data){      
-      $scope.appDevSpinner[index]=false;                     
+      $scope.appDevSpinner[index]=false; 
+
+      //Change Role to user if the same user
+      if(requestedUser._id==$rootScope.user._id && requestedUser.role=="User"){
+        $('#developersModal').modal('hide');
+        var effectedProj=_.first(_.where($scope.projectListObj, {appId:$scope.selectedProject.appId}));
+        var effectedIndex=$scope.projectListObj.indexOf(effectedProj);
+
+        for(var i=0;i<effectedProj.developers.length;++i){
+          if(effectedProj.developers[i].userId==$rootScope.user._id){
+            effectedProj.developers[i].role="User";
+          }
+        }
+
+        $scope.projectListObj[effectedIndex]=effectedProj;
+      }     
+
     },function(error){
       $scope.appDevSpinner[index]=false;     
       errorNotify(error);
