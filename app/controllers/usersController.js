@@ -102,10 +102,17 @@ cloudboostServerService){
       $scope.updatingUser[index]=true; 
       userService.updateUserRole(userId,isAdmin)
       .then(function(user){       
-         $scope.updatingUser[index]=false;  
+        $scope.updatingUser[index]=false;  
       },function(error){
         errorNotify(error);
-        $scope.updatingUser[index]=false;               
+        $scope.updatingUser[index]=false;
+
+        if(isAdmin==true){
+          $scope.usersList[index].isAdmin="false";
+        }else{
+          $scope.usersList[index].isAdmin="true";
+        }
+
       });
     }else{
       errorNotify("You can't perfom this action on yourself!");
@@ -153,6 +160,17 @@ cloudboostServerService){
     .then(function(serverSettings){ 
       $scope.serverSettings=serverSettings;         
     },function(error){   
+      errorNotify(error);                  
+    });
+  };
+
+  $scope.upsertAPI_URL=function() {
+    $scope.upsertAPISpinner=true;    
+    cloudboostServerService.upsertAPI_URL($scope.serverSettings.myURL)
+    .then(function(serverSettings){ 
+      $scope.upsertAPISpinner=false;        
+    },function(error){   
+      $scope.upsertAPISpinner=false;
       errorNotify(error);                  
     });
   };

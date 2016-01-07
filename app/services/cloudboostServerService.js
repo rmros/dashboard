@@ -27,4 +27,17 @@ app.service('cloudboostServerService', function($q,$http){
     return q.promise;
   }
 
+  this.upsertAPI_URL=function(apiURL){
+    var q=$q.defer();
+
+    $http.post(frontendServerURL+'/cloudboost/url',{apiURL:apiURL}).
+      success(function(data, status, headers, config) {
+        q.resolve(data);
+      }).
+      error(function(data, status, headers, config) {
+        q.reject(data);
+      });
+    return q.promise;
+  }
+
 });

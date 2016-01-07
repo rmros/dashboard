@@ -1,3 +1,9 @@
+.admin-users-page{
+	height: 89.3vh;
+	width: 94.6vw;
+	overflow: auto;
+}
+
 .users-table{
 	border-collapse:collapse !important;
 }
@@ -30,4 +36,21 @@
 
 .userDisabled{
 	background-color: #D4D5D6;
+}
+.apiurl-txt{
+	padding-left: 5px;
+}
+.apiurl-txt:focus{
+	outline: none;
+}
+
+.apiurladd-btn{
+	height: 30px;
+	border:none;
+	background-color:#5592FC;
+	color:white;
+	border-radius: 2px;
+}
+.apiurladd-btn:focus{
+	outline: none;
 }

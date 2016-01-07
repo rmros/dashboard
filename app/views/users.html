@@ -1,8 +1,54 @@
   
-<div class="cl-mcont" ng-init="init()">
+<div class="cl-mcont admin-users-page" ng-init="init()">
   <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
-      <div class="" style="height:70px;width:100%;background-color:white;padding:5px;">
+      <div class="" style="height:115px;width:100%;background-color:white;padding:5px;">
+
+        <div class="cf" style="padding-top:14px;padding-left:10px;">
+
+          <div class="pull-left" style="margin-left: 7px;margin-top:2px;">
+            <p style="color:gray;font-size:18px;">API URL</p>
+          </div>       
+          
+          <div class="pull-left" style="margin-left: 7px;margin-top:4px;">
+            <input type="text" class="apiurl-txt" ng-model="serverSettings.myURL" placeholder="Enter API URL" style="height:30px;margin-top:-3px;width:500px !important;border:1px solid #E3E3E3;">
+          </div>
+
+          <div class="pull-left" style="margin-left: 7px;margin-top:1px;">
+            <!--If URL is not there-->
+            <div ng-show="!serverSettings.myURL">
+              <button class="apiurladd-btn" ng-show="!upsertAPISpinner" ng-click="upsertAPI_URL()">Add</button>
+              <button class="apiurladd-btn" ng-show="upsertAPISpinner">
+                <i class="fa fa-spinner fa-spin"></i>&nbsp;Adding
+              </button>
+            </div>
+            <!--If URL is there-->
+            <div ng-show="serverSettings.myURL">
+              <button class="apiurladd-btn" ng-show="!upsertAPISpinner" ng-click="upsertAPI_URL()">Change</button>
+              <button class="apiurladd-btn" ng-show="upsertAPISpinner">
+                <i class="fa fa-spinner fa-spin"></i>&nbsp;Updating
+              </button>
+            </div>
+            
+          </div>
+
+        </div>       
+
+        <div class="cf" style="margin-left:87px;">
+          <div style="width:500px;">
+           <span style="font-weight:700;color:red;">NOTE:</span>
+           <span style="color:red;">If you ever change the API URL, you have to restart all the instances in the cloudboost cluster.</span>
+          </div>
+        </div>
+
+      </div>  
+    </div>
+  </div> 
+
+
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <div class="" style="height:70px;width:100%;background-color:white;padding:5px;">      
 
         <div class="cf" style="padding-top:7px;padding-left:10px;">
 
@@ -10,7 +56,7 @@
             <switch  ng-model="serverSettings.allowSignUp" class="green switch" ng-change="toggleAllowSignUp()"></switch>
           </div>
 
-          <div class="pull-left" style="margin-left: 7px;margin-top: -10px;">
+          <div class="pull-left" style="margin-left: 16px;margin-top: -10px;">
             <h3 style="color:gray;">Allow people to signup?</h3>
           </div>
 
@@ -29,8 +75,8 @@
         </div>-->
 
       </div>  
-    </div>  
-  </div> 
+    </div>
+  </div>
 
   <div class="row">
     <div class="col-sm-12 col-md-4 col-lg-4">

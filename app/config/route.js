@@ -44,7 +44,7 @@ app.config([
         resolve:{
           validate:  function($rootScope) {
             if($rootScope.user && !$rootScope.user.isAdmin){
-              $location.path('/');
+              //$location.path('/');
             }
           }
         }  
