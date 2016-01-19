@@ -12,5 +12,12 @@ var frontendServerURL = null,
          dashboardURL = null;
 
 frontendServerURL = window.location.protocol+"//"+window.location.hostname + ":3000";
-dashboardURL =  window.location.protocol+"//"+window.location.hostname + ":"+window.location.port; 
+
+if(window.location.port){
+	dashboardURL =  window.location.protocol+"//"+window.location.hostname + ":"+window.location.port; 
+}else{
+	dashboardURL =  window.location.protocol+"//"+window.location.hostname; 
+}
+
+
 landingURL = "https://www.cloudboost.io"; 

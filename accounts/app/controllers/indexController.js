@@ -18,8 +18,7 @@ function($scope,$rootScope,$q,$cookies,userService,$location,cloudboostServerSer
 		promises.push(cloudboostServerService.isNewServer());
 		promises.push(cloudboostServerService.getServerSettings());
 
-		$q.all(promises).then(function(list){ 
-
+		$q.all(promises).then(function(list){ 			
 			if(list[0]==true && newPath!="/newServer"){//Speacial case
 		        window.location.href=dashboardURL+"/accounts/#/newServer"
 	     	}else if(newPath=="/newServer" && (!list[0] || list[0]==false)){	     	
