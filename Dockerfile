@@ -21,9 +21,8 @@ RUN npm install
 COPY . /usr/src/app
 
 # Expose ports.
-#   - 80: CloudBoost Dashboard HTTP
-#   - 443: CloudBoost Dashboard HTTPS
-EXPOSE 80, 443
+#   - 80: CloudBoost Dashboard
+EXPOSE 80
 
 #Run the app
 CMD [ "npm", "start" ]
