@@ -436,7 +436,7 @@
    z-index: 2;
    margin-top: 0.5px;   
    overflow: hidden;  
-   height:78.8vh; 
+   height:78.8vh;    
 }
 .fixed-table-wrapper .fixedTopTable{
    width:10vw !important;    
@@ -1978,8 +1978,8 @@
     font-size:15px;
 }
 .table-wrapper{   
-    height: 73vh;
-    overflow: auto;   
+    height: 81.5vh;
+    overflow: auto;     
 }
 .list-file-display{
     position: relative;
@@ -2457,14 +2457,12 @@
 .addborderbottom{
    border-bottom:1px solid gray;
 }
-.table-search-wrap{
-   border:1px solid #bcb4b0;
+.table-search-wrap{   
    height: 35px;
-   margin-top:4px;
-   border-radius: 14px;
+   margin-top:4px;   
    padding-top: 3px;
    padding-left: 5px;
    padding-right: 5px;
    padding-bottom: 3px;
-   background-color: #F0F0F0;
+   background-color: white;
 }

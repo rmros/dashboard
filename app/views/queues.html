@@ -8,15 +8,15 @@
         <!--Create Queue-->
 
         <!--Just Disaply-->
-        <div ng-show="!showCreateQueueBox" class="create-queue-dispplay-wrapper">          
+       <!-- <div ng-show="!showCreateQueueBox" class="create-queue-dispplay-wrapper">          
           <div style="height:100%;width:100%;">
            <input type="text" class="createqueue-display-input createqueuefun" value="Create Queue here" ng-click="openCreateQueueBox()">
           </div>          
-        </div> 
+        </div> -->
         <!--/Just Disaply-->
 
         <!--Open form to create-->
-        <div ng-show="showCreateQueueBox" class="create-queue-open-wrapper createqueuefun" click-outside="closeCreateQueueBox()" outside-if-not="createqueuefun">     
+        <div class="create-queue-open-wrapper createqueuefun">     
           <div class="createqueue-openform">
             <div class="createqueue-open-input-wrap" style="height:33px;width:100%;">
               <input type="text" class="createqueue-open-input" placeholder="Queue Name" ng-model="newQueueName">

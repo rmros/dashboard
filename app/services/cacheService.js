@@ -22,7 +22,7 @@ app.factory('cacheService', ['$q','$http','$rootScope',function ($q,$http,$rootS
     global.upsertItem = function(cache,jsonObj){
       var q=$q.defer();
         
-        cache.put(jsonObj.key,jsonObj.value, {
+        cache.set(jsonObj.key,jsonObj.value, {
           success : function(item){              
             q.resolve(item);
           }, error : function(error){

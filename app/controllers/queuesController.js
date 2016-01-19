@@ -17,7 +17,6 @@ projectService,
 queueService,
 sharedDataService,
 tableService){      
-
   
   var id;
   $rootScope.isFullScreen=false;
@@ -120,7 +119,7 @@ tableService){
     $("#md-addnewmsg").modal();
   };
 
-  $scope.openCreateQueueBox=function(){
+  /*$scope.openCreateQueueBox=function(){
     if($scope.showCreateQueueBox==false){
       $scope.showCreateQueueBox=true;
     }
@@ -130,7 +129,7 @@ tableService){
     if($scope.showCreateQueueBox==true){
       $scope.showCreateQueueBox=false;
     }
-  };  
+  };  */
 
   $scope.openQueueSettings=function(index){
     if(!$scope.queueSettings[index] || $scope.queueSettings[index]==false){

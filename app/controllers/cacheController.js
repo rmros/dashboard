@@ -57,8 +57,13 @@ $timeout){
     }
   };  
 
+  $scope.initCreateCache=function(){
+    $("#md-createcachemodel").modal();
+  };
+
   $scope.createCache=function(){
     if($scope.newCacheName){
+      $scope.cacheModalError=null;
 
       $scope.createCacheSpinner=true;
       cacheService.createCache($scope.newCacheName)
@@ -67,11 +72,15 @@ $timeout){
           $scope.cacheList.push(newCache);
         }
         $scope.createCacheSpinner=false;
-        $scope.newCacheName=null;                             
+        $scope.newCacheName=null;
+        $("#md-createcachemodel").modal("hide");                             
       }, function(error){ 
         $scope.createCacheSpinner=false;
-        errorNotify(error);         
+        $scope.cacheModalError=error;         
       });
+
+    }else{
+      $scope.cacheModalError="Empty Cache name";
     }
   };
 

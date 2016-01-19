@@ -92,7 +92,14 @@ $scope.init = function() {
   //get beacon
   getBeacon();
   //Get FilterTypes
-  $scope.filterTypes=filterService.getFilterTypes();     
+  $scope.filterTypes=filterService.getFilterTypes();
+
+
+  if(!__isDevelopment){
+    /****Tracking*********/            
+     mixpanel.track('Visited databrowser', { "Table name": tableName,"appId": $rootScope.currentProject.appId});
+    /****End of Tracking*****/
+  }     
 }; 
 
 //Invoke Common Type Input enable
@@ -1013,7 +1020,14 @@ $scope.addColumn = function(valid) {
       $scope.commonSaved=true;
       $timeout(function(){ 
         $scope.commonSaved=false;
-      }, 800);                                                 
+      }, 800); 
+
+      if(!__isDevelopment){
+        /****Tracking*********/            
+         mixpanel.track('Create Column', { "Table Name":$rootScope.currentProject.currentTable.name,"Column name": $scope.newColumnObj.name,"appId": $rootScope.currentProject.appId,
+          "DateType":$scope.newColumnObj.dataType});
+        /****End of Tracking*****/
+      }                                               
     },
     function(error){      
       $scope.commonSpinner=false;

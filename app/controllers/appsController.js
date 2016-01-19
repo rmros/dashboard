@@ -123,7 +123,8 @@ app.controller('appsController',
 
   $scope.createProject=function(isValid){        
     $scope.appValidationError=null;
-    if(isValid && $scope.newApp.name && $scope.newApp.appId){
+    if(isValid && $scope.newApp.name){     
+
       $scope.showSaveBtn = false;               
       $scope.appValidationError=null;
       $scope.isAppCreated = false;  
@@ -133,7 +134,7 @@ app.controller('appsController',
         }
       }     
 
-      projectService.createProject($scope.newApp.name, $scope.newApp.appId)     
+      projectService.createProject($scope.newApp.name)     
       .then(function(data){          
           
           //Add default tables

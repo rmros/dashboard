@@ -19,9 +19,9 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
       return  q.promise;
     };
 
-    global.createProject = function(name,appId){
+    global.createProject = function(name){
         var q=$q.defer();
-        $http.post(frontendServerURL+'/app/create', {name:name,appId:appId}).
+        $http.post(frontendServerURL+'/app/create', {name:name}).
          success(function(data, status, headers, config) {
            q.resolve(data);
 

@@ -1,0 +1,267 @@
+<div class="row"> 
+
+    <!--Cache List-->
+    <div class="col-sm-12 col-md-6 col-lg-5">
+      <div class="" style="height:auto;width:100%;">
+        <!--Create Cache-->
+
+        <!--Just Display-->
+        <div class="create-cache-dispplay-wrapper"> 
+
+          <div class="flex-general-row-wrapper" style="height:100%;width:100%;">
+
+            <div style="height:100%;width:80.4%;background-color: white;" class="pull-left">
+              <input type="text" class="createqueue-display-input createcachefun" placeholder="Create New Cache" ng-model="newCacheName">
+            </div>
+
+            <div class="pull-left" style="height:31px;width:94px;margin-top:1px;">
+              <!--Create-->
+              <button type="button" ng-show="!createCacheSpinner" class="create-cache-btn" ng-click="createCache()">Create</button>
+
+              <!--While Saving-->
+              <button type="button" ng-show="createCacheSpinner" class="create-cache-btn"><i class="fa fa-spinner fa-spin"></i>&nbsp;Creating..</button>
+            </div>
+           
+          </div>                    
+        </div> 
+        <!--/Just Display-->       
+
+        <!--/Create Cache--> 
+
+
+        <!--Rolling queue list--> 
+        <div ng-show="!cacheListLoading && !cacheListError" class="rolling-queuelist-wrap">
+          <div style="height:auto;background-color:white;">
+            <table class="queue-list-table table-hover">
+              <tr ng-repeat="eachCache in cacheList" ng-class="{onActive:activeCache[$index]}">
+                <td>
+
+                  <div class="queue-content-wrap" ng-click="openCacheDetails(eachCache)">
+                    <div class="flex-general-row-wrapper">
+                      <div class="queue-logo">
+                        <img src="assets/images/cache2.png" style="width:50px;height:50px;">
+                      </div>
+                      <div class="queue-content">
+                        <div class="queue-data-wrap">
+                          <span class="queue-data" style="font-size:14px; font-weight:500 !important; color:black !important;">{{eachCache.name}}</span>                          
+                        </div>
+
+                        <div class="queue-acl-wrap" style="padding-top:3px;">
+
+                          <div class="flex-general-row-wrapper">                    
+
+                            <!--Time-->
+                            <div style="margin-top:2px;">
+                              <span style="font-size:12px;color:#ABACAD !important;">Size:</span>
+                              <span style="font-size:12px;color:#ABACAD !important;">{{eachCache.size}}</span>
+
+                              <span style="font-size:12px;color:#ABACAD !important;">, items:</span>
+                              <span style="font-size:12px;color:#ABACAD !important;">{{cacheItemCount[$index] || 0}}</span> 
+                              
+                            </div>  
+                            <!--Time-->
+                          </div>                         
+
+                        </div>                        
+                         
+                      </div>
+                      <div class="queue-settings" style="position:relative;">
+                        <span class="settingscachefun" ng-click="cacheSettings[$index]=!cacheSettings[$index]">
+                          <i class="icon ion-android-more-vertical" style="font-size:24px !important;color:#999B9B !important;"></i>
+                        </span> 
+
+                        <!--Settings popup-->
+                        <div class="cachesetting-popup settingscachefun" ng-show="cacheSettings[$index]" click-outside="closeCacheSettings($index)" outside-if-not="settingscachefun">
+                          <div style="">                            
+                            <div ng-click="initDeleteCache(eachCache) ; $event.stopPropagation()" class="flex-general-row-wrapper setting-menu-item" style="padding-left:7px;padding-top:3px;">
+                              <div>
+                              </div> 
+                              <div>
+                                Delete
+                              </div> 
+                            </div>
+
+                            <div ng-click="initClearCache(eachCache); $event.stopPropagation()" class="flex-general-row-wrapper setting-menu-item" style="padding-left:7px;padding-top:3px;">
+                              <div>
+                              </div> 
+                              <div>
+                                Clear Cache
+                              </div> 
+                            </div> 
+                          </div>  
+                        </div>
+                        <!--/Settings popup-->
+
+                      </div>  
+                    </div>  
+                  </div> 
+
+                </td>  
+              </tr> 
+
+
+            </table>  
+          </div>  
+        </div> 
+        <!--/Rolling queue list--> 
+
+        <!--While Loading-->
+         <div ng-show="cacheListLoading || cacheListError" class="rolling-queuelist-wrap">
+          <div style="height:70vh;" class="flex-general-column-wrapper-center">
+
+            <div ng-show="!cacheListError && cacheListLoading">
+              <i class="fa fa-spinner fa-spin" style="font-size:30px;"></i>
+            </div> 
+
+            <div ng-show="cacheListError && !cacheListLoading">
+              <h5 style="color:gray;">
+                <i class="fa fa-exclamation-triangle"></i>
+                {{cacheListError}}
+              </h5>
+            </div>
+
+          </div>  
+        </div> 
+        <!--/While Loading--> 
+
+      </div>  
+    </div>
+    <!--/Queues List--> 
+
+    <!--Queue Details-->
+    <div ng-show="activeCache.length>0" class="col-sm-12 col-md-7 col-lg-7" style="background-color:white;">
+
+      <div class="col-sm-12 col-md-6 col-lg-6" style="margin-top:20px;">
+        <div class="col-sm-12 col-md-12 col-lg-12"   style="background-color:#4892F9;color:white;">
+            <div class="cf flex-general-column-wrapper-center" style="padding-top:10px;padding-left:10px;">        
+              <div>
+                <p style="font-size:30px;font-weight:700;">{{activeCacheSize}}</p>
+              </div> 
+              <div>
+                <p style="font-size:22px;">Cache Size</p>
+              </div> 
+            </div> 
+        </div>
+      </div>      
+        
+      <div class="col-sm-12 col-md-6 col-lg-6" style="margin-top:20px;">
+        <div class="col-sm-12 col-md-12 col-lg-12"  style="background-color:#4892F9;color:white;">
+            <div class="cf flex-general-column-wrapper-center" style="padding-top:10px;padding-left:10px;">        
+              <div>
+                <p style="font-size:30px;font-weight:700;">{{cacheItemCount[previousIndex] || 0}}</p>
+              </div> 
+              <div>
+                <p style="font-size:22px;">Items</p>
+              </div> 
+            </div> 
+        </div>
+      </div>         
+    
+      <div style="height:auto;"> 
+        
+          <div class="col-sm-12 col-md-12 col-lg-12" style="background-color:white;margin-top:50px;">
+          <div class="queue-msg-list">
+
+            <div class="cf" style=" border-bottom:1px solid #C6C4C4;">
+
+              <div class="pull-left">
+                <p style="font-size:25px;">Items List</p>
+              </div>
+
+              <div class="pull-right">
+                <button type="button" class="addmsg-init-btn" ng-click="initAddNewItem()">Add New Item</button>
+              </div> 
+
+            </div>           
+
+            <div class="cache-item-table">
+              <table class="table" border="0"  ng-show="!itemsError && !itemsLoading">
+                <thead>
+                  <tr>
+                    <th>S.No</th> 
+                    <th>Key</th>
+                    <th class="">Value</th>
+                    <th class="table-TxtAlign-center"></th>                     
+                  </tr>  
+                </thead>
+
+                <tbody class="cache-item-tbody">
+                  <tr ng-repeat="eachItem in cacheItemsList">
+                    <td width="7%">
+                      <div style="width:100%;height:26px;" class="flex-general-column-wrapper-center">
+                        {{$index+1}}
+                      </div>
+                    </td> 
+
+                    <td width="30%">
+                      <div class="cache-key-display" style="padding-top:3px;padding-left:1px;">
+                        {{eachItem.key}}
+                      </div>                     
+                    </td> 
+
+                    <td class="" width="48%">
+                      <div class="cache-value-display" style="padding-top:3px;padding-left:1px;" ng-show="!showInputForEdit[$index]" ng-dblclick="initEditItem(eachItem)">
+                        {{eachItem.value}}
+                      </div>
+
+                      <div ng-show="showInputForEdit[$index]" class="cache-value-edit">
+                        <input type="text" ng-model="editableItem[$index]"  ng-blur="updateItem(eachItem)">
+                      </div>
+                    </td>
+
+                    <td class="table-TxtAlign-center" width="13%">
+
+                      <!--Delete-->
+                      <div ng-show="!itemSpinner[$index] && !itemError[$index] && !itemSaved[$index]" style="width:100%;height:26px;cursor:pointer;" ng-click="deleteItem(eachItem)">
+                       <i class="icon ion-close-circled" style="font-size:12px;cursor:pointer;margin-top:3px;"></i>
+                       <span style="font-size:12px;">Delete</span>
+                      </div>
+
+                      <!--Spinner Delete/Editing-->
+                      <div ng-show="itemSpinner[$index] && !itemError[$index] && !itemSaved[$index]" style="width:100%;height:26px;cursor:pointer;" class="flex-general-column-wrapper-center">
+                        <i class="fa fa-spinner fa-spin" style="font-size:16px;"></i>
+                      </div>
+
+                      <!--Saved Tick-->
+                      <div ng-show="!itemSpinner[$index] && !itemError[$index] && itemSaved[$index]" style="width:100%;height:26px;cursor:pointer;" class="sno-saved flex-general-column-wrapper-center">
+                        <i class="fa fa-check" style="font-size:16px;"></i>
+                      </div>
+
+                      <!--Error-->
+                      <div ng-show="!itemSpinner[$index] && itemError[$index] && !itemSaved[$index]" style="width:100%;height:26px;cursor:pointer;" infotooltipleft="{{itemError[$index]}}" class="sno-errorinfo flex-general-column-wrapper-center">
+                        <i class="fa fa-exclamation-triangle" style="font-size:16px;"></i>
+                      </div>
+
+                    </td>                                      
+                  </tr>                                               
+                </tbody>
+
+              </table> 
+
+              <!--While Loading-->
+              <div ng-show="itemsError || itemsLoading" style="width:100%;height:30px;margin-bottom:30px;">
+                <div class="flex-general-column-wrapper-center" style="width:100%;">
+
+                  <div ng-show="!itemsError && itemsLoading">
+                    <i class="fa fa-spinner fa-spin" style="font-size:25px;"></i>
+                  </div> 
+
+                  <div ng-show="itemsError && !itemsLoading">
+                    <span>{{itemsError}}</span>
+                  </div> 
+                   
+                </div>
+              </div>
+              <!--/While Loading-->
+
+            </div>
+
+          </div>
+          </div>
+          
+         
+      </div>
+    </div>
+    <!--/Queue Details-->
+
+  </div>

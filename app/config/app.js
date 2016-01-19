@@ -13,7 +13,8 @@ var app=angular.module('CloudBoostDashboard',
     'ui.ace',    
     'angular-click-outside',
     'lrInfiniteScroll',
-    'uiSwitch'
+    'uiSwitch',
+    'truncate'
     ]);
 
 app.value('THROTTLE_MILLISECONDS', 1250);
@@ -37,6 +38,5 @@ frontendServerURL = window.location.protocol+"//"+window.location.hostname + ":3
 SERVER_URL = window.location.protocol+"//"+window.location.hostname + ":4730";
 
 landingURL = "https://www.cloudboost.io";
-analyticsURL =  window.location.protocol+"//"+window.location.hostname + ":5555"; 
-
+analyticsURL = "https://analytics.cloudboost.io";
 
