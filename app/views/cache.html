@@ -23,48 +23,57 @@
 
           <!--Info-->
           <div class="each-cache-wrapper flex-general-row-wrapper">
-            <div class="cache-resembler-wrapper flex-general-column-wrapper-center">
-              <div class="flex-general-column-wrapper-center" style="height:40px;width:40px;background-color:#159CEE;border-radius:25px;">
-                <i class="fa fa-bolt" style="color:white;font-size:20px;"></i>
+
+            <div class="cache-resembler-wrapper flex-general-column-wrapper-center pull-left">
+              <div class="flex-general-column-wrapper-center cache-resembler-contain" style="">
+                <i class="fa fa-bolt" style=""></i>
               </div>
             </div>
 
-            <div class="cache-app-name-wrapper" style="margin-top:2px;">
+            <div class="cache-app-name-wrapper pull-left" style="margin-top:2px;">
               <div>
-                <span style="color:#555584;font-size:18px;font-weight:bold !important;margin-left:5px;">{{dummy | characters:24}}</span>
+                <span class="mycache-name" style="">{{dummy | characters:24}}</span>
               </div>
 
               <div class="flex-general-row-wrapper" style="margin-left:5px;">
 
                 <div class="flex-general-row-wrapper">
                   <div>
-                    <span style="color:gray;font-size:10px;">SIZE:</span>
+                    <span class="cache-size-label" style="">SIZE:</span>
                   </div>
                   <div>
-                    <span style="color:black;margin-left:2px;;">1200</span>
+                    <span class="cache-size-val" style="">1200</span>
                   </div>
                 </div>
 
                 <div class="flex-general-row-wrapper" style="margin-left:15px;">
                   <div>
-                    <span style="color:gray;font-size:10px;">ITEMS:</span>
+                    <span class="cache-items-label" style="">ITEMS:</span>
                   </div>
                   <div>
-                    <span style="color:black;margin-left:2px;;">1500000</span>
+                    <span class="cache-items-val" style="">1500000</span>
                   </div>
                 </div>
 
               </div>              
             </div>
 
-            <div class="cache-app-buttons flex-general-row-wrapper" style="">
-              <div class="flex-general-column-wrapper-center" style="width:40px;height:100%;">
+            <div class="cache-app-buttons flex-general-row-wrapper pull-right" style="">
+
+              <div class="flex-general-column-wrapper-center cache-clear-btn-wrap" style="">
                 <button class="cache-clear-btn" style="">
-                  <i class="icon ion-android-remove-circle" style=""></i>
+                  <div class="flex-general-row-wrapper">
+                      <div class="cache-clear-icon">
+                        <i class="icon ion-android-remove-circle" style=""></i>
+                      </div>
+                      <div class="cache-clear-txt">
+                        <span>Clear</span>
+                      </div>
+                  </div>                 
                 </button>
               </div>
 
-              <div class="flex-general-column-wrapper-center" style="width:75px;height:100%;margin-left:2px;">
+              <div class="flex-general-column-wrapper-center cache-del-btn-wrap" style="">
                 <button class="cache-del-btn" style="">
                   <div class="flex-general-row-wrapper">
                       <div class="cache-del-icon">
@@ -77,10 +86,21 @@
                 </button>                
               </div>
 
+
+              <div class="flex-general-column-wrapper-center cache-sel-btn-wrap" style="">
+                <button class="cache-sel-btn" style="">
+                  <div class="flex-general-row-wrapper">
+                      <div class="cache-sel-icon">
+                        <i class="icon ion-arrow-right-b" style=""></i>
+                      </div>                      
+                  </div>                 
+                </button>                
+              </div>
+
             </div>
 
           </div> 
-          <!--/End info-->          
+          <!--/End info-->  
 
         </div>
       </div>            
@@ -127,8 +147,30 @@
   <!--Normal Display-->
   <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
-      <div class="flex-general-column-wrapper-center" style="width:100%;background-color:white;display:none;">
-        RTRR
+      <div style="width:100%;height:auto;">
+        <div class="cache-items-details">
+
+          <div class="adding-cache-wrapper flex-general-column-wrapper-center">
+            <div class="flex-general-row-wrapper">
+
+              <div class="adding-cache-key-wrapper">
+                <input type="text" class="defaultInput-txt" placeholder="Key name" style="width:100%;height:100%;font-size:18px;">
+              </div>
+
+              <div class="adding-cache-val-wrapper">
+                <input type="text" class="defaultInput-txt" placeholder="Value" style="width:100%;height:100%;font-size:18px;">
+              </div>
+
+               <div class="adding-cache-btn-wrapper">
+                <button style="">Add Item</button>
+              </div>
+
+              <div>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   </div> 

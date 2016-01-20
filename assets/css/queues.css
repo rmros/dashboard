@@ -262,7 +262,7 @@
 
 /********************************/
 .apps-panel-wrapper{
-	width: 30%;
+	width: 37%;
 	background-color: white;
 	height: 89.9vh;
 	position: relative;
@@ -270,7 +270,8 @@
 	border-right:1px solid #DEE0E0;
 	border-top:1px solid #DEE0E0;
 	position: fixed;
-	bottom:0;			
+	bottom:0;	
+	z-index: 2;		
 }
 .cache-list-wrapper{
 	width: 100%;
@@ -311,22 +312,53 @@
 }
 .each-cache-wrapper{
 	width: 98%;
-	height: 49px;
-	border:1px solid black;	
+	height: 49px;	
+	margin-top: 10px;
+	cursor: pointer;	
 }
 
 .cache-resembler-wrapper{
 	width: 48px;
 	height: 48px;		
 }
-.cache-app-name-wrapper{
-	width: 49%;
-	height: 47px;
-	border:1px solid red;			
+.cache-resembler-contain{
+	height:40px;
+	width:40px;
+	background-color:#159CEE;
+	border-radius:25px;
 }
-.cache-app-buttons{
-	width: auto;
-	height: 47px;	
+
+.cache-resembler-contain i{
+	color:white;
+	font-size:20px;
+}
+
+.mycache-name{
+	color:#555584;
+	font-size:18px;
+	font-weight:500 !important;
+	margin-left:5px;
+}
+
+.cache-size-label{
+	color:gray;font-size:10px;
+}
+.cache-size-val{
+	color:black;margin-left:2px;
+}
+
+.cache-items-label{
+	color:gray;font-size:10px;
+}
+
+.cache-items-val{
+	color:black;margin-left:2px;
+}
+
+
+.cache-app-name-wrapper{
+	width: 52%;
+	height: 47px;				
 }
 .cache-secondary-strip{
 	height: 50px;
@@ -334,17 +366,87 @@
 	background-color: white;
 	padding-left: 22px;	
 }
+.cache-app-buttons{
+	width: 170px;
+	height: 47px;	
+	position: relative;			
+}
+
+/******Cache CLear Button****/
+.cache-clear-btn-wrap{
+	width:40px;
+	height:100%;
+	margin-left:2px;
+	float: right;
+	transition-property:all;
+	transition-duration:0.4s;
+	transition-delay:0s;
+}
+
+.cache-clear-btn-wrap:hover{
+	width:82px;	
+}
+
 .cache-clear-btn{
-	height:79%;width:100%;background-color:white;border:none;border:1px solid #edeaea;border-radius:2px;
+	width:100%;
+	height:79%;
+	background-color:white;
+	border:none;
+	border:1px solid #edeaea;
+	border-radius:2px;
+	position: relative;	
 }
-.cache-clear-btn i{
-	font-size:20px;color:#cecccc;
+.cache-clear-btn .cache-clear-icon{
+	position: absolute;
+	top:4px;
+	left:11.5px;
 }
-.cache-clear-btn:hover{
-	border:1px solid #FFAF02;
+.cache-clear-btn .cache-clear-icon i{
+	font-size:20px;
+	color:#cecccc;
 }
-.cache-clear-btn:hover i{
-	color:#FFAF02;
+
+.cache-clear-btn .cache-clear-txt{
+	top:8px;
+	position: absolute;	
+	left: 34.5px;
+	display: none;
+}
+.cache-clear-btn .cache-clear-txt span{
+	font-size:14px;	
+	color:#cecccc;	
+}
+
+.cache-clear-btn-wrap .cache-clear-btn:hover{
+	border:1px solid #E8BA04;
+	background-color: #E8BA04;
+}
+.cache-clear-btn-wrap:hover .cache-clear-icon i{
+	color:white;
+}
+
+.cache-clear-btn-wrap:hover .cache-clear-txt{
+	display: initial;
+}
+
+.cache-clear-btn-wrap:hover .cache-clear-txt span{	
+	color:white;	
+}
+/******Cache Clear Button****/
+
+/******Cache Delete Button****/
+.cache-del-btn-wrap{
+	width:40px;
+	height:100%;
+	margin-left:2px;
+	float: right;
+	transition-property:all;
+	transition-duration:0.4s;
+	transition-delay:0s;
+}
+
+.cache-del-btn-wrap:hover{
+	width:82px;	
 }
 
 .cache-del-btn{
@@ -353,23 +455,121 @@
 	background-color:white;
 	border:none;
 	border:1px solid #edeaea;
-	border-radius:2px;	
+	border-radius:2px;
+	position: relative;	
+}
+.cache-del-btn .cache-del-icon{
+	position: absolute;
+	top:1px;
+	left:12px;
 }
 .cache-del-btn .cache-del-icon i{
-	font-size:22px;margin-top:-2px;color:#cecccc;
+	font-size:22px;
+	color:#cecccc;
 }
+
 .cache-del-btn .cache-del-txt{
-	margin-top: 6px;
-	margin-left: 4px;
+	top:8px;
+	position: absolute;	
+	left: 30px;
+	display: none;
 }
 .cache-del-btn .cache-del-txt span{
 	font-size:14px;	
 	color:#cecccc;	
 }
 
-.cache-del-btn:hover{
+.cache-del-btn-wrap .cache-del-btn:hover{
 	border:1px solid #D60A00;
+	background-color: #D60A00;
 }
-.cache-del-btn:hover i{
-	color:#D60A00;
+.cache-del-btn-wrap:hover .cache-del-icon i{
+	color:white;
+}
+
+.cache-del-btn-wrap:hover .cache-del-txt{
+	display: initial;
+}
+
+.cache-del-btn-wrap:hover .cache-del-txt span{	
+	color:white;	
+}
+/******End Cache Delete Button****/
+
+/********Cache Selected Button****/
+.cache-sel-btn-wrap{
+	width:40px;
+	height:100%;
+	margin-left:2px;
+	float: right;
+	position: absolute;	
+	right:0;
+	opacity: 0;	
+}
+.each-cache-wrapper:hover .cache-sel-btn-wrap{
+	opacity: 1;
+}
+
+.cache-sel-btn{
+	width:100%;
+	height:79%;
+	background-color:white;
+	border:none;	
+	border-radius:2px;
+	position: relative;	
+}
+.cache-sel-btn .cache-sel-icon{
+	position: absolute;
+	top:-3.5px;
+	left:22px;	
+}
+.cache-sel-btn .cache-sel-icon i{
+	font-size:30px;
+	color:#cecccc;
+}
+
+.cache-sel-btn-wrap:hover .cache-sel-icon i{
+	color:#07D304;
+}
+
+/********Cache Selected Button****/
+
+.cache-items-details{
+	width:61%;
+	background-color: white;
+	float: right;
+	height:81vh;
+	overflow: auto;
+}
+
+.adding-cache-wrapper{
+	width: 100%;
+	height:100px;
+	border:1px solid red;
+}
+.adding-cache-key-wrapper{
+	width: 210px;
+	height:34px;
+	border-bottom:1px solid #AAAAAA;
+}
+.adding-cache-val-wrapper{
+	width: 210px;
+	height:34px;
+	margin-left: 5px;
+	border-bottom:1px solid #AAAAAA;
+}
+.adding-cache-btn-wrapper{
+	width: 85px;
+	height:34px;
+	margin-left: 5px;	
+}
+.adding-cache-btn-wrapper button{
+	width:100%;
+	height:100%;
+	font-size:14px;
+	border-radius:2px;
+	border:none;
+	border:1px solid #159CEE;
+	background-color:white;
+	color: #AAAAAA; 
 }
