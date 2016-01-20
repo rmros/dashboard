@@ -2,40 +2,17 @@ app.controller('indexController',
 	['$scope','$rootScope','userService','$location','notificationService','projectService','$sce',
 	function($scope,$rootScope,userService,$location,notificationService,projectService,$sce){	
 
+    $scope.isAdminLoggedIn=false;
+
     $scope.acceptInvitationSpinner=[];
     $scope.declineInvitationSpinner=[];
     $scope.notifySpinner=false;
     $scope.notificationsSkip=0;
     $scope.notificationsLimit=5;
 
-    getUserInfo();
+    getUserInfo(); 
 
-    $scope.$watch(function(scope) {
-      return $location.path();
-    },function(newPath,oldPath) {
-        if(!$.cookie('userId') || $.cookie('userId')=="null" || $.cookie('userId')=="undefined"){          
-          window.location.href="/accounts";
-        }else{
-          $rootScope.userFullname=$.cookie('userFullname'); 
-        }            
-    });  
-
-    $rootScope.logOut=function(){
-      userService.logOut()      
-      .then(function(data){           
-
-        $.removeCookie('userId', { path: '/' });
-        $.removeCookie('userFullname', { path: '/' });
-        $.removeCookie('email', { path: '/' });
-        $.removeCookie('createdAt', { path: '/' });
-
-        window.location.href="/accounts";
-      },function(error){
-           console.log(error);
-      });      
-    }; 
-
-    //Private Functions
+  //Private Functions
   function getUserInfo(){  
     $scope.notifySpinner=true;  
     userService.getUserInfo()
@@ -51,9 +28,13 @@ app.controller('indexController',
         $rootScope.profilePic=obj.file; 
       }else{
         $rootScope.profilePic=null; 
-      }      
+      }  
+
+      checkCookiesAndRedirect();
+
     }, function(error){ 
-      $scope.notifySpinner=false;        
+      $scope.notifySpinner=false; 
+      checkCookiesAndRedirect();       
     });
   }  
 
@@ -73,6 +54,38 @@ app.controller('indexController',
 
       newImg.src = imgSrc; // this must be done AFTER setting onload
   }
+
+  function checkCookiesAndRedirect(){
+    $scope.$watch(function(scope) {
+      return $location.path();
+    },function(newPath,oldPath) {
+        if(!$.cookie('userId') || $.cookie('userId')=="null" || $.cookie('userId')=="undefined"){          
+          window.location.href="/accounts";
+        }else{
+          $rootScope.userFullname=$.cookie('userFullname');
+          /*if($rootScope.user && $rootScope.user.isAdmin && !$scope.isAdminLoggedIn){
+            $scope.isAdminLoggedIn=true;          
+            window.location.href="#/admin";          
+          } */
+        }            
+    });
+  };
+
+
+  $rootScope.logOut=function(){
+    userService.logOut()      
+    .then(function(data){           
+
+      $.removeCookie('userId', { path: '/' });
+      $.removeCookie('userFullname', { path: '/' });
+      $.removeCookie('email', { path: '/' });
+      $.removeCookie('createdAt', { path: '/' });
+
+      window.location.href="/accounts";
+    },function(error){
+      console.log(error);
+    });      
+  };
 
   function getNotifications(){    
     notificationService.getNotifications($scope.notificationsSkip,$scope.notificationsLimit) 

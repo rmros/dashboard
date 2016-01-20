@@ -1,5 +1,6 @@
 
 <div class="new-queues-page" ng-init="init()">
+
   <div class="row">
     <div class="apps-panel-wrapper">
       <!--Search Cache-->
@@ -23,11 +24,61 @@
           <!--Info-->
           <div class="each-cache-wrapper flex-general-row-wrapper">
             <div class="cache-resembler-wrapper flex-general-column-wrapper-center">
-              <i class="fa fa-bolt" style="color:black;font-size:17px;"></i>
+              <div class="flex-general-column-wrapper-center" style="height:40px;width:40px;background-color:#159CEE;border-radius:25px;">
+                <i class="fa fa-bolt" style="color:white;font-size:20px;"></i>
+              </div>
             </div>
-            <div class="cache-app-name-wrapper" style="padding-top:3px;">
-              <span style="color:black;font-size:14px;font-weight:bold !important;">Cache Name</span>
+
+            <div class="cache-app-name-wrapper" style="margin-top:2px;">
+              <div>
+                <span style="color:#555584;font-size:18px;font-weight:bold !important;margin-left:5px;">{{dummy | characters:24}}</span>
+              </div>
+
+              <div class="flex-general-row-wrapper" style="margin-left:5px;">
+
+                <div class="flex-general-row-wrapper">
+                  <div>
+                    <span style="color:gray;font-size:10px;">SIZE:</span>
+                  </div>
+                  <div>
+                    <span style="color:black;margin-left:2px;;">1200</span>
+                  </div>
+                </div>
+
+                <div class="flex-general-row-wrapper" style="margin-left:15px;">
+                  <div>
+                    <span style="color:gray;font-size:10px;">ITEMS:</span>
+                  </div>
+                  <div>
+                    <span style="color:black;margin-left:2px;;">1500000</span>
+                  </div>
+                </div>
+
+              </div>              
             </div>
+
+            <div class="cache-app-buttons flex-general-row-wrapper" style="">
+              <div class="flex-general-column-wrapper-center" style="width:40px;height:100%;">
+                <button class="cache-clear-btn" style="">
+                  <i class="icon ion-android-remove-circle" style=""></i>
+                </button>
+              </div>
+
+              <div class="flex-general-column-wrapper-center" style="width:75px;height:100%;margin-left:2px;">
+                <button class="cache-del-btn" style="">
+                  <div class="flex-general-row-wrapper">
+                      <div class="cache-del-icon">
+                        <i class="icon ion-ios-trash" style=""></i>
+                      </div>
+                      <div class="cache-del-txt">
+                        <span>Delete</span>
+                      </div>
+                  </div>                 
+                </button>                
+              </div>
+
+            </div>
+
           </div> 
           <!--/End info-->          
 
@@ -63,10 +114,25 @@
 
   </div>
 
-    
-  
+  <!--First Display-->
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <div class="flex-general-column-wrapper-center" style="width:100%;background-color:white;border-top:1px solid #DEE0E0;display:none;">
+        RTRR
+      </div>
+    </div>
+  </div> 
+  <!--/First Display--> 
 
-  
+  <!--Normal Display-->
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <div class="flex-general-column-wrapper-center" style="width:100%;background-color:white;display:none;">
+        RTRR
+      </div>
+    </div>
+  </div> 
+  <!--/Normal Display-->
       
 </div>
 

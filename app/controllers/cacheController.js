@@ -43,6 +43,8 @@ $timeout){
   $scope.confirmCacheName=null;
   $scope.confirmSpinner=false;
   $scope.cacheModalError=null;
+
+  $scope.dummy="hello this is cloudboost how are you."
   
   $scope.init= function() {            
     id = $stateParams.appId;

@@ -2329,9 +2329,9 @@ table.information > tbody > tr > td {
   margin: 0;
 }
 .sign-up-container .middle-sign-up {
-  width: 60%;
+  width: 50%;
   left: 20%;
-  top: 50%;
+  top: 52%;
   position: absolute;
   margin-top: -282px;  
 }
@@ -8710,7 +8710,7 @@ ul.timeline li > .date {
     margin-top: 0px;
 }
 .newServerWizard-wrap{  
-  margin-top: 15px;
+  margin-top: 0px;
 }
 .wizard-conten-wrapper{
   height:320px; 

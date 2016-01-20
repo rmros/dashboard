@@ -1,4 +1,4 @@
-app.controller('usersController',
+app.controller('adminController',
 ['$scope',
 '$rootScope',
 '$stateParams', 
@@ -13,7 +13,7 @@ userService,
 cloudboostServerService){  
  
   $rootScope.isFullScreen=false;
-  $rootScope.page='users';  
+  $rootScope.page='admin';  
 
   //Users Page Specific
   $scope.newUser={
@@ -32,7 +32,7 @@ cloudboostServerService){
   $scope.newlyAddedUserIds=[];
  
   $scope.init= function() {  
-    $rootScope.pageHeaderDisplay="Manage Users";
+    $rootScope.pageHeaderDisplay="Admin Dashboard";
     getUserBySkipLimit($scope.skip,$scope.limit); 
     getServerSettings(); 
   }; 

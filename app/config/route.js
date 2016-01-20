@@ -37,10 +37,10 @@ app.config([
         controller: 'pricingController'
     });
 
-    $stateProvider.state('users', {
-        url: '/users',
-        templateUrl: 'app/views/users.html',
-        controller: 'usersController',
+    $stateProvider.state('admin', {
+        url: '/admin',
+        templateUrl: 'app/views/admin.html',
+        controller: 'adminController',
         resolve:{
           validate:  function($rootScope) {
             if($rootScope.user && !$rootScope.user.isAdmin){

@@ -1,14 +1,13 @@
 app.controller('newServerController',
   ['$scope','userService','$rootScope',
-  function($scope,userService,$rootScope){    
-
+  function($scope,userService,$rootScope){      
+     
     $scope.init = function(){
       $scope.userData={}; 
       $scope.userData.name=null;
       $scope.userData.email=null; 
-      $scope.userData.password=null;
-
-      $scope.showSpinner=false;                        
+      $scope.userData.password=null; 
+      $scope.showSpinner=false;                              
     };
 
     $scope.submitData=function(){
@@ -27,7 +26,7 @@ app.controller('newServerController',
           $.cookie('email', data.email, { expires: 29,path: '/' });
           $.cookie('createdAt', data.createdAt, { expires: 29,path: '/' });
           
-          window.location.href=dashboardURL; 
+          window.location.href=dashboardURL+"/#/admin"; 
                 
         },function(error){
           $scope.showSpinner=false;

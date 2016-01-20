@@ -1,5 +1,5 @@
 var app = angular.module('cloudboostAccounts',
-    ['ui.router','ngCookies','mgo-angular-wizard']);
+    ['ui.router','ngCookies']);
 
 /***************************************************Connecting URLs*********************************************************/
 var __isDevelopment = false;

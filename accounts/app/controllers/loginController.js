@@ -22,7 +22,12 @@ app.controller('loginController',
         $.cookie('email', data.email, { expires: 29,path: '/' });
         $.cookie('createdAt', data.createdAt, { expires: 29,path: '/' });
         
-        window.location.href=dashboardURL;
+        if(data.isAdmin){
+          window.location.href=dashboardURL+"/#/admin";
+        }else{
+          window.location.href=dashboardURL;
+        }
+        
         //$scope.showSpinner=false;
       }, function(error){
         $scope.showSpinner=false;
