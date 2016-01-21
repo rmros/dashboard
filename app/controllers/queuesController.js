@@ -55,8 +55,7 @@ tableService){
         $scope.creatingQueue=false; 
         errorNotify(error);        
       });
-    }
-    
+    }    
   };
 
   $scope.openQueueDetails=function(queue){

@@ -20,8 +20,10 @@ $timeout){
   var id;
   $rootScope.isFullScreen=false;
   $rootScope.page='cache';
+  $scope.firstVisit=true;
 
   //Cache Specific
+  $scope.cacheListLoading=true;
   $scope.showCreateCacheBox=false;
   $scope.newCacheName=null;
   $scope.createCacheSpinner=false;
@@ -42,9 +44,7 @@ $timeout){
   //Modal specific
   $scope.confirmCacheName=null;
   $scope.confirmSpinner=false;
-  $scope.cacheModalError=null;
-
-  $scope.dummy="hello this is cloudboost how are you."
+  $scope.cacheModalError=null;  
   
   $scope.init= function() {            
     id = $stateParams.appId;
@@ -75,7 +75,13 @@ $timeout){
         }
         $scope.createCacheSpinner=false;
         $scope.newCacheName=null;
-        $("#md-createcachemodel").modal("hide");                             
+        $scope.firstVisit=false;
+        $("#md-createcachemodel").modal("hide");
+
+        if($scope.cacheList.length==1){
+          $scope.openCacheDetails($scope.cacheList[0]);
+        }
+                                     
       }, function(error){ 
         $scope.createCacheSpinner=false;
         $scope.cacheModalError=error;         
@@ -106,14 +112,13 @@ $timeout){
       //Get Cache Items
       cacheService.getAllCacheItems(cache)
       .then(function(items){
-        $scope.cacheItemsList=items;
+        $scope.cacheItemsList=items;        
         $scope.itemsLoading=false;
       }, function(error){  
         $scope.itemsLoading=false;
         $scope.itemsError=error;          
       });
-    }
-    
+    }    
 
   };
 
@@ -239,7 +244,7 @@ $timeout){
       });
 
     }else{
-      $scope.cacheModalError="Confirm Name doesn't match";
+      $scope.cacheModalError="Cashe Name doesn't match";
     }
   };
 
@@ -261,16 +266,23 @@ $timeout){
         $("#md-clearcache").modal("hide");  
         $scope.cacheItemCount[index]=0;
 
+        if($scope.activeCache[index] && ($scope.activeCache[index].name==$scope.clearableCache.name)){
+          $scope.cacheItemsList=[];
+        }
+
         $scope.confirmSpinner=false; 
         $scope.confirmCacheName=null;
         $scope.clearableCache=null;
+
+        
+
       }, function(error){  
         $scope.cacheModalError=error; 
         $scope.confirmSpinner=false;       
       });
 
     }else{
-      $scope.cacheModalError="Confirm Name doesn't match";
+      $scope.cacheModalError="Cache Name doesn't match";
     }
   };  
 
@@ -300,12 +312,11 @@ $timeout){
     
   }
 
-  function getAllCaches(){    
-     
-    $scope.cacheListLoading=true;
+  function getAllCaches(){      
+    $scope.cacheListLoading=true; 
     cacheService.getAllCaches()
     .then(function(list){
-      $scope.cacheList=list;
+      $scope.cacheList=list;      
       $scope.cacheListLoading=false; 
 
       //get Cache Items Count
@@ -322,7 +333,10 @@ $timeout){
         },function(){
         });  
       }
-       
+
+      if($scope.cacheList.length>0){
+        $scope.firstVisit=false; 
+      }      
 
     },function(error){
       $scope.cacheListError=error; 
