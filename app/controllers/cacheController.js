@@ -244,7 +244,7 @@ $timeout){
       });
 
     }else{
-      $scope.cacheModalError="Cashe Name doesn't match";
+      $scope.cacheModalError="Cache Name doesn't match";
     }
   };
 

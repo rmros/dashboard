@@ -21,6 +21,7 @@ tableService){
   var id;
   $rootScope.isFullScreen=false;
   $rootScope.page='queues';
+  $scope.dummy="Name goes here";
 
   //Queues Specific
   $scope.showCreateQueueBox=false;
@@ -43,17 +44,23 @@ tableService){
     }
   };  
 
+  $scope.initCreateQueue=function(){
+    $("#md-createqueuemodel").modal();
+  };
+
   $scope.createQueue=function(){
     if($scope.newQueueName){
+      $scope.queueModalError=null;
       $scope.creatingQueue=true;
       queueService.createQueue($scope.newQueueName,$scope.newQueueType)
       .then(function(queueObj){
         $scope.queueList.push(queueObj);
         $scope.creatingQueue=false; 
-        $scope.newQueueName=null;                                   
+        $scope.newQueueName=null;
+        $("#md-createqueuemodel").modal("hide");                                   
       }, function(error){ 
         $scope.creatingQueue=false; 
-        errorNotify(error);        
+        $scope.queueModalError=error;       
       });
     }    
   };
@@ -102,16 +109,37 @@ tableService){
     });
   };
 
-  $scope.deleteQueue=function(queue){
-    var index=$scope.queueList.indexOf(queue);
-    $scope.closeQueueSettings(index);
+  $scope.initDeleteQueue=function(queue){
+    $scope.deletableQueue=queue;
+    $scope.confirmQueueName=null;
+    $("#md-deletequeue").modal();
+  };
 
-    queueService.deleteQueue(queue)
-    .then(function(resp){
-      $scope.queueList.splice(index,1); 
-    }, function(error){       
-      errorNotify(error);        
-    });
+  $scope.deleteQueue=function(){
+    if($scope.confirmQueueName==$scope.deletableQueue.name){
+
+      var index=$scope.queueList.indexOf($scope.deletableQueue);     
+
+      $scope.queueModalError=null; 
+      $scope.confirmSpinner=true;
+      queueService.deleteQueue($scope.deletableQueue)
+      .then(function(resp){
+        $scope.queueList.splice(index,1);
+        $scope.activeQueue.splice(index,1);
+        $("#md-deletequeue").modal("hide");
+
+        $scope.confirmSpinner=false; 
+        $scope.confirmQueueName=null;
+        $scope.deletableQueue=null;
+
+      }, function(error){       
+        $scope.queueModalError=error; 
+        $scope.confirmSpinner=false;         
+      });
+
+    }else{
+      $scope.queueModalError="Queue Name doesn't match";
+    }
   };
 
   $scope.initAddNewMessage=function(){
