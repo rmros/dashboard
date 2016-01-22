@@ -86,7 +86,7 @@ app.factory('queueService', ['$q','$http','$rootScope',function ($q,$http,$rootS
       return  q.promise;
     };
 
-    global.insertDataIntoQueue = function(message,timeout,delay,expire){
+    global.insertMessageIntoQueue = function(queue,message,timeout,delay,expire){
       var q=$q.defer();
 
       var queueMessage = new CB.QueueMessage();
@@ -107,6 +107,20 @@ app.factory('queueService', ['$q','$http','$rootScope',function ($q,$http,$rootS
       queue.push(queueMessage, {
         success : function(queueMessage){
           q.resolve(queueMessage);  
+        }, error : function(error){
+          q.reject(error);
+        }
+      });
+
+      return  q.promise;
+    };
+
+    global.deleteMsgById = function(queue,messageId){
+      var q=$q.defer();
+
+      queue.deleteMessage(messageId, {
+        success : function(queueMessage){
+          q.resolve(queueMessage); 
         }, error : function(error){
           q.reject(error);
         }

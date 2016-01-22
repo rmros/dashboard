@@ -21,15 +21,18 @@ tableService){
   var id;
   $rootScope.isFullScreen=false;
   $rootScope.page='queues';
-  $scope.dummy="Name goes here";
+  $scope.firstVisit=true;
 
   //Queues Specific
   $scope.showCreateQueueBox=false;
   $scope.queueList=[];
+  $scope.queueListLoading=true;
   $scope.queueSettings=[];
   $scope.activeQueue=[];
+  $scope.queueMessagesList=[];
   $scope.newQueueType="pull";//Default
   $scope.creatingQueue=false;
+  $scope.openMsgAdvanceOptions=false;
   
   $scope.init= function() {            
     id = $stateParams.appId;
@@ -57,6 +60,7 @@ tableService){
         $scope.queueList.push(queueObj);
         $scope.creatingQueue=false; 
         $scope.newQueueName=null;
+        $scope.firstVisit=false;
         $("#md-createqueuemodel").modal("hide");                                   
       }, function(error){ 
         $scope.creatingQueue=false; 
@@ -73,13 +77,18 @@ tableService){
     var index=$scope.queueList.indexOf(queue);
 
     if(index!=$scope.previousIndex){
-      $scope.previousIndex=index;           
+      $scope.previousIndex=index; 
+
+      $scope.messagesLoading=true;
+      $scope.messagesError=null;          
 
       queueService.getQueueInfo(queue)
       .then(function(queueInfo){        
         $scope.activeQueue[index]=queueInfo; 
-      }, function(error){       
-        errorNotify(error);        
+        $scope.queueMessagesList=queueInfo.messages; 
+        $scope.messagesLoading=false;
+      }, function(error){         
+        $scope.messagesError=error;        
       });
     }
     
@@ -143,20 +152,75 @@ tableService){
   };
 
   $scope.initAddNewMessage=function(){
+    $scope.newMessage={
+      msg:null,
+      timeout:null,
+      delay:null,
+      expires:null,
+    };
+
     $("#md-addnewmsg").modal();
   };
 
-  /*$scope.openCreateQueueBox=function(){
-    if($scope.showCreateQueueBox==false){
-      $scope.showCreateQueueBox=true;
+  $scope.addNewMessage=function(){
+    if($scope.newMessage.msg){
+
+      $scope.queueModalError=null; 
+      $scope.addMsgSpinner=true;
+
+      queueService.insertMessageIntoQueue($scope.activeQueue[$scope.previousIndex],$scope.newMessage.msg,$scope.newMessage.timeout,$scope.newMessage.delay,$scope.newMessage.expires)
+      .then(function(resp){
+
+        $("#md-addnewmsg").modal("hide");
+
+        if(!$scope.queueMessagesList){
+          $scope.queueMessagesList=[];
+        }
+
+        $scope.queueMessagesList.push(resp);
+        $scope.queueModalError=false; 
+        $scope.newMessage=null;        
+        $scope.addMsgSpinner=false; 
+      }, function(error){  
+        $scope.queueModalError=error; 
+        $scope.addMsgSpinner=false;       
+      });
+
+    }else{
+      $scope.queueModalError="Message shoudn't be empty";
     }
+
+  };  
+
+  $scope.initEditMessage=function(){
+    $("#md-editmsg").modal();
   };
 
-  $scope.closeCreateQueueBox=function(){
-    if($scope.showCreateQueueBox==true){
-      $scope.showCreateQueueBox=false;
-    }
-  };  */
+  $scope.initDeleteMessage=function(msgObj){
+    $scope.requestedMessage=msgObj;
+    $("#md-deletemsg").modal();
+  };
+
+  $scope.deleteMessage=function(){
+    var index=$scope.queueMessagesList.indexOf($scope.requestedMessage);
+
+    $scope.queueModalError=null;              
+    $scope.deleteMsgSpinner=true;
+
+    queueService.deleteMsgById($scope.activeQueue[$scope.previousIndex],$scope.requestedMessage.id)
+    .then(function(resp){
+
+      $("#md-deletemsg").modal("hide");     
+
+      $scope.queueMessagesList.splice(index,1);
+      $scope.queueModalError=null;              
+      $scope.deleteMsgSpinner=false;
+
+    }, function(error){  
+      $scope.queueModalError=error; 
+      $scope.deleteMsgSpinner=false;       
+    });
+  };
 
   $scope.openQueueSettings=function(index){
     if(!$scope.queueSettings[index] || $scope.queueSettings[index]==false){
@@ -170,10 +234,24 @@ tableService){
     }
   };
 
+  $scope.toggleMsgAdvanceOptions=function(){
+    if($scope.openMsgAdvanceOptions==true){
+      $scope.openMsgAdvanceOptions=false;
+    }else{
+      $scope.openMsgAdvanceOptions=true;
+    }
+  };
+
   function getAllQueues(){
+    $scope.queueListLoading=true;
     queueService.getAllQueues()
     .then(function(list){
-      $scope.queueList=list; 
+      $scope.queueList=list;
+
+      $scope.queueListLoading=false;
+      if($scope.queueList.length>0){
+        $scope.firstVisit=false; 
+      }
 
       /*list[0].push("como estas nawaz bhai", {
         success : function(queueMessage){
@@ -183,7 +261,8 @@ tableService){
         }
       }); */
 
-    }, function(error){      
+    }, function(error){  
+      $scope.queueListLoading=false;    
       errorNotify(error);        
     });
   }
