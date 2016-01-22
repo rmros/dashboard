@@ -183,7 +183,8 @@ app.controller('appsController',
               updateBeacon();   
             }
 
-          },function(error){            
+          },function(error){  
+            $scope.creatingDefaultTables=false;          
             errorNotify('Error in creating App. Try again');
             //delete the app
             //$scope.projectListObj.splice($scope.projectListObj.indexOf(project),1);
@@ -191,6 +192,7 @@ app.controller('appsController',
           });                         
                        
         },function(error){
+          $scope.startCreatingApp=false;
           $scope.showSaveBtn = true;
           if(error.status === 400){           
             errorNotify('App ID AppName already exists. Please choose a different App ID.');
