@@ -4,7 +4,7 @@
     <div class="row" ng-if="!dataLoading && !loadingError">   
 
         <div class="col-sm-12 col-md-6 col-lg-3">
-          <div class="block block-color info" style="height:270px;">
+          <div class="block block-color info" style="height:270px;box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)">
             <div class="header">      
               <h3><i class="fa fa-plus-circle"></i>&nbsp;create an app</h3>
             </div>
@@ -62,7 +62,7 @@
       <div ng-if="!dataLoading && !loadingError" class="col-sm-12 col-md-6 col-lg-3" ng-repeat="list in projectListObj | orderBy:'_id':true">       
 
         <!-- Details --> 
-        <div class="" data-ng-class="{success : list.status.status === 'online' && !animateApp[$index], danger : list.status.status === 'offline' && !animateApp[$index],block: !animateApp[$index],'block-color': !animateApp[$index]}" ng-hide="showProject[$index]" style="height:270px;">
+        <div class="" data-ng-class="{success : list.status.status === 'online' && !animateApp[$index], danger : list.status.status === 'offline' && !animateApp[$index],block: !animateApp[$index],'block-color': !animateApp[$index]}" ng-hide="showProject[$index]" style="height:270px;box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)">
 
           <div ng-if="!animateApp[$index]" data-ng-class="{animated:isAppCreated==true,fadeIn:$index==0,slideInLeft:$index==1}"> 
               <div class="header" style="position:relative;">
