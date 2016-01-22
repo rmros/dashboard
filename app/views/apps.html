@@ -18,22 +18,39 @@
                   </div>
                 </div>               
                                               
-                  <center class="create-app-wrapper">
-                    <!--Create App-->
-                    <button style="position:relative;" id="create-app-btn" ng-disabled="!showSaveBtn" data-ng-show="showSaveBtn" type="submit" class="btn btn-info btn-rad btn-trans">
-                      <i class="fa fa-plus"></i>&nbsp;Create new app
+                <center class="create-app-wrapper">
+                  <!--Create App-->
+                  <button style="position:relative;" id="create-app-btn" ng-disabled="!showSaveBtn" data-ng-show="showSaveBtn" type="submit" class="btn btn-info btn-rad btn-trans">
+                    <i class="fa fa-plus"></i>&nbsp;Create new app
 
-                    <!--Beacon-->
-                    <div ng-show="beacon && !beacon.firstApp && showSaveBtn" class="create-app-beacon-container" style="cursor:pointer;"></div> 
+                  <!--Beacon-->
+                  <div ng-show="beacon && !beacon.firstApp && showSaveBtn" class="create-app-beacon-container" style="cursor:pointer;"></div> 
 
-                    </button>
-                    
-                    <!--While Creating App-->
-                    <button data-ng-show="!showSaveBtn" type="submit" class="btn btn-info btn-rad btn-trans">
-                      <i class="fa fa-spinner fa-spin fa-2x"></i>&nbsp;&nbsp;Creating app..         
-                    </button>
-                                        
-                  </center>          
+                  </button>
+                  
+                  <!--While Creating App-->
+                  <button data-ng-show="!showSaveBtn" type="submit" class="btn btn-info btn-rad btn-trans">
+                    <i class="fa fa-spinner fa-spin fa-2x"></i>&nbsp;&nbsp;Creating app...         
+                  </button>
+                                      
+                </center>
+
+                <div  ng-show="!showSaveBtn" ng-class="{startcreatingapp:startCreatingApp,creatingdefaultables:creatingDefaultTables,yourappisready:yourAppIsReady}" class="flex-general-column-wrapper-center appuser-inter-wrap cf">
+                  <!--Message1-->
+                  <div class="flex-general-column-wrapper-center appuser-inter-msg1 cf">
+                    <span style="color:#A3A3A3;">Provisioning your servers...</span>
+                  </div>
+
+                  <!--Message2-->
+                  <div class="flex-general-column-wrapper-center appuser-inter-msg2 cf">
+                    <span style="color:#A3A3A3;">Creating default Role and User Tables...</span>
+                  </div>
+
+                  <!--Message3-->
+                  <div class="flex-general-column-wrapper-center appuser-inter-msg3 cf">
+                    <span style="color:#A3A3A3;">Your app is now ready.</span>
+                  </div>
+                </div>          
 
               </form>
             </div>

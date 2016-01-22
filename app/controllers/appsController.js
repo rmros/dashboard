@@ -121,50 +121,68 @@ app.controller('appsController',
       }        
   };
 
+  
   $scope.createProject=function(isValid){        
     $scope.appValidationError=null;
     if(isValid && $scope.newApp.name){     
 
-      $scope.showSaveBtn = false;               
+      $scope.showSaveBtn = false;       
+      $timeout(function(){           
+       $scope.startCreatingApp=true; 
+      }, 1000);
       $scope.appValidationError=null;
       $scope.isAppCreated = false;  
       if($scope.showProject && $scope.showProject.length>0){
         for(var i=0;i<$scope.showProject.length;++i){       
           $scope.showProject[i]=false;        
         }
-      }     
-
+      } 
+     
       projectService.createProject($scope.newApp.name)     
-      .then(function(data){          
-          
+      .then(function(data){  
+
+          $scope.startCreatingApp=false;
+          $scope.creatingDefaultTables=true;
+
           //Add default tables
           addDefaultTables(data)
-          .then(function(userdata){      
-            if($scope.projectListObj.length==0){
-              $scope.projectListObj=[];            
-            }
-            $scope.projectListObj.push(data); 
+          .then(function(userdata){ 
 
-            $scope.showSaveBtn = true;
-            $scope.isAppCreated = true;
-            $scope.newApp.name="";
-            $scope.newApp.appId = "";
+            $scope.creatingDefaultTables=false;
+            $scope.yourAppIsReady=true;            
 
-            $scope.animateApp[0]=true;
+            $timeout(function(){ 
+
+              $scope.newApp.name="";
+              $scope.newApp.appId = "";
+              $scope.isAppCreated = true;          
+              $scope.animateApp[0]=true;
+              $scope.showSaveBtn = true;
+              $scope.yourAppIsReady=false; 
+
+              if($scope.projectListObj.length==0){
+                $scope.projectListObj=[];            
+              }
+              $scope.projectListObj.push(data);
+
+            }, 1600);
+                       
+
             $timeout(function(){           
               $scope.animateApp[0]=false;
 
               $timeout(function(){           
-               $scope.isAppCreated = false;
+               $scope.isAppCreated = false;                             
               }, 1000);
               
-            }, 1000);
+            }, 2000);
 
             //Update Beacon
             if($scope.beacon && !$scope.beacon.firstApp){
               $scope.beacon.firstApp=true;
               updateBeacon();   
             }
+
           },function(error){            
             errorNotify('Error in creating App. Try again');
             //delete the app
