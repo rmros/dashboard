@@ -14,7 +14,8 @@ var app=angular.module('CloudBoostDashboard',
     'angular-click-outside',
     'lrInfiniteScroll',
     'uiSwitch',
-    'truncate'
+    'truncate',
+    'ngContextMenu'    
     ]);
 
 app.value('THROTTLE_MILLISECONDS', 1250);
