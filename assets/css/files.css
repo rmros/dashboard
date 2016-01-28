@@ -1,0 +1,229 @@
+.solo-vertical-center{
+   /* Flex row rules */
+    display: flex;
+    display:-webkit-flex;
+    display:-moz-flex;    
+    
+    flex-flow:row wrap;
+    -moz-flex-flow:row wrap;
+    -webkit-flex-flow:row wrap;
+
+    justify-content:flex-start;
+    -moz-justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+
+    align-items:center;  
+    -moz-align-items: center;  
+    -webkit-align-items:center;    
+}
+
+.solo-horizontal-center{
+   /* Flex row rules */
+    display: flex;
+    display:-webkit-flex;
+    display:-moz-flex;    
+    
+    flex-flow:row wrap;
+    -moz-flex-flow:row wrap;
+    -webkit-flex-flow:row wrap;
+
+    justify-content:center;
+    -moz-justify-content:center;
+    -webkit-justify-content:center;
+
+    align-items:flex-start;  
+    -moz-align-items:flex-start;  
+    -webkit-align-items:flex-start;    
+}
+
+.file-browser-features{
+	height: auto;
+	width: 97.9%;
+	background-color: white;
+	margin-left: 15.5px;
+	border-bottom: 1px solid #E5E3E3;
+}
+
+.grande-file-browser{
+	height: 79.5vh;
+	width: 100%;
+	background-color: white;
+	margin-left: 15px;
+}
+
+.folder-mainmenu-wrap{
+	width: 210px;
+	height: auto;	
+	padding-top: 20px;
+	padding-left: 22px;
+	padding-right: 10px;
+	padding-bottom: 10px;	
+}
+
+.each-filemenu-item{
+	margin-top: 5px;	
+	height: 25px;
+}
+.each-filemenu-item:first-child{
+	margin-top:0px;
+}
+
+.folder-mainmenu-containr{
+	width: 100%;
+	height: 100%;	
+}
+
+.files-content-wrap{
+	width: 79.1vw;
+	height: 79.9vh;
+	overflow-y:scroll;
+	
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;		
+}
+
+@media screen and (max-device-width : 1023px)
+{
+    .files-content-wrap{
+		width:70.9vw;
+		height: 79.9vh;
+		overflow-y:scroll;		
+		padding-right: 10px;
+		padding-bottom: 10px;		
+	} 
+}
+.file-horiz-menubar{
+	width: 100%;
+	height: 61px;	
+	padding-right: 21px;
+}
+.files-content-container{
+	width: 100%;
+	height: auto;	
+}
+.file-horiz-menubar .float-strip{
+	width: 900px;
+	height: 100%;
+	float: right;	
+	position: relative;			
+}
+
+.file-horiz-menubar .float-strip .file-searcher{
+	border:none;
+	padding-left: 10px;
+	font-size: 14px;	
+}
+.file-horiz-menubar .float-strip .file-searcher:focus{
+	outline: none;
+}
+
+.file-horiz-menubar .float-strip .create-folder{
+	width: 20px;
+	height: 100%;	
+	padding-top: 12px;
+	padding-bottom: 12px;		
+	margin-left: 17px;
+}
+
+.file-horiz-menubar .float-strip .upload-file{
+	width: 20px;
+	height: 100%;	
+	padding-top: 12px;
+	padding-bottom: 12px;
+	margin-left: 1px;	
+}
+
+.file-horiz-menubar .float-strip .search{
+	width: 220px;
+	height: 100%;	
+	padding-top: 12px;
+	padding-bottom: 12px;
+	margin-left: 15px;	
+	position: absolute;	
+	background-color: white;
+	top: 0;
+	right: 0;
+	transition-property:all;
+	transition-duration:0.6s;
+	-webkit-transition-property:all;
+	-webkit-transition-duration:0.6s;	
+}
+.startsearch .search{
+	width: 420px !important;
+}
+
+.file-treeview-table{
+	width: 100%;
+	height: auto;		
+}
+
+.file-actual-thead tr{
+	border:none !important;
+	border-bottom: 2px solid #E5E3E3 !important;
+}
+.file-actual-thead tr th{
+	border:none !important;
+}
+
+.file-actual-tbody tr{
+	border:none !important;
+	border-bottom: 1px solid #E5E3E3 !important;
+	cursor: pointer;
+}
+.file-actual-tbody tr:hover{
+	background-color: #EAF4FC;
+}
+.file-actual-tbody tr td{
+	border:none !important;
+}
+.item-view-wrapper{
+	height: 35px;	
+}
+.activefile-feature{
+	height: 100%;
+	padding-top: 12px;
+	padding-bottom: 12px;	
+	margin-left: 17px;
+}
+.file-rename-txtbx{
+	width: 240px;
+}
+
+.file-rename-txtbx:focus{
+	outline: none;
+}
+.fileBrows-contextmenu{
+	position: absolute;
+	background-color: white;
+	box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);	
+	border-radius: 2px;
+	width:150px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	padding-left: 0;
+	margin-left: 0;
+
+}
+.fileBrows-contextmenu li{
+	list-style-type: none;	
+	margin-top: 4px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 3px;		
+	padding-bottom: 3px;
+}
+.fileBrows-contextmenu li:hover{
+	background-color: #EAF4FC;		
+}
+.fileBrows-contextmenu li:first-child{
+	margin-top: 0;
+}
+.fileBrows-contextmenu .contextmenu-icon{
+	height: 22px;
+	width: 22px;	
+}
+.fileBrows-contextmenu .contextmenu-label{
+	height: 22px;		
+	margin-left: 2.5px;
+}

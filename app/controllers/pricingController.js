@@ -264,118 +264,118 @@ app.controller('pricingController',
 
 	/* PRIVATE FUNCTIONS */
 
-        function loadProject(id){
-            projectService.getProject(id)
-            .then(function(currentProject){
-                if(currentProject){
-	                $rootScope.currentProject=currentProject; 
-	                getinvoiceSettings(); 
-	                $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;                                			                          
-                }                              
-            },function(error){              
-                errorNotify("We cannot load your project at this point in time. Please try again later.");
-            });
-        } 	
+    function loadProject(id){
+        projectService.getProject(id)
+        .then(function(currentProject){
+            if(currentProject){
+                $rootScope.currentProject=currentProject; 
+                getinvoiceSettings(); 
+                $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;                                			                          
+            }                              
+        },function(error){              
+            errorNotify("We cannot load your project at this point in time. Please try again later.");
+        });
+    } 	
 
 
-        function getCrediCardInfo(){
+    function getCrediCardInfo(){
 
-           paymentService.getCrediCardInfo()
-           .then(function(data){
-                if(data){               	
-                		
-                  	var number="************"+data.stripeCardObject.last4;
+       paymentService.getCrediCardInfo()
+       .then(function(data){
+            if(data){               	
+            		
+              	var number="************"+data.stripeCardObject.last4;
 
-                  	$scope.creditcardInfo.number=number;
-                  	$scope.creditcardInfo.cvc="###";
-                  	$scope.creditcardInfo.name=data.stripeCardObject.name;
+              	$scope.creditcardInfo.number=number;
+              	$scope.creditcardInfo.cvc="###";
+              	$scope.creditcardInfo.name=data.stripeCardObject.name;
 
-                  	$scope.creditcardInfo.exp_month=data.stripeCardObject.exp_month;
-                  	$scope.creditcardInfo.exp_year=data.stripeCardObject.exp_year;   
+              	$scope.creditcardInfo.exp_month=data.stripeCardObject.exp_month;
+              	$scope.creditcardInfo.exp_year=data.stripeCardObject.exp_year;   
 
-                  	$scope.creditcardInfo.address_line1=data.stripeCardObject.address_line1;
-                  	$scope.creditcardInfo.address_line2=data.stripeCardObject.address_line2;
+              	$scope.creditcardInfo.address_line1=data.stripeCardObject.address_line1;
+              	$scope.creditcardInfo.address_line2=data.stripeCardObject.address_line2;
 
-                  	$scope.creditcardInfo.address_city=data.stripeCardObject.address_city;
-                  	$scope.creditcardInfo.address_state=data.stripeCardObject.address_state;
-                  	$scope.creditcardInfo.address_zip=data.stripeCardObject.address_zip;
-                  	$scope.creditcardInfo.address_country=data.stripeCardObject.address_country;
+              	$scope.creditcardInfo.address_city=data.stripeCardObject.address_city;
+              	$scope.creditcardInfo.address_state=data.stripeCardObject.address_state;
+              	$scope.creditcardInfo.address_zip=data.stripeCardObject.address_zip;
+              	$scope.creditcardInfo.address_country=data.stripeCardObject.address_country;
 
-                  	$scope.cardAddEditText="Securely Update CreditCard";
-                  	$scope.cardAddEditBtn="Edit Credit Card";
-                  	$scope.isCardAdded=true;                 
-                  	
+              	$scope.cardAddEditText="Securely Update CreditCard";
+              	$scope.cardAddEditBtn="Edit Credit Card";
+              	$scope.isCardAdded=true;                 
+              	
 
-                  	if($scope.invoiceSettings.spendingLimit>0){
-                  		$scope.autoScale=false;                  		                 		                  		
-                  	}else if($scope.invoiceSettings.spendingLimit==0){             		
-                  		if($scope.isCardAdded){
-                  			$scope.autoScale=true;
-                  		}else{
-                  			$scope.autoScale=false;
-                  		}
-                  	}            	               
-                  	
-                }else{
-                	
-                	$scope.cardAddEditText="Securely Add CreditCard";
-                	$scope.cardAddEditBtn="Add Credit Card";
-                	$scope.isCardAdded=false;
-                	$scope.autoScale=false;                	
-                }  	
-                  	                   
-               }, function(error){                 
-                  errorNotify("We cannot load your credit card at this point in time. Please try again later.");
-               });
-        }     
+              	if($scope.invoiceSettings.spendingLimit>0){
+              		$scope.autoScale=false;                  		                 		                  		
+              	}else if($scope.invoiceSettings.spendingLimit==0){             		
+              		if($scope.isCardAdded){
+              			$scope.autoScale=true;
+              		}else{
+              			$scope.autoScale=false;
+              		}
+              	}            	               
+              	
+            }else{
+            	
+            	$scope.cardAddEditText="Securely Add CreditCard";
+            	$scope.cardAddEditBtn="Add Credit Card";
+            	$scope.isCardAdded=false;
+            	$scope.autoScale=false;                	
+            }  	
+              	                   
+           }, function(error){                 
+              errorNotify("We cannot load your credit card at this point in time. Please try again later.");
+           });
+    }     
 
-        function getinvoiceSettings(){
-        	invoiceService.getinvoiceSettings($rootScope.currentProject.appId)
-        	.then(function(data){
-                if(data){
-                  	$scope.invoiceSettings=data;
-                  	$scope.tempSpendingLimit=angular.copy(data.spendingLimit);
+    function getinvoiceSettings(){
+    	invoiceService.getinvoiceSettings($rootScope.currentProject.appId)
+    	.then(function(data){
+            if(data){
+              	$scope.invoiceSettings=data;
+              	$scope.tempSpendingLimit=angular.copy(data.spendingLimit);
 
-                  	if(data.spendingLimit>0){
-                  		$scope.autoScale=false;
-                  		$scope.spendingLimitBtn="Manage Spending Limit"; 
-                  		                 		                  		
-                  	}else if(data.spendingLimit==0){                  		
-                  		$scope.spendingLimitBtn="Add Spending Limit"
-                  		if($scope.isCardAdded){
-                  			$scope.autoScale=true;
-                  		}else{
-                  			$scope.autoScale=false;
-                  		}                  		
-                  	}  
-                  	getinvoice();//Get Invoice 	                 	               	
-                }                
+              	if(data.spendingLimit>0){
+              		$scope.autoScale=false;
+              		$scope.spendingLimitBtn="Manage Spending Limit"; 
+              		                 		                  		
+              	}else if(data.spendingLimit==0){                  		
+              		$scope.spendingLimitBtn="Add Spending Limit"
+              		if($scope.isCardAdded){
+              			$scope.autoScale=true;
+              		}else{
+              			$scope.autoScale=false;
+              		}                  		
+              	}  
+              	getinvoice();//Get Invoice 	                 	               	
+            }                
 
-            }, function(error){                
-                errorNotify('We cannot get your payment info at this point in time. Please try again later.');
-            });
-          
-        }
+        }, function(error){                
+            errorNotify('We cannot get your payment info at this point in time. Please try again later.');
+        });
+      
+    }
 
-        function getinvoice(){
-        	invoiceService.getinvoice($rootScope.currentProject.appId)
-        	.then(function(data){
-                if(data){
-                  	$scope.invoice=data;
-                  	$scope.currentInvoice=data.currentInvoice;
+    function getinvoice(){
+    	invoiceService.getinvoice($rootScope.currentProject.appId)
+    	.then(function(data){
+            if(data){
+              	$scope.invoice=data;
+              	$scope.currentInvoice=data.currentInvoice;
 
-                  	$scope.nextBillingCycle=nextBillingCycleDays();
-                  	spendingLimitCircle();//Spending Limit Cicle Graph
-                  	getCrediCardInfo();//Get Card Info                	
-                } 	                   
-            }, function(error){  
-            	errorNotify('We cannot get your payment info at this point in time. Please try again later.');                 
-            });
+              	$scope.nextBillingCycle=nextBillingCycleDays();
+              	spendingLimitCircle();//Spending Limit Cicle Graph
+              	getCrediCardInfo();//Get Card Info                	
+            } 	                   
+        }, function(error){  
+        	errorNotify('We cannot get your payment info at this point in time. Please try again later.');                 
+        });
 
-          
-        }
+      
+    }
 
-        function _loadUsage() {
+    function _loadUsage() {
 		$scope.usageSpinner=true;
 
 		var promises=[];
@@ -485,148 +485,148 @@ app.controller('pricingController',
 
 		
 
-        function nextBillingCycleDays(){
-        	var nxt_year=null;
-			var one_day=1000*60*60*24;
-          	var today = new Date();
-          	var nxtMonth = new Date();
-          	var month=today.getMonth(); 
+    function nextBillingCycleDays(){
+    	var nxt_year=null;
+		var one_day=1000*60*60*24;
+      	var today = new Date();
+      	var nxtMonth = new Date();
+      	var month=today.getMonth(); 
 
-          	today.setHours(0);
-            today.setMinutes(0);
-            today.setSeconds(0); 
-            today=new Date(today);                  	
+      	today.setHours(0);
+        today.setMinutes(0);
+        today.setSeconds(0); 
+        today=new Date(today);                  	
 
-          	if(month==11){
-          		month=0;
-          		nxt_year=today.getFullYear()+1; 
-          	}else{
-          		month=month+1;
-          	}
+      	if(month==11){
+      		month=0;
+      		nxt_year=today.getFullYear()+1; 
+      	}else{
+      		month=month+1;
+      	}
 
-          	if(nxt_year){
-          		nxtMonth.setYear(nxt_year);
-          	}
-          	nxtMonth.setMonth(month);
-            nxtMonth.setDate(1);
-            nxtMonth.setHours(0);
-            nxtMonth.setMinutes(0);
-            nxtMonth.setSeconds(0);
-            nxtMonth=new Date(nxtMonth);
+      	if(nxt_year){
+      		nxtMonth.setYear(nxt_year);
+      	}
+      	nxtMonth.setMonth(month);
+        nxtMonth.setDate(1);
+        nxtMonth.setHours(0);
+        nxtMonth.setMinutes(0);
+        nxtMonth.setSeconds(0);
+        nxtMonth=new Date(nxtMonth);
 
-            today=today.getTime();
-            nxtMonth=nxtMonth.getTime();
-            var diff=Math.round((nxtMonth-today)/one_day);
+        today=today.getTime();
+        nxtMonth=nxtMonth.getTime();
+        var diff=Math.round((nxtMonth-today)/one_day);
 
-            return diff;
-        }
+        return diff;
+    }
 
-        function spendingLimitCircle(){ 
+    function spendingLimitCircle(){ 
 
+    
+    	if($scope.invoiceSettings && $scope.invoiceSettings.spendingLimit>=$scope.invoice.currentInvoice){
+    		var left=$scope.invoiceSettings.spendingLimit-$scope.invoice.currentInvoice;        		
+    		var used=$scope.invoice.currentInvoice;
+    		$scope.creditLeft=left;    		  			
+
+
+  			$timeout(function () {
+
+			    $scope.labels= ["LEFT","USED"];
+  				$scope.data = [left, used];
+  				$scope.colours=["#00CC00","#B3B3BC"];
+  				$scope.$broadcast("$reload", {});
+
+			}, 3000);
+
+			$scope.$on('create', function (chart) {		  					  
+			});	  			
+    	}        	      	
         
-        	if($scope.invoiceSettings && $scope.invoiceSettings.spendingLimit>=$scope.invoice.currentInvoice){
-        		var left=$scope.invoiceSettings.spendingLimit-$scope.invoice.currentInvoice;        		
-        		var used=$scope.invoice.currentInvoice;
-        		$scope.creditLeft=left;    		  			
+	}
 
+	function validateCrediCardInfo(){
+		var validation={
+			isValid:true,
+			message:null
+		};
 
-	  			$timeout(function () {
+		if(!Stripe.card.validateCardNumber($scope.creditcardInfo.number)){
+			$scope.validCardShowSpinner=false;
+			$("#credit-card").modal("hide");
 
-				    $scope.labels= ["LEFT","USED"];
-	  				$scope.data = [left, used];
-	  				$scope.colours=["#00CC00","#B3B3BC"];
-	  				$scope.$broadcast("$reload", {});
-
-				}, 3000);
-
-				$scope.$on('create', function (chart) {		  					  
-				});	  			
-        	}        	      	
-	        
-		}
-
-		function validateCrediCardInfo(){
-			var validation={
-				isValid:true,
-				message:null
-			};
-
-			if(!Stripe.card.validateCardNumber($scope.creditcardInfo.number)){
-				$scope.validCardShowSpinner=false;
-				$("#credit-card").modal("hide");
-
-				validation.isValid=false;
-				validation.message='Please enter card number with no letters, spaces and special characters.';
-
-				return validation;
-			}
-			if(!Stripe.card.validateExpiry($scope.creditcardInfo.exp_month, $scope.creditcardInfo.exp_year)){
-				$scope.validCardShowSpinner=false;
-				$("#credit-card").modal("hide");
-
-				validation.isValid=false;
-				validation.message='Please enter the correct month and year of expiry';
-				
-				return validation;
-			} 
-			
-			if(!Stripe.card.validateCVC($scope.creditcardInfo.cvc)){
-				$scope.validCardShowSpinner=false;
-				$("#credit-card").modal("hide");
-
-				validation.isValid=false;
-				validation.message='Please enter the valid CVC.';
-				
-				return validation;				
-			}
-			if(!Stripe.card.cardType($scope.creditcardInfo.number)){
-				$scope.validCardShowSpinner=false;
-				$("#credit-card").modal("hide");
-
-				validation.isValid=false;
-				validation.message='The card is unknown. We accept Visa, MasterCard, American Express, Discover, Diners Club, and JCB';
-				
-				return validation;				
-			}
+			validation.isValid=false;
+			validation.message='Please enter card number with no letters, spaces and special characters.';
 
 			return validation;
-        }
-		//Notification
-		function errorNotify(errorMsg){
-		  $.amaran({
-		      'theme'     :'colorful',
-		      'content'   :{
-		         bgcolor:'#EE364E',
-		         color:'#fff',
-		         message:errorMsg
-		      },
-		      'position'  :'top right'
-		  });
+		}
+		if(!Stripe.card.validateExpiry($scope.creditcardInfo.exp_month, $scope.creditcardInfo.exp_year)){
+			$scope.validCardShowSpinner=false;
+			$("#credit-card").modal("hide");
+
+			validation.isValid=false;
+			validation.message='Please enter the correct month and year of expiry';
+			
+			return validation;
+		} 
+		
+		if(!Stripe.card.validateCVC($scope.creditcardInfo.cvc)){
+			$scope.validCardShowSpinner=false;
+			$("#credit-card").modal("hide");
+
+			validation.isValid=false;
+			validation.message='Please enter the valid CVC.';
+			
+			return validation;				
+		}
+		if(!Stripe.card.cardType($scope.creditcardInfo.number)){
+			$scope.validCardShowSpinner=false;
+			$("#credit-card").modal("hide");
+
+			validation.isValid=false;
+			validation.message='The card is unknown. We accept Visa, MasterCard, American Express, Discover, Diners Club, and JCB';
+			
+			return validation;				
 		}
 
-		function successNotify(successMsg){
-		  $.amaran({
-		      'theme'     :'colorful',
-		      'content'   :{
-		         bgcolor:'#19B698',
-		         color:'#fff',
-		         message:successMsg
-		      },
-		      'position'  :'top right'
-		  });
-		}
+		return validation;
+    }
+	//Notification
+	function errorNotify(errorMsg){
+	  $.amaran({
+	      'theme'     :'colorful',
+	      'content'   :{
+	         bgcolor:'#EE364E',
+	         color:'#fff',
+	         message:errorMsg
+	      },
+	      'position'  :'top right'
+	  });
+	}
 
-		function WarningNotify(WarningMsg){
-		  $.amaran({
-		      'theme'     :'colorful',
-		      'content'   :{
-		         bgcolor:'#EAC004',
-		         color:'#fff',
-		         message:WarningMsg
-		      },
-		      'position'  :'top right'
-		  });
-		}    
+	function successNotify(successMsg){
+	  $.amaran({
+	      'theme'     :'colorful',
+	      'content'   :{
+	         bgcolor:'#19B698',
+	         color:'#fff',
+	         message:successMsg
+	      },
+	      'position'  :'top right'
+	  });
+	}
+
+	function WarningNotify(WarningMsg){
+	  $.amaran({
+	      'theme'     :'colorful',
+	      'content'   :{
+	         bgcolor:'#EAC004',
+	         color:'#fff',
+	         message:WarningMsg
+	      },
+	      'position'  :'top right'
+	  });
+	}    
 
 		
 }]);

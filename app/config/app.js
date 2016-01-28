@@ -38,5 +38,5 @@ frontendServerURL = window.location.protocol+"//"+window.location.hostname + ":3
 SERVER_URL = window.location.protocol+"//"+window.location.hostname + ":4730";
 
 landingURL = "https://www.cloudboost.io";
-analyticsURL = "https://analytics.cloudboost.io";
-
+//analyticsURL = "https://analytics.cloudboost.io";
+analyticsURL = "http://localhost:5555";
