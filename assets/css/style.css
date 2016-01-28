@@ -8890,3 +8890,22 @@ ul.timeline li > .date {
   opacity: 0;
   }
 }
+.appcurrentplan{
+  height: 32px;
+  width:247px;
+  border:1px solid #C9C9C9;
+  margin-bottom: 20px;
+  border-radius:2px; 
+  border-radius:2px;
+}
+
+.appbx-content{
+  padding-top:35px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 15px;
+}
+.appkeysbx{
+  height: 30px;
+  width: 100%;  
+}

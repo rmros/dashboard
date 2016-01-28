@@ -356,7 +356,7 @@ app.controller('appsController',
     });
   };
 
-  $scope.changeDeveloperRole=function(index,requestedUser){
+  /*$scope.changeDeveloperRole=function(index,requestedUser){
     $scope.appDevSpinner[index]=true;
 
     projectService.changeDeveloperRole($scope.selectedProject.appId,requestedUser._id,requestedUser.role)
@@ -387,7 +387,7 @@ app.controller('appsController',
         requestedUser.role="Admin";
       }                  
     });
-  };
+  };*/
 
   $scope.removeUserFromInvited=function(index,requestedInvitee){
     $scope.appInvitedSpinner[index]=true;
