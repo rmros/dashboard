@@ -11,29 +11,110 @@
 			</div>
 
 			<div>
-				<div class="col-md-5">
-					<div class="flex-general-column-wrapper-center plan-block" style="margin-top:80px;">
+				<div class="col-md-5 hidden-sm hidden-xs signup-display">
+					<div class="flex-general-column-wrapper-center" style="width:100%;margin-top:50px;padding-left:10px;">
 
-						<p style="color:#ffffff;  background-color: #3f3f3f;
-						  color: white;
-						  padding: 8px;
-						  border-radius: 3px;
-						  margin-bottom: -15px;
-						  font-size:20px;">
-						  <b>Hacker Plan</b>
-						</p>
-						<br/>
-						<h1 style="color:#3f3f3f;font-size:90px"><b>$50<span style="font-size:45px">USD</span></b></h1><br/>
-						<h2 style="color:#3f3f3f"><b>Free</b> credits, <br/><b>Every month</b> for life.</h2>
+					<div class="flex-general-row-wrapper" style="width:100%;;height:334px;">
+						<div  class="port-header flex-general-row-wrapper">
+							<div style="width:55%;height:100%;padding-left:22px;padding-top:20px;">
+								<span style="color:white;font-size:26px;font-weight:500;">FREE</span>
+							</div>
+							<div style="width:44.8%;height:100%;" class="flex-general-column-wrapper-center">
+								<div style="height:60px;width:60px;border-radius:40px;background-color:#2d3c4c;" class="flex-general-column-wrapper-center">
+									<div style="color:white;font-weight:700;font-size:14px;">$0</div>
+									<div style="color:white;margin-top:-4px;">Forever</div>
+								</div>
+							</div>
+						</div>
+						<div class="port-commons port-labelfeat">						
 
-						<br/>								
-						
+							<div style="border-right:1px solid #E8E9EA;border-left:1px solid #E8E9EA;border-bottom:1px solid #E8E9EA;">
+								<div class="strip" style="">
+									DATABASE
+								</div>
+
+								<div class="strip-mini" style="padding-left:26px;padding-top:6px;padding-bottom:4px;font-weight:500;color:#A5A5A5;font-size:13px;">
+									API Calls
+								</div>
+
+								<div class="strip-mini" style="padding-left:26px;padding-top:6px;padding-bottom:4px;font-weight:500;color:#A5A5A5;font-size:13px;margin-top:-6px;">
+									Storage
+								</div>
+
+								<div class="strip" style="">
+									REALTIME
+								</div>
+
+								<div class="strip-mini" style="padding-left:26px;padding-top:6px;padding-bottom:4px;font-weight:500;color:#A5A5A5;font-size:13px;">
+									Connections
+								</div>
+
+								<div class="strip" style="">
+									AUTHENTICATION
+								</div>
+
+								<div class="strip-mini" style="padding-left:26px;padding-top:6px;padding-bottom:4px;font-weight:500;color:#A5A5A5;font-size:13px;">
+									Users
+								</div>
+
+								<div class="strip" style="">
+									MEMORY
+								</div>
+
+								<div class="strip-mini" style="padding-left:26px;padding-top:6px;padding-bottom:4px;font-weight:500;color:#A5A5A5;font-size:13px;">
+									Cache
+								</div>
+							</div>
+							
+						</div>
+						<div class="port-commons port-numbers">						
+
+							<div style="border-right:1px solid #E8E9EA;border-bottom:1px solid #E8E9EA;">
+								<div class="strip" style="padding-left:22px;padding-top:8px;padding-bottom:5px;font-weight:bold;color:#474747;font-size:14px;">
+									
+								</div>
+
+								<div class="strip-mini" style="padding-left:38px;padding-top:6px;padding-bottom:4px;font-weight:500;color:#474747;font-size:12px;">
+									50,000
+								</div>
+
+								<div class="strip-mini" style="padding-left:38px;padding-top:6px;padding-bottom:4px;font-weight:500;color:#474747;font-size:12px;margin-top:-6px;">
+									1GB
+								</div>
+
+								<div class="strip" style="padding-left:22px;padding-top:8px;padding-bottom:5px;font-weight:bold;color:#6A7F93;font-size:14px;">
+									
+								</div>
+
+								<div class="strip-mini" style="padding-left:38px;padding-top:6px;padding-bottom:4px;font-weight:500;color:#474747;font-size:12px;">
+									100
+								</div>
+
+								<div class="strip" style="padding-left:22px;padding-top:8px;padding-bottom:5px;font-weight:bold;color:#6A7F93;font-size:14px;">
+									
+								</div>
+
+								<div class="strip-mini" style="padding-left:38px;padding-top:6px;padding-bottom:4px;font-weight:500;color:#474747;font-size:12px;">
+									100
+								</div>
+
+								<div class="strip" style="padding-left:22px;padding-top:8px;padding-bottom:5px;font-weight:bold;color:#6A7F93;font-size:14px;">
+									
+								</div>
+
+								<div class="strip-mini" style="padding-left:38px;padding-top:6px;padding-bottom:4px;font-weight:500;color:#474747;font-size:12px;">
+									10MB
+								</div>
+							</div>
+						</div>
+					</div>
+													
 					</div>
 				</div>	
 
-				<div class="col-md-7">
+				<div class="col-md-7 col-sm-12 col-xs-12">
 					<!--Form Block-->			
-					<form ng-show="!isUserSignedUp" style="margin-bottom: 30px !important; margin-top: 30px !important; border-left:1px solid #E2E2E2;" class="form-horizontal"  name="userForm" ng-submit="signUp(userForm.$valid)">
+					<form ng-show="!isUserSignedUp" style="margin-bottom: 30px !important; margin-top: 30px !important; " class="form-horizontal siempre-signup"  name="userForm" ng-submit="signUp(userForm.$valid)">
 						<div class="content">						
 
 							<div ng-show="showSpinner" class="flex-general-column-wrapper-center spinner-signup"> 
@@ -89,7 +170,7 @@
 			        <!--/Form Block-->
 
 			        <!--Once Sign up is done-->	
-			        <div ng-show="isUserSignedUp" style="margin-bottom: 30px !important; margin-top: 30px !important; border-left:1px solid #E2E2E2;height:379px;" class="flex-general-column-wrapper-center">
+			        <div ng-show="isUserSignedUp" style="margin-bottom: 60px !important; margin-top: 30px !important; border-left:1px solid #E2E2E2;height:379px;" class="flex-general-column-wrapper-center">
 			        	<div class="flex-general-column-wrapper-center">
 			        		<span style="font-size:18px;font-weight:700;color:#4892F9;">You have successfully signed up!</span>
 			        		<span style="font-size:12px;margin-top:2px;">We have sent you a verification email. Verify your email to login</span>
@@ -109,7 +190,7 @@
 
 			</div>
 		</div>
-		<div class="text-center out-links"><a href="www.cloudboost.io">&copy; 2015 HackerBay, Inc.</a></div>
+		<div class="text-center out-links"><a href="www.cloudboost.io">&copy; 2015 HackerBay Software Private Limited</a></div>
 	</div> 
 	
 </div>

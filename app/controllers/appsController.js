@@ -436,6 +436,9 @@ app.controller('appsController',
     
   };
 
+  $scope.initUpgradePlan=function() {
+    $("#upgradeModal").modal();
+  };
   $scope.changeAppKeysInit=function(index,list){    
     $scope.appOptions[index]=false;
 

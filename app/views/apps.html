@@ -111,20 +111,20 @@
               </div>  
             
 
-              <div class="appbx-content">             
-
-                  <div class="appcurrentplan flex-general-row-wrapper">
-                      <div class="solo-vertical-center" style="height:100%;padding-left:10px;width:60%;">
-                        <span style="">FREE PLAN</span>
-                      </div>
-                      <div class="flex-general-column-wrapper-center" style="height:100%;width:40%; background-color:#11AA8C;color:white;cursor:pointer;  border-top-right-radius:2px; border-bottom-right-radius:2px;">
-                        <span style="">Upgrade
-                        &nbsp;
-                        <i class="icon ion-arrow-graph-up-right" style="font-size:16px;"></i>
-                        </span>
-                      </div>
-
+              <div class="appcurrentplan flex-general-row-wrapper">
+                  <div class="solo-vertical-center" style="height:100%;padding-left:10px;width:60%;">
+                    <span style="">FREE PLAN</span>
                   </div>
+
+                  <div class="flex-general-column-wrapper-center" style="height:100%;width:40%; background-color:#EDEDED;color:#7C7C7C;cursor:pointer;border-left:1px solid #C9C9C9;" ng-click="initUpgradePlan();">
+                    <span style="">Upgrade
+                    &nbsp;
+                    <i class="icon ion-arrow-graph-up-right" style="font-size:16px;"></i>
+                    </span>
+                  </div>
+              </div>
+
+              <div class="appbx-content">            
 
                   <div class="input-group">
                     <span class="input-group-addon">App ID</span>
@@ -140,7 +140,7 @@
                     <div class="flex-general-row-wrapper cf" style="padding:0;">
 
                       <div class="data-brwsr-wrapper pull-left" style="margin-left:-3.5px;">
-                          <button type="button" class="btn pull-left" data-placement="top" ng-click="goToTableDesigner(list)" style="border:1px solid #11AA8C;background-color:white;color:gray;border-radius:2px;border:none;width:121px;border:1px solid #11AA8C;"> Manage App</button>
+                          <button type="button" class="btn pull-left" data-placement="top" ng-click="goToTableDesigner(list)" style="background-color:#11AA8C;color:white;border-radius:2px;border:none;width:121px;border:1px solid #11AA8C;"> Manage App</button>
 
                           <!--Beacon-->
                           <div ng-if="beacon && !beacon.tableDesignerLink && $index==0" ng-click="goToTableDesigner(list)" class="first-app-beacon-container" style="cursor:pointer;"></div>
@@ -492,6 +492,46 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <!--/Confirm Remove Developer-->
+
+
+<!-- Upgrade Card Modal -->
+<div class="modal fade colored-header" id="upgradeModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog upgradecustom-width">
+    <div class="modal-content flex-general-row-wrapper"> 
+
+      <div class="app-credicard-wrap" style="">
+        <div class="intro">
+
+          <div style="width:100%;height:32px;" class="cf">
+            <div class="pull-left">
+              <span style="color:#71767C;font-size:18px;">Payment Information</span>
+            </div>
+            <div class="pull-right" style="">
+              <div style="margin-top:-8px;">
+                <i class="icon ion-card" style="font-size:30px;color:#71767C;"></i>
+              </div>             
+            </div>
+          </div>
+
+          <div>
+            <span style="color:color:#71767C;">
+            <span style="font-weight:700;">100%</span> money back guarantee for the first 30 days on paid plans.
+            </span>
+          </div>
+
+        </div>
+        
+      </div>
+
+      <div class="app-credicardplan-wrap" style="">
+        
+      </div>
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+<!-- /Upgrade Card Modal -->
+
 
 <!--Slack chat-->
 <a href="http://slack.cloudboost.io" target="_blank">

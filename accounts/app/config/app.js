@@ -11,8 +11,18 @@ var frontendServerURL = null,
            landingURL = null,         
          dashboardURL = null;
 
-frontendServerURL = window.location.protocol+"//"+window.location.hostname + ":3000";
+landingURL = "https://www.cloudboost.io"; 
 
+if(window.location.hostname==="dashboard.cloudboost.io"){
+    frontendServerURL="https://service.cloudboost.io";    
+}else if(window.location.hostname==="beta-dashboard.cloudboost.io"){
+    frontendServerURL="https://beta-service.cloudboost.io";    
+}else{
+    frontendServerURL = window.location.protocol+"//"+window.location.hostname + ":3000";    
+}
+
+
+//DashBoard
 if(window.location.port){
 	dashboardURL =  window.location.protocol+"//"+window.location.hostname + ":"+window.location.port; 
 }else{
@@ -20,4 +30,4 @@ if(window.location.port){
 }
 
 
-landingURL = "https://www.cloudboost.io"; 
+
