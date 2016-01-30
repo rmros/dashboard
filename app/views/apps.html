@@ -1,5 +1,3 @@
-
-  
 <div class="cl-mcont app-page" ng-init="init()">
     <div class="row" ng-if="!dataLoading && !loadingError">   
 
@@ -113,7 +111,7 @@
 
               <div class="appcurrentplan flex-general-row-wrapper">
                   <div class="solo-vertical-center" style="height:100%;padding-left:10px;width:60%;">
-                    <span style="">FREE PLAN</span>
+                    <span style="font-weight:700;color:gray;">FREE PLAN</span>
                   </div>
 
                   <div class="flex-general-column-wrapper-center" style="height:100%;width:40%; background-color:#EDEDED;color:#7C7C7C;cursor:pointer;border-left:1px solid #C9C9C9;" ng-click="initUpgradePlan();">
@@ -126,52 +124,27 @@
 
               <div class="appbx-content"> 
 
-                <div class="app-info-box">
+                <div class="app-info-box" style="margin-top:15px;">
                   <div class="flex-general-row-wrapper" style="height:20px;">
 
                     <div class="solo-vertical-center" style="height:100%;">
                       <span>
-                        <i class="fa fa-users"></i>
+                        <i class="fa fa-check-circle" style="color:#19b698;font-size:16px;"></i>
                       </span>
                     </div>
 
                     <div class="solo-vertical-center" style="height:100%;margin-left:4px;">
-                      <span>Users</span>
+                      <div>Your App is 
+                        <span style="font-weight:700;">Online</span>
+                      </div>
                     </div>
 
-                  </div>
-
-                  <div class="flex-general-row-wrapper" style="height:20px;">
-
-                    <div class="solo-vertical-center" style="height:100%;">
-                      <span>
-                        <i class="fa fa-users"></i>
-                      </span>
-                    </div>
-
-                    <div class="solo-vertical-center" style="height:100%;margin-left:4px;">
-                      <span>Users</span>
-                    </div>
-
-                  </div>
-
-                  <div class="flex-general-row-wrapper" style="height:20px;">
-
-                    <div class="solo-vertical-center" style="height:100%;">
-                      <span>
-                        <i class="fa fa-users"></i>
-                      </span>
-                    </div>
-
-                    <div class="solo-vertical-center" style="height:100%;margin-left:4px;">
-                      <span>Users</span>
-                    </div>
-
-                  </div>
+                  </div>                
+                 
                   
                 </div>
 
-                <div class="" style="margin-top:15px;width:248px;">
+                <div class="" style="margin-top:30px;width:248px;">
                   <div class="flex-general-row-wrapper cf" style="padding:0;">
 
                     <div class="data-brwsr-wrapper pull-left" style="margin-left:-3.5px;">
@@ -188,7 +161,7 @@
 
               </div>
 
-              <div class="app-developers-strip cf" style="margin-top:14px;">
+              <div class="app-developers-strip cf" style="margin-top:26px;">
                 <div style="height:100%;" class="pull-left solo-vertical-center">
                   <span style="color:#71767C;font-size:10px;cursor:pointer;" ng-click="addDevelopersInit($index,list)" >Add a Developer</span>
                 </div>
@@ -589,19 +562,27 @@
         <div class="fields cf">
           <div class="pull-left" style="height:42px;width:27%;background-color:white;">
             <select class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding:2px;color:#7C7B7B">
-                <option>01(jan)</option>
+                <option>01(Jan)</option>
                 <option>02(Feb)</option>
                 <option>03(Mar)</option>
-                <option>04(April)</option>
+                <option>04(Apr)</option>
+                <option>05(May)</option>
+                <option>06(Jun)</option>
+                <option>07(Jul)</option>
+                <option>08(Aug)</option>
+                <option>09(Sept)</option>
+                <option>10(Oct)</option>
+                <option>11(Nov)</option>
+                <option>12(Dec)</option>
             </select>
           </div>
 
           <div class="pull-left" style="height:42px;width:27%;margin-left:6%; background-color:white;">
             <select class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding:2px;color:#7C7B7B">
                 <option>2016</option>
-                <option>2015</option>
-                <option>2014</option>
-                <option>2013</option>
+                <option>2017</option>
+                <option>2018</option>
+                <option>2019</option>
             </select>
           </div>
 
@@ -639,10 +620,10 @@
               <div class="selected-plan splbillplanchangebtn flex-general-row-wrapper" ng-click="toggleBillingPlan()">
                   <div style="width:85%;">
                     <div>
-                      <span style="font-size:19px;">Spark Plan</span>
+                      <span style="font-size:19px;">Free Plan</span>
                     </div>
                     <div style="margin-top:3px;">
-                      <span style="font-size:13px;">$5 PER MONTH</span>
+                      <span style="font-size:13px;">$0 PER MONTH</span>
                     </div>
                   </div>
                   <div style="width:14.9%;height:100%;" class="solo-horizontal-center">
@@ -658,24 +639,69 @@
               <!--Change Plan Box-->
               <div ng-show="openBillingPlan" class="plan-options splbillplanchangebtn"
                click-outside="closeBillingPlan()" outside-if-not="splbillplanchangebtn">
-                <div class="change-plan flex-general-row-wrapper">
+
+                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan()">
                     <div style="width:99.99%;">
                       <div>
-                        <span style="font-size:19px;">Spark Plan</span>
+                        <span style="font-size:19px;">Free Plan</span>
                       </div>
                       <div style="margin-top:3px;">
-                        <span style="font-size:13px;">$5 PER MONTH</span>
+                        <span style="font-size:13px;">$0 PER MONTH</span>
                       </div>
                     </div>                    
                 </div>
 
-                <div class="change-plan flex-general-row-wrapper">
+                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan()">
                     <div style="width:99.99%;">
                       <div>
-                        <span style="font-size:19px;">Spark Plan</span>
+                        <span style="font-size:19px;">Prototype Plan</span>
                       </div>
                       <div style="margin-top:3px;">
-                        <span style="font-size:13px;">$5 PER MONTH</span>
+                        <span style="font-size:13px;">$10 PER MONTH</span>
+                      </div>
+                    </div>                    
+                </div>
+
+                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan()">
+                    <div style="width:99.99%;">
+                      <div>
+                        <span style="font-size:19px;">Launch Plan</span>
+                      </div>
+                      <div style="margin-top:3px;">
+                        <span style="font-size:13px;">$49 PER MONTH</span>
+                      </div>
+                    </div>                    
+                </div>
+
+                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan()">
+                    <div style="width:99.99%;">
+                      <div>
+                        <span style="font-size:19px;">Bootstrap Plan</span>
+                      </div>
+                      <div style="margin-top:3px;">
+                        <span style="font-size:13px;">$149 PER MONTH</span>
+                      </div>
+                    </div>                    
+                </div>
+
+                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan()">
+                    <div style="width:99.99%;">
+                      <div>
+                        <span style="font-size:19px;">Scale Plan</span>
+                      </div>
+                      <div style="margin-top:3px;">
+                        <span style="font-size:13px;">$449 PER MONTH</span>
+                      </div>
+                    </div>                    
+                </div>
+
+                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan()">
+                    <div style="width:99.99%;">
+                      <div>
+                        <span style="font-size:19px;">Unicorn Plan</span>
+                      </div>
+                      <div style="margin-top:3px;">
+                        <span style="font-size:13px;">$1,449 PER MONTH</span>
                       </div>
                     </div>                    
                 </div>
@@ -695,7 +721,7 @@
                 <span style="color:#9AA7BA;">API Calls</span>
               </div>
               <div style="height:100%;width:24.9%;" class="solo-vertical-center cf">
-                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">100</span>
+                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">50,000</span>
               </div>
           </div>
 
@@ -704,7 +730,7 @@
                 <span style="color:#9AA7BA;">Storage</span>
               </div>
               <div style="height:100%;width:24.9%;" class="solo-vertical-center cf">
-                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">100</span>
+                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">1GB</span>
               </div>
           </div>
 
@@ -740,7 +766,7 @@
                 <span style="color:#9AA7BA;">Cache</span>
               </div>
               <div style="height:100%;width:24.9%;" class="solo-vertical-center cf">
-                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">100</span>
+                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">10MB</span>
               </div>
           </div>
 

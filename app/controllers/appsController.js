@@ -358,39 +358,6 @@ app.controller('appsController',
     });
   };
 
-  /*$scope.changeDeveloperRole=function(index,requestedUser){
-    $scope.appDevSpinner[index]=true;
-
-    projectService.changeDeveloperRole($scope.selectedProject.appId,requestedUser._id,requestedUser.role)
-    .then(function(data){      
-      $scope.appDevSpinner[index]=false; 
-
-      //Change Role to user if the same user
-      if(requestedUser._id==$rootScope.user._id && requestedUser.role=="User"){
-        $('#developersModal').modal('hide');
-        var effectedProj=_.first(_.where($scope.projectListObj, {appId:$scope.selectedProject.appId}));
-        var effectedIndex=$scope.projectListObj.indexOf(effectedProj);
-
-        for(var i=0;i<effectedProj.developers.length;++i){
-          if(effectedProj.developers[i].userId==$rootScope.user._id){
-            effectedProj.developers[i].role="User";
-          }
-        }
-
-        $scope.projectListObj[effectedIndex]=effectedProj;
-      }     
-
-    },function(error){
-      $scope.appDevSpinner[index]=false;     
-      errorNotify(error);
-      if(requestedUser.role=="Admin"){
-        requestedUser.role="User";
-      }else if(requestedUser.role=="User"){
-        requestedUser.role="Admin";
-      }                  
-    });
-  };*/
-
   $scope.removeUserFromInvited=function(index,requestedInvitee){
     $scope.appInvitedSpinner[index]=true;
     projectService.removeUserFromInvited($scope.selectedProject.appId,requestedInvitee)
@@ -551,11 +518,14 @@ app.controller('appsController',
     $scope.showProject[index]=false;
   };
 
-
   //Billing
-
   $scope.initUpgradePlan=function() {
     $("#upgradeModal").modal();
+  };
+
+  $scope.selectThisPlan=function(){
+    $scope.openBillingPlan=false;
+    WarningNotify("Thank you for your interest, paid plans are launching soon!");
   };
   $scope.toggleBillingPlan=function(){
     if($scope.openBillingPlan){
@@ -691,45 +661,7 @@ app.controller('appsController',
       setInterval(function () {
           $('#' + id).remove();
       }, 4000);
-  }
-
-//Notification
-
-function errorNotify(errorMsg){
-  $.amaran({
-      'theme'     :'colorful',
-      'content'   :{
-         bgcolor:'#EE364E',
-         color:'#fff',
-         message:errorMsg
-      },
-      'position'  :'top right'
-  });
-}
-
-function successNotify(successMsg){
-  $.amaran({
-      'theme'     :'colorful',
-      'content'   :{
-         bgcolor:'#19B698',
-         color:'#fff',
-         message:successMsg
-      },
-      'position'  :'top right'
-  });
-}
-
-function WarningNotify(WarningMsg){
-  $.amaran({
-      'theme'     :'colorful',
-      'content'   :{
-         bgcolor:'#EAC004',
-         color:'#fff',
-         message:WarningMsg
-      },
-      'position'  :'top right'
-  });
-}    
+  }   
   
 
 }]);
