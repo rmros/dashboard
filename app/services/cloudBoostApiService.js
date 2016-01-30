@@ -1,4 +1,4 @@
-app.factory('cloudBoostService', ['$q','$http','$rootScope',function ($q,$http,$rootScope) {
+app.factory('cloudBoostApiService', ['$q','$http','$rootScope',function ($q,$http,$rootScope) {
 
   var global = {};    
 

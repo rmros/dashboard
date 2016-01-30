@@ -27,24 +27,6 @@ paymentService){
   $scope.savePicSpinner=false;
   $scope.fileAllowedTypes="image/*";//Images
 
-  $scope.cardAddEditText="Add Credit Card";
-  //credit card info
-  $scope.creditcardInfo={  
-    "object": "card",
-    "number":null,  
-    "exp_month":null,
-    "exp_year":null,
-    "cvc":null,
-    "name":null,  
-    "address_line1": null,
-    "address_line2": null,
-    "address_city": null,
-    "address_state": null,
-    "address_zip": null,
-    "address_country": null   
-  };
-  $scope.isCardAdded=false;
-
   $scope.showInputForEdit={
     email:false,
     name:false,
@@ -53,8 +35,7 @@ paymentService){
   
   $scope.init= function() {  
    $rootScope.pageHeaderDisplay="Edit Profile"; 
-   getUserInfo();
-   getCrediCardInfo();
+   getUserInfo();   
   }; 
 
   $scope.initEditProfile=function(type){
@@ -159,53 +140,7 @@ paymentService){
         $scope.savePicSpinner=false;    
       });
     }
-  };
-
-  $scope.addOrEditCreditCard=function(valid){   
-    if(valid){
-      $scope.validCardShowSpinner=true; 
-      var validation=validateCrediCardInfo();
-
-      if(validation.isValid){
-
-        paymentService.addOrEditCreditCard($scope.creditcardInfo)
-        .then( function(data){
-          if(data){                      
-
-            var number="************"+data.stripeCardObject.last4;
-          
-            $scope.creditcardInfo.number=number;
-            $scope.creditcardInfo.cvc="###";
-            $scope.creditcardInfo.name=data.stripeCardObject.name;
-
-            $scope.creditcardInfo.exp_month=data.stripeCardObject.exp_month;
-            $scope.creditcardInfo.exp_year=data.stripeCardObject.exp_year;   
-
-            $scope.creditcardInfo.address_line1=data.stripeCardObject.address_line1;
-            $scope.creditcardInfo.address_line2=data.stripeCardObject.address_line2;
-
-            $scope.creditcardInfo.address_city=data.stripeCardObject.address_city;
-            $scope.creditcardInfo.address_state=data.stripeCardObject.address_state;
-            $scope.creditcardInfo.address_zip=data.stripeCardObject.address_zip;
-            $scope.creditcardInfo.address_country=data.stripeCardObject.address_country;
-
-            $scope.cardAddEditText="Securely Update CreditCard";             
-            $scope.isCardAdded=true; 
-            successNotify("Successfully Done!");                     
-          }
-          $scope.validCardShowSpinner=false;                                      
-         },
-         function(error){                    
-           errorNotify(error);
-           $scope.validCardShowSpinner=false;    
-        });
-
-      }else{         
-        errorNotify(validation.message);
-        $scope.validCardShowSpinner=false;    
-      }
-    }
-  };
+  };  
 
   //Private Functions
   function getUserInfo(){
@@ -259,120 +194,41 @@ paymentService){
     }
   };
 
-  function getCrediCardInfo(){
-
-    paymentService.getCrediCardInfo()
-    .then(function(data){
-      if(data){                 
-        
-        var number="************"+data.stripeCardObject.last4;
-
-        $scope.creditcardInfo.number=number;
-        $scope.creditcardInfo.cvc="###";
-        $scope.creditcardInfo.name=data.stripeCardObject.name;
-
-        $scope.creditcardInfo.exp_month=data.stripeCardObject.exp_month;
-        $scope.creditcardInfo.exp_year=data.stripeCardObject.exp_year;   
-
-        $scope.creditcardInfo.address_line1=data.stripeCardObject.address_line1;
-        $scope.creditcardInfo.address_line2=data.stripeCardObject.address_line2;
-
-        $scope.creditcardInfo.address_city=data.stripeCardObject.address_city;
-        $scope.creditcardInfo.address_state=data.stripeCardObject.address_state;
-        $scope.creditcardInfo.address_zip=data.stripeCardObject.address_zip;
-        $scope.creditcardInfo.address_country=data.stripeCardObject.address_country;   
-
-        $scope.cardAddEditText="Securely Update Card";       
-        $scope.isCardAdded=true;                                              
-          
-      }  
-                             
-     }, function(error){                                          
-        errorNotify(error);
-     });
-  }
-
-  function validateCrediCardInfo(){
-    var validation={
-      isValid:true,
-      message:null
-    };
-
-    if(!Stripe.card.validateCardNumber($scope.creditcardInfo.number)){
-      $scope.validCardShowSpinner=false;
-      $("#credit-card").modal("hide");
-
-      validation.isValid=false;
-      validation.message='Please enter card number with no letters, spaces and special characters.';
-
-      return validation;
-    }
-    if(!Stripe.card.validateExpiry($scope.creditcardInfo.exp_month, $scope.creditcardInfo.exp_year)){
-      $scope.validCardShowSpinner=false;
-      $("#credit-card").modal("hide");
-
-      validation.isValid=false;
-      validation.message='Please enter the correct month and year of expiry';
-      
-      return validation;
-    } 
-    
-    if(!Stripe.card.validateCVC($scope.creditcardInfo.cvc)){
-      $scope.validCardShowSpinner=false;
-      $("#credit-card").modal("hide");
-
-      validation.isValid=false;
-      validation.message='Please enter the valid CVC.';
-      
-      return validation;        
-    }
-    if(!Stripe.card.cardType($scope.creditcardInfo.number)){
-      $scope.validCardShowSpinner=false;
-      $("#credit-card").modal("hide");
-
-      validation.isValid=false;
-      validation.message='The card is unknown. We accept Visa, MasterCard, American Express, Discover, Diners Club, and JCB';
-      
-      return validation;        
-    }
-
-    return validation;
-  }
 
   //Notification
-    function errorNotify(errorMsg){
-      $.amaran({
-          'theme'     :'colorful',
-          'content'   :{
-             bgcolor:'#EE364E',
-             color:'#fff',
-             message:errorMsg
-          },
-          'position'  :'top right'
-      });
-    }
+  function errorNotify(errorMsg){
+    $.amaran({
+        'theme'     :'colorful',
+        'content'   :{
+           bgcolor:'#EE364E',
+           color:'#fff',
+           message:errorMsg
+        },
+        'position'  :'top right'
+    });
+  }
 
-    function successNotify(successMsg){
-      $.amaran({
-          'theme'     :'colorful',
-          'content'   :{
-             bgcolor:'#19B698',
-             color:'#fff',
-             message:successMsg
-          },
-          'position'  :'top right'
-      });
-    }
+  function successNotify(successMsg){
+    $.amaran({
+        'theme'     :'colorful',
+        'content'   :{
+           bgcolor:'#19B698',
+           color:'#fff',
+           message:successMsg
+        },
+        'position'  :'top right'
+    });
+  }
 
-    function WarningNotify(WarningMsg){
-      $.amaran({
-          'theme'     :'colorful',
-          'content'   :{
-             bgcolor:'#EAC004',
-             color:'#fff',
-             message:WarningMsg
-          },
-          'position'  :'top right'
-      });
-    } 
+  function WarningNotify(WarningMsg){
+    $.amaran({
+        'theme'     :'colorful',
+        'content'   :{
+           bgcolor:'#EAC004',
+           color:'#fff',
+           message:WarningMsg
+        },
+        'position'  :'top right'
+    });
+  } 
 }]);

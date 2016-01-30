@@ -9,8 +9,8 @@ app.directive('cbDatabrowser', function(){
           'closeRelModal': '&close'          
         },   
         templateUrl: 'app/directives/templates/dataBrowserTemplate.html',       
-        controller:['$scope','$rootScope','$timeout','cloudBoostService','sharedDataService',
-        function($scope,$rootScope,$timeout,cloudBoostService,sharedDataService) { 
+        controller:['$scope','$rootScope','$timeout','cloudBoostApiService','sharedDataService',
+        function($scope,$rootScope,$timeout,cloudBoostAPiService,sharedDataService) { 
 
             //Defaults
             $scope.relationError=[];

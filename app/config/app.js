@@ -38,6 +38,8 @@ var frontendServerURL = null,
 landingURL = "https://www.cloudboost.io";
 analyticsURL = "https://analytics.cloudboost.io";
 
+analyticsURL = "http://localhost:5555";
+
 if(window.location.hostname==="dashboard.cloudboost.io"){
     frontendServerURL="https://service.cloudboost.io";
     SERVER_URL="https://api.cloudboost.io";

@@ -1,10 +1,10 @@
 
-app.service('cloudboostServerService', function($q,$http){ 
+app.service('serverSettingsService', function($q,$http){ 
 
   this.isNewServer=function(){
     var q=$q.defer();
 
-    $http.get(frontendServerURL+'/cloudboost/isNewServer').
+    $http.get(frontendServerURL+'/server/isNewServer').
       success(function(data, status, headers, config) {
         q.resolve(data);
       }).
@@ -18,7 +18,7 @@ app.service('cloudboostServerService', function($q,$http){
   this.getServerSettings=function(){
     var q=$q.defer();
 
-    $http.get(frontendServerURL+'/cloudboost').
+    $http.get(frontendServerURL+'/server').
       success(function(data, status, headers, config) {
         q.resolve(data);
       }).

@@ -6,8 +6,8 @@ app.directive('cbAcl', function(){
           'setAndSaveACLObject':'&save'         
         },   
         templateUrl: 'app/directives/templates/aclTemplate.html',       
-        controller:['$scope','$rootScope','$q','cloudBoostService','sharedDataService',
-        function($scope,$rootScope,$q,cloudBoostService,sharedDataService) {   
+        controller:['$scope','$rootScope','$q','cloudBoostApiService','sharedDataService',
+        function($scope,$rootScope,$q,cloudBoostApiService,sharedDataService) {   
 
             //ACL          
             $scope.addACL=[];

@@ -1,10 +1,10 @@
 
-app.service('cloudboostServerService', function($q,$http){ 
+app.service('serverSettingsService', function($q,$http){ 
 
   this.getServerSettings=function(){
     var q=$q.defer();
 
-    $http.get(frontendServerURL+'/cloudboost').
+    $http.get(frontendServerURL+'/server').
       success(function(data, status, headers, config) {
         q.resolve(data);
       }).
@@ -17,7 +17,7 @@ app.service('cloudboostServerService', function($q,$http){
   this.updateServerSettings=function(id,allowedSignUp){
     var q=$q.defer();
 
-    $http.post(frontendServerURL+'/cloudboost',{id:id,allowedSignUp:allowedSignUp}).
+    $http.post(frontendServerURL+'/server',{id:id,allowedSignUp:allowedSignUp}).
       success(function(data, status, headers, config) {
         q.resolve(data);
       }).
@@ -30,7 +30,7 @@ app.service('cloudboostServerService', function($q,$http){
   this.upsertAPI_URL=function(apiURL){
     var q=$q.defer();
 
-    $http.post(frontendServerURL+'/cloudboost/url',{apiURL:apiURL}).
+    $http.post(frontendServerURL+'/server/url',{apiURL:apiURL}).
       success(function(data, status, headers, config) {
         q.resolve(data);
       }).

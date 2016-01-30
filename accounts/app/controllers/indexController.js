@@ -1,6 +1,6 @@
 app.controller('indexController',
-	['$scope','$rootScope','$q','$cookies','userService','$location','cloudboostServerService',
-function($scope,$rootScope,$q,$cookies,userService,$location,cloudboostServerService){	 
+	['$scope','$rootScope','$q','$cookies','userService','$location','serverSettingsService',
+function($scope,$rootScope,$q,$cookies,userService,$location,serverSettingsService){	 
 
 
 	$scope.$watch(function(scope) {
@@ -15,8 +15,8 @@ function($scope,$rootScope,$q,$cookies,userService,$location,cloudboostServerSer
 
 	function checkValidation(newPath,oldPath){
 		var promises=[];
-		promises.push(cloudboostServerService.isNewServer());
-		promises.push(cloudboostServerService.getServerSettings());
+		promises.push(serverSettingsService.isNewServer());
+		promises.push(serverSettingsService.getServerSettings());
 
 		$q.all(promises).then(function(list){					
 			if(list[0]==true && newPath!="/newServer"){//Speacial case

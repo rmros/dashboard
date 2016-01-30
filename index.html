@@ -121,13 +121,9 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
               <a href="#/{{currentProject.appId}}/table"  ng-click="toggleSideMenu()"><i class="fa fa-table"></i><span>Table Designer</span></a>   
             </li>                       
 
-            <li ng-class="{active:page=='pricing','menu-active':page=='pricing'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Billing" tooltip>
+            <!--<li ng-class="{active:page=='pricing','menu-active':page=='pricing'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Billing" tooltip>
               <a  href="#/{{currentProject.appId}}/pricing"><i class="fa fa-credit-card"></i><span>Billing</span></a>
-            </li>
-
-            <li ng-class="{active:page=='appSettings','menu-active':page=='appSettings'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Settings" tooltip>
-              <a href="#/{{currentProject.appId}}/settings" ng-click="toggleSideMenu()"><i class="fa fa-cog"></i><span>Settings</span></a>   
-            </li>            
+            </li>-->                        
           </ul>           
 
         </div>
@@ -381,24 +377,21 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
 <script src="app/services/tableErrorService.js"></script>  
 <script src="app/services/tableService.js"></script>  
 <script src="app/services/userService.js"></script>
-<script src="app/services/projectDetailsService.js"></script>  
-<script src="app/services/paymentService.js"></script>
-<script src="app/services/invoiceService.js"></script> 
+<script src="app/services/paymentService.js"></script> 
 <script src="app/services/beaconService.js"></script> 
 <script src="app/services/filterService.js"></script> 
-<script src="app/services/cloudBoostService.js"></script>  
+<script src="app/services/cloudBoostApiService.js"></script>  
 <script src="app/services/queueService.js"></script> 
 <script src="app/services/cacheService.js"></script> 
-<script src="app/services/cloudboostServerService.js"></script> 
+<script src="app/services/serverSettingsService.js"></script> 
 <script src="app/services/notificationService.js"></script>
-<script src="app/services/pricingService.js"></script>            
+<script src="app/services/analyticsService.js"></script>            
 
 <!--Controllers-->
 <script type="text/javascript" src="app/controllers/indexController.js"></script>
 <script type="text/javascript" src="app/controllers/appsController.js"></script>
 <script type="text/javascript" src="app/controllers/tableDesignerController.js"></script>
 <script type="text/javascript" src="app/controllers/dataBrowserController.js"></script>
-<script type="text/javascript" src="app/controllers/appSettingsController.js"></script>
 <script type="text/javascript" src="app/controllers/pricingController.js"></script>
 <script type="text/javascript" src="app/controllers/queuesController.js"></script>
 <script type="text/javascript" src="app/controllers/cacheController.js"></script>

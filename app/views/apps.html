@@ -82,7 +82,7 @@
                         <i class="fa fa-pencil"></i>
                       </div>
                       <div>
-                        <span style="font-size:12px;">Edit App</span>
+                        <span style="font-size:12px;">Change Name</span>
                       </div>  
                     </div>
 
@@ -124,34 +124,82 @@
                   </div>
               </div>
 
-              <div class="appbx-content">            
+              <div class="appbx-content"> 
 
-                  <div class="input-group">
-                    <span class="input-group-addon">App ID</span>
-                    <span class="form-control" style="overflow:hidden;">
-                    <b>
-                      <span style="display:inline-block;width:160px !important;height:20px;">
-                      {{list.appId | characters:18}}</span>
-                    </b>
-                    </span>
-                  </div>                         
+                <div class="app-info-box">
+                  <div class="flex-general-row-wrapper" style="height:20px;">
 
-                  <div class="" style="margin-top:18px;width:248px;">
-                    <div class="flex-general-row-wrapper cf" style="padding:0;">
-
-                      <div class="data-brwsr-wrapper pull-left" style="margin-left:-3.5px;">
-                          <button type="button" class="btn pull-left" data-placement="top" ng-click="goToTableDesigner(list)" style="background-color:#11AA8C;color:white;border-radius:2px;border:none;width:121px;border:1px solid #11AA8C;"> Manage App</button>
-
-                          <!--Beacon-->
-                          <div ng-if="beacon && !beacon.tableDesignerLink && $index==0" ng-click="goToTableDesigner(list)" class="first-app-beacon-container" style="cursor:pointer;"></div>
-                      </div>
-
-                      <button type="button pull-right" class="btn btn-default" ng-click="viewKeys(list)" style="border-radius:2px;color:gray;width:121px;">
-                        App Keys</button>
+                    <div class="solo-vertical-center" style="height:100%;">
+                      <span>
+                        <i class="fa fa-users"></i>
+                      </span>
                     </div>
+
+                    <div class="solo-vertical-center" style="height:100%;margin-left:4px;">
+                      <span>Users</span>
+                    </div>
+
                   </div>
 
+                  <div class="flex-general-row-wrapper" style="height:20px;">
+
+                    <div class="solo-vertical-center" style="height:100%;">
+                      <span>
+                        <i class="fa fa-users"></i>
+                      </span>
+                    </div>
+
+                    <div class="solo-vertical-center" style="height:100%;margin-left:4px;">
+                      <span>Users</span>
+                    </div>
+
+                  </div>
+
+                  <div class="flex-general-row-wrapper" style="height:20px;">
+
+                    <div class="solo-vertical-center" style="height:100%;">
+                      <span>
+                        <i class="fa fa-users"></i>
+                      </span>
+                    </div>
+
+                    <div class="solo-vertical-center" style="height:100%;margin-left:4px;">
+                      <span>Users</span>
+                    </div>
+
+                  </div>
+                  
+                </div>
+
+                <div class="" style="margin-top:15px;width:248px;">
+                  <div class="flex-general-row-wrapper cf" style="padding:0;">
+
+                    <div class="data-brwsr-wrapper pull-left" style="margin-left:-3.5px;">
+                        <button type="button" class="btn pull-left" data-placement="top" ng-click="goToTableDesigner(list)" style="background-color:#11AA8C;color:white;border-radius:2px;border:none;width:121px;border:1px solid #11AA8C;"> Manage App</button>
+
+                        <!--Beacon-->
+                        <div ng-if="beacon && !beacon.tableDesignerLink && $index==0" ng-click="goToTableDesigner(list)" class="first-app-beacon-container" style="cursor:pointer;"></div>
+                    </div>
+
+                    <button type="button pull-right" class="btn btn-default" ng-click="viewKeys(list)" style="border-radius:2px;color:gray;width:121px;">
+                      App Keys</button>
+                  </div>
+                </div>
+
               </div>
+
+              <div class="app-developers-strip cf" style="margin-top:14px;">
+                <div style="height:100%;" class="pull-left solo-vertical-center">
+                  <span style="color:#71767C;font-size:10px;cursor:pointer;" ng-click="addDevelopersInit($index,list)" >Add a Developer</span>
+                </div>
+
+                <div style="height:100%;" class="pull-right solo-vertical-center">
+                  <div style="height:70%;width:28px;border-radius:30px;border:1px solid #71767C;" class="flex-general-column-wrapper-center" ng-click="addDevelopersInit($index,list)">
+                    <i class="icon ion-person-add" style="font-size:18px;color:#71767C;"></i>
+                  </div>
+                </div>
+              </div>
+
             </div>
 
             <!--Empty Div for a while-->
@@ -520,10 +568,183 @@
           </div>
 
         </div>
+
+        <div class="fields">
+
+          <div class="flex-general-row-wrapper field-inn">
+
+            <div style="height:100%;width:13%;" class="solo-vertical-center">
+              <span style="font-size:14px;color:#C9C7C7">card#</span>
+            </div>
+
+            <div style="height:100%;width:86.9%;" class="solo-vertical-center">
+              <input type="text" placeholder="1234 5678 9326 7352" class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding-left:3px;">
+            </div>
+
+          </div>
+          
+        </div>
+
+
+        <div class="fields cf">
+          <div class="pull-left" style="height:42px;width:27%;background-color:white;">
+            <select class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding:2px;color:#7C7B7B">
+                <option>01(jan)</option>
+                <option>02(Feb)</option>
+                <option>03(Mar)</option>
+                <option>04(April)</option>
+            </select>
+          </div>
+
+          <div class="pull-left" style="height:42px;width:27%;margin-left:6%; background-color:white;">
+            <select class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding:2px;color:#7C7B7B">
+                <option>2016</option>
+                <option>2015</option>
+                <option>2014</option>
+                <option>2013</option>
+            </select>
+          </div>
+
+          <div class="pull-right cf" style="height:42px;width:33%;background-color:white;">
+            <div class="pull-left flex-general-column-wrapper-center" style="height:100%;width:40%;">
+              <span style="font-size:14px;color:#C9C7C7">CVC</span>
+            </div>
+            <div class="pull-left" style="height:100%;width:50.9%;">
+              <input type="text" placeholder="CVC" class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding-left:3px;">
+            </div>
+
+          </div>
+        </div>
+
+        <div class="" style="margin-top:50px;width:100%;color:#0484e0;">
+          <span>Securely add my credit card</span>
+        </div>
+
+        <div class="fields cf" style="">
+          <div class="pull-left" style="width:60%;height:42px;">
+            <button class="default-inputfield" style="height:100%;width:100%;border-radius:2px;background-color:#19b698;color:white;font-size:14px;font-weight:500;">PURCHASE PLAN</button>
+          </div>
+          <div class="pull-right" style="width:30%;height:42px;">
+            <button type="button" class="default-inputfield" style="height:100%;width:100%;border-radius:2px;background-color:#D2D4E0;color:white;font-size:14px;" data-dismiss="modal">CANCEL</button>
+          </div>
+        </div>
         
       </div>
 
       <div class="app-credicardplan-wrap" style="">
+        <div class="plan-changer" ng-class="{changebillplan:openBillingPlan}">
+            <div class="planbox">
+
+              <!--Selected Plan-->
+              <div class="selected-plan splbillplanchangebtn flex-general-row-wrapper" ng-click="toggleBillingPlan()">
+                  <div style="width:85%;">
+                    <div>
+                      <span style="font-size:19px;">Spark Plan</span>
+                    </div>
+                    <div style="margin-top:3px;">
+                      <span style="font-size:13px;">$5 PER MONTH</span>
+                    </div>
+                  </div>
+                  <div style="width:14.9%;height:100%;" class="solo-horizontal-center">
+                      <div>
+                        <span style="font-size:28px;">
+                          <i class="icon ion-ios-arrow-down" style="color:#71767C;"></i>                          
+                        </span>
+                    </div>
+                  </div>
+              </div>
+              <!--/Selected Plan-->
+
+              <!--Change Plan Box-->
+              <div ng-show="openBillingPlan" class="plan-options splbillplanchangebtn"
+               click-outside="closeBillingPlan()" outside-if-not="splbillplanchangebtn">
+                <div class="change-plan flex-general-row-wrapper">
+                    <div style="width:99.99%;">
+                      <div>
+                        <span style="font-size:19px;">Spark Plan</span>
+                      </div>
+                      <div style="margin-top:3px;">
+                        <span style="font-size:13px;">$5 PER MONTH</span>
+                      </div>
+                    </div>                    
+                </div>
+
+                <div class="change-plan flex-general-row-wrapper">
+                    <div style="width:99.99%;">
+                      <div>
+                        <span style="font-size:19px;">Spark Plan</span>
+                      </div>
+                      <div style="margin-top:3px;">
+                        <span style="font-size:13px;">$5 PER MONTH</span>
+                      </div>
+                    </div>                    
+                </div>
+              </div>
+              <!--/Change Plan Box-->
+
+            </div>
+        </div>
+
+        <div class="selectedplan-details-wrap">
+          <div class="plan-detstrip solo-vertical-center">
+            <span style="font-size:14px;color:#9AA7BA;font-weight:700;">DATABASE</span>
+          </div>
+
+          <div class="plan-detstrip-vals flex-general-row-wrapper">
+              <div style="height:100%;width:75%;padding-left:24px;" class="solo-vertical-center">
+                <span style="color:#9AA7BA;">API Calls</span>
+              </div>
+              <div style="height:100%;width:24.9%;" class="solo-vertical-center cf">
+                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">100</span>
+              </div>
+          </div>
+
+          <div class="plan-detstrip-vals flex-general-row-wrapper">
+              <div style="height:100%;width:75%;padding-left:24px;" class="solo-vertical-center">
+                <span style="color:#9AA7BA;">Storage</span>
+              </div>
+              <div style="height:100%;width:24.9%;" class="solo-vertical-center cf">
+                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">100</span>
+              </div>
+          </div>
+
+          <div class="plan-detstrip solo-vertical-center" style="margin-top:3px;">
+            <span style="font-size:14px;color:#9AA7BA;font-weight:700;">REALTIME</span>
+          </div>
+          <div class="plan-detstrip-vals flex-general-row-wrapper">
+              <div style="height:100%;width:75%;padding-left:24px;" class="solo-vertical-center">
+                <span style="color:#9AA7BA;">Connections</span>
+              </div>
+              <div style="height:100%;width:24.9%;" class="solo-vertical-center cf">
+                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">100</span>
+              </div>
+          </div>
+
+          <div class="plan-detstrip solo-vertical-center" style="margin-top:3px;">
+            <span style="font-size:14px;color:#9AA7BA;font-weight:700;">AUTHENTICATION</span>
+          </div>
+          <div class="plan-detstrip-vals flex-general-row-wrapper">
+              <div style="height:100%;width:75%;padding-left:24px;" class="solo-vertical-center">
+                <span style="color:#9AA7BA;">Users</span>
+              </div>
+              <div style="height:100%;width:24.9%;" class="solo-vertical-center cf">
+                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">100</span>
+              </div>
+          </div>
+
+          <div class="plan-detstrip solo-vertical-center" style="margin-top:3px;">
+            <span style="font-size:14px;color:#9AA7BA;font-weight:700;">MEMORY</span>
+          </div>
+          <div class="plan-detstrip-vals flex-general-row-wrapper">
+              <div style="height:100%;width:75%;padding-left:24px;" class="solo-vertical-center">
+                <span style="color:#9AA7BA;">Cache</span>
+              </div>
+              <div style="height:100%;width:24.9%;" class="solo-vertical-center cf">
+                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">100</span>
+              </div>
+          </div>
+
+        </div>
         
       </div>
 

@@ -4,13 +4,13 @@ app.controller('adminController',
 '$stateParams', 
 '$location',
 'userService',
-'cloudboostServerService',
+'serverSettingsService',
 function($scope,
 $rootScope,
 $stateParams,
 $location,
 userService,
-cloudboostServerService){  
+serverSettingsService){  
  
   $rootScope.isFullScreen=false;
   $rootScope.page='admin';  
@@ -156,7 +156,7 @@ cloudboostServerService){
   };
 
   $scope.toggleAllowSignUp=function(){
-    cloudboostServerService.updateServerSettings($scope.serverSettings._id,$scope.serverSettings.allowSignUp)
+    serverSettingsService.updateServerSettings($scope.serverSettings._id,$scope.serverSettings.allowSignUp)
     .then(function(serverSettings){ 
       $scope.serverSettings=serverSettings;         
     },function(error){   
@@ -166,7 +166,7 @@ cloudboostServerService){
 
   $scope.upsertAPI_URL=function() {
     $scope.upsertAPISpinner=true;    
-    cloudboostServerService.upsertAPI_URL($scope.serverSettings.myURL)
+    serverSettingsService.upsertAPI_URL($scope.serverSettings.myURL)
     .then(function(serverSettings){ 
       $scope.upsertAPISpinner=false;        
     },function(error){   
@@ -192,7 +192,7 @@ cloudboostServerService){
 
   function getServerSettings(){
        
-    cloudboostServerService.getServerSettings()
+    serverSettingsService.getServerSettings()
     .then(function(serverSettings){ 
       $scope.serverSettings=serverSettings;         
     },function(error){   

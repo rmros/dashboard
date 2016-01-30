@@ -23,13 +23,7 @@ app.config([
         url: '/:appId/table/:tableName',
         templateUrl: 'app/views/data-browser.html',
         controller: 'dataBrowserController'
-    });
-
-    $stateProvider.state('appSettings', {
-        url: '/:appId/settings',
-        templateUrl: 'app/views/app-settings.html',
-        controller: 'appSettingsController'
-    });
+    });   
 
     $stateProvider.state('pricing', {
         url: '/:appId/pricing',

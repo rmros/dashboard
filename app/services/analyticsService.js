@@ -1,4 +1,4 @@
-app.factory('pricingService', ['$q','$http','$rootScope',function ($q,$http,$rootScope) {
+app.factory('analyticsService', ['$q','$http','$rootScope',function ($q,$http,$rootScope) {
 
   var global = {};
     

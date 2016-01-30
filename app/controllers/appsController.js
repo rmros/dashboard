@@ -39,6 +39,8 @@ app.controller('appsController',
   $scope.developers=[];
   $scope.invitees=[];
 
+  $scope.openBillingPlan=false;
+
   /*Collapse sidebar*/           
   toggleSideBar();
   
@@ -435,10 +437,8 @@ app.controller('appsController',
     }
     
   };
+ 
 
-  $scope.initUpgradePlan=function() {
-    $("#upgradeModal").modal();
-  };
   $scope.changeAppKeysInit=function(index,list){    
     $scope.appOptions[index]=false;
 
@@ -550,6 +550,24 @@ app.controller('appsController',
   $scope.closeEditApp=function(index){
     $scope.showProject[index]=false;
   };
+
+
+  //Billing
+
+  $scope.initUpgradePlan=function() {
+    $("#upgradeModal").modal();
+  };
+  $scope.toggleBillingPlan=function(){
+    if($scope.openBillingPlan){
+      $scope.openBillingPlan=false;
+    }else{
+      $scope.openBillingPlan=true;
+    }
+  };
+  $scope.closeBillingPlan=function(){   
+    $scope.openBillingPlan=false;   
+  };
+  //Billing
 
   function projectList(){
     //listing start

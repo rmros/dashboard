@@ -18,7 +18,7 @@ $filter,
 focus,
 beaconService,
 filterService,
-cloudBoostService,
+cloudBoostApiService,
 sharedDataService) {
 
 //Init
@@ -186,7 +186,7 @@ $scope.showCommonTypes=function(row,column){
       }
 
       //Array CloudObjects
-      cloudBoostService.queryContainedIn(column.document.relatedTo,'id',cbIdArray)
+      cloudBoostApiService.queryContainedIn(column.document.relatedTo,'id',cbIdArray)
       .then(function(list){
         if(list && list.length>0){
           $scope.editableList=list;
@@ -237,7 +237,7 @@ $scope.setAndSaveBoolean=function(row,column){
     rowSpinnerMode(i);     
 
     //Save Cloud Object
-    cloudBoostService.saveCloudObject(row)
+    cloudBoostApiService.saveCloudObject(row)
     .then(function(obj){
         //scope.$digest();         
         if($scope.tableDef){
@@ -293,7 +293,7 @@ $scope.setAndSaveJsonObject=function(modifiedJson){
     rowSpinnerMode($scope.editableIndex);        
 
     //Save Cloud Object
-    cloudBoostService.saveCloudObject($scope.editableRow)
+    cloudBoostApiService.saveCloudObject($scope.editableRow)
     .then(function(obj){           
       $scope.editableJsonObj=null;
       showSaveIconInSecond($scope.editableIndex);
@@ -323,7 +323,7 @@ $scope.setAndSaveACLObject=function(cbACLObject){
     rowSpinnerMode($scope.editableIndex);        
 
     //Save Cloud Object
-    cloudBoostService.saveCloudObject($scope.editableRow)
+    cloudBoostApiService.saveCloudObject($scope.editableRow)
     .then(function(obj){           
       $scope.editableJsonObj=null;
       sharedDataService.aclObject=null;
@@ -342,7 +342,7 @@ $scope.setAndSaveFile=function(fileObj){
   $("#md-fileviewer").modal("hide");   
   if(fileObj) {   
     rowSpinnerMode($scope.editableIndex);   
-    cloudBoostService.getCBFile(fileObj)
+    cloudBoostApiService.getCBFile(fileObj)
     .then(function(cloudBoostFile){
         rowEditMode($scope.editableIndex);
    
@@ -362,7 +362,7 @@ $scope.setAndSaveFile=function(fileObj){
             
             $scope.editableRow.set($scope.editableColumn.name,cloudBoostFile);            
             //Save Cloud Object
-            cloudBoostService.saveCloudObject($scope.editableRow)
+            cloudBoostApiService.saveCloudObject($scope.editableRow)
             .then(function(obj){                 
               $scope.removeSelectdFile();
               showSaveIconInSecond($scope.editableIndex);
@@ -411,7 +411,7 @@ $scope.deleteFile=function(){
       rowSpinnerMode($scope.editableIndex);
                   
       //Save Cloud Object
-      cloudBoostService.saveCloudObject($scope.editableRow)
+      cloudBoostApiService.saveCloudObject($scope.editableRow)
       .then(function(obj){  
         $scope.editableFile=null;
         $scope.removeSelectdFile();
@@ -467,7 +467,7 @@ function saveGeopoint(){
     rowSpinnerMode($scope.editableIndex);
 
     //Save Cloud Object
-    cloudBoostService.saveCloudObject($scope.editableRow)
+    cloudBoostApiService.saveCloudObject($scope.editableRow)
     .then(function(obj){       
       $scope.editableGeopoint=null;
       showSaveIconInSecond($scope.editableIndex);
@@ -509,7 +509,7 @@ $scope.searchRelationDocs=function(){
   $("#md-reldocumentviewer").modal("hide");  
 
   //List Relations records 
-  cloudBoostService.loadTableData($scope.tableDef,"createdAt","asc",20,0)
+  cloudBoostApiService.loadTableData($scope.tableDef,"createdAt","asc",20,0)
   .then(function(list){        
        
    $scope.relationTableData=list;   
@@ -544,7 +544,7 @@ $scope.linkRecord=function(relationCBRecord){
     $("#md-searchreldocument").modal("hide");
                
     //Save Cloud Object
-    cloudBoostService.saveCloudObject($scope.editableRow)
+    cloudBoostApiService.saveCloudObject($scope.editableRow)
     .then(function(obj){          
       showSaveIconInSecond(i);
       
@@ -571,7 +571,7 @@ $scope.viewRelationData=function(row,column,index){
     var tableDef=_.first(_.where($rootScope.currentProject.tables, {name: tableName})); 
     
     //get Table data
-    cloudBoostService.queryTableById(tableDef,rowId)
+    cloudBoostApiService.queryTableById(tableDef,rowId)
     .then(function(record){       
 
       if(record){
@@ -627,7 +627,7 @@ $scope.deleteRelLink=function(row,column){
       rowSpinnerMode(i);
                   
       //Save Cloud Object
-      cloudBoostService.saveCloudObject(row)
+      cloudBoostApiService.saveCloudObject(row)
       .then(function(obj){      
         $scope.relatedTableDefArray=[];
         $scope.relatedTableRecordArray=[];
@@ -698,7 +698,7 @@ $scope.setAndSaveList=function(updatedList){
     rowSpinnerMode($scope.editableIndex);
 
     //Save Cloud Object
-    cloudBoostService.saveCloudObject($scope.editableRow)
+    cloudBoostApiService.saveCloudObject($scope.editableRow)
     .then(function(obj){ 
       $scope.editableRow=obj;
       showSaveIconInSecond($scope.editableIndex);
@@ -799,7 +799,7 @@ function save(){
         rowSpinnerMode($scope.editableIndex);          
       
         //Save Cloud Object
-        cloudBoostService.saveCloudObject($scope.editableRow)
+        cloudBoostApiService.saveCloudObject($scope.editableRow)
         .then(function(obj){               
           showSaveIconInSecond($scope.editableIndex);
         }, function(error){                         
@@ -873,7 +873,7 @@ function getProjectTables(){
     };
     $scope.filtersList.push(defaultFilterColumn);
 
-    return cloudBoostService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0);
+    return cloudBoostApiService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0);
 
   }).then(function(cbObjects){ 
     $scope.currentTableData=cbObjects;
@@ -913,7 +913,7 @@ $scope.addMoreRecords=function(){
   if($scope.currentTableData && $rootScope.currentProject && $rootScope.currentProject.currentTable){
     $scope.loadingRecords=true;
     //load more data
-    cloudBoostService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,5,$scope.totalRecords)
+    cloudBoostApiService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,5,$scope.totalRecords)
     .then(function(list){
       if(list && list.length>0){
         if($scope.currentTableData.length>0){
@@ -1159,7 +1159,7 @@ $scope.deleteSelectedRows=function(){
   var promises=[];
   for(var i=0;i<$scope.rowsSelected.length;++i){
     if($scope.rowsSelected[i]==true){        
-      promises.push(cloudBoostService.deleteCloudObject($scope.currentTableData[i]));
+      promises.push(cloudBoostApiService.deleteCloudObject($scope.currentTableData[i]));
     }
   }
 
@@ -1249,7 +1249,7 @@ $scope.sortASC=function(column){
     $scope.orderBy=column.name;
     $scope.orderByType="asc";    
 
-    cloudBoostService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0)
+    cloudBoostApiService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0)
     .then(function(list){ 
 
        $scope.currentTableData=list; 
@@ -1276,7 +1276,7 @@ $scope.sortDESC=function(column){
 
     $scope.orderBy=column.name;
     $scope.orderByType="desc";
-    cloudBoostService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0)
+    cloudBoostApiService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0)
     .then(function(list){ 
 
        $scope.currentTableData=list; 
@@ -1614,7 +1614,7 @@ $scope.popUpFilterTypes=function(eachFilter,index){
 function processFilterQuery(index){
   $scope.filterSpinner[index]=true;
   $scope.filterNotify=null;
-  cloudBoostService.filterQuery($rootScope.currentProject.currentTable,$scope.filtersList)
+  cloudBoostApiService.filterQuery($rootScope.currentProject.currentTable,$scope.filtersList)
   .then(function(cbObjects){   
     $scope.currentTableData=cbObjects; 
     $scope.filterSpinner[index]=false;                                          
@@ -1736,7 +1736,7 @@ $scope.updatedCloudSearch=function(){
     
     $scope.cloudSearchSpinner=true;
     //CloudSearch
-    cloudBoostService.cloudSearch($rootScope.currentProject.currentTable,allColumnNames,tempData)
+    cloudBoostApiService.cloudSearch($rootScope.currentProject.currentTable,allColumnNames,tempData)
     .then(function(cbObjects){   
       $scope.currentTableData=cbObjects;
       $scope.cloudSearchSpinner=false;                                              

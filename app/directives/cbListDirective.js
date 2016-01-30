@@ -10,7 +10,7 @@ app.directive('cbList', function(){
           'save': '&save'
         },   
         templateUrl: 'app/directives/templates/listTemplate.html',       
-        controller:['$scope','$rootScope','cloudBoostService',function($scope,$rootScope,cloudBoostService) { 
+        controller:['$scope','$rootScope','cloudBoostApiService',function($scope,$rootScope,cloudBoostApiService) { 
           
           $scope.modifyListItemError=[];          
           $scope.listFileSpinner=[];         

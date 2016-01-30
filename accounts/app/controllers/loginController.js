@@ -1,6 +1,6 @@
 app.controller('loginController',
-  ['$scope','userService','$http','$cookies','$rootScope','cloudboostServerService',
-  function($scope,userService,$http,$cookies,$rootScope,cloudboostServerService){
+  ['$scope','userService','$http','$cookies','$rootScope',
+  function($scope,userService,$http,$cookies,$rootScope){
 
   $scope.accountVerified=true; 
   $scope.resentCode=false; 
