@@ -11,7 +11,8 @@ app.controller('appsController',
    '$timeout',
    'tableService',
    'beaconService',
-   'userService',   
+   'userService',
+   'paymentService',   
   function ($scope,
   $q,
   projectService,
@@ -22,7 +23,8 @@ app.controller('appsController',
   $timeout,
   tableService,
   beaconService,
-  userService) {
+  userService,
+  paymentService) {
 
   $rootScope.isFullScreen=false;
   $scope.showProject=[];
@@ -40,6 +42,13 @@ app.controller('appsController',
   $scope.invitees=[];
 
   $scope.openBillingPlan=false;
+
+  $scope.cardDetails={
+    number:null,
+    expMonth:null,
+    expYear:null,
+    cvc:null
+  };
 
   /*Collapse sidebar*/           
   toggleSideBar();
@@ -521,6 +530,15 @@ app.controller('appsController',
   //Billing
   $scope.initUpgradePlan=function() {
     $("#upgradeModal").modal();
+  };
+
+  $scope.addCard=function(){
+    paymentService.upsertCard($scope.cardDetails)
+     .then(function(data){
+                                   
+    },function(error){
+      errorNotify('Opps!...');
+    });
   };
 
   $scope.selectThisPlan=function(){

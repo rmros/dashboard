@@ -551,7 +551,7 @@
             </div>
 
             <div style="height:100%;width:86.9%;" class="solo-vertical-center">
-              <input type="text" placeholder="1234 5678 9326 7352" class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding-left:3px;">
+              <input type="text" ng-model="cardDetails.number" placeholder="1234 5678 9326 7352" class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding-left:3px;">
             </div>
 
           </div>
@@ -561,7 +561,7 @@
 
         <div class="fields cf">
           <div class="pull-left" style="height:42px;width:27%;background-color:white;">
-            <select class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding:2px;color:#7C7B7B">
+            <select class="default-inputfield" ng-model="cardDetails.expMonth" style="height:100%;width:100%;font-size:16px;padding:2px;color:#7C7B7B">
                 <option>01(Jan)</option>
                 <option>02(Feb)</option>
                 <option>03(Mar)</option>
@@ -578,7 +578,7 @@
           </div>
 
           <div class="pull-left" style="height:42px;width:27%;margin-left:6%; background-color:white;">
-            <select class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding:2px;color:#7C7B7B">
+            <select class="default-inputfield" ng-model="cardDetails.expYear" style="height:100%;width:100%;font-size:16px;padding:2px;color:#7C7B7B">
                 <option>2016</option>
                 <option>2017</option>
                 <option>2018</option>
@@ -591,7 +591,7 @@
               <span style="font-size:14px;color:#C9C7C7">CVC</span>
             </div>
             <div class="pull-left" style="height:100%;width:50.9%;">
-              <input type="text" placeholder="CVC" class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding-left:3px;">
+              <input type="text" placeholder="CVC" ng-model="cardDetails.cvc" class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding-left:3px;">
             </div>
 
           </div>
@@ -603,7 +603,7 @@
 
         <div class="fields cf" style="">
           <div class="pull-left" style="width:60%;height:42px;">
-            <button class="default-inputfield" style="height:100%;width:100%;border-radius:2px;background-color:#19b698;color:white;font-size:14px;font-weight:500;">PURCHASE PLAN</button>
+            <button class="default-inputfield" style="height:100%;width:100%;border-radius:2px;background-color:#19b698;color:white;font-size:14px;font-weight:500;" ng-click="addCard()">PURCHASE PLAN</button>
           </div>
           <div class="pull-right" style="width:30%;height:42px;">
             <button type="button" class="default-inputfield" style="height:100%;width:100%;border-radius:2px;background-color:#D2D4E0;color:white;font-size:14px;" data-dismiss="modal">CANCEL</button>
