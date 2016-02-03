@@ -54,20 +54,22 @@ app.controller('pricingController',
 		$scope.usageSpinner=true;
 
 		var promises=[];
-		promises.push(analyticsService.getStatisticsByAppId(id));
-		//promises.push(analyticsService.getStatisticsByAppId(id,"Object","Search"));
+		promises.push(analyticsService.api(id));
+		promises.push(analyticsService.storage(id));
 		//promises.push(analyticsService.getStatisticsByAppId(id,"Object","Queues"));
 
 		$q.all(promises).then(function(dataList){
 			console.log(dataList);
+
 			//API
 			if(dataList[0]){
 				$scope.apiUsage=dataList[0];
 
-				var apiObj=angular.copy(_sanitizeGraph(dataList[0]));
+				var apiObj=angular.copy(_sanitizeGraph(dataList[0],"dayApiCount"));
 				$scope.apiLabels=angular.copy(apiObj.labels);				
 				$scope.apiData=angular.copy([apiObj.data]);	
 
+				$scope.apiUsage.categoryName="API";
 				$scope.apiUsage.displayGraph=true;
 			}else{
 				var defParams={
@@ -76,31 +78,31 @@ app.controller('pricingController',
 					displayGraph:false
 				};
 				$scope.apiUsage=defParams;
-			}			
+			}
 
-			//Search
-			/*if(dataList[1]){
-				$scope.searchUsage=dataList[1];	
-				$scope.searchUsage.category="Search";	
-				var searchObj=angular.copy(_sanitizeGraph(dataList[1]));
-				$scope.searchUsage.totalApiCount=searchObj.apiCount;
-				$scope.searchUsage.totalCost=searchObj.totalCost;
+			//Storage
+			if(dataList[1]){
+				$scope.storageUsage=dataList[1];
 
-				$scope.searchLabels=angular.copy(searchObj.labels);
-				$scope.searchData=angular.copy([searchObj.data]);
-				$scope.searchUsage.displayGraph=true;
+				var storageObj=angular.copy(_sanitizeGraph(dataList[1],"size"));
+				$scope.storageLabels=angular.copy(storageObj.labels);				
+				$scope.storageData=angular.copy([storageObj.data]);	
+
+				$scope.storageUsage.categoryName="Storage";
+				$scope.storageUsage.displayGraph=true;
 			}else{
 				var defParams={
-					totalApiCount:0,
-					totalCost:0,
-					category:"Search",
+					totalStorage:0,										
+					categoryName:"Storage",
 					displayGraph:false
 				};
-				$scope.searchUsage=defParams;
+				$scope.storageUsage=defParams;
 			}			
 
+					
+
 			//Queues
-			if(dataList[2]){
+			/*if(dataList[2]){
 				$scope.queuesUsage=dataList[2];	
 				$scope.searchUsage.category="Queues";	
 				var queuesObj=angular.copy(_sanitizeGraph(dataList[2]));
@@ -126,7 +128,7 @@ app.controller('pricingController',
 		});	
 	}
 
-	function _sanitizeGraph(data){			
+	function _sanitizeGraph(data,dataStringName){			
 
 		var labels=_.pluck(data.usage, 'timeStamp');
 		for(var i=0;i<labels.length;++i){				
@@ -144,15 +146,14 @@ app.controller('pricingController',
 				newLabels.push(dateFormated);	
 			}
 		}		
-		var apiCountData=_.pluck(data.usage, 'dayApiCount');		
+		var mainData=_.pluck(data.usage, dataStringName);		
 
 		var response={};		
 		response.labels=newLabels;
-		response.data=apiCountData;
+		response.data=mainData;
 		return response;
 	}
 
-		
 
     function nextBillingCycleDays(){
     	var nxt_year=null;

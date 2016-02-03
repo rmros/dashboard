@@ -58,35 +58,26 @@
                       Category:               
                     </div>
                     <div class="pull-left api-category-value"> 
-                      {{searchUsage.category}}               
+                      {{storageUsage.categoryName}}               
                     </div>
                   </div>
 
                   <div class="cf" style="width:30%;"> 
                     <div class="pull-left api-total-count"> 
-                      API Count:               
+                      Total Storage:               
                     </div>
                     <div class="pull-left api-total-count-value"> 
-                      {{searchUsage.totalApiCount}}              
+                      {{storageUsage.totalStorage}} MB             
                     </div>
                   </div>
-
-                  <div class="cf" style="width:30%;"> 
-                    <div class="pull-left api-total-cost"> 
-                      Cost:               
-                    </div>
-                    <div class="pull-left"> 
-                     <span class="api-total-cost-value">{{searchUsage.totalCost}} </span> 
-                     <span class="api-total-currency">USD</span>              
-                    </div>
-                  </div>
+                
                  
                 </div> 
 
                 <!--Graph-->
-                <div ng-show="searchUsage.displayGraph" style="height:200px;width:100%;padding:10px;">
-                  <canvas  class="chart chart-line" chart-data="searchData"
-                    chart-labels="searchLabels" chart-legend="false" style="height:200px;width:100%;">
+                <div ng-show="storageUsage.displayGraph" style="height:200px;width:100%;padding:10px;">
+                  <canvas  class="chart chart-line" chart-data="storageData"
+                    chart-labels="storageLabels" chart-legend="false" style="height:200px;width:100%;">
                   </canvas>                                
                 </div>
                 <!--/Graph-->
