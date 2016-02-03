@@ -2,10 +2,10 @@ app.factory('analyticsService', ['$q','$http','$rootScope',function ($q,$http,$r
 
   var global = {};
     
-  global.getStatisticsByAppId = function(appId,category,subCategory){
+  global.getStatisticsByAppId = function(appId){
     var q=$q.defer();
  
-    $http.post(analyticsURL+'/statistics',{appId:"fyipeprod",category:category,subCategory:subCategory}).
+    $http.get(frontendServerURL+'/analytics/'+"bull99").
     success(function(data, status, headers, config) {
       q.resolve(data);
     }).

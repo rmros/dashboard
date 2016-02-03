@@ -54,34 +54,32 @@ app.controller('pricingController',
 		$scope.usageSpinner=true;
 
 		var promises=[];
-		promises.push(analyticsService.getStatisticsByAppId(id,null,null));
-		promises.push(analyticsService.getStatisticsByAppId(id,"Object","Search"));
-		promises.push(analyticsService.getStatisticsByAppId(id,"Object","Queues"));
+		promises.push(analyticsService.getStatisticsByAppId(id));
+		//promises.push(analyticsService.getStatisticsByAppId(id,"Object","Search"));
+		//promises.push(analyticsService.getStatisticsByAppId(id,"Object","Queues"));
 
 		$q.all(promises).then(function(dataList){
-
+			console.log(dataList);
 			//API
 			if(dataList[0]){
-				$scope.apiUsage=dataList[0];		
-				var apiObj=angular.copy(_sanitizeGraph(dataList[0]));
-				$scope.apiUsage.totalApiCount=apiObj.apiCount;
-				$scope.apiUsage.totalCost=apiObj.totalCost;
+				$scope.apiUsage=dataList[0];
 
+				var apiObj=angular.copy(_sanitizeGraph(dataList[0]));
 				$scope.apiLabels=angular.copy(apiObj.labels);				
 				$scope.apiData=angular.copy([apiObj.data]);	
+
 				$scope.apiUsage.displayGraph=true;
 			}else{
 				var defParams={
-					totalApiCount:0,
-					totalCost:0,
-					category:"API",
+					totalApiCount:0,					
+					categoryName:"API",
 					displayGraph:false
 				};
 				$scope.apiUsage=defParams;
 			}			
 
 			//Search
-			if(dataList[1]){
+			/*if(dataList[1]){
 				$scope.searchUsage=dataList[1];	
 				$scope.searchUsage.category="Search";	
 				var searchObj=angular.copy(_sanitizeGraph(dataList[1]));
@@ -120,7 +118,7 @@ app.controller('pricingController',
 					displayGraph:false
 				};
 				$scope.queuesUsage=defParams;
-			}			
+			}*/			
 
 			$scope.usageSpinner=false;
 		},function(error){			
@@ -128,11 +126,9 @@ app.controller('pricingController',
 		});	
 	}
 
-	function _sanitizeGraph(data){
-		data.totalApiCount=$filter('number')(data.totalApiCount);
-		data.totalCost=$filter('number')(data.totalCost);		
+	function _sanitizeGraph(data){			
 
-		var labels=_.pluck(data.usage, '_id');
+		var labels=_.pluck(data.usage, 'timeStamp');
 		for(var i=0;i<labels.length;++i){				
 			labels[i]=new Date(labels[i]);				
 		}
@@ -148,11 +144,9 @@ app.controller('pricingController',
 				newLabels.push(dateFormated);	
 			}
 		}		
-		var apiCountData=_.pluck(data.usage, 'apiCount');		
+		var apiCountData=_.pluck(data.usage, 'dayApiCount');		
 
-		var response={};
-		response.apiCount=data.totalApiCount;
-		response.totalCost=data.totalCost;
+		var response={};		
 		response.labels=newLabels;
 		response.data=apiCountData;
 		return response;

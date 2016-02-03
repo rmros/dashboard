@@ -195,8 +195,11 @@ app.controller('appsController',
             }
 
           },function(error){  
+            $scope.showSaveBtn = true;
+            $scope.startCreatingApp=false;
             $scope.creatingDefaultTables=false;          
             errorNotify('Error in creating App. Try again');
+
             //delete the app
             //$scope.projectListObj.splice($scope.projectListObj.indexOf(project),1);
             //projectService.deleteProject(project.appId);                
