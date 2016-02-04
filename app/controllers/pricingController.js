@@ -58,8 +58,7 @@ app.controller('pricingController',
 		promises.push(analyticsService.storage(id));
 		//promises.push(analyticsService.getStatisticsByAppId(id,"Object","Queues"));
 
-		$q.all(promises).then(function(dataList){
-			console.log(dataList);
+		$q.all(promises).then(function(dataList){			
 
 			//API
 			if(dataList[0]){
