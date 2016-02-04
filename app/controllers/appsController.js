@@ -532,23 +532,42 @@ app.controller('appsController',
   };
 
   //Billing
-  $scope.initUpgradePlan=function() {
+  $scope.initUpgradePlan=function(projectObj) {
     $("#upgradeModal").modal();
+    $scope.upgradePlanApp=projectObj;
+    if(!__isDevelopment){
+      /****Tracking*********/              
+       mixpanel.track('Upgrade Plan', {"App id": projectObj.appId,"App Name": projectObj.name});
+      /****End of Tracking*****/
+    }
   };
 
   $scope.addCard=function(){
-    paymentService.upsertCard($scope.cardDetails)
+    /*paymentService.upsertCard($scope.cardDetails)
      .then(function(data){
                                    
     },function(error){
       errorNotify('Opps!...');
-    });
+    });*/
+
+    if(!__isDevelopment){
+      /****Tracking*********/              
+       mixpanel.track('Purchase Plan Btn', {"App id": $scope.upgradePlanApp.appId});
+      /****End of Tracking*****/
+    }
+
   };
 
-  $scope.selectThisPlan=function(){
+  $scope.selectThisPlan=function(selectedPlan){
     $scope.openBillingPlan=false;
     WarningNotify("Thank you for your interest, paid plans are launching soon!");
+    if(!__isDevelopment){
+      /****Tracking*********/              
+       mixpanel.track('Selected Plan', {"App id": $scope.upgradePlanApp.appId,"Plan Name": selectedPlan});
+      /****End of Tracking*****/
+    }
   };
+
   $scope.toggleBillingPlan=function(){
     if($scope.openBillingPlan){
       $scope.openBillingPlan=false;

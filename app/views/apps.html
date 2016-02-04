@@ -114,7 +114,7 @@
                     <span style="font-weight:700;color:gray;">FREE PLAN</span>
                   </div>
 
-                  <div class="flex-general-column-wrapper-center" style="height:100%;width:40%; background-color:#EDEDED;color:#7C7C7C;cursor:pointer;border-left:1px solid #C9C9C9;" ng-click="initUpgradePlan();">
+                  <div class="flex-general-column-wrapper-center" style="height:100%;width:40%; background-color:#EDEDED;color:#7C7C7C;cursor:pointer;border-left:1px solid #C9C9C9;" ng-click="initUpgradePlan(list);">
                     <span style="">Upgrade
                     &nbsp;
                     <i class="icon ion-arrow-graph-up-right" style="font-size:16px;"></i>
@@ -597,9 +597,6 @@
           </div>
         </div>
 
-        <div class="" style="margin-top:50px;width:100%;color:#0484e0;">
-          <span>Securely add my credit card</span>
-        </div>
 
         <div class="fields cf" style="">
           <div class="pull-left" style="width:60%;height:42px;">
@@ -620,10 +617,10 @@
               <div class="selected-plan splbillplanchangebtn flex-general-row-wrapper" ng-click="toggleBillingPlan()">
                   <div style="width:85%;">
                     <div>
-                      <span style="font-size:19px;">Free Plan</span>
+                      <span style="font-size:19px;">Launch Plan</span>
                     </div>
                     <div style="margin-top:3px;">
-                      <span style="font-size:13px;">$0 PER MONTH</span>
+                      <span style="font-size:13px;">$49 PER MONTH</span>
                     </div>
                   </div>
                   <div style="width:14.9%;height:100%;" class="solo-horizontal-center">
@@ -640,7 +637,7 @@
               <div ng-show="openBillingPlan" class="plan-options splbillplanchangebtn"
                click-outside="closeBillingPlan()" outside-if-not="splbillplanchangebtn">
 
-                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan()">
+                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan('Free Plan')">
                     <div style="width:99.99%;">
                       <div>
                         <span style="font-size:19px;">Free Plan</span>
@@ -651,7 +648,7 @@
                     </div>                    
                 </div>
 
-                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan()">
+                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan('Prototype Plan')">
                     <div style="width:99.99%;">
                       <div>
                         <span style="font-size:19px;">Prototype Plan</span>
@@ -662,7 +659,7 @@
                     </div>                    
                 </div>
 
-                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan()">
+                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan('Launch Plan')">
                     <div style="width:99.99%;">
                       <div>
                         <span style="font-size:19px;">Launch Plan</span>
@@ -673,7 +670,7 @@
                     </div>                    
                 </div>
 
-                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan()">
+                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan('Bootstrap Plan')">
                     <div style="width:99.99%;">
                       <div>
                         <span style="font-size:19px;">Bootstrap Plan</span>
@@ -684,7 +681,7 @@
                     </div>                    
                 </div>
 
-                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan()">
+                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan('Scale Plan')">
                     <div style="width:99.99%;">
                       <div>
                         <span style="font-size:19px;">Scale Plan</span>
@@ -695,7 +692,7 @@
                     </div>                    
                 </div>
 
-                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan()">
+                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan('Unicorn Plan')">
                     <div style="width:99.99%;">
                       <div>
                         <span style="font-size:19px;">Unicorn Plan</span>
@@ -721,7 +718,7 @@
                 <span style="color:#9AA7BA;">API Calls</span>
               </div>
               <div style="height:100%;width:24.9%;" class="solo-vertical-center cf">
-                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">50,000</span>
+                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">500,000</span>
               </div>
           </div>
 
@@ -730,7 +727,7 @@
                 <span style="color:#9AA7BA;">Storage</span>
               </div>
               <div style="height:100%;width:24.9%;" class="solo-vertical-center cf">
-                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">1GB</span>
+                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">10GB</span>
               </div>
           </div>
 
@@ -742,31 +739,21 @@
                 <span style="color:#9AA7BA;">Connections</span>
               </div>
               <div style="height:100%;width:24.9%;" class="solo-vertical-center cf">
-                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">100</span>
+                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">500</span>
               </div>
-          </div>
+          </div>          
 
           <div class="plan-detstrip solo-vertical-center" style="margin-top:3px;">
-            <span style="font-size:14px;color:#9AA7BA;font-weight:700;">AUTHENTICATION</span>
+            <span style="font-size:14px;color:#9AA7BA;font-weight:700;">MISC</span>
           </div>
           <div class="plan-detstrip-vals flex-general-row-wrapper">
               <div style="height:100%;width:75%;padding-left:24px;" class="solo-vertical-center">
-                <span style="color:#9AA7BA;">Users</span>
+                <span style="color:#9AA7BA;">Boost</span>
               </div>
-              <div style="height:100%;width:24.9%;" class="solo-vertical-center cf">
-                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">100</span>
-              </div>
-          </div>
-
-          <div class="plan-detstrip solo-vertical-center" style="margin-top:3px;">
-            <span style="font-size:14px;color:#9AA7BA;font-weight:700;">MEMORY</span>
-          </div>
-          <div class="plan-detstrip-vals flex-general-row-wrapper">
-              <div style="height:100%;width:75%;padding-left:24px;" class="solo-vertical-center">
-                <span style="color:#9AA7BA;">Cache</span>
-              </div>
-              <div style="height:100%;width:24.9%;" class="solo-vertical-center cf">
-                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">10MB</span>
+              <div style="height:100%;width:24.9%;" class="solo-vertical-center cf">                
+                <span style="margin-left:10px;">
+                    <i class="icon ion-checkmark" style="font-size:17px !important; color:gray;margin-top:5px;"></i>
+                </span>
               </div>
           </div>
 
