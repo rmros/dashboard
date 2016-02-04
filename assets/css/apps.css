@@ -8,7 +8,8 @@
   position: absolute;
   width: 100%;  
   z-index: 1;
-  opacity: 0;   
+  opacity: 0;
+  left: 0;   
 }
 .startcreatingapp .appuser-inter-msg1{
   animation: openSentence 0.7s both ease-out 0.1s;
@@ -27,6 +28,7 @@
   width: 100%;  
   z-index: 2;
   opacity: 0;
+  left: 0;
 }
 .creatingdefaultables .appuser-inter-msg2{
   animation: openSentence 0.7s both ease-out 0.1s;
@@ -45,6 +47,7 @@
   width: 100%;  
   z-index: 3;
   opacity: 0;  
+  left: 0;
 }
 .yourappisready .appuser-inter-msg3{
   animation: openSentence 0.7s both ease-out 0.1s;

@@ -166,6 +166,7 @@ app.controller('appsController',
 
               $scope.newApp.name="";
               $scope.newApp.appId = "";
+
               $scope.isAppCreated = true;          
               $scope.animateApp[0]=true;
               $scope.showSaveBtn = true;
@@ -579,9 +580,12 @@ app.controller('appsController',
   function addDefaultTables(project){
     var q=$q.defer();
 
+      $rootScope.currentProject=project;
+
       CB.CloudApp.init(SERVER_URL,project.appId, project.keys.master);
 
       var roleTable = new CB.CloudTable("Role"); 
+
 
       tableService.saveTable(roleTable)
       .then(function(roledata){      
@@ -591,8 +595,10 @@ app.controller('appsController',
 
       }).then(function(userdata){      
         q.resolve(userdata);
+        $rootScope.currentProject=null;
       },function(error){
-        q.reject(error);                       
+        q.reject(error); 
+        $rootScope.currentProject=null;                      
       });
 
     return q.promise;
