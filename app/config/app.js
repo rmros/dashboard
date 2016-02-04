@@ -51,10 +51,6 @@ if(window.location.hostname==="dashboard.cloudboost.io"){
 
 
 
-
-
-
-
 /*********************Notificatiosn******************************/
   //Notification
   function errorNotify(errorMsg){

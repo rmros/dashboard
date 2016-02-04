@@ -18,8 +18,7 @@ function($scope,$rootScope,$q,$cookies,userService,$location,serverSettingsServi
 		promises.push(serverSettingsService.isNewServer());
 		promises.push(serverSettingsService.getServerSettings());
 
-		$q.all(promises).then(function(list){	
-			list[0]=true;				
+		$q.all(promises).then(function(list){								
 			if(list[0]==true && newPath!="/newServer"){//Speacial case
 		        window.location.href=dashboardURL+"/accounts/#/newServer"
 	     	}else if(newPath=="/newServer" && (!list[0] || list[0]==false)){	     	
