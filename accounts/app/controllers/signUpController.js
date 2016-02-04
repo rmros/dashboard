@@ -8,7 +8,7 @@ app.controller('signupController',
         $scope.showSpinner=false;
         trackMixpanel();                  
       };
-
+      
       $scope.signUp=function(isValid){
 
         if(isValid){
