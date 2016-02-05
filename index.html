@@ -113,12 +113,12 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
             </li>-->            
           </ul> 
 
-          <div ng-show="currentProject" class="flex-general-column-wrapper-center mainmenu-subcat-heading" style="border-top:2px solid rgba(188, 180, 176, 0.23);">
+          <div ng-show="showAppPanel" class="flex-general-column-wrapper-center mainmenu-subcat-heading" style="border-top:2px solid rgba(188, 180, 176, 0.23);">
             <span>APP</span>
           </div>
           <ul class="cl-vnavigation">         
 
-            <li ng-class="{active:page=='tableDesigner','menu-active':page=='tableDesigner'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Tables" tooltip>
+            <li ng-class="{active:page=='tableDesigner','menu-active':page=='tableDesigner'}" ng-show="showAppPanel" data-toggle="tooltip" data-placement="right" title="Tables" tooltip>
               <a href="#/{{currentProject.appId}}/table"  ng-click="toggleSideMenu()"><i class="fa fa-table"></i><span>Table Designer</span></a>   
             </li>                       
 

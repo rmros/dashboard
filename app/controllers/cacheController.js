@@ -18,6 +18,7 @@ $timeout){
 
   
   var id;
+  $rootScope.showAppPanel=true;
   $rootScope.isFullScreen=false;
   $rootScope.page='cache';
   $scope.firstVisit=true;

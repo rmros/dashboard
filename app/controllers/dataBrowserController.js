@@ -25,6 +25,7 @@ sharedDataService) {
 var id;
 var tableName;
 $scope.isTableLoaded=false;
+$rootScope.showAppPanel=false;
 $rootScope.isFullScreen=true; 
 
 //Column specific

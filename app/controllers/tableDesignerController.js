@@ -19,6 +19,7 @@ app.controller('tableDesignerController',
     var id;      
     $scope.newtables=[];
     $scope.addTablePopup=false;
+    $rootScope.showAppPanel=true;
     $rootScope.isFullScreen=false;  
     $scope.tableCreateSpinner=[];
     $scope.tableCreatedTick=[];  

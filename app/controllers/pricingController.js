@@ -19,7 +19,7 @@ app.controller('pricingController',
 	$q){
 		
 	var id;
-
+	$rootScope.showAppPanel=true;
 	$rootScope.isFullScreen=false;	
 
 	$scope.init = function(){

@@ -26,6 +26,7 @@ app.controller('appsController',
   userService,
   paymentService) {
 
+  $rootScope.showAppPanel=false;  
   $rootScope.isFullScreen=false;
   $scope.showProject=[];
   $scope.animateApp=[];

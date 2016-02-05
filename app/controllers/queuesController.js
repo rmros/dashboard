@@ -19,6 +19,7 @@ sharedDataService,
 tableService){      
   
   var id;
+  $rootScope.showAppPanel=true;
   $rootScope.isFullScreen=false;
   $rootScope.page='queues';
   $scope.firstVisit=true;

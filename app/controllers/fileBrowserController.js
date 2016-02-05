@@ -15,6 +15,7 @@ projectService,
 $timeout){	
   
   var id;
+  $rootScope.showAppPanel=true;
   $rootScope.isFullScreen=false;
   $rootScope.page='files';   
   
