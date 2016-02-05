@@ -546,12 +546,12 @@ app.controller('appsController',
   };
 
   $scope.addCard=function(){
-    /*paymentService.upsertCard($scope.cardDetails)
+    paymentService.createSale($scope.upgradePlanApp.appId,$scope.cardDetails)
      .then(function(data){
                                    
     },function(error){
       errorNotify('Opps!...');
-    });*/
+    });
 
     if(!__isDevelopment){
       /****Tracking*********/              

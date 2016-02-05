@@ -2,7 +2,7 @@ app.factory('paymentService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
     var global = {};
   
-  	global.upsertCard = function(cardDetails){
+  	global.createSale = function(appId,cardDetails){
         var q=$q.defer();
 
          var args = {
@@ -24,14 +24,13 @@ app.factory('paymentService', ['$q','$http','$rootScope',function ($q,$http,$roo
 		    		console.log("Try again.");		    		
 		    	}else{
 
-		    		var reqObj={
-			    		appId:appId,
+		    		var reqObj={			    		
 			    		token:data.response.token.token,
 			    		billingAddr:{},
 			    		planId:0
 			    	};
 			    	
-			    	return $http.post(frontendServerURL+'/payment/card',reqObj);
+			    	return $http.post(frontendServerURL+'/'+appId+'/sale',reqObj);
 		    	}
 		    	
 		    }).then(function(responseData){
