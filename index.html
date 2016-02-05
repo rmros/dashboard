@@ -52,6 +52,7 @@
   <link href="assets/css/profile.css" rel="stylesheet"/>
   <link href="assets/css/users.css" rel="stylesheet"/>
   <link href="assets/css/files.css" rel="stylesheet"/>
+  <link href="assets/css/pricing.css" rel="stylesheet"/>
 
   <!-- start Mixpanel -->
   <script type="text/javascript">(function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
@@ -60,7 +61,7 @@
 <!-- end Mixpanel -->
 
 <!--CloudBoost Javscript SDK-->
-<script type="text/javascript" src="assets/js/cloudboost.js"></script>
+<script type="text/javascript" src="https://cloudboost.io/js-sdk/cloudboost.min.js"></script>
 
 <!--New Relic-->
   <script type="text/javascript">
@@ -350,10 +351,6 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
 <!--Notification-->
 <script type="text/javascript" src="assets/js/AmaranJS/dist/js/jquery.amaran.min.js"></script>
 
-<!--Google Maps-->
-<!--<script src='//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/angular-google-maps/2.1.5/angular-google-maps.min.js'></script>-->
-
 <!--Random-->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-ui-ace/ui-ace.js"></script>
@@ -366,11 +363,8 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
 <script type="text/javascript" src="assets/js/dotdot.js"></script>
 <script type="text/javascript" src="assets/js/contextMenu.js"></script>
 
-
-<!--Stripe-->
-<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-<script src="https://checkout.stripe.com/checkout.js"></script>
-<script type="text/javascript" src="bower_components/stripe-angular/stripe-angular.js"></script>
+<!--2Checkout-->
+<script src="https://www.2checkout.com/checkout/api/2co.min.js"></script>
 
 <!--Chart-->
 <script src="bower_components/Chart.js/Chart.js"></script>

@@ -41,7 +41,7 @@ app.controller('appsController',
   $scope.developers=[];
   $scope.invitees=[];
 
-  $scope.openBillingPlan=false;
+  $scope.openBillingPlan=false; 
 
   $scope.cardDetails={
     number:null,
@@ -69,7 +69,9 @@ app.controller('appsController',
     };       
 
     projectList();
-                                   
+
+    $scope.pricingPlans=pricingPlans;  
+
   };
 
   $scope.deleteAppModal=function(project, index){
@@ -535,6 +537,7 @@ app.controller('appsController',
   $scope.initUpgradePlan=function(projectObj) {
     $("#upgradeModal").modal();
     $scope.upgradePlanApp=projectObj;
+
     if(!__isDevelopment){
       /****Tracking*********/              
        mixpanel.track('Upgrade Plan', {"App id": projectObj.appId,"App Name": projectObj.name});
@@ -558,12 +561,15 @@ app.controller('appsController',
 
   };
 
-  $scope.selectThisPlan=function(selectedPlan){
+  $scope.selectThisPlan=function(selctedPlan){
     $scope.openBillingPlan=false;
+
+    $scope.requestedPlan=selctedPlan;
+
     WarningNotify("Thank you for your interest, paid plans are launching soon!");
     if(!__isDevelopment){
       /****Tracking*********/              
-       mixpanel.track('Selected Plan', {"App id": $scope.upgradePlanApp.appId,"Plan Name": selectedPlan});
+       mixpanel.track('Selected Plan', {"App id": $scope.upgradePlanApp.appId,"Plan Name": selctedPlan.label});
       /****End of Tracking*****/
     }
   };

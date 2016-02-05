@@ -637,127 +637,56 @@
               <div ng-show="openBillingPlan" class="plan-options splbillplanchangebtn"
                click-outside="closeBillingPlan()" outside-if-not="splbillplanchangebtn">
 
-                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan('Free Plan')">
+                <div  ng-repeat="plan in pricingPlans" class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan(plan)">
                     <div style="width:99.99%;">
                       <div>
-                        <span style="font-size:19px;">Free Plan</span>
+                        <span style="font-size:19px;">{{plan.label}}</span>
                       </div>
                       <div style="margin-top:3px;">
-                        <span style="font-size:13px;">$0 PER MONTH</span>
+                        <span style="font-size:13px;">${{plan.price}} {{plan.priceDescription | uppercase}}</span>
                       </div>
                     </div>                    
                 </div>
 
-                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan('Prototype Plan')">
-                    <div style="width:99.99%;">
-                      <div>
-                        <span style="font-size:19px;">Prototype Plan</span>
-                      </div>
-                      <div style="margin-top:3px;">
-                        <span style="font-size:13px;">$10 PER MONTH</span>
-                      </div>
-                    </div>                    
-                </div>
-
-                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan('Launch Plan')">
-                    <div style="width:99.99%;">
-                      <div>
-                        <span style="font-size:19px;">Launch Plan</span>
-                      </div>
-                      <div style="margin-top:3px;">
-                        <span style="font-size:13px;">$49 PER MONTH</span>
-                      </div>
-                    </div>                    
-                </div>
-
-                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan('Bootstrap Plan')">
-                    <div style="width:99.99%;">
-                      <div>
-                        <span style="font-size:19px;">Bootstrap Plan</span>
-                      </div>
-                      <div style="margin-top:3px;">
-                        <span style="font-size:13px;">$149 PER MONTH</span>
-                      </div>
-                    </div>                    
-                </div>
-
-                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan('Scale Plan')">
-                    <div style="width:99.99%;">
-                      <div>
-                        <span style="font-size:19px;">Scale Plan</span>
-                      </div>
-                      <div style="margin-top:3px;">
-                        <span style="font-size:13px;">$449 PER MONTH</span>
-                      </div>
-                    </div>                    
-                </div>
-
-                <div class="change-plan flex-general-row-wrapper" ng-click="selectThisPlan('Unicorn Plan')">
-                    <div style="width:99.99%;">
-                      <div>
-                        <span style="font-size:19px;">Unicorn Plan</span>
-                      </div>
-                      <div style="margin-top:3px;">
-                        <span style="font-size:13px;">$1,449 PER MONTH</span>
-                      </div>
-                    </div>                    
-                </div>
               </div>
               <!--/Change Plan Box-->
 
             </div>
         </div>
 
+        <!--/Plan Details-->
         <div class="selectedplan-details-wrap">
-          <div class="plan-detstrip solo-vertical-center">
-            <span style="font-size:14px;color:#9AA7BA;font-weight:700;">DATABASE</span>
-          </div>
+          <div ng-repeat="eachCat in requestedPlan.usage">
+            <div class="plan-detstrip solo-vertical-center">
+              <span style="font-size:14px;color:#9AA7BA;font-weight:700;">{{eachCat.category}}</span>
+            </div>
 
-          <div class="plan-detstrip-vals flex-general-row-wrapper">
-              <div style="height:100%;width:75%;padding-left:24px;" class="solo-vertical-center">
-                <span style="color:#9AA7BA;">API Calls</span>
-              </div>
-              <div style="height:100%;width:24.9%;" class="solo-vertical-center cf">
-                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">500,000</span>
-              </div>
-          </div>
+            <div ng-repeat="eachFeat in eachCat.features" class="plan-detstrip-vals flex-general-row-wrapper">
+                <div style="height:100%;width:65%;padding-left:24px;" class="solo-vertical-center">
+                  <span style="color:#9AA7BA;">{{eachFeat.name}}</span>
+                </div>
 
-          <div class="plan-detstrip-vals flex-general-row-wrapper">
-              <div style="height:100%;width:75%;padding-left:24px;" class="solo-vertical-center">
-                <span style="color:#9AA7BA;">Storage</span>
-              </div>
-              <div style="height:100%;width:24.9%;" class="solo-vertical-center cf">
-                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">10GB</span>
-              </div>
-          </div>
+                <!--Type==Text-->
+                <div ng-show="eachFeat.type=='text'" style="height:100%;width:34.9%;" class="solo-vertical-center cf">
+                  <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">{{eachFeat.limit.label}}</span>
+                </div>
 
-          <div class="plan-detstrip solo-vertical-center" style="margin-top:3px;">
-            <span style="font-size:14px;color:#9AA7BA;font-weight:700;">REALTIME</span>
-          </div>
-          <div class="plan-detstrip-vals flex-general-row-wrapper">
-              <div style="height:100%;width:75%;padding-left:24px;" class="solo-vertical-center">
-                <span style="color:#9AA7BA;">Connections</span>
-              </div>
-              <div style="height:100%;width:24.9%;" class="solo-vertical-center cf">
-                <span style="color:#5E6D77;font-size:14px;font-weight:600;" class="pull-right">500</span>
-              </div>
-          </div>          
-
-          <div class="plan-detstrip solo-vertical-center" style="margin-top:3px;">
-            <span style="font-size:14px;color:#9AA7BA;font-weight:700;">MISC</span>
-          </div>
-          <div class="plan-detstrip-vals flex-general-row-wrapper">
-              <div style="height:100%;width:75%;padding-left:24px;" class="solo-vertical-center">
-                <span style="color:#9AA7BA;">Boost</span>
-              </div>
-              <div style="height:100%;width:24.9%;" class="solo-vertical-center cf">                
-                <span style="margin-left:10px;">
+                <!--Type==Boolean-->
+                <div ng-show="eachFeat.type=='boolean'" style="height:100%;width:34.9%;" class="solo-vertical-center cf">
+                  <span ng-show="eachFeat.limit.show" style="margin-left:10px;">
                     <i class="icon ion-checkmark" style="font-size:17px !important; color:gray;margin-top:5px;"></i>
-                </span>
-              </div>
-          </div>
+                  </span>
+                  <span ng-show="!eachFeat.limit.show" style="margin-left:10px;">
+                    --
+                  </span>
+                </div>
+
+            </div>
+
+          </div>       
 
         </div>
+        <!--/Plan Details-->
         
       </div>
 

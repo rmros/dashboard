@@ -1,1 +1,0 @@
-angular.module("stripe",[]).directive("stripeForm",["$window",function(n){var r={restrict:"A"};return r.link=function(r,e,i){var t=angular.element(e);t.bind("submit",function(){var e=t.find("button");e.prop("disabled",!0),n.Stripe.createToken(t[0],function(){e.prop("disabled",!1);var n=arguments;r.$apply(function(){r.$eval(i.stripeForm).apply(r,n)})})})},r}]);
