@@ -108,8 +108,9 @@
 /***************Credit Card Modal**********/
 .upgradecustom-width{
 	width: 54%;
-	max-width: none;
+	max-width: none;  
 }
+
 .app-credicard-wrap{
 	width:60%;
 	border-top-left-radius: 2px;
@@ -120,14 +121,51 @@
 	padding-left: 25px;
 	padding-right: 25px;
 	padding-bottom: 25px;
+	overflow: hidden;
 }
+.wrap-cardDetailsStep3{
+  height: 297px;  
+}
+
+.carddetailsstep1 .wrap-cardDetailsStep1{
+	animation: closePlanMenu 0.3s both ease-out 0.1s;
+  	-webkit-animation: closePlanMenu 0.3s both ease-out 0.1s;
+}
+.carddetailsstep2 .wrap-cardDetailsStep2{
+	animation: openPlanMenu 0.3s both ease-out 0.1s;
+  	-webkit-animation: openPlanMenu 0.3s both ease-out 0.1s;
+}
+@-webkit-keyframes openPlanMenu {
+    from {
+      transform:translateX(530px);
+      -webkit-transform:translateX(530px);     
+   	  opacity: 0;
+    }
+    to {
+      transform:translateX(0px);
+      -webkit-transform:translateX(0px);
+    opacity: 1;
+    }
+}
+@-webkit-keyframes closePlanMenu {
+    from {
+    	transform:translateX(-530px);
+      -webkit-transform:translateX(-530px);     
+   	  opacity: 0;     
+    }
+    to {       
+    	transform:translateX(0px);
+      -webkit-transform:translateX(0px);
+    	opacity: 1;
+    }
+}
+
 .app-credicard-wrap .intro{
 	width: 100%;
 	height: auto;
 }
 
-.app-credicard-wrap .fields{
-	margin-top: 30px;
+.app-credicard-wrap .fields{	
 	width: 100%;
 	height: auto;	
 }
@@ -223,3 +261,4 @@
 	height: 26px;
 }
 /***************Credit Card Modal**********/
+

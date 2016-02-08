@@ -437,14 +437,20 @@
         <!--Big Search-->
         <div class="search-hide-col-btn-group" style="height:28px;" id="grandesearchwrapper" click-outside="closeSearchBox()" outside-if-not="grandesearchfun">
           <div class="flex-general-row-wrapper" ng-class='{"cb-searchbx" : isSearchBoxOpen}' style="height:28px !important;">
+
             <!--Search & Spinner Icon-->
             <div class="flex-general-column-wrapper-center"  style="height:100%;">
               
               <!--Search  Icon-->
-              <button ng-show="!cloudSearchSpinner" type="button" class="grande-search-btn grandesearchfun"  ng-click="openSearchBox()" style="padding-bottom:2px;"><i class="icon ion-ios-search-strong" style="font-size: 26px;"></i></button>
+              <button ng-show="!cloudSearchSpinner" type="button" class="grande-search-btn grandesearchfun flex-general-column-wrapper-center"  ng-click="openSearchBox()" style="padding-bottom:2px;">
+                <i class="icon ion-ios-search-strong" style="font-size: 26px;margin-top:3px;"></i>
+              </button>
 
               <!--Spinner  Icon-->
-              <button ng-show="cloudSearchSpinner && isSearchBoxOpen" type="button" class="grande-search-btn grandesearchfun"  ng-click="openSearchBox()"><i class="fa fa-spinner fa-spin" style="font-size: 18px;"></i></button>
+              <button ng-show="cloudSearchSpinner && isSearchBoxOpen" type="button" class="grande-search-btn grandesearchfun"  ng-click="openSearchBox()">
+                <i class="fa fa-spinner fa-spin" style="font-size: 18px;"></i>
+              </button>
+
             </div>
 
             <!--Search Box-->

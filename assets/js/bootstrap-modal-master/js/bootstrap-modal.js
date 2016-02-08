@@ -372,7 +372,9 @@
 				.one('hide', function () {
 					$this.focus();
 				})
-		});
+		});	
+
+		
 	});
 
 }(window.jQuery);

@@ -172,7 +172,7 @@ app.directive('cbList', function(){
               $scope.listFileSpinner[index]=true;
               $scope.$digest();
 
-              cloudBoostService.getCBFile(fileObj)
+              cloudBoostApiService.getCBFile(fileObj)
               .then(function(cloudBoostFile){     
                 $scope.editableList[index]=cloudBoostFile;       
                 $scope.removeSelectdFile();
@@ -232,7 +232,7 @@ app.directive('cbList', function(){
               var tableDef=_.first(_.where($rootScope.currentProject.tables, {name: tableName})); 
               
               //get Table data
-              cloudBoostService.queryTableById(tableDef,rowId)
+              cloudBoostApiService.queryTableById(tableDef,rowId)
               .then(function(record){       
 
                 if(record){
@@ -258,7 +258,7 @@ app.directive('cbList', function(){
             $scope.tableDef=_.first(_.where($rootScope.currentProject.tables, {name: $scope.editableColumn.relatedTo})); 
 
             //List Relations records 
-            cloudBoostService.loadTableData($scope.tableDef,"createdAt","asc",20,0)
+            cloudBoostApiService.loadTableData($scope.tableDef,"createdAt","asc",20,0)
             .then(function(list){        
                  
              $scope.relationTableData=list;   

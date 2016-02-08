@@ -214,14 +214,14 @@ app.directive('cbAcl', function(){
                   };
 
                   //Getting Users For Autocomplete
-                  cloudBoostService.queryTableByName("User")
+                  cloudBoostApiService.queryTableByName("User")
                   .then(function(userRecords){         
                     $scope.userRecords=userRecords;        
                   },function(error){         
-                  });
+                  });`
 
                   //Getting Roles For Autocomplete
-                  cloudBoostService.queryTableByName("Role")
+                  cloudBoostApiService.queryTableByName("Role")
                   .then(function(roleRecords){         
                     $scope.roleRecords=roleRecords;  
                   },function(error){ 
@@ -365,7 +365,7 @@ app.directive('cbAcl', function(){
                 for(var i=0;i<array.length;++i){
                   if(tableName && array[i]!="all"){
                     var tableDef= _.first(_.where($rootScope.currentProject.tables, {name: tableName})); 
-                    promises.push(cloudBoostService.queryTableById(tableDef,array[i]));
+                    promises.push(cloudBoostApiService.queryTableById(tableDef,array[i]));
                   }else if(array[i]=="all"){         
 
                       var jsonObj={};

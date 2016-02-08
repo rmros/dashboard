@@ -2,16 +2,16 @@ app.factory('paymentService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
     var global = {};
   
-  	global.createSale = function(appId,cardDetails){
+  	global.createSale = function(appId,cardDetails,planId){
         var q=$q.defer();
 
          var args = {
 	        sellerId: twoCheckoutCredentials.sellerId,
 	        publishableKey: twoCheckoutCredentials.publishableKey,
-	        ccNo:"4000000000000002",
-	        cvv:"123" ,
-	        expMonth:"10",
-	        expYear: "2018"
+	        ccNo:cardDetails.number,
+	        cvv:cardDetails.cvc,
+	        expMonth:cardDetails.expMonth,
+	        expYear:cardDetails.expYear,
 	    };
 
         //Pull in the public encryption key for our environment
@@ -26,17 +26,17 @@ app.factory('paymentService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
 		    		var reqObj={			    		
 			    		token:data.response.token.token,
-			    		billingAddr:{},
-			    		planId:0
+			    		billingAddr:cardDetails.billing,
+			    		planId:planId
 			    	};
 			    	
 			    	return $http.post(frontendServerURL+'/'+appId+'/sale',reqObj);
 		    	}
 		    	
 		    }).then(function(responseData){
-		    	console.log(responseData);
+		    	q.resolve(responseData);
 		    },function(error){
-		    	console.log(error);
+		    	q.reject(error);
 		    });
 		});		
 
@@ -59,6 +59,26 @@ app.factory('paymentService', ['$q','$http','$rootScope',function ($q,$http,$roo
 
 		return  q.promise;
 	};
+
+	global.cancelRecurring = function(appId){
+        var q=$q.defer();
+
+        $http.delete(frontendServerURL+'/'+appId+'/removecard').
+        success(function(data, status, headers, config) {
+          if(status===200)
+            q.resolve(data);
+          else 
+            q.reject(data);            
+        }).
+        error(function(data, status, headers, config) {
+            q.reject(data);
+            if(status===401){
+              $rootScope.logOut();
+            }
+        });		
+
+        return  q.promise;
+    };
 
   return global;
 

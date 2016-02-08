@@ -111,7 +111,14 @@
 
               <div class="appcurrentplan flex-general-row-wrapper">
                   <div class="solo-vertical-center" style="height:100%;padding-left:10px;width:60%;">
-                    <span style="font-weight:700;color:gray;">FREE PLAN</span>
+
+                    <span ng-if="!list.planId || list.planId==1" style="font-weight:700;color:gray;">FREE PLAN</span>
+                    <span ng-if="list.planId==2" style="font-weight:700;color:gray;">PROTOTYPE PLAN</span>
+                    <span ng-if="list.planId==3" style="font-weight:700;color:gray;">LAUNCH PLAN</span>
+                    <span ng-if="list.planId==4" style="font-weight:700;color:gray;">BOOTSTRAP PLAN</span>
+                    <span ng-if="list.planId==5" style="font-weight:700;color:gray;">SCALE PLAN</span>
+                    <span ng-if="list.planId==6" style="font-weight:700;color:gray;">UNICORN PLAN</span>
+
                   </div>
 
                   <div class="flex-general-column-wrapper-center" style="height:100%;width:40%; background-color:#EDEDED;color:#7C7C7C;cursor:pointer;border-left:1px solid #C9C9C9;" ng-click="initUpgradePlan(list);">
@@ -515,97 +522,313 @@
 <!--/Confirm Remove Developer-->
 
 
+<!--Confirm Remove Developer-->
+<div class="modal fade colored-header danger" id="removedevconform" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+      <h3>Delete the app</h3>
+      <button ng-show="!deleteSpinner" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="text-center">
+        <div class="i-circle danger"><i class="fa fa-times"></i></div>         
+        <p>There are no other developers to collaborate on this app. Do you want to delete this app instead?</p>                  
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button  type="button" class="btn btn-default btn-flat" data-dismiss="modal">Cancel</button>
+
+      <!--continue btn-->
+      <button type="button" class="btn btn-danger btn-flat" ng-click="processRemoveDeveloper(removeDevIndex,removeDevUser)">Continue</button>        
+    </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!--/Confirm Remove Developer-->
+
+
 <!-- Upgrade Card Modal -->
-<div class="modal fade colored-header" id="upgradeModal" tabindex="-1" role="dialog">
+<div class="modal fade colored-header" id="upgradeModal" tabindex="1" role="dialog">
   <div class="modal-dialog upgradecustom-width">
     <div class="modal-content flex-general-row-wrapper"> 
 
-      <div class="app-credicard-wrap" style="">
-        <div class="intro">
+      <div class="app-credicard-wrap" style="" ng-class="{carddetailsstep1:cardDetailsStep1,carddetailsstep2:cardDetailsStep2}">
 
-          <div style="width:100%;height:32px;" class="cf">
-            <div class="pull-left">
-              <span style="color:#71767C;font-size:18px;">Payment Information</span>
+        <!--Slide1-->
+        <div class="wrap-cardDetailsStep1" ng-show="cardDetailsStep1">
+          <div class="intro">
+
+            <div style="width:100%;height:32px;" class="cf">
+              <div class="pull-left">
+                <span style="color:#71767C;font-size:18px;">Payment Information</span>
+              </div>
+              <div class="pull-right" style="">
+                <div style="margin-top:-8px;">
+                  <i class="icon ion-card" style="font-size:30px;color:#71767C;"></i>
+                </div>             
+              </div>
             </div>
-            <div class="pull-right" style="">
-              <div style="margin-top:-8px;">
-                <i class="icon ion-card" style="font-size:30px;color:#71767C;"></i>
-              </div>             
+
+            <div>
+              <span style="color:color:#71767C;">
+              <span style="font-weight:700;">100%</span> money back guarantee for the first 30 days on paid plans.
+              </span>
+            </div>
+
+          </div>
+
+          <div class="fields" style="margin-top:20px;">
+
+            <div class="flex-general-row-wrapper field-inn">
+
+              <div style="height:100%;width:13%;" class="solo-vertical-center">
+                <span style="font-size:14px;color:#C9C7C7;">Name</span>
+              </div>
+
+              <div style="height:100%;width:86.9%;" class="solo-vertical-center">
+                <input type="text" ng-model="cardDetails.billing.name" placeholder="Card holder name" class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding-left:3px;">
+              </div>
+
+            </div>
+            
+          </div>
+
+           <div class="fields" style="margin-top:20px;">
+
+            <div class="flex-general-row-wrapper field-inn">
+
+              <div style="height:100%;width:13%;" class="solo-vertical-center">
+                <span style="font-size:14px;color:#C9C7C7">card#</span>
+              </div>
+
+              <div style="height:100%;width:86.9%;" class="solo-vertical-center">
+                <input type="text" ng-model="cardDetails.number" placeholder="1234 5678 9326 7352" class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding-left:3px;">
+              </div>
+
+            </div>
+            
+          </div>
+
+
+          <div class="fields cf" style="margin-top:20px;">
+            <div class="pull-left" style="height:42px;width:27%;background-color:white;">
+              <select class="default-inputfield" ng-model="cardDetails.expMonth" style="height:100%;width:100%;font-size:16px;padding:2px;color:#7C7B7B">
+                  <option value="0" ng-selected="!cardDetails.expMonth">ex.month</option>
+                  <option value="01">01(Jan)</option>
+                  <option value="02">02(Feb)</option>
+                  <option value="03">03(Mar)</option>
+                  <option value="04">04(Apr)</option>
+                  <option value="05">05(May)</option>
+                  <option value="06">06(Jun)</option>
+                  <option value="07">07(Jul)</option>
+                  <option value="08">08(Aug)</option>
+                  <option value="09">09(Sept)</option>
+                  <option value="10">10(Oct)</option>
+                  <option value="11">11(Nov)</option>
+                  <option value="12">12(Dec)</option>
+              </select>
+            </div>
+
+            <div class="pull-left" style="height:42px;width:27%;margin-left:6%; background-color:white;">
+              <select class="default-inputfield" ng-model="cardDetails.expYear" style="height:100%;width:100%;font-size:16px;padding:2px;color:#7C7B7B">
+                  <option value="0" ng-selected="!cardDetails.expYear">ex.year</option>
+                  <option value="2016">2016</option>
+                  <option value="2017">2017</option>
+                  <option value="2018">2018</option>
+                  <option value="2019">2019</option>
+                  <option value="2020">2020</option>
+                  <option value="2021">2021</option>
+                  <option value="2022">2022</option>
+                  <option value="2023">2023</option>
+                  <option value="2024">2024</option>
+                  <option value="2025">2025</option>
+                  <option value="2026">2026</option>
+              </select>
+            </div>
+
+            <div class="pull-right cf" style="height:42px;width:33%;background-color:white;">
+              <div class="pull-left flex-general-column-wrapper-center" style="height:100%;width:40%;">
+                <span style="font-size:14px;color:#C9C7C7">CVC</span>
+              </div>
+              <div class="pull-left" style="height:100%;width:50.9%;">
+                <input type="text" placeholder="CVC" ng-model="cardDetails.cvc" class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding-left:3px;">
+              </div>
+
             </div>
           </div>
 
-          <div>
-            <span style="color:color:#71767C;">
-            <span style="font-weight:700;">100%</span> money back guarantee for the first 30 days on paid plans.
-            </span>
+
+          <div class="fields cf" style="margin-top:20px;">
+            <div class="pull-left" style="width:60%;height:42px;">
+              <button class="default-inputfield" style="height:100%;width:100%;border-radius:2px;background-color:#19b698;color:white;font-size:14px;font-weight:500;" ng-click="nextToBillingDetails()">PURCHASE PLAN</button>
+            </div>
+            <div class="pull-right" style="width:30%;height:42px;">
+              <button type="button" class="default-inputfield" style="height:100%;width:100%;border-radius:2px;background-color:#D2D4E0;color:white;font-size:14px;" data-dismiss="modal">CANCEL</button>
+            </div>
           </div>
 
         </div>
+        <!--Slide1-->
 
-        <div class="fields">
+        <!--Slide2-->
+        <div class="wrap-cardDetailsStep2"  ng-show="cardDetailsStep2">
+         
+          <div class="fields" style="margin-top:7px;">
 
-          <div class="flex-general-row-wrapper field-inn">
+            <div class="flex-general-row-wrapper field-inn">
 
-            <div style="height:100%;width:13%;" class="solo-vertical-center">
-              <span style="font-size:14px;color:#C9C7C7">card#</span>
+              <div style="height:100%;width:13%;" class="solo-vertical-center">
+                <span style="font-size:14px;color:#C9C7C7">Addr1</span>
+              </div>
+
+              <div style="height:100%;width:86.9%;" class="solo-vertical-center">
+                <input type="text" ng-model="cardDetails.billing.addrLine1" placeholder="Street address1" class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding-left:3px;">
+              </div>
+
+            </div>
+            
+          </div>
+
+          <div class="fields" style="margin-top:20px;">
+
+            <div class="flex-general-row-wrapper field-inn">
+
+              <div style="height:100%;width:13%;" class="solo-vertical-center">
+                <span style="font-size:14px;color:#C9C7C7">Addr2</span>
+              </div>
+
+              <div style="height:100%;width:86.9%;" class="solo-vertical-center">
+                <input type="text" ng-model="cardDetails.billing.addrLine2" placeholder="Street address2" class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding-left:3px;">
+              </div>
+
+            </div>
+            
+          </div>
+
+
+          <div class="fields cf" style="margin-top:20px;width:100%;">
+
+             <div class="pull-left cf" style="height:42px;width:47%;background-color:white;">
+              <div class="pull-left flex-general-column-wrapper-center" style="height:100%;width:28%;">
+                <span style="font-size:14px;color:#C9C7C7">City</span>
+              </div>
+              <div class="pull-left" style="height:100%;width:62.9%;">
+                <input type="text" placeholder="City" ng-model="cardDetails.billing.city" class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding-left:3px;">
+              </div>
+
             </div>
 
-            <div style="height:100%;width:86.9%;" class="solo-vertical-center">
-              <input type="text" ng-model="cardDetails.number" placeholder="1234 5678 9326 7352" class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding-left:3px;">
+            <div class="pull-right cf" style="height:42px;width:47%;background-color:white;">
+              <div class="pull-left flex-general-column-wrapper-center" style="height:100%;width:28%;">
+                <span style="font-size:14px;color:#C9C7C7">State</span>
+              </div>
+              <div class="pull-left" style="height:100%;width:62.9%;">
+                <input type="text" placeholder="State" ng-model="cardDetails.billing.state" class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding-left:3px;">
+              </div>
+
             </div>
 
           </div>
-          
+
+          <div class="fields cf" style="margin-top:20px;">
+            <div class="pull-left cf" style="height:42px;width:47%;background-color:white;">
+              <div class="pull-left flex-general-column-wrapper-center" style="height:100%;width:28%;">
+                <span style="font-size:14px;color:#C9C7C7">Zip</span>
+              </div>
+              <div class="pull-left" style="height:100%;width:62.9%;">
+                <input type="text" placeholder="Zipcode" ng-model="cardDetails.billing.zipCode" class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding-left:3px;">
+              </div>
+
+            </div>
+
+            <div class="pull-right cf" style="height:42px;width:47%;background-color:white;">
+              <div class="pull-left flex-general-column-wrapper-center" style="height:100%;width:28%;">
+                <span style="font-size:14px;color:#C9C7C7">Ctry</span>
+              </div>
+              <div class="pull-left" style="height:100%;width:62.9%;">
+                <input type="text" placeholder="Country" ng-model="cardDetails.billing.country" class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding-left:3px;">
+              </div>
+            </div>
+          </div>
+
+
+          <div class="fields cf" style="margin-top:20px;">            
+            <div class="pull-left" style="width:30%;height:42px;">
+              <button type="button" class="default-inputfield" style="height:100%;width:100%;border-radius:2px;background-color:#D2D4E0;color:white;font-size:14px;" ng-click="prevToCardDetails()">PREVIOUS</button>
+            </div>
+
+            <div class="pull-right" style="width:60%;height:42px;">
+              <!--Purchase-->
+              <button ng-show="!addCardSpinner" class="default-inputfield" style="height:100%;width:100%;border-radius:2px;background-color:#19b698;color:white;font-size:14px;font-weight:500;" ng-click="addCard()">PURCHASE PLAN</button>
+
+              <!--While Adding-->
+              <button ng-show="addCardSpinner" class="default-inputfield" style="height:100%;width:100%;border-radius:2px;background-color:#19b698;color:white;font-weight:500;">
+                <i class="fa fa-spinner fa-spin" style="font-size:14px;"></i>&nbsp;
+                <span style="font-size:14px;">PROCESSING..</span>
+              </button>
+            </div>
+
+          </div>
+
         </div>
+        <!--Slide2-->
 
+        <!--Slide3 Already a Free Plan-->
+        <div class="wrap-cardDetailsStep3 flex-general-column-wrapper-center" ng-show="cardAlreadyFreePlan">
+         
+         <div>
+          <span style="font-size:36px;color:gray;font-weight:bold'">
+            <i class="fa fa-thumbs-up"></i>
+          </span>
+         </div>
+         <div>
+          <span style="font-size:20px;color:gray;font-weight:bold'">You're already on the Free plan</span>
+         </div> 
 
-        <div class="fields cf">
-          <div class="pull-left" style="height:42px;width:27%;background-color:white;">
-            <select class="default-inputfield" ng-model="cardDetails.expMonth" style="height:100%;width:100%;font-size:16px;padding:2px;color:#7C7B7B">
-                <option>01(Jan)</option>
-                <option>02(Feb)</option>
-                <option>03(Mar)</option>
-                <option>04(Apr)</option>
-                <option>05(May)</option>
-                <option>06(Jun)</option>
-                <option>07(Jul)</option>
-                <option>08(Aug)</option>
-                <option>09(Sept)</option>
-                <option>10(Oct)</option>
-                <option>11(Nov)</option>
-                <option>12(Dec)</option>
-            </select>
-          </div>
-
-          <div class="pull-left" style="height:42px;width:27%;margin-left:6%; background-color:white;">
-            <select class="default-inputfield" ng-model="cardDetails.expYear" style="height:100%;width:100%;font-size:16px;padding:2px;color:#7C7B7B">
-                <option>2016</option>
-                <option>2017</option>
-                <option>2018</option>
-                <option>2019</option>
-            </select>
-          </div>
-
-          <div class="pull-right cf" style="height:42px;width:33%;background-color:white;">
-            <div class="pull-left flex-general-column-wrapper-center" style="height:100%;width:40%;">
-              <span style="font-size:14px;color:#C9C7C7">CVC</span>
-            </div>
-            <div class="pull-left" style="height:100%;width:50.9%;">
-              <input type="text" placeholder="CVC" ng-model="cardDetails.cvc" class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding-left:3px;">
-            </div>
-
-          </div>
         </div>
+        <!--/Slide3 Already a Free Plan-->
 
+        <!--Slide4 Chooses a Free Plan-->
+        <div class="wrap-cardDetailsStep3 flex-general-column-wrapper-center" ng-show="cardNeedFreePlan">
+         
+                
+         <div>
+          <span style="font-size:18px;color:gray;">Do you want to cancel the</span>
+          <span ng-show="upgradePlanApp.planId==2" style="font-size:20px;color:gray;font-weight:bold;">
+            Prototype Plan?
+          </span>
+          <span ng-show="upgradePlanApp.planId==3" style="font-size:20px;color:gray;font-weight:bold;">
+            Launch Plan?
+          </span>
+          <span ng-show="upgradePlanApp.planId==4" style="font-size:20px;color:gray;font-weight:bold;">
+            Bootstrap Plan?
+          </span>
+          <span ng-show="upgradePlanApp.planId==5" style="font-size:20px;color:gray;font-weight:bold;">
+            Scale Plan?
+          </span>
+          <span ng-show="upgradePlanApp.planId==6" style="font-size:20px;color:gray;font-weight:bold;">
+            Unicorn Plan?
+          </span>
+         </div>
 
-        <div class="fields cf" style="">
-          <div class="pull-left" style="width:60%;height:42px;">
-            <button class="default-inputfield" style="height:100%;width:100%;border-radius:2px;background-color:#19b698;color:white;font-size:14px;font-weight:500;" ng-click="addCard()">PURCHASE PLAN</button>
-          </div>
-          <div class="pull-right" style="width:30%;height:42px;">
-            <button type="button" class="default-inputfield" style="height:100%;width:100%;border-radius:2px;background-color:#D2D4E0;color:white;font-size:14px;" data-dismiss="modal">CANCEL</button>
-          </div>
+         <div style="margin-top:10px;">
+           <!--Cancel-->
+           <button ng-show="!cancelRecurringSpinner && !showConfirmCancelRecurring" ng-click="confirmCancelRecurring()" class="default-inputfield" style="height:100%;width:100%;border-radius:2px;background-color:#D63B2A;color:white;font-size:14px;font-weight:500;height:30px;">YES, CANCEL MY PLAN</button>
+
+           <!--Confirm-->
+           <button ng-show="!cancelRecurringSpinner && showConfirmCancelRecurring" ng-click="cancelRecurring()" class="default-inputfield" style="height:100%;width:100%;border-radius:2px;background-color:#D63B2A;color:white;font-size:14px;font-weight:500;width:120px;height:30px;">ARE YOU SURE?</button>
+
+           <!--/While Processing-->
+           <button ng-show="cancelRecurringSpinner" class="default-inputfield" style="height:100%;width:100%;border-radius:2px;background-color:#D63B2A;color:white;font-size:14px;font-weight:500;width:160px;height:30px;">
+             <i class="fa fa-spinner fa-spin" style="font-size:14px;"></i>&nbsp;
+                <span style="font-size:14px;">PROCESSING..</span>
+           </button>
+
+         </div> 
+
         </div>
+        <!--/Slide4 Chooses a Free Plan-->
         
       </div>
 
@@ -617,10 +840,10 @@
               <div class="selected-plan splbillplanchangebtn flex-general-row-wrapper" ng-click="toggleBillingPlan()">
                   <div style="width:85%;">
                     <div>
-                      <span style="font-size:19px;">Launch Plan</span>
+                      <span style="font-size:19px;">{{requestedPlan.label}}</span>
                     </div>
                     <div style="margin-top:3px;">
-                      <span style="font-size:13px;">$49 PER MONTH</span>
+                      <span style="font-size:13px;">${{requestedPlan.price}} {{requestedPlan.priceDescription | uppercase}}</span>
                     </div>
                   </div>
                   <div style="width:14.9%;height:100%;" class="solo-horizontal-center">
@@ -688,12 +911,14 @@
         </div>
         <!--/Plan Details-->
         
-      </div>
+        </div>
+
 
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div>
 <!-- /Upgrade Card Modal -->
+
 
 
 <!--Slack chat-->

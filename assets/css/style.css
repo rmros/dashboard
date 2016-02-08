@@ -1,16 +1,4 @@
-/*LESS CSS pre-processor*/
-/*---------------------------------------------------
-    LESS Elements 0.9
-  ---------------------------------------------------
-    A set of useful LESS mixins
-    More info at: http://lesselements.com
-  ---------------------------------------------------*/
-/*CONFIG AND GENERAL STYLE*/
-/*General colors palette*/
-/*General elements*/
-/*Flat palette*/
-/*social colors*/
-/*Functions*/
+
 html {
   height: 100%;
 }
@@ -4632,7 +4620,7 @@ a.list-group-item:hover + a.list-group-item {
 }
 .modal-dialog.full-width {
   width: 90%;
-  max-width: none;  
+  max-width: none;    
 }
 .custom-width {
   width: 40%;
