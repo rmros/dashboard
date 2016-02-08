@@ -218,7 +218,7 @@ app.directive('cbAcl', function(){
                   .then(function(userRecords){         
                     $scope.userRecords=userRecords;        
                   },function(error){         
-                  });`
+                  });
 
                   //Getting Roles For Autocomplete
                   cloudBoostApiService.queryTableByName("Role")
