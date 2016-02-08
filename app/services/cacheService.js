@@ -33,6 +33,22 @@ app.factory('cacheService', ['$q','$http','$rootScope',function ($q,$http,$rootS
       return  q.promise;
     };
 
+    global.deleteItem = function(cache,jsonObj){
+      var q=$q.defer();
+        
+        cache.deleteItem(jsonObj.key,{
+            success : function(key){
+              q.resolve(key);
+            }, error : function(error){
+              q.reject(error);
+            }
+        });
+
+      return  q.promise;
+    };
+
+ 
+
     global.getAllCacheItems = function(cache){
       var q=$q.defer();
         

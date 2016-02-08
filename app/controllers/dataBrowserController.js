@@ -1369,7 +1369,7 @@ $scope.saveConfigCol=function(column){
     nullifyCommonErrorInfo();
     $scope.commonSpinner=true;
 
-    tableService.saveTable(id,$scope.currentProject.currentTable)
+    tableService.saveTable($scope.currentProject.currentTable)
     .then(function(table){ 
       $scope.editColumn[i]=false;      
       $scope.showColOptions[i]=false; 
