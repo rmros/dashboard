@@ -10,7 +10,7 @@ app.directive('cbDatabrowser', function(){
         },   
         templateUrl: 'app/directives/templates/dataBrowserTemplate.html',       
         controller:['$scope','$rootScope','$timeout','cloudBoostApiService','sharedDataService',
-        function($scope,$rootScope,$timeout,cloudBoostAPiService,sharedDataService) { 
+        function($scope,$rootScope,$timeout,cloudBoostApiService,sharedDataService) { 
 
             //Defaults
             $scope.relationError=[];
@@ -51,7 +51,7 @@ app.directive('cbDatabrowser', function(){
                 var tableDef=_.first(_.where($rootScope.currentProject.tables, {name: tableName})); 
                 
                 //get Table data
-                cloudBoostService.queryTableById(tableDef,rowId)
+                cloudBoostApiService.queryTableById(tableDef,rowId)
                 .then(function(record){       
 
                   if(record){
@@ -301,7 +301,7 @@ app.directive('cbDatabrowser', function(){
                   $scope.relationSpinnerMode=true;      
 
                   //Save Cloud Object
-                  cloudBoostService.saveCloudObject(relCloudObject)
+                  cloudBoostApiService.saveCloudObject(relCloudObject)
                   .then(function(obj){
                     //Convert ISO to dateObj 
                     convertISO2DateObj(table,relCloudObject);
@@ -461,7 +461,7 @@ app.directive('cbDatabrowser', function(){
                 //$("#md-rel-fileviewer").modal("hide");
                 $scope.setRelFileSpinner[$scope.relEditableColumn.name]=true;
 
-                cloudBoostService.getCBFile($scope.selectedFileObj)
+                cloudBoostApiService.getCBFile($scope.selectedFileObj)
                 .then(function(cloudBoostFile){
                 
                     $scope.relEditableRow.set($scope.relEditableColumn.name,cloudBoostFile);        
@@ -625,7 +625,7 @@ app.directive('cbDatabrowser', function(){
               $scope.listFileSpinner[newIndex]=true;
               $scope.$digest();  
 
-              cloudBoostService.getCBFile($scope.selectedFileObj)
+              cloudBoostApiService.getCBFile($scope.selectedFileObj)
               .then(function(cloudBoostFile){   
                     
                 $scope.editableList[newIndex]=cloudBoostFile;      
@@ -688,7 +688,7 @@ app.directive('cbDatabrowser', function(){
               $("#md-reldocumentviewer").modal("hide");              
 
               //List Relations records 
-              cloudBoostService.loadTableData($scope.tableDef,"createdAt","asc",20,0)
+              cloudBoostApiService.loadTableData($scope.tableDef,"createdAt","asc",20,0)
               .then(function(list){        
                    
                $scope.relationTableData=list;   

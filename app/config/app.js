@@ -6,8 +6,7 @@ var app=angular.module('CloudBoostDashboard',
     'ngClipboard',
     'ngResource',    
     'ngTouch', 
-    'ui.checkbox',   
-    'stripe',
+    'ui.checkbox',  
     'chart.js',
     'focusOn',    
     'ui.ace',    
@@ -51,7 +50,7 @@ if(window.location.hostname==="dashboard.cloudboost.io"){
 
 
 
-/*********************Notificatiosn******************************/
+/*********************Notifications******************************/
   //Notification
   function errorNotify(errorMsg){
     $.amaran({
@@ -90,4 +89,268 @@ if(window.location.hostname==="dashboard.cloudboost.io"){
   }
 
 
+/*********************Pricing Plans******************************/
+var twoCheckoutCredentials={
+  sellerId:"901307760",
+  publishableKey:"5DB21AAF-317D-4FCB-A985-DD296ECDF71A"
+};
 
+var pricingPlans=[{
+  id:1,
+  label:"Free Plan",
+  price:0,
+  priceDescription:"Forever",
+  usage:[{
+    category:"DATABASE",
+    features:[{
+      type:"text",
+      name:"API Calls",
+      limit:{
+        show:true,
+        label:"50,000"
+      }
+    },{
+      type:"text",
+      name:"Storage",
+      limit:{
+        show:true,
+        label:"1GB"
+      }
+    }]
+  },{
+    category:"REALTIME",
+    features:[{
+      name:"Connections",
+      type:"text",
+      limit:{
+        show:true,
+        label:"100"
+      }
+    }]
+  },{
+    category:"MISC",
+    features:[{
+      name:"Boost",
+      type:"boolean",
+      limit:{
+        show:false,
+        label:""
+      }
+    }]
+  }]
+},{
+  id:2,
+  label:"Prototype Plan",
+  price:10,
+  priceDescription:"per month",
+  usage:[{
+    category:"DATABASE",
+    features:[{
+      type:"text",
+      name:"API Calls",
+      limit:{
+        show:true,
+        label:"150,000"
+      }
+    },{
+      type:"text",
+      name:"Storage",
+      limit:{
+        show:true,
+        label:"1GB"
+      }
+    }]
+  },{
+    category:"REALTIME",
+    features:[{
+      name:"Connections",
+      type:"text",
+      limit:{
+        show:true,
+        label:"100"
+      }
+    }]
+  },{
+    category:"MISC",
+    features:[{
+      name:"Boost",
+      type:"boolean",
+      limit:{
+        show:false,
+        label:""
+      }
+    }]
+  }]
+},{
+  id:3,
+  label:"Launch Plan",
+  price:49,
+  priceDescription:"per month",
+  usage:[{
+    category:"DATABASE",
+    features:[{
+      type:"text",
+      name:"API Calls",
+      limit:{
+        show:true,
+        label:"500,000"
+      }
+    },{
+      type:"text",
+      name:"Storage",
+      limit:{
+        show:true,
+        label:"10GB"
+      }
+    }]
+  },{
+    category:"REALTIME",
+    features:[{
+      name:"Connections",
+      type:"text",
+      limit:{
+        show:true,
+        label:"500"
+      }
+    }]
+  },{
+    category:"MISC",
+    features:[{
+      name:"Boost",
+      type:"boolean",
+      limit:{
+        show:true,
+        label:""
+      }
+    }]
+  }]
+},{
+  id:4,
+  label:"Bootstrap Plan",
+  price:149,
+  priceDescription:"per month",
+  usage:[{
+    category:"DATABASE",
+    features:[{
+      type:"text",
+      name:"API Calls",
+      limit:{
+        show:true,
+        label:"2 MILLION"
+      }
+    },{
+      type:"text",
+      name:"Storage",
+      limit:{
+        show:true,
+        label:"30GB"
+      }
+    }]
+  },{
+    category:"REALTIME",
+    features:[{
+      name:"Connections",
+      type:"text",
+      limit:{
+        show:true,
+        label:"1000"
+      }
+    }]
+  },{
+    category:"MISC",
+    features:[{
+      name:"Boost",
+      type:"boolean",
+      limit:{
+        show:true,
+        label:""
+      }
+    }]
+  }]
+},{
+  id:5,
+  label:"Scale Plan",
+  price:449,
+  priceDescription:"per month",
+  usage:[{
+    category:"DATABASE",
+    features:[{
+      type:"text",
+      name:"API Calls",
+      limit:{
+        show:true,
+        label:"5 MILLION"
+      }
+    },{
+      type:"text",
+      name:"Storage",
+      limit:{
+        show:true,
+        label:"100GB"
+      }
+    }]
+  },{
+    category:"REALTIME",
+    features:[{
+      name:"Connections",
+      type:"text",
+      limit:{
+        show:true,
+        label:"UNLIMITED"
+      }
+    }]
+  },{
+    category:"MISC",
+    features:[{
+      name:"Boost",
+      type:"boolean",
+      limit:{
+        show:true,
+        label:""
+      }
+    }]
+  }]
+},{
+  id:6,
+  label:"Unicorn Plan",
+  price:1449,
+  priceDescription:"per month",
+  usage:[{
+    category:"DATABASE",
+    features:[{
+      type:"text",
+      name:"API Calls",
+      limit:{
+        show:true,
+        label:"20 MILLION"
+      }
+    },{
+      type:"text",
+      name:"Storage",
+      limit:{
+        show:true,
+        label:"300GB"
+      }
+    }]
+  },{
+    category:"REALTIME",
+    features:[{
+      name:"Connections",
+      type:"text",
+      limit:{
+        show:true,
+        label:"UNLIMITED"
+      }
+    }]
+  },{
+    category:"MISC",
+    features:[{
+      name:"Boost",
+      type:"boolean",
+      limit:{
+        show:true,
+        label:""
+      }
+    }]
+  }]
+}];

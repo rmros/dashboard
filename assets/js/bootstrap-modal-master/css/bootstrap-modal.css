@@ -42,7 +42,8 @@
 	position: absolute;
 	margin-top: 0;
 	top: 50%;
-	overflow: visible; /* allow content to popup out (i.e tooltips) */		
+	overflow: visible; /* allow content to popup out (i.e tooltips) */
+	
 }
 
 .modal.fade {	
@@ -50,7 +51,7 @@
 	-webkit-transition: opacity 0.3s linear, top 0.3s ease-out, bottom 0.3s ease-out, margin-top 0.3s ease-out;	
 	   -moz-transition: opacity 0.3s linear, top 0.3s ease-out, bottom 0.3s ease-out, margin-top 0.3s ease-out;
 	     -o-transition: opacity 0.3s linear, top 0.3s ease-out, bottom 0.3s ease-out, margin-top 0.3s ease-out;
-	        transition: opacity 0.3s linear, top 0.3s ease-out, bottom 0.3s ease-out, margin-top 0.3s ease-out;
+	        transition: opacity 0.3s linear, top 0.3s ease-out, bottom 0.3s ease-out, margin-top 0.3s ease-out;	       
 }
 
 .modal.fade.in {
@@ -74,7 +75,7 @@
 	left: 0;
 	right: 0;
 	background: #fff;
-	border-radius: 6px;
+	border-radius: 6px;	
 }
 
 .modal-backdrop.modal-absolute{
@@ -87,11 +88,12 @@
 	opacity: 0.8;
 	filter: alpha(opacity=70);
 	background: #6A7A84 !important;	
+	
 }
 
 .modal.container {
   width: 940px;
-  margin-left: -470px;
+  margin-left: -470px;  
 }
 
 /* Modal Overflow */

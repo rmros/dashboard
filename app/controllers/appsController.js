@@ -43,12 +43,23 @@ app.controller('appsController',
   $scope.invitees=[];
 
   $scope.openBillingPlan=false;
+  $scope.cardDetailsStep1=true;
+  $scope.cardDetailsStep2=false;
 
-  $scope.cardDetails={
+  $scope.cardDetails={    
     number:null,
     expMonth:null,
     expYear:null,
-    cvc:null
+    cvc:null,
+    billing:{
+      name:null,
+      addrLine1:null,
+      addrLine2:null,
+      city:null,
+      state:null,
+      zipCode:null,
+      country:null
+    }
   };
 
   /*Collapse sidebar*/           
@@ -70,7 +81,7 @@ app.controller('appsController',
     };       
 
     projectList();
-                                   
+    $scope.pricingPlans=pricingPlans; 
   };
 
   $scope.deleteAppModal=function(project, index){
@@ -536,6 +547,16 @@ app.controller('appsController',
   $scope.initUpgradePlan=function(projectObj) {
     $("#upgradeModal").modal();
     $scope.upgradePlanApp=projectObj;
+
+    //Show Next Plan
+    if(projectObj.planId && projectObj.planId>1 && projectObj.planId<6){
+      $scope.requestedPlan=getPlanById(projectObj.planId+1);
+    }else if(projectObj.planId==6){
+      $scope.requestedPlan=getPlanById(6);
+    }else if(!projectObj.planId || projectObj.planId==1){
+      $scope.requestedPlan=getPlanById(3);
+    }
+    
     if(!__isDevelopment){
       /****Tracking*********/              
        mixpanel.track('Upgrade Plan', {"App id": projectObj.appId,"App Name": projectObj.name});
@@ -543,28 +564,119 @@ app.controller('appsController',
     }
   };
 
-  $scope.addCard=function(){
-    /*paymentService.upsertCard($scope.cardDetails)
-     .then(function(data){
-                                   
-    },function(error){
-      errorNotify('Opps!...');
-    });*/
+  $scope.nextToBillingDetails=function(){
+    var msg=validateCardMainDetails($scope.cardDetails)
+    if(!msg){
+      $scope.cardDetailsStep1=false;
+      $scope.cardDetailsStep2=true;
+      $scope.cardAlreadyFreePlan=false;
+      $scope.cardNeedFreePlan=false;
+    }else{
+      WarningNotify(msg);
+    }    
+  };
 
-    if(!__isDevelopment){
-      /****Tracking*********/              
-       mixpanel.track('Purchase Plan Btn', {"App id": $scope.upgradePlanApp.appId});
-      /****End of Tracking*****/
-    }
+  $scope.prevToCardDetails=function(){
+    $scope.cardDetailsStep1=true;
+    $scope.cardDetailsStep2=false;
+    $scope.cardAlreadyFreePlan=false;
+    $scope.cardNeedFreePlan=false;
+  };
+
+  $scope.addCard=function(){
+    var errorMsg=validateBillingDetails($scope.cardDetails);
+
+    if(!errorMsg){
+      $scope.addCardSpinner=true;
+      paymentService.createSale($scope.upgradePlanApp.appId,$scope.cardDetails,$scope.requestedPlan.id)
+      .then(function(data){
+        var index=$scope.projectListObj.indexOf($scope.upgradePlanApp);
+        $scope.projectListObj[index].planId=data.data.planId;
+
+        $scope.cardDetails={    
+          number:null,
+          expMonth:null,
+          expYear:null,
+          cvc:null,
+          billing:{
+            name:null,
+            addrLine1:null,
+            addrLine2:null,
+            city:null,
+            state:null,
+            zipCode:null,
+            country:null
+          }
+        };
+
+        $scope.addCardSpinner=false;
+        $("#upgradeModal").modal("hide");
+        $scope.prevToCardDetails();
+        $scope.requestedPlan=null;
+        successNotify("Successfully you upgraded the Plan!");
+      },function(error){
+        $scope.addCardSpinner=false;
+        errorNotify(error);
+      });
+
+      if(!__isDevelopment){
+        /****Tracking*********/              
+         mixpanel.track('Purchase Plan Btn', {"App id": $scope.upgradePlanApp.appId});
+        /****End of Tracking*****/
+      }
+
+    }else{
+      WarningNotify(errorMsg);
+    }    
 
   };
 
-  $scope.selectThisPlan=function(selectedPlan){
+  $scope.confirmCancelRecurring=function(){
+    $scope.showConfirmCancelRecurring=true;
+  };
+
+  $scope.cancelRecurring=function(){
+    $scope.cancelRecurringSpinner=true;
+    paymentService.cancelRecurring($scope.upgradePlanApp.appId)         
+    .then(function(data){
+        var index=$scope.projectListObj.indexOf($scope.upgradePlanApp);
+        $scope.projectListObj[index].planId=1;
+        $scope.cancelRecurringSpinner=false; 
+
+        $("#upgradeModal").modal("hide"); 
+        successNotify("Successfully cancelled!");
+        $scope.showConfirmCancelRecurring=false;
+    },function(error){
+      $scope.cancelRecurringSpinner=false; 
+      $scope.showConfirmCancelRecurring=false; 
+      errorNotify("Unable to cancel at this time.");
+    });    
+  };
+
+  $scope.selectThisPlan=function(selctedPlan){
     $scope.openBillingPlan=false;
-    WarningNotify("Thank you for your interest, paid plans are launching soon!");
+    $scope.requestedPlan=selctedPlan;  
+
+    if(selctedPlan.id==1 && (!$scope.upgradePlanApp.planId || $scope.upgradePlanApp.planId==1)){
+      $scope.cardDetailsStep1=false;
+      $scope.cardDetailsStep2=false;
+      $scope.cardAlreadyFreePlan=true;
+      $scope.cardNeedFreePlan=false;
+    }else if(selctedPlan.id==1 && $scope.upgradePlanApp.planId>1){
+      $scope.cardDetailsStep1=false;
+      $scope.cardDetailsStep2=false;
+      $scope.cardAlreadyFreePlan=false;
+      $scope.cardNeedFreePlan=true;
+    }else{
+      $scope.cardDetailsStep1=true;
+      $scope.cardDetailsStep2=false;
+      $scope.cardAlreadyFreePlan=false;
+      $scope.cardNeedFreePlan=false;
+    }    
+
     if(!__isDevelopment){
       /****Tracking*********/              
-       mixpanel.track('Selected Plan', {"App id": $scope.upgradePlanApp.appId,"Plan Name": selectedPlan});
+       mixpanel.track('Selected Plan', {"App id": $scope.upgradePlanApp.appId,"Plan Name": selctedPlan.label});
       /****End of Tracking*****/
     }
   };
@@ -595,6 +707,10 @@ app.controller('appsController',
       $scope.loadingError='Cannot connect to server. Please try again.';
     });
      //listing ends
+  }
+
+  function getPlanById(planId){
+    return _.first(_.where(pricingPlans, {id: planId}));
   }
 
   function addDefaultTables(project){
@@ -635,6 +751,82 @@ app.controller('appsController',
     //updateHeight();
   }
 
+    function validateCardMainDetails(cardDetails){
+    var errorMsg=null;
+    if(!cardDetails.billing.name){
+      return "Card holder's name is required";
+    }
+    if(cardDetails.billing.name && cardDetails.billing.name.length==129){
+      return "Card holder's name shoudn't exceed 128 Chars";
+    }
+
+    if(!cardDetails.number || cardDetails.number.length!=16){
+      return "Invalid Card";
+    }
+
+    var cardNumber=parseInt(cardDetails.number);
+    if(isNaN(cardNumber)){
+      return "Invalid Card, Only 16 digits allowed";
+    }
+
+    if(!cardDetails.expMonth || cardDetails.expMonth=="0" ||  cardDetails.expMonth.length>2){
+      return "Invalid Exp Month";
+    }
+
+    if(!cardDetails.expYear || cardDetails.expYear=="0" ||  cardDetails.expYear.length>4){
+      return "Invalid Exp Year";
+    }
+
+    if(!cardDetails.cvc || cardDetails.cvc.length!=3){
+      return "Invalid CVC";
+    }
+    
+    var cardCVC=parseInt(cardDetails.cvc);
+    if(isNaN(cardCVC)){
+      return "Invalid CVC, Only 3 digits allowed";
+    }
+
+    return errorMsg;
+  }
+
+  function validateBillingDetails(cardDetails){
+    var errorMsg=null;
+    if(!cardDetails.billing.addrLine1){
+      return "Address1 cannot be null";
+    }
+
+    if(cardDetails.billing.addrLine1 && cardDetails.billing.addrLine1.length>64){
+      return "Address1 should not exceed 64 Chars";
+    }
+
+    if(!cardDetails.billing.city){
+      return "City cannot be null";
+    }
+
+    if(cardDetails.billing.city && cardDetails.billing.city.length>64){
+      return "City should not exceed 64 Chars";
+    }
+
+    if(!cardDetails.billing.state){
+      return "State cannot be null";
+    }
+
+    if(cardDetails.billing.state && cardDetails.billing.state.length>64){
+      return "State should not exceed 64 Chars";
+    }
+
+    if(cardDetails.billing.zipCode && cardDetails.billing.zipCode.length>16){
+      return "Zipcode should not exceed 16 Chars";
+    }
+
+    if(!cardDetails.billing.country){
+      return "Country cannot be null";
+    }
+
+    if(cardDetails.billing.country && cardDetails.billing.country.length>64){
+      return "Country should not exceed 64 Chars";
+    }
+  }
   //get Beacon Obj from backend
   function getBeacon(){
     beaconService.getBeacon()         

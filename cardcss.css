@@ -1,0 +1,143 @@
+
+/*New Card Modal*/
+.upgradecustom-width{
+	width: 44%;
+	max-width: none;
+}
+.wind10wrap{
+	width: 100%;
+	height: auto;	
+	position: relative;
+}
+.win10menu-land{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 420px;
+	width: 100%;
+	overflow: hidden;	
+}
+.win10menuwrap{
+	width: 30%;
+	height: 100%;
+	background-color: #404040;	
+}
+.planmenuopen .win10menuwrap{
+	animation: openPlanMenu 0.2s both ease-out 0.1s;
+  	-webkit-animation: openPlanMenu 0.2s both ease-out 0.1s;
+}
+
+@-webkit-keyframes openPlanMenu {
+    from {
+      transform:translateX(-130px);
+      -webkit-transform:translateX(-130px);     
+   	  opacity: 0;
+    }
+    to {
+      transform:translateX(0px);
+      -webkit-transform:translateX(0px);
+    opacity: 1;
+    }
+}
+.wind10head{
+	width: 100%;
+	height: 50px;
+	border:1px solid black;
+}
+.wind10body{
+	width: 100%;
+	height: 320px;
+	border:1px solid black;
+}
+.wind10tail{
+	width: 100%;
+	height: 50px;
+	border:1px solid black;
+}
+
+/*New Card Modal*/
+
+<!--New Upgrade Card Modal -->
+<div class="modal fade colored-header" id="newUpgradeModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog upgradecustom-width">
+    <div class="modal-content"> 
+
+      <div class="wind10wrap">
+
+        <!--Abosolute Menu-->
+        <div ng-class="{planmenuopen:planMenuOpen}">
+          <div ng-show="planMenuOpen" class="win10menu-land">
+            <div class="win10menuwrap">
+
+              <div class="wind10head flex-general-row-wrapper" style="">
+                <div class="solo-vertical-center" style="height:100%;width:100%;padding-right:10px;">
+                  <div class="cf" style="width:100%;">
+                    <!--Menu-->
+                    <div ng-click="togglePlanMenu()" class="pull-right flex-general-column-wrapper-center" style="height:25px;width:25px;">
+                      <i class="icon ion-navicon-round" style="font-size:20px;color:white;"></i>
+                    </div>
+                     <!--/Menu-->
+                  </div>
+                </div>
+              </div>
+              <div class="wind10body">
+                
+              </div>
+              <div class="wind10tail">
+                <div class="solo-vertical-center" style="height:100%;width:30%;">              
+                </div>        
+              </div>
+              </div>
+          </div>
+        </div>
+        <!--/Abosolute Menu-->
+
+        <!--Content-->
+        <div class="wind10conatiner">
+          <div class="wind10head flex-general-row-wrapper" style="border:1px solid red;">
+
+            <div class="solo-vertical-center" style="height:100%;width:30%;border:1px solid pink;padding-left:10px;">
+              <div class="cf" style="width:100%;">
+                <!--Menu-->
+                <div ng-click="togglePlanMenu()"  class="pull-left flex-general-column-wrapper-center" style="height:25px;width:25px;">
+                  <i class="icon ion-navicon-round" style="font-size:20px;color:#0270C9;"></i>
+                </div>
+                 <!--/Menu-->
+              </div>
+            </div>
+            
+            <div class="solo-vertical-center" style="height:100%;width:70%;padding-right:10px;">
+            
+              <div class="cf" style="width:100%;">
+                <a class="pull-right" href="https://cloudboost.io/pricing" target="_blank" style="color:#0270C9;">
+                  Learn more at https://cloudboost.io/pricing
+                </a>
+              </div>
+              
+            </div>
+
+          </div>
+
+          <div class="wind10body">
+            
+          </div>
+          <div class="wind10tail">
+            <div class="solo-vertical-center" style="height:100%;width:30%;">
+              
+            </div>
+            <div  class="flex-general-column-wrapper-center" style="height:100%;width:40%;">
+              
+            </div>
+            <div class="solo-horizontal-center" style="height:100%;width:30%;">
+              
+            </div>
+          </div>
+        </div>
+        <!--Content-->
+
+      </div>     
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+<!--/New Upgrade Card Modal -->
