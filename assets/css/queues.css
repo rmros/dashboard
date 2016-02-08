@@ -270,17 +270,15 @@
 
 .cache-list-container{
 	height: 100%;
-	width: 99%;	
-	padding-top: 12px;	
-	padding-left: 12px;	
-	padding-right: 12px;	
+	width: 100%;		
 }
 .cache-search-wrapper{	
 	height: 49px;
-	width: 72%;	
+	width: 63%;	
 	padding-top: 5px;
 	padding-left: 12px;	
-	padding-right: 12px;			
+	padding-right: 12px;
+				
 }
 .cache-search-container{   
    height: 40.2px;
@@ -288,7 +286,7 @@
    padding-top: 3px;
    padding-left: 5px;
    padding-right: 5px;
-   padding-bottom: 8px;      
+   padding-bottom: 8px;          
 }
 .cache-search-input{
     border: none;   
@@ -300,10 +298,17 @@
 	outline: none;
 }
 .each-cache-wrapper{
-	width: 98%;
-	height: 49px;	
-	margin-top: 10px;
+	width: 100%;
+	height: 54px;	
+	margin-top: 1px;
 	cursor: pointer;	
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 10px;	
+}
+
+.each-cache-wrapper:hover,.activeCache{	
+	background-color: #F5F5F5;	
 }
 
 .cache-resembler-wrapper{
@@ -345,7 +350,7 @@
 }
 
 .cache-app-name-wrapper{
-	width: 52%;
+	width: 47%;
 	height: 47px;				
 }
 .cache-secondary-strip{
@@ -355,11 +360,16 @@
 	padding-left: 22px;	
 }
 .cache-app-buttons{
-	width: 170px;
+	width:39%;
 	height: 47px;	
-	position: relative;			
+	position: relative;				
 }
-
+@media (min-device-width : 1100px) and (max-device-width : 1920px)
+{
+    .cache-app-buttons{
+		margin-left: 4%;				
+	} 
+}
 /******Cache CLear Button****/
 .cache-clear-btn-wrap{
 	width:40px;
@@ -490,43 +500,7 @@
 }
 /******End Cache Delete Button****/
 
-/********Cache Selected Button****/
-.cache-sel-btn-wrap{
-	width:40px;
-	height:100%;
-	margin-left:2px;
-	float: right;
-	position: absolute;	
-	right:0;
-	opacity: 0;	
-}
-.each-cache-wrapper:hover .cache-sel-btn-wrap{
-	opacity: 1;
-}
 
-.cache-sel-btn{
-	width:100%;
-	height:79%;
-	background-color:white;
-	border:none;	
-	border-radius:2px;
-	position: relative;	
-}
-.cache-sel-btn .cache-sel-icon{
-	position: absolute;
-	top:-3.5px;
-	left:22px;	
-}
-.cache-sel-btn .cache-sel-icon i{
-	font-size:30px;
-	color:#cecccc;
-}
-
-.cache-sel-btn-wrap:hover .cache-sel-icon i{
-	color:#07D304;
-}
-
-/********Cache Selected Button****/
 
 .cache-items-details{
 	width:61%;

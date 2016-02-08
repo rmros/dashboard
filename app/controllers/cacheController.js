@@ -46,6 +46,11 @@ $timeout){
   $scope.confirmCacheName=null;
   $scope.confirmSpinner=false;
   $scope.cacheModalError=null;  
+
+  $scope.newItem={
+    key:null,
+    value:null
+  };
   
   $scope.init= function() {            
     id = $stateParams.appId;
@@ -121,14 +126,6 @@ $timeout){
       });
     }    
 
-  };
-
-  $scope.initAddNewItem=function(){
-    $scope.newItem={
-      key:null,
-      value:null
-    };
-    $("#md-addnewitem").modal();
   }; 
 
   $scope.addNewItem=function(){
@@ -137,14 +134,16 @@ $timeout){
       $scope.cacheModalError=null; 
       $scope.confirmSpinner=true;
       cacheService.upsertItem($scope.activeCache[$scope.previousIndex],$scope.newItem)
-      .then(function(resp){
-        $("#md-addnewitem").modal("hide"); 
+      .then(function(resp){       
 
         $scope.cacheItemsList.push($scope.newItem);
         ++$scope.cacheItemCount[$scope.previousIndex];
 
         $scope.confirmSpinner=false; 
-        $scope.newItem=null;
+        $scope.newItem={
+          key:null,
+          value:null
+        };
         $scope.deletableCache=null;
 
         getCacheInfo($scope.activeCache[$scope.previousIndex]);
@@ -203,7 +202,7 @@ $timeout){
 
     $scope.itemSpinner[index]=true;
     $scope.itemError[index]=null;
-    cacheService.upsertItem($scope.activeCache[$scope.previousIndex],updateObj)
+    cacheService.deleteItem($scope.activeCache[$scope.previousIndex],updateObj)
     .then(function(resp){
       $scope.cacheItemsList.splice(index,1);
       $scope.itemSpinner.splice(index,1);
@@ -336,7 +335,8 @@ $timeout){
       }
 
       if($scope.cacheList.length>0){
-        $scope.firstVisit=false; 
+        $scope.firstVisit=false;
+         $scope.openCacheDetails($scope.cacheList[0]); 
       }      
 
     },function(error){
