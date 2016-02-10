@@ -289,6 +289,76 @@
     padding-left:6px;
     padding-right:6px;
     cursor: pointer;
+    overflow: hidden;
+    position: relative;    
+}
+.tableslide-options{
+    position: absolute;
+    width: 50px;
+    height: 100%;
+    top: 0;
+    right: 0;
+    background-color: #134A93;
+    z-index: 2;
+    opacity: 0;
+}
+.tableoptionsopen .tableslide-options{
+    animation: openTableOptions 0.2s both ease-out 0.1s;
+    -webkit-animation: openTableOptions 0.2s both ease-out 0.1s;
+}
+.tableoptionsclose .tableslide-options{
+    animation: closeTableOptions 2s both ease-out 0.1s;
+    -webkit-animation: closeTableOptions 2s both ease-out 0.1s;
+}
+@keyframes openTableOptions {
+    from {
+      transform:translateX(530px);
+      -webkit-transform:translateX(530px);     
+      opacity: 0;
+    }
+    to {
+      transform:translateX(0px);
+      -webkit-transform:translateX(0px);
+        opacity: 1;
+    }
+}
+@keyframes closeTableOptions {
+    
+    from {
+      transform:translateX(0px);
+      -webkit-transform:translateX(0px);
+        opacity: 1;
+    }
+    to {
+      transform:translateX(530px);
+      -webkit-transform:translateX(530px);     
+      opacity: 0;
+    }
+}
+@-webkit-keyframes openTableOptions {
+    from {
+      transform:translateX(530px);
+      -webkit-transform:translateX(530px);     
+      opacity: 0;
+    }
+    to {
+      transform:translateX(0px);
+      -webkit-transform:translateX(0px);
+        opacity: 1;
+    }
+}
+@-webkit-keyframes closeTableOptions {
+    
+    from {
+      transform:translateX(0px);
+      -webkit-transform:translateX(0px);
+        opacity: 1;
+    }
+    to {
+      transform:translateX(530px);
+      -webkit-transform:translateX(530px);     
+      opacity: 0;
+    }
 }
 .tableAppCreation{
     height:89px;

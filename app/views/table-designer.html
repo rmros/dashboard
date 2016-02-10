@@ -33,39 +33,43 @@
                     <!--loop-->
                     <div class="tableBx" ng-repeat="t in currentProject.tables | filter:searchThisName">
                         <!--Table Display-->
-                        <div class="tableApp cf " ng-show="!tableCreateSpinner[$index] && !tableCreatedTick[$index]" style="background-color:#1476ff" ng-click="goToDataBrowser(t)">
+                        <div class="tableApp cf " ng-show="!tableCreateSpinner[$index] && !tableCreatedTick[$index]" style="background-color:#1476ff" ng-click="goToDataBrowser(t)" ng-mouseover="hoverIn($index)" ng-mouseleave="hoverOut($index)" ng-class="{tableoptionsopen:openTableOptions[$index],tableoptionsclose:closeTableOptions[$index]}">
 
-                          <div class="cf">
-                            <span class="table-delete pull-right">                           
-                              <!--Delete x-->
-                              <span ng-show="t.document.type!='user' && t.document.type!='role'" class="cross tableOptionIcon" ng-click="deleteTableModal(t); $event.stopPropagation()">
-                              <i class="icon ion-close"></i>
-                              </span>
+                          <div style="height:100%;width:100%;" class="flex-general-column-wrapper-center">  
 
-                              <!--Dummy-->
-                              <span ng-show="t.document.type=='user' || t.document.type=='role'" class="cross tableOptionIcon" >
-                              &nbsp;
-                              </span>
-                              
-                            </span>
+                            <div style="padding-top: 13px;">                          
+                              <div>  
+                                 <!--User-->                        
+                                 <i ng-if="t.document.type=='user'" class="icon ion-person-stalker tableIcon"></i>
+                                 <!--Role-->                        
+                                 <i ng-if="t.document.type=='role'" class="icon ion-unlocked tableIcon"></i>
+                                 <!--Custom-->                        
+                                 <i ng-if="t.document.type=='custom'" class="icon ion-ios-list tableIcon"></i>
+                              </div>
+
+                              <div>
+                                <span class="tableText">{{t.name}}</span>
+                              </div>
+                            </div>
+
                           </div>
 
-                          <center>                            
-                             <div>  
-                               <!--User-->                        
-                               <i ng-if="t.document.type=='user'" class="icon ion-person-stalker tableIcon"></i>
-                               <!--Role-->                        
-                               <i ng-if="t.document.type=='role'" class="icon ion-unlocked tableIcon"></i>
-                               <!--Custom-->                        
-                               <i ng-if="t.document.type=='custom'" class="icon ion-ios-list tableIcon"></i>
-                             </div>
-
-                             <div>
-                              <span class="tableText">{{t.name}}</span>
+                          <div class="tableslide-options">
+                            <div class="flex-general-column-wrapper-center" style="height:50%;width:100%;">
+                              <div>
+                                <i class="icon ion-log-in" style="color:white;font-size: 24px;"></i>
+                              </div>                             
                             </div>
-                          </center> 
+
+                            <div ng-click="deleteTableModal(t); $event.stopPropagation()" class="flex-general-column-wrapper-center" style="height:50%;width:100%;border-top:1px solid #2A3D56;">
+                              <div>
+                                <i class="icon ion-ios-trash" style="color:white;font-size: 24px;"></i>
+                              </div>                            
+                            </div>
+                          </div>                           
 
                         </div>
+                        <!--/Table Display-->
 
                         <!--While Creating-->                    
                         <div class="tableAppCreation cf " ng-show="tableCreateSpinner[$index] || tableCreatedTick[$index]" style="background-color:#6D6D6D">
@@ -91,20 +95,24 @@
                             </span>
                           </div>
 
-                          <center>                            
-                             <div>  
-                               <!--User-->                        
-                               <i ng-if="t.document.type=='user'" class="icon ion-person-stalker tableIcon" style="cursor:default;"></i>
-                               <!--Role-->                        
-                               <i ng-if="t.document.type=='role'" class="icon ion-unlocked tableIcon" style="cursor:default;"></i>
-                               <!--Custom-->                        
-                               <i ng-if="t.document.type=='custom'" class="icon ion-ios-list tableIcon" style="cursor:default;"></i>
-                             </div>
 
-                             <div>
-                              <span class="tableText">{{t.name}}</span>
-                            </div>
-                          </center> 
+                          <div style="width:100%;" class="solo-horizontal-center">
+                            <div>                            
+                               <div>  
+                                 <!--User-->                        
+                                 <i ng-if="t.document.type=='user'" class="icon ion-person-stalker tableIcon" style="cursor:default;"></i>
+                                 <!--Role-->                        
+                                 <i ng-if="t.document.type=='role'" class="icon ion-unlocked tableIcon" style="cursor:default;"></i>
+                                 <!--Custom-->                        
+                                 <i ng-if="t.document.type=='custom'" class="icon ion-ios-list tableIcon" style="cursor:default;"></i>
+                               </div>
+
+                               <div>
+                                <span class="tableText">{{t.name}}</span>
+                              </div>
+                            </div> 
+                          </div>
+
                         </div> 
                     
                     </div>                    

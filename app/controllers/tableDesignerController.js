@@ -23,6 +23,9 @@ app.controller('tableDesignerController',
     $rootScope.isFullScreen=false;  
     $scope.tableCreateSpinner=[];
     $scope.tableCreatedTick=[];  
+
+    $scope.openTableOptions=[];
+    $scope.closeTableOptions=[];
       
     $scope.initialize = function() {
         $rootScope.page='tableDesigner';
@@ -220,13 +223,23 @@ app.controller('tableDesignerController',
     }
 
   }
+ 
   
   $scope.filterDataType=function(dataTypeObj){
     if(dataTypeObj.type!="List" && dataTypeObj.type!="Relation"){
       return dataTypeObj;
     }
   };        
-          
+   
+  $scope.hoverIn = function(index){
+    $scope.openTableOptions[index]=true;
+    $scope.closeTableOptions[index]=false;
+  };
+
+  $scope.hoverOut = function(index){
+    $scope.openTableOptions[index]=false;
+    $scope.closeTableOptions[index]=true;
+  };       
   /* PRIVATE FUNCTIONS */
 
   function loadProject(id){
