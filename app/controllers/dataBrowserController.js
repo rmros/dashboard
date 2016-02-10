@@ -1416,16 +1416,28 @@ function rowEditMode(index){
 
 function rowWarningMode(index,row,columnName){
   var colNames="";
+  var countColumns=0;
   for(var i=0;i<$scope.currentProject.currentTable.columns.length;++i){
-    var col=$scope.currentProject.currentTable.columns[i];
+    var col=$scope.currentProject.currentTable.columns[i];    
     if(col.name!=columnName && col.name!="id" && col.name!="createdAt" && col.name!="updatedAt" && col.name!="ACL" && col.required){
         if(!row.get(col.name)){
-          colNames=colNames.concat(col.name+","); 
+
+          if(countColumns==0){
+             colNames=col.name;
+          }else if(countColumns>0){
+            colNames=colNames.concat(","+col.name);
+          }           
+          ++countColumns;
         }          
     }
   }
 
-  $scope.rowInfo="This row is not saved because these "+colNames+" are required";
+  if(countColumns==1){
+    $scope.rowInfo="This row is not saved because "+colNames+" is required.";
+  }else if(countColumns>1){
+    $scope.rowInfo="This row is not saved because "+colNames+" are required.";
+  }
+  
 
   $scope.rowEditMode[index]=false;
   $scope.rowWarningMode[index]=true;

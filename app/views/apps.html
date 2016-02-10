@@ -742,13 +742,11 @@
 
             </div>
 
-            <div class="pull-right cf" style="height:42px;width:47%;background-color:white;">
-              <div class="pull-left flex-general-column-wrapper-center" style="height:100%;width:28%;">
-                <span style="font-size:14px;color:#C9C7C7">Ctry</span>
-              </div>
-              <div class="pull-left" style="height:100%;width:62.9%;">
-                <input type="text" placeholder="Country" ng-model="cardDetails.billing.country" class="default-inputfield" style="height:100%;width:100%;font-size:16px;padding-left:3px;">
-              </div>
+            <div class="pull-right cf" style="height:42px;width:47%;background-color:white;">             
+              <select class="default-inputfield" ng-model="cardDetails.billing.country" style="height:100%;width:100%;font-size:16px;padding:2px;color:#7C7B7B">
+                  <option value="0" ng-selected="!cardDetails.billing.country">Select Country</option>
+                  <option ng-repeat="ctry in cardCountries" value="{{ctry.code}}">{{ctry.label}}</option>                 
+              </select>
             </div>
           </div>
 

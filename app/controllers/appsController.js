@@ -82,6 +82,7 @@ app.controller('appsController',
 
     projectList();
     $scope.pricingPlans=pricingPlans; 
+    $scope.cardCountries=paymentCountries;    
   };
 
   $scope.deleteAppModal=function(project, index){
@@ -572,7 +573,7 @@ app.controller('appsController',
       $scope.cardAlreadyFreePlan=false;
       $scope.cardNeedFreePlan=false;
     }else{
-      WarningNotify(msg);
+     WarningNotify(msg);
     }    
   };
 
@@ -807,25 +808,42 @@ app.controller('appsController',
       return "City should not exceed 64 Chars";
     }
 
-    if(!cardDetails.billing.state){
-      return "State cannot be null";
+    if(!cardDetails.billing.state && cardDetails.billing.country && fieldsRequiredForCountries(cardDetails.billing.country)){
+      return "State cannot be null for selected country";
     }
 
     if(cardDetails.billing.state && cardDetails.billing.state.length>64){
       return "State should not exceed 64 Chars";
     }
 
+    if(!cardDetails.billing.zipCode && cardDetails.billing.country && fieldsRequiredForCountries(cardDetails.billing.country)){
+      return "Zipcode cannot be null for selected country";
+    }
+
     if(cardDetails.billing.zipCode && cardDetails.billing.zipCode.length>16){
       return "Zipcode should not exceed 16 Chars";
     }
 
-    if(!cardDetails.billing.country){
+    if(!cardDetails.billing.country || cardDetails.billing.country=="0"){
       return "Country cannot be null";
     }
 
     if(cardDetails.billing.country && cardDetails.billing.country.length>64){
       return "Country should not exceed 64 Chars";
     }
+
+    if(!cardDetails.billing.addrLine2 && cardDetails.billing.country && (cardDetails.billing.country=="CHN" || cardDetails.billing.country=="JPN" || cardDetails.billing.country=="RUS")){
+      return "Address2 cannot be null for selected country.";
+    }
+  }
+
+  function fieldsRequiredForCountries(country){
+    country=country.trim();
+    if(country=="ARG" || country== "AUS" || country== "BGR" || country== "CAN" || country== "CHN" || country== "CYP" || country== "EGY" || country== "FRA" || country== "IND" || country== "IDN" || country== "ITA" || country== "JPN" || country== "MYS" || country==
+     "MEX" || country== "NLD" || country== "PAN" || country== "PHL" || country== "POL" || country== "ROU" || country== "RUS" || country== "SRB" || country== "SGP" || country== "ZAF" || country== "ESP" || country== "SWE" || country== "THA" || country== "TUR" || country== "GBR" || country== "USA"){
+      return true;
+    }
+    return false;
   }
   //get Beacon Obj from backend
   function getBeacon(){

@@ -117,12 +117,13 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
           <div ng-show="showAppPanel" class="flex-general-column-wrapper-center mainmenu-subcat-heading" style="border-top:2px solid rgba(188, 180, 176, 0.23);">
             <span>APP</span>
           </div>
-          <ul class="cl-vnavigation">         
+          <ul class="cl-vnavigation" ng-show="showAppPanel">         
 
-            <li ng-class="{active:page=='tableDesigner','menu-active':page=='tableDesigner'}" ng-show="showAppPanel" data-toggle="tooltip" data-placement="right" title="Tables" tooltip>
+            <li ng-class="{active:page=='tableDesigner','menu-active':page=='tableDesigner'}"  data-toggle="tooltip" data-placement="right" title="Tables" tooltip>
               <a href="#/{{currentProject.appId}}/table"  ng-click="toggleSideMenu()"><i class="fa fa-table"></i><span>Table Designer</span></a>   
             </li> 
-            <li ng-class="{active:page=='cache','menu-active':page=='cache'}" ng-show="currentProject" data-toggle="tooltip" data-placement="right" title="Cache" tooltip>
+
+            <li ng-class="{active:page=='cache','menu-active':page=='cache'}" data-toggle="tooltip" data-placement="right" title="Cache" tooltip>
               <a  href="#/{{currentProject.appId}}/cache"><i class="fa fa-bolt"></i><span>Cache</span></a>
             </li>                     
 
