@@ -54,14 +54,14 @@
 
                           </div>
 
-                          <div class="tableslide-options">
-                            <div class="flex-general-column-wrapper-center" style="height:50%;width:100%;">
+                          <div class="tableslide-options flex-general-column-wrapper-center">
+                            <div  class="flex-general-column-wrapper-center" style="height:50%;width:100%;">
                               <div>
                                 <i class="icon ion-log-in" style="color:white;font-size: 24px;"></i>
                               </div>                             
                             </div>
 
-                            <div ng-click="deleteTableModal(t); $event.stopPropagation()" class="flex-general-column-wrapper-center" style="height:50%;width:100%;border-top:1px solid #2A3D56;">
+                            <div ng-if="t.document.type=='custom'" ng-click="deleteTableModal(t); $event.stopPropagation()" class="flex-general-column-wrapper-center" style="height:50%;width:100%;border-top:1px solid #2A3D56;">
                               <div>
                                 <i class="icon ion-ios-trash" style="color:white;font-size: 24px;"></i>
                               </div>                            
