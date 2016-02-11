@@ -15,7 +15,7 @@ app.factory('paymentService', ['$q','$http','$rootScope',function ($q,$http,$roo
 	    };
 
         //Pull in the public encryption key for our environment
-        TCO.loadPubKey('sandbox', function() {	
+        TCO.loadPubKey('production', function() {	
 
 		    _tokenRequest(args)
 		    .then(function(data){
