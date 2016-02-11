@@ -2403,7 +2403,8 @@
     width:95.60%;    
     border-top-left-radius: 4px;
 }
-.acl-main-body{           
+.acl-main-body{ 
+    margin-top: -9px;          
 }
 .acl-footer{
     height:50px;

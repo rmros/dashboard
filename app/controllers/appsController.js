@@ -329,59 +329,65 @@ app.controller('appsController',
         $("#removedevconform").modal();
       }      
     }else{
+      $scope.confirmAppName=$scope.selectedProject.name;
       $scope.processRemoveDeveloper(index,requestedUser);
-    }    
-   
+    }   
   }; 
 
   $scope.processRemoveDeveloper =function(index,requestedUser) {
-    $("#removedevconform").modal("hide");
-    
-    $scope.appDevSpinner[index]=true;
-    projectService.removeDeveloperFromProject($scope.selectedProject.appId,requestedUser._id)
-    .then(function(data){     
-
-      if(requestedUser._id==$rootScope.user._id){
-        var appIndex=$scope.projectListObj.indexOf($scope.selectedProject); 
-        if(appIndex==0 || appIndex>0){
-          $scope.projectListObj.splice(appIndex,1);
-        }
-      }                  
-
-      var devIndex=$scope.developers.indexOf(requestedUser); 
-      if(devIndex==0 || devIndex>0){
-        $scope.developers.splice(devIndex,1);
-
-        var userIndexInApp;
-        for(var i=0;i<$scope.selectedProject.developers.length;++i){
-          if($scope.selectedProject.developers[i].userId==requestedUser._id){
-            userIndexInApp=i;
+    if($scope.confirmAppName==$scope.selectedProject.name){    
+      $("#removedevconform").modal("hide");
+      
+      $scope.appDevSpinner[index]=true;
+      projectService.removeDeveloperFromProject($scope.selectedProject.appId,requestedUser._id)
+      .then(function(data){     
+        $scope.confirmAppName=null;
+        if(requestedUser._id==$rootScope.user._id){
+          var appIndex=$scope.projectListObj.indexOf($scope.selectedProject); 
+          if(appIndex==0 || appIndex>0){
+            $scope.projectListObj.splice(appIndex,1);
           }
-        }
-        $scope.selectedProject.developers.splice(userIndexInApp,1);
-      }  
+        }                  
 
-      //Find Atleast one admin
-      var atleastOneAdmin=_.find($scope.selectedProject.developers, function(eachObj){ 
-        if(eachObj.role=="Admin"){ 
-          return;          
-        }
+        var devIndex=$scope.developers.indexOf(requestedUser); 
+        if(devIndex==0 || devIndex>0){
+          $scope.developers.splice(devIndex,1);
+
+          var userIndexInApp;
+          for(var i=0;i<$scope.selectedProject.developers.length;++i){
+            if($scope.selectedProject.developers[i].userId==requestedUser._id){
+              userIndexInApp=i;
+            }
+          }
+          $scope.selectedProject.developers.splice(userIndexInApp,1);
+        }  
+
+        //Find Atleast one admin
+        var atleastOneAdmin=_.find($scope.selectedProject.developers, function(eachObj){ 
+          if(eachObj.role=="Admin"){ 
+            return;          
+          }
+        });
+
+        if($scope.selectedProject.developers.length==0 || !atleastOneAdmin){
+          $('#developersModal').modal('hide');
+        }        
+        
+        $scope.removeDevIndex=null;
+        $scope.removeDevUser=null;
+        
+        $scope.appDevSpinner[index]=false;                     
+      },function(error){
+        $scope.confirmAppName=null;
+        $scope.appDevSpinner[index]=false; 
+        $scope.removeDevIndex=null;
+        $scope.removeDevUser=null;
+        errorNotify(error);                  
       });
 
-      if($scope.selectedProject.developers.length==0 || !atleastOneAdmin){
-        $('#developersModal').modal('hide');
-      }        
-      
-      $scope.removeDevIndex=null;
-      $scope.removeDevUser=null;
-      
-      $scope.appDevSpinner[index]=false;                     
-    },function(error){
-      $scope.appDevSpinner[index]=false; 
-      $scope.removeDevIndex=null;
-      $scope.removeDevUser=null;
-      errorNotify(error);                  
-    });
+    }else{
+      warningNotify("confirm App Name doesn't match.");
+    }
   };
 
   $scope.removeUserFromInvited=function(index,requestedInvitee){
