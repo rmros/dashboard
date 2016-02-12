@@ -123,7 +123,8 @@ app.controller('indexController',
 
   $scope.updateNotificationsSeen=function(){
     notificationService.updateNotificationsSeen()
-    .then(function(list){    
+    .then(function(list){ 
+      $(".notifybubble").hide();   
     }, function(error){         
     });
   };

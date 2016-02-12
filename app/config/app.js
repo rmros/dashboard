@@ -91,8 +91,9 @@ if(window.location.hostname==="dashboard.cloudboost.io"){
 
 /*********************Pricing Plans******************************/
 var twoCheckoutCredentials={
-  sellerId:"202796222",
-  publishableKey:"EB50E085-0670-49C7-82EE-2C5977488771"
+  sellerId:"901307760",
+  publishableKey:"5DB21AAF-317D-4FCB-A985-DD296ECDF71A",
+  mode:"sandbox"
 };
 
 var pricingPlans=[{

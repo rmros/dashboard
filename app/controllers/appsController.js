@@ -555,6 +555,11 @@ app.controller('appsController',
     $("#upgradeModal").modal();
     $scope.upgradePlanApp=projectObj;
 
+    $scope.cardDetailsStep1=true;
+    $scope.cardDetailsStep2=false;
+    $scope.cardAlreadyFreePlan=false;
+    $scope.cardNeedFreePlan=false;
+
     //Show Next Plan
     if(projectObj.planId && projectObj.planId>1 && projectObj.planId<6){
       $scope.requestedPlan=getPlanById(projectObj.planId+1);
@@ -653,6 +658,12 @@ app.controller('appsController',
         $("#upgradeModal").modal("hide"); 
         successNotify("Successfully cancelled!");
         $scope.showConfirmCancelRecurring=false;
+
+        $scope.cardDetailsStep1=true;
+        $scope.cardDetailsStep2=false;
+        $scope.cardAlreadyFreePlan=false;
+        $scope.cardNeedFreePlan=false;
+
     },function(error){
       $scope.cancelRecurringSpinner=false; 
       $scope.showConfirmCancelRecurring=false; 

@@ -15,13 +15,13 @@ app.factory('paymentService', ['$q','$http','$rootScope',function ($q,$http,$roo
 	    };
 
         //Pull in the public encryption key for our environment
-        TCO.loadPubKey('production', function() {	
+        TCO.loadPubKey(twoCheckoutCredentials.mode, function() {	
 
 		    _tokenRequest(args)
 		    .then(function(data){
 
 		    	if(!data){
-		    		console.log("Try again.");		    		
+		    		q.reject("Create Token failed,try again..");		    		
 		    	}else{
 
 		    		var reqObj={			    		
