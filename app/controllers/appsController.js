@@ -235,25 +235,25 @@ app.controller('appsController',
 
   $scope.editProject=function(isValid,index,appObj,newName){
 
-      if(isValid){
+    if(isValid){
 
-        $scope.isLoading[index] = true;
+      $scope.isLoading[index] = true;
 
-        var originalAppIndex=$scope.projectListObj.indexOf(appObj);        
-        projectService.editProject(appObj.appId,newName)     
-        .then(function(data){
-          $scope.isLoading[index] = false;
-          $scope.toggleAppEdit(index);
+      var originalAppIndex=$scope.projectListObj.indexOf(appObj);        
+      projectService.editProject(appObj.appId,newName)     
+      .then(function(data){
+        $scope.isLoading[index] = false;
+        $scope.toggleAppEdit(index);
 
-          $scope.projectListObj[originalAppIndex]=data;           
-          successNotify('The project is successfully modified.');
-        },function(error){
-          $scope.isLoading[index] = false;
-          $scope.editprojectError=error;  
-          errorNotify(error);                     
-        });
+        $scope.projectListObj[originalAppIndex]=data;           
+        successNotify('The project is successfully modified.');
+      },function(error){
+        $scope.isLoading[index] = false;
+        $scope.editprojectError=error;  
+        errorNotify(error);                     
+      });
 
-      }
+    }
 
   };
 
@@ -394,12 +394,15 @@ app.controller('appsController',
     $scope.appInvitedSpinner[index]=true;
     projectService.removeUserFromInvited($scope.selectedProject.appId,requestedInvitee)
     .then(function(data){
-      if(data){                 
-
-        var inviteeIndex=$scope.invitees.indexOf(requestedInvitee); 
-        if(inviteeIndex==0 || inviteeIndex>0){
-          $scope.invitees.splice(inviteeIndex,1);
-        }     
+      if(data){
+       
+        if($scope.invitees && $scope.invitees.length>0){
+          for(var i=0;i<$scope.invitees.length;++i){
+            if($scope.invitees[i].email==requestedInvitee){              
+              $scope.invitees.splice(i,1);
+            }
+          }
+        }    
         
       }  
       $scope.appInvitedSpinner[index]=false;                     
@@ -418,7 +421,7 @@ app.controller('appsController',
         projectService.inviteUser($scope.selectedProject.appId,$scope.requestInviteEmail)
         .then(function(data){
           if(data){          
-            $scope.invitees.push($scope.requestInviteEmail);
+            $scope.invitees.push({email:$scope.requestInviteEmail});
           } 
           $scope.inviteUserSpinner=false; 
           $scope.requestInviteEmail=null;                         
@@ -899,6 +902,12 @@ app.controller('appsController',
   $scope.$on('addApp', function(event, args) {
       var requestApp = args.app;
       $scope.projectListObj.push(requestApp);      
+  });
+
+  $scope.$on('openUpgradeModal', function(event, args) {
+    var requestAppId = args.appId;
+    var appObj=_.first(_.where($scope.projectListObj, {appId: requestAppId}));
+    $scope.initUpgradePlan(appObj);            
   });
 
   function validateEmail(email) {

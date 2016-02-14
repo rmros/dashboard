@@ -511,7 +511,7 @@
               <tr ng-repeat="eachInvite in invitees">                
                 <td width="47%">
                   <div>                    
-                    <p style="padding: 0 !important;margin-top: -4px !important;margin-bottom:0 !important;">{{eachInvite}}</p>
+                    <p style="padding: 0 !important;margin-top: -4px !important;margin-bottom:0 !important;">{{eachInvite.email}}</p>
                   </div>
                 </td>
                 <td width="20%">
@@ -526,12 +526,13 @@
                 </td>
                 <td class="table-TxtAlign-center" width="13%">
                   <div>
-                    <i ng-show="!appInvitedSpinner[$index]"  ng-click="removeUserFromInvited($index,eachInvite)" class="icon ion-close" style="font-size:12px;"></i>
+                    <i ng-show="!appInvitedSpinner[$index]"  ng-click="removeUserFromInvited($index,eachInvite.email)" class="icon ion-close" style="font-size:12px;"></i>
                     <i ng-show="appInvitedSpinner[$index]" class="fa fa-spinner fa-spin" style="font-size:12px;"></i>
                   </div>
                 </td>
               </tr>
               <!--/Invitees-->
+
             </tbody>
           </table>
         </div>       

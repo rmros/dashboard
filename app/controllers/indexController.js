@@ -2,13 +2,20 @@ app.controller('indexController',
 	['$scope','$rootScope','userService','$location','notificationService','projectService','$sce',
 	function($scope,$rootScope,userService,$location,notificationService,projectService,$sce){	
 
-    $scope.isAdminLoggedIn=false;
+    $scope.isAdminLoggedIn=false;   
 
-    $scope.acceptInvitationSpinner=[];
-    $scope.declineInvitationSpinner=[];
     $scope.notifySpinner=false;
     $scope.notificationsSkip=0;
     $scope.notificationsLimit=5;
+
+    //Confirm notifications 
+    $scope.acceptInvitationSpinner=[];
+    $scope.declineInvitationSpinner=[];
+    //End Confirm notifications
+
+    //Inform notifications(app-upgraded) 
+    $scope.okGotItSpinner=[];   
+    //End Inform notifications(app-upgraded)
 
     getUserInfo(); 
 
@@ -37,55 +44,6 @@ app.controller('indexController',
       checkCookiesAndRedirect();       
     });
   }  
-
-  function getImgSize(imgSrc) {
-      var newImg = new Image();
-
-      newImg.onload = function() {
-        var height = newImg.height;
-        var width = newImg.width;
-        
-        if(width>height){
-          $(".profile-avatar").css({"width":"auto","height":"28px"});
-        }else if(height>width){
-          $(".profile-avatar").css({"width":"28px","height":"auto"});
-        }        
-      }
-
-      newImg.src = imgSrc; // this must be done AFTER setting onload
-  }
-
-  function checkCookiesAndRedirect(){
-    $scope.$watch(function(scope) {
-      return $location.path();
-    },function(newPath,oldPath) {
-        if(!$.cookie('userId') || $.cookie('userId')=="null" || $.cookie('userId')=="undefined"){          
-          window.location.href="/accounts";
-        }else{
-          $rootScope.userFullname=$.cookie('userFullname');
-          /*if($rootScope.user && $rootScope.user.isAdmin && !$scope.isAdminLoggedIn){
-            $scope.isAdminLoggedIn=true;          
-            window.location.href="#/admin";          
-          } */
-        }            
-    });
-  };
-
-
-  $rootScope.logOut=function(){
-    userService.logOut()      
-    .then(function(data){           
-
-      $.removeCookie('userId', { path: '/' });
-      $.removeCookie('userFullname', { path: '/' });
-      $.removeCookie('email', { path: '/' });
-      $.removeCookie('createdAt', { path: '/' });
-
-      window.location.href="/accounts";
-    },function(error){
-      console.log(error);
-    });      
-  };
 
   function getNotifications(){    
     notificationService.getNotifications($scope.notificationsSkip,$scope.notificationsLimit) 
@@ -116,10 +74,9 @@ app.controller('indexController',
     });
   };
 
-  $scope.toggleSideMenu=function(){     
-    /*Collapse sidebar*/
-    toggleSideBar();         
-  }; 
+  $scope.renderHtml = function (htmlCode) {
+    return $sce.trustAsHtml(htmlCode);
+  };   
 
   $scope.updateNotificationsSeen=function(){
     notificationService.updateNotificationsSeen()
@@ -129,6 +86,7 @@ app.controller('indexController',
     });
   };
 
+//Confirm Notification//
   $scope.addDeveloper=function(index,notifyObject) {
     $scope.acceptInvitationSpinner[index]=true;
     projectService.addDeveloper(notifyObject.appId,$rootScope.user.email)
@@ -164,14 +122,62 @@ app.controller('indexController',
         $(".notify-menu-anchor").click();
       }  
       $scope.declineInvitationSpinner[index]=false;                        
-    },function(error){ 
-      console.log(error); 
+    },function(error){       
       $scope.declineInvitationSpinner[index]=false;                        
     });
+  }; 
+  //End Confirm Notification// 
+
+  //Inform notifications(app-upgraded)
+  $scope.removeNotification=function(index,notifyObject){  
+    $scope.okGotItSpinner[index]=true;  
+    notificationService.removeNotification(notifyObject._id)
+    .then(function(data){ 
+
+      var notificationIndex=$rootScope.notifications.indexOf(notifyObject);
+      $rootScope.notifications.splice(notificationIndex,1); 
+      if($rootScope.notifications.length==0){
+        $(".notify-menu-anchor").click();
+      }  
+      $scope.okGotItSpinner[index]=false;                        
+    },function(error){        
+      $scope.okGotItSpinner[index]=false;                        
+    });
+  };
+  //End Inform notifications(app-upgraded)
+
+  //Payment(ask to upgrade)
+  $scope.upgradeAppNow=function(index,notifyObject){
+    $rootScope.$broadcast('openUpgradeModal', { appId:notifyObject.appId});
+    $(".notify-menu-anchor").click();
+
+    notificationService.removeNotification(notifyObject._id)
+    .then(function(data){
+      var notificationIndex=$rootScope.notifications.indexOf(notifyObject);
+      $rootScope.notifications.splice(notificationIndex,1);                              
+    });
+    
+  };
+  //End Payment(ask to upgrade)
+
+  $rootScope.logOut=function(){
+    userService.logOut()      
+    .then(function(data){           
+
+      $.removeCookie('userId', { path: '/' });
+      $.removeCookie('userFullname', { path: '/' });
+      $.removeCookie('email', { path: '/' });
+      $.removeCookie('createdAt', { path: '/' });
+
+      window.location.href="/accounts";
+    },function(error){
+      console.log(error);
+    });      
   };
 
-  $scope.renderHtml = function (htmlCode) {
-    return $sce.trustAsHtml(htmlCode);
+  $scope.toggleSideMenu=function(){     
+    /*Collapse sidebar*/
+    toggleSideBar();         
   };
 
   function toggleSideBar(_this){
@@ -184,6 +190,39 @@ app.controller('indexController',
     $.cookie('FLATDREAM_sidebar','closed',{expires:365, path:'/'});         
     //updateHeight();
   } 
+
+  function getImgSize(imgSrc) {
+      var newImg = new Image();
+
+      newImg.onload = function() {
+        var height = newImg.height;
+        var width = newImg.width;
+        
+        if(width>height){
+          $(".profile-avatar").css({"width":"auto","height":"28px"});
+        }else if(height>width){
+          $(".profile-avatar").css({"width":"28px","height":"auto"});
+        }        
+      }
+
+      newImg.src = imgSrc; // this must be done AFTER setting onload
+  }
+
+  function checkCookiesAndRedirect(){
+    $scope.$watch(function(scope) {
+      return $location.path();
+    },function(newPath,oldPath) {
+        if(!$.cookie('userId') || $.cookie('userId')=="null" || $.cookie('userId')=="undefined"){          
+          window.location.href="/accounts";
+        }else{
+          $rootScope.userFullname=$.cookie('userFullname');
+          /*if($rootScope.user && $rootScope.user.isAdmin && !$scope.isAdminLoggedIn){
+            $scope.isAdminLoggedIn=true;          
+            window.location.href="#/admin";          
+          } */
+        }            
+    });
+  };
       				
 		
 }]);
