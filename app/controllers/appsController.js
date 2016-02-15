@@ -12,7 +12,8 @@ app.controller('appsController',
    'tableService',
    'beaconService',
    'userService',
-   'paymentService',   
+   'paymentService', 
+   'analyticsService',  
   function ($scope,
   $q,
   projectService,
@@ -24,7 +25,8 @@ app.controller('appsController',
   tableService,
   beaconService,
   userService,
-  paymentService) {
+  paymentService,
+  analyticsService) {
 
   $rootScope.showAppPanel=false;  
   $rootScope.isFullScreen=false;
@@ -41,6 +43,17 @@ app.controller('appsController',
   $scope.requestInviteEmail;
   $scope.developers=[];
   $scope.invitees=[];
+
+  //App Usages
+  $scope.apiCallsUsed=[];
+  $scope.storageUsed=[];
+
+  $scope.apiCallsLoading={};  
+  $scope.apiCallsError={};
+
+  $scope.storageLoading={};
+  $scope.storageError={};
+  //App Usages
 
   $scope.openBillingPlan=false;
   $scope.cardDetailsStep1=true;
@@ -190,6 +203,10 @@ app.controller('appsController',
               }
               $scope.projectListObj.push(data);
 
+              //Get Usage Details
+              $scope.loadApiCountByAppId(data);
+              $scope.loadStorageCountByAppId(data);
+
             }, 1600);
                        
 
@@ -226,7 +243,7 @@ app.controller('appsController',
             errorNotify('App ID AppName already exists. Please choose a different App ID.');
           }
           if(error.status === 500){           
-            errorNotify(error.data);  
+            errorNotify("Something went wrong..Try again.");  
           }
            
         });
@@ -629,6 +646,11 @@ app.controller('appsController',
         $scope.prevToCardDetails();
         $scope.requestedPlan=null;
         successNotify("Successfully you upgraded the Plan!");
+
+        //Get Usage Details
+        $scope.loadApiCountByAppId($scope.projectListObj[index]);
+        $scope.loadStorageCountByAppId($scope.projectListObj[index]);
+
       },function(error){
         $scope.addCardSpinner=false;
         errorNotify(error);
@@ -666,6 +688,10 @@ app.controller('appsController',
         $scope.cardDetailsStep2=false;
         $scope.cardAlreadyFreePlan=false;
         $scope.cardNeedFreePlan=false;
+
+        //Get Usage Details
+        $scope.loadApiCountByAppId($scope.projectListObj[index]);
+        $scope.loadStorageCountByAppId($scope.projectListObj[index]);
 
     },function(error){
       $scope.cancelRecurringSpinner=false; 
@@ -721,13 +747,242 @@ app.controller('appsController',
       $rootScope.dataLoading=false; 
       $scope.projectListObj=data;
 
+      if($scope.projectListObj && $scope.projectListObj.length>0){
+        
+        for(var i=0;i<$scope.projectListObj.length;++i){
+
+           $scope.apiCallsError[$scope.projectListObj[i].appId]=false; 
+           $scope.apiCallsLoading[$scope.projectListObj[i].appId]=true;
+
+           analyticsService.apiCount($scope.projectListObj[i].appId).then(function(respObj){             
+
+              var percentageObj=calculatePercentage(respObj,"api");
+              var alreadyInserted=null;
+
+              if($scope.apiCallsUsed && $scope.apiCallsUsed.length>0){
+                alreadyInserted=_.first(_.where($scope.apiCallsUsed, {appId: respObj.appId}));
+              }
+              
+              if(alreadyInserted){
+                var matchedIndex=null;
+                for(var i=0;i<$scope.apiCallsUsed.length;++i){
+                    if($scope.apiCallsUsed[i].appId==respObj.appId){
+                      matchedIndex=i;
+                      break;                      
+                    }
+                }
+                if(matchedIndex==0 || matchedIndex>0){
+                  $scope.apiCallsUsed[matchedIndex]=percentageObj;
+                }
+                
+              }else{
+                $scope.apiCallsUsed.push(percentageObj);
+              }
+
+              $scope.apiCallsLoading[respObj.appId]=false;
+           },function(error){ 
+              $scope.apiCallsLoading[error.appId]=false;
+              $scope.apiCallsError[error.appId]=true;             
+           });
+
+
+           $scope.storageError[$scope.projectListObj[i].appId]=false; 
+           $scope.storageLoading[$scope.projectListObj[i].appId]=true;
+           analyticsService.storageCount($scope.projectListObj[i].appId).then(function(respObj){
+
+              var percentageObj=calculatePercentage(respObj,"storage");
+              var alreadyInserted=null;
+
+              if($scope.storageUsed && $scope.storageUsed.length>0){
+                alreadyInserted=_.first(_.where($scope.storageUsed, {appId: respObj.appId}));
+              }
+              
+              if(alreadyInserted){
+                var matchedIndex=null;
+                for(var i=0;i<$scope.storageUsed.length;++i){
+                    if($scope.storageUsed[i].appId==respObj.appId){
+                      matchedIndex=i;
+                      break;
+                    }
+                }
+                if(matchedIndex==0 || matchedIndex>0){
+                  $scope.storageUsed[matchedIndex]=percentageObj;
+                }
+              }else{
+                $scope.storageUsed.push(percentageObj);
+              } 
+
+              $scope.storageLoading[respObj.appId]=false;
+           },function(error){
+              $scope.storageLoading[error.appId]=false;
+              $scope.storageError[error.appId]=true;              
+           });
+        }       
+
+      }
+      
+
       //getBeacon
       getBeacon();                              
     },function(error){
       $rootScope.dataLoading=false; 
       $scope.loadingError='Cannot connect to server. Please try again.';
     });
-     //listing ends
+    //listing ends
+  }
+
+  $scope.loadApiCountByAppId=function(appObj){
+    $scope.apiCallsError[appObj.appId]=false; 
+    $scope.apiCallsLoading[appObj.appId]=true;
+
+    analyticsService.apiCount(appObj.appId).then(function(respObj){
+
+        var percentageObj=calculatePercentage(respObj,"api");
+        var alreadyInserted=null;
+
+        if($scope.apiCallsUsed && $scope.apiCallsUsed.length>0){
+          alreadyInserted=_.first(_.where($scope.apiCallsUsed, {appId: respObj.appId}));
+        }
+        
+        if(alreadyInserted){
+          var matchedIndex=null;
+          for(var i=0;i<$scope.apiCallsUsed.length;++i){
+              if($scope.apiCallsUsed[i].appId==respObj.appId){
+                matchedIndex=i;
+                break;
+              }
+          }
+          if(matchedIndex==0 || matchedIndex>0){
+            $scope.apiCallsUsed[matchedIndex]=percentageObj;
+          }
+        }else{
+          $scope.apiCallsUsed.push(percentageObj);
+        }
+        
+        $scope.apiCallsLoading[respObj.appId]=false;
+    },function(error){ 
+        $scope.apiCallsLoading[error.appId]=false;
+        $scope.apiCallsError[error.appId]=true;             
+    });
+  };
+
+  $scope.loadStorageCountByAppId=function(appObj){
+     $scope.storageError[appObj.appId]=false; 
+     $scope.storageLoading[appObj.appId]=true;
+     analyticsService.storageCount(appObj.appId).then(function(respObj){
+
+        var percentageObj=calculatePercentage(respObj,"storage");
+        var alreadyInserted=null;
+
+        if($scope.storageUsed && $scope.storageUsed.length>0){
+          alreadyInserted=_.first(_.where($scope.storageUsed, {appId: respObj.appId}));
+        }
+        
+        if(alreadyInserted){
+          var matchedIndex=null;
+          for(var i=0;i<$scope.storageUsed.length;++i){
+              if($scope.storageUsed[i].appId==respObj.appId){
+                matchedIndex=i;
+                break;
+              }
+          }
+          if(matchedIndex==0 || matchedIndex>0){
+            $scope.storageUsed[matchedIndex]=percentageObj;
+          }
+        }else{
+          $scope.storageUsed.push(percentageObj);
+        }        
+
+        $scope.storageLoading[respObj.appId]=false;
+     },function(error){
+        $scope.storageLoading[error.appId]=false;
+        $scope.storageError[error.appId]=true;              
+     });
+  };
+
+  function calculatePercentage(respObj,featureName){
+    var appPlan=null;
+    var app=_.first(_.where($scope.projectListObj, {appId: respObj.appId}));
+    if(!app.planId || app.planId==1){
+      appPlan=1;
+    }else if(app.planId){
+      appPlan=app.planId;
+    }
+
+    var appPlan=_.first(_.where($scope.pricingPlans, {id: appPlan}));
+    var databaseUsage=_.first(_.where(appPlan.usage, {category: "DATABASE"}));
+
+    var planApiLimit=_.first(_.where(databaseUsage.features, {name: "API Calls"}));
+    var apiLimit=planApiLimit.limit.value;
+    var apiLabel=planApiLimit.limit.label;
+    var apiColor="#4aa3df";
+
+    var planStorageLimit=_.first(_.where(databaseUsage.features, {name: "Storage"})); 
+    var storageLimit=planStorageLimit.limit.value; 
+    var storageLabel=planStorageLimit.limit.label;
+    var storageColor="#4aa3df";  
+    
+
+    if(featureName=="api" && respObj && respObj.monthlyApiCount){
+      var used=respObj.monthlyApiCount;      
+      var percentageUsed=used*(100/apiLimit);      
+      if(percentageUsed>0 && percentageUsed<1){
+        percentageUsed=1;
+      }
+      if(percentageUsed>100){
+        percentageUsed=100;
+      }      
+      if(percentageUsed>80){
+        apiColor="#C90606";
+      }
+
+      var resp={
+        appId:respObj.appId,
+        percentage:percentageUsed+"%",
+        limit:apiLabel,
+        color:apiColor
+      };
+    }else if(featureName=="api"){
+      var percentageUsed=0;
+      var resp={
+        appId:respObj.appId,
+        percentage:percentageUsed+"%",
+        limit:apiLabel,
+        color:apiColor
+      };
+    }
+
+    if(featureName=="storage" && respObj && respObj.size){
+      var used=(respObj.size/1000);//Convert to GBs
+      var limit=storageLimit;//(already in GBs)
+      var percentageUsed=used*(100/limit);
+      if(percentageUsed>0 && percentageUsed<1){
+        percentageUsed=1;
+      }
+      if(percentageUsed>100){
+        percentageUsed=100;
+      }
+      if(percentageUsed>80){
+        storageColor="#C90606";
+      }
+
+      var resp={
+        appId:respObj.appId,
+        percentage:percentageUsed+"%",
+        limit:storageLabel,
+        color:storageColor
+      };
+    }else if(featureName=="storage"){
+      var percentageUsed=0;
+      var resp={
+        appId:respObj.appId,
+        percentage:percentageUsed+"%",
+        limit:storageLabel,
+        color:storageColor
+      };
+    }    
+    
+    return resp;
   }
 
   function getPlanById(planId){
@@ -901,7 +1156,10 @@ app.controller('appsController',
 
   $scope.$on('addApp', function(event, args) {
       var requestApp = args.app;
-      $scope.projectListObj.push(requestApp);      
+      $scope.projectListObj.push(requestApp);
+      //Get Usage Details
+      $scope.loadApiCountByAppId(requestApp);
+      $scope.loadStorageCountByAppId(requestApp);      
   });
 
   $scope.$on('openUpgradeModal', function(event, args) {

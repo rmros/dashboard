@@ -54,8 +54,8 @@ app.controller('pricingController',
 		$scope.usageSpinner=true;
 
 		var promises=[];
-		promises.push(analyticsService.api(id));
-		promises.push(analyticsService.storage(id));
+		promises.push(analyticsService.apiUsage(id));
+		promises.push(analyticsService.storageUsage(id));
 		//promises.push(analyticsService.getStatisticsByAppId(id,"Object","Queues"));
 
 		$q.all(promises).then(function(dataList){			

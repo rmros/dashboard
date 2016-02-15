@@ -2,12 +2,12 @@
     <div class="row" ng-if="!dataLoading && !loadingError">   
 
         <div class="col-sm-12 col-md-6 col-lg-3">
-          <div class="block block-color info" style="height:270px;box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)">
+          <div class="block block-color info" style="height:298px;box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)">
             <div class="header">      
               <h3><i class="fa fa-plus-circle"></i>&nbsp;create an app</h3>
             </div>
             <div class="content">
-              <form role="form" name="projectForm" ng-submit="createProject(projectForm.$valid)"> 
+              <form role="form" name="projectForm" ng-submit="createProject(projectForm.$valid)" style="margin-top:30px;"> 
 
                 <div style="">
                   <div class="form-group" style="margin-top:20px;">
@@ -45,9 +45,9 @@
                   </div>
 
                   <!--Message3-->
-                  <!--<div class="flex-general-column-wrapper-center appuser-inter-msg3 cf">
+                  <div class="flex-general-column-wrapper-center appuser-inter-msg3 cf">
                     <span style="color:#A3A3A3;">Your app is now ready.</span>
-                  </div>-->
+                  </div>
                 </div>          
 
               </form>
@@ -60,7 +60,7 @@
       <div ng-if="!dataLoading && !loadingError" class="col-sm-12 col-md-6 col-lg-3" ng-repeat="list in projectListObj | orderBy:'_id':true">       
 
         <!-- Details --> 
-        <div class="success" data-ng-class="{block: !animateApp[$index],'block-color': !animateApp[$index]}" ng-hide="showProject[$index]" style="height:270px;box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)">
+        <div class="success" data-ng-class="{block: !animateApp[$index],'block-color': !animateApp[$index]}" ng-hide="showProject[$index]" style="height:298px;box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)">
 
           <div ng-if="!animateApp[$index]" data-ng-class="{animated:isAppCreated==true,fadeIn:$index==0,slideInLeft:$index==1}"> 
               <div class="header" style="position:relative;">
@@ -121,7 +121,7 @@
 
                   </div>
 
-                  <div class="flex-general-column-wrapper-center" style="height:100%;width:40%; background-color:#EDEDED;color:#7C7C7C;cursor:pointer;border-left:1px solid #C9C9C9;" ng-click="initUpgradePlan(list);">
+                  <div ng-show="(list | validUser)" class="flex-general-column-wrapper-center" style="height:100%;width:40%; background-color:#EDEDED;color:#7C7C7C;cursor:pointer;border-left:1px solid #C9C9C9;" ng-click="initUpgradePlan(list);">
                     <span style="">Upgrade
                     &nbsp;
                     <i class="icon ion-arrow-graph-up-right" style="font-size:16px;"></i>
@@ -132,26 +132,178 @@
               <div class="appbx-content"> 
 
                 <div class="app-info-box" style="margin-top:15px;">
-                  <div class="flex-general-row-wrapper" style="height:20px;">
 
-                    <div class="solo-vertical-center" style="height:100%;">
-                      <span>
-                        <i class="fa fa-check-circle" style="color:#19b698;font-size:16px;"></i>
-                      </span>
+                  <!--API CALLS Loading-->
+                  <div ng-show="apiCallsLoading[list.appId] && !apiCallsError[list.appId]">
+                    <div class="app-api-brief-details">
+
+                      <div class="flex-general-row-wrapper" style="height:20px;">  
+                        <div class="solo-vertical-center" style="height:100%;width:100%;">
+                          <div  style="width:60%;height:6px;background-color:#EEEEEE;">
+                          </div>
+                        </div>
+                      </div> 
+
+                      <div class="flex-general-row-wrapper" style="height:6px;margin-top: 2px;">
+                        <div class="solo-vertical-center" style="height:100%;width:100%;">
+                          <!--Loading-->
+                          <div  style="width:100%;height:99%;background-color:#EEEEEE;">
+                          </div>
+                          <!--Loading-->                        
+                        </div>
+                      </div>
+
                     </div>
+                  </div>
+                  <!--//API CALLS Loading-->
 
-                    <div class="solo-vertical-center" style="height:100%;margin-left:4px;">
-                      <div>Your App is 
-                        <span style="font-weight:700;">Online</span>
+                  <!--API CALLS Error-->
+                  <div ng-show="apiCallsError[list.appId] && !apiCallsLoading[list.appId]">
+                    <div class="app-api-brief-details">
+
+                      <div class="flex-general-row-wrapper" style="height:20px;">  
+                        <div class="solo-vertical-center" style="height:100%;width:100%;">
+                          <div style="font-size: 12px;color:#999797;">
+                            Error loading API
+                            <span ng-click="loadApiCountByAppId(list)" style="font-size: 12px;color:#36abf9;cursor:pointer;">&nbsp;(refresh)</span>  
+                          </div>
+                        </div>
+                      </div> 
+
+                      <div class="flex-general-row-wrapper" style="height:6px;margin-top: 2px;">
+                        <div class="solo-vertical-center" style="height:100%;width:100%;">
+                          <!--Error-->
+                          <div  style="width:100%;height:99%;background-color:#EEEEEE;">
+                          </div>
+                          <!--Error-->                        
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                  <!--//API CALLS Error-->
+
+                  <!--API CALLS Filled-->
+                  <div ng-show="!apiCallsLoading[list.appId] && !apiCallsError[list.appId]">
+                  <div ng-repeat="apidet in apiCallsUsed">
+                  <div ng-show="apidet.appId==list.appId" class="app-api-brief-details">
+                    <div class="flex-general-row-wrapper" style="height:20px;">       
+
+                      <div class="solo-vertical-center" style="height:100%;">
+                        <div>
+                          <span style="font-size: 12px;color:#999797;font-weight:700;">API Calls</span>
+                          <span style="font-size: 12px;color:#BABABA;font-weight:600;">
+                          &nbsp;{{apidet.percentage}} used of {{apidet.limit}}
+                          </span>                         
+                        </div>
+                      </div>
+
+                    </div> 
+
+                    <div class="flex-general-row-wrapper" style="height:6px;margin-top: 2px;">
+                      <div class="solo-vertical-center" style="height:100%;width:100%;">      
+
+                        <!--Filled-->
+                        <div style="width:100%;height:99%;background-color:#EEEEEE;">
+                          <div style="height:100%;" ng-style={"width":apidet.percentage,"background-color":apidet.color}></div>
+                        </div>
+                        <!--Filled-->
+                        
                       </div>
                     </div>
 
-                  </div>                
-                 
+                  </div>
+                  </div>
+                  </div>
+                  <!--//API CALLS Filled--> 
+
+                  <!--Storage Loading-->
+                  <div ng-show="storageLoading[list.appId] && !storageError[list.appId]" style="margin-top:5px;">
+                    <div class="app-api-brief-details">
+
+                      <div class="flex-general-row-wrapper" style="height:20px;">  
+                        <div class="solo-vertical-center" style="height:100%;width:100%;">
+                          <div  style="width:60%;height:6px;background-color:#EEEEEE;">
+                          </div>
+                        </div>
+                      </div> 
+
+                      <div class="flex-general-row-wrapper" style="height:6px;margin-top: 2px;">
+                        <div class="solo-vertical-center" style="height:100%;width:100%;">
+                          <!--Loading-->
+                          <div  style="width:100%;height:99%;background-color:#EEEEEE;">
+                          </div>
+                          <!--Loading-->                        
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                  <!--//Storage Loading-->
+
+                  <!--Storage Error-->
+                  <div ng-show="storageError[list.appId] && !storageLoading[list.appId]" style="margin-top:5px;">
+                    <div class="app-api-brief-details">
+
+                      <div class="flex-general-row-wrapper" style="height:20px;">  
+                        <div class="solo-vertical-center" style="height:100%;width:100%;">
+                          <div style="font-size: 12px;color:#999797;">
+                            Error loading Storage
+                            <span ng-click="loadStorageCountByAppId(list)" style="font-size: 12px;color:#36abf9;cursor:pointer;">&nbsp;(refresh)</span>  
+                          </div>
+                        </div>
+                      </div> 
+
+                      <div class="flex-general-row-wrapper" style="height:6px;margin-top: 2px;">
+                        <div class="solo-vertical-center" style="height:100%;width:100%;">
+                          <!--Error-->
+                          <div  style="width:100%;height:99%;background-color:#EEEEEE;">
+                          </div>
+                          <!--Error-->                        
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                  <!--//Storage Error-->
+
+                  <!--Storage Filled-->
+                  <div ng-show="!storageLoading[list.appId] && !storageError[list.appId]" style="margin-top:5px;">
+                  <div ng-repeat="storagedet in storageUsed">
+                  <div ng-show="storagedet.appId==list.appId" class="app-api-brief-details">
+                    <div class="flex-general-row-wrapper" style="height:20px;">       
+
+                      <div class="solo-vertical-center" style="height:100%;">
+                        <div>
+                          <span style="font-size: 12px;color:#999797;font-weight:700;">Storage</span> 
+                          <span style="font-size: 12px;color:#BABABA;font-weight:600;">
+                          &nbsp;{{storagedet.percentage}} used of {{storagedet.limit}}
+                          </span>                         
+                        </div>
+                      </div>
+
+                    </div> 
+
+                    <div class="flex-general-row-wrapper" style="height:6px;margin-top: 2px;">
+                      <div class="solo-vertical-center" style="height:100%;width:100%;">      
+
+                        <!--Filled-->
+                        <div style="width:100%;height:99%;background-color:#EEEEEE;">
+                          <div style="height:100%;" ng-style={"width":storagedet.percentage,"background-color":storagedet.color}></div>
+                        </div>
+                        <!--Filled-->
+                        
+                      </div>
+                    </div>
+
+                  </div>
+                  </div>
+                  </div>
+                  <!--//Storage Filled-->               
                   
                 </div>
 
-                <div class="" style="margin-top:30px;width:248px;">
+                <div class="" style="margin-top:15px;width:248px;">
                   <div class="flex-general-row-wrapper cf" style="padding:0;">
 
                     <div class="data-brwsr-wrapper pull-left" style="margin-left:-3.5px;">
@@ -168,7 +320,7 @@
 
               </div>
 
-              <div class="app-developers-strip cf" style="margin-top:26px;">
+              <div ng-show="(list | validUser)" class="app-developers-strip cf" style="margin-top:12px;">
                 <div style="height:100%;" class="pull-left solo-vertical-center">
                   <span style="color:#71767C;font-size:10px;cursor:pointer;" ng-click="addDevelopersInit($index,list)" >Add a Developer</span>
                 </div>
@@ -189,7 +341,7 @@
           </div> 
 
           <!-- Edit -->
-          <div ng-hide="!showProject[$index]" id="edit-app{{$index}}" click-outside="closeEditApp($index)" outside-if-not="edit-app-btn{{$index}}" class="block block-color fadedPrimary" style="height:270px">
+          <div ng-hide="!showProject[$index]" id="edit-app{{$index}}" click-outside="closeEditApp($index)" outside-if-not="edit-app-btn{{$index}}" class="block block-color fadedPrimary" style="height:298px">
             <div class="header">
               <h3><i class="fa fa-pencil "></i>&nbsp;&nbsp;edit project</h3>
             </div>

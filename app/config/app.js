@@ -49,46 +49,6 @@ if(window.location.hostname==="dashboard.cloudboost.io"){
 }
 
 
-
-/*********************Notifications******************************/
-  //Notification
-  function errorNotify(errorMsg){
-    $.amaran({
-        'theme'     :'colorful',
-        'content'   :{
-           bgcolor:'#EE364E',
-           color:'#fff',
-           message:errorMsg
-        },
-        'position'  :'top right'
-    });
-  }
-
-  function successNotify(successMsg){
-    $.amaran({
-        'theme'     :'colorful',
-        'content'   :{
-           bgcolor:'#19B698',
-           color:'#fff',
-           message:successMsg
-        },
-        'position'  :'top right'
-    });
-  }
-
-  function WarningNotify(WarningMsg){
-    $.amaran({
-        'theme'     :'colorful',
-        'content'   :{
-           bgcolor:'#EAC004',
-           color:'#fff',
-           message:WarningMsg
-        },
-        'position'  :'top right'
-    });
-  }
-
-
 /*********************Pricing Plans******************************/
 //Production
 var twoCheckoutCredentials={
@@ -116,14 +76,16 @@ var pricingPlans=[{
       name:"API Calls",
       limit:{
         show:true,
-        label:"10,000"
+        label:"10,000",
+        value:10000
       }
     },{
       type:"text",
       name:"Storage",
       limit:{
         show:true,
-        label:"200MB"
+        label:"200MB",
+        value:0.2
       }
     }]
   },{
@@ -133,7 +95,8 @@ var pricingPlans=[{
       type:"text",
       limit:{
         show:true,
-        label:"100"
+        label:"100",
+        value:100
       }
     }]
   },{
@@ -143,7 +106,8 @@ var pricingPlans=[{
       type:"boolean",
       limit:{
         show:false,
-        label:""
+        label:"",
+        value:0
       }
     }]
   }]
@@ -159,14 +123,16 @@ var pricingPlans=[{
       name:"API Calls",
       limit:{
         show:true,
-        label:"50,000"
+        label:"50,000",
+        value:50000
       }
     },{
       type:"text",
       name:"Storage",
       limit:{
         show:true,
-        label:"1GB"
+        label:"1GB",
+        value:1
       }
     }]
   },{
@@ -176,7 +142,8 @@ var pricingPlans=[{
       type:"text",
       limit:{
         show:true,
-        label:"100"
+        label:"100",
+        value:100
       }
     }]
   },{
@@ -186,7 +153,8 @@ var pricingPlans=[{
       type:"boolean",
       limit:{
         show:false,
-        label:""
+        label:"",
+        value:0
       }
     }]
   }]
@@ -202,14 +170,16 @@ var pricingPlans=[{
       name:"API Calls",
       limit:{
         show:true,
-        label:"150,000"
+        label:"150,000",
+        value:150000
       }
     },{
       type:"text",
       name:"Storage",
       limit:{
         show:true,
-        label:"5GB"
+        label:"5GB",
+        value:5
       }
     }]
   },{
@@ -219,7 +189,8 @@ var pricingPlans=[{
       type:"text",
       limit:{
         show:true,
-        label:"500"
+        label:"500",
+        value:500
       }
     }]
   },{
@@ -229,7 +200,8 @@ var pricingPlans=[{
       type:"boolean",
       limit:{
         show:true,
-        label:""
+        label:"",
+        value:1
       }
     }]
   }]
@@ -245,14 +217,16 @@ var pricingPlans=[{
       name:"API Calls",
       limit:{
         show:true,
-        label:"500,000"
+        label:"500,000",
+        value:500000
       }
     },{
       type:"text",
       name:"Storage",
       limit:{
         show:true,
-        label:"10GB"
+        label:"10GB",
+        value:10
       }
     }]
   },{
@@ -262,7 +236,8 @@ var pricingPlans=[{
       type:"text",
       limit:{
         show:true,
-        label:"UNLIMITED"
+        label:"UNLIMITED",
+        value:10000
       }
     }]
   },{
@@ -272,7 +247,8 @@ var pricingPlans=[{
       type:"boolean",
       limit:{
         show:true,
-        label:""
+        label:"",
+        value:1
       }
     }]
   }]
@@ -288,14 +264,16 @@ var pricingPlans=[{
       name:"API Calls",
       limit:{
         show:true,
-        label:"2 MILLION"
+        label:"2 MILLION",
+        value:2000000
       }
     },{
       type:"text",
       name:"Storage",
       limit:{
         show:true,
-        label:"30GB"
+        label:"30GB",
+        value:30
       }
     }]
   },{
@@ -305,7 +283,8 @@ var pricingPlans=[{
       type:"text",
       limit:{
         show:true,
-        label:"UNLIMITED"
+        label:"UNLIMITED",
+        value:10000
       }
     }]
   },{
@@ -315,7 +294,8 @@ var pricingPlans=[{
       type:"boolean",
       limit:{
         show:true,
-        label:""
+        label:"",
+        value:1
       }
     }]
   }]
@@ -331,14 +311,16 @@ var pricingPlans=[{
       name:"API Calls",
       limit:{
         show:true,
-        label:"5 MILLION"
+        label:"5 MILLION",
+        value:5000000
       }
     },{
       type:"text",
       name:"Storage",
       limit:{
         show:true,
-        label:"100GB"
+        label:"100GB",
+        value:100
       }
     }]
   },{
@@ -348,7 +330,8 @@ var pricingPlans=[{
       type:"text",
       limit:{
         show:true,
-        label:"UNLIMITED"
+        label:"UNLIMITED",
+        value:10000
       }
     }]
   },{
@@ -358,7 +341,8 @@ var pricingPlans=[{
       type:"boolean",
       limit:{
         show:true,
-        label:""
+        label:"",
+        value:1
       }
     }]
   }]
@@ -636,3 +620,43 @@ code:"BGD ",label:" Bangladesh"},
 {code:"ZMB ",label:" Zambia"},
 {code:"ZWE ",label:" Zimbabwe"}
 ];
+
+
+
+/*********************Notifications******************************/
+  //Notification
+  function errorNotify(errorMsg){
+    $.amaran({
+        'theme'     :'colorful',
+        'content'   :{
+           bgcolor:'#EE364E',
+           color:'#fff',
+           message:errorMsg
+        },
+        'position'  :'top right'
+    });
+  }
+
+  function successNotify(successMsg){
+    $.amaran({
+        'theme'     :'colorful',
+        'content'   :{
+           bgcolor:'#19B698',
+           color:'#fff',
+           message:successMsg
+        },
+        'position'  :'top right'
+    });
+  }
+
+  function WarningNotify(WarningMsg){
+    $.amaran({
+        'theme'     :'colorful',
+        'content'   :{
+           bgcolor:'#EAC004',
+           color:'#fff',
+           message:WarningMsg
+        },
+        'position'  :'top right'
+    });
+  }
