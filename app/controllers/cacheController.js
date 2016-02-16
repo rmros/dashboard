@@ -99,14 +99,14 @@ $timeout){
   };
 
   $scope.openCacheDetails=function(cache){
-
-    if($scope.previousIndex==0 || $scope.previousIndex>0){
-      $scope.activeCache.splice($scope.previousIndex,1);
-    }
-
     var index=$scope.cacheList.indexOf(cache);
 
     if(index!=$scope.previousIndex){
+      
+      if($scope.previousIndex==0 || $scope.previousIndex>0){
+        $scope.activeCache.splice($scope.previousIndex,1);
+      }
+
       $scope.previousIndex=index;    
       $scope.activeCache[index]=cache;
       $scope.activeCacheSize=angular.copy(cache.size);      

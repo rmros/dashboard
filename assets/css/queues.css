@@ -369,6 +369,9 @@
     .cache-app-buttons{
 		margin-left: 4%;				
 	} 
+	.queue-app-buttons{
+		margin-left: 4%;				
+	}
 }
 /******Cache CLear Button****/
 .cache-clear-btn-wrap{
@@ -591,7 +594,7 @@
 }
 
 .queue-app-buttons{
-	width: 170px;
+	width:39%;
 	height: 47px;	
 	position: relative;			
 }
@@ -739,6 +742,16 @@
 
 .each-queue-wrapper{
 	cursor: pointer;
+	width: 100%;
+	height: 54px;	
+	margin-top: 1px;
+	cursor: pointer;	
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 10px;
+}
+.each-cache-wrapper:hover,.activeQueue{	
+	background-color: #F5F5F5;	
 }
 
 .each-queue-wrapper:hover .queue-sel-btn-wrap{

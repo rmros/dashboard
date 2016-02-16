@@ -4,16 +4,15 @@
   <div class="row" ng-show="!firstVisit"> 
      <div class="apps-queues-panel-wrapper">
       <div style="height:50px;width:100%;border-bottom:1px solid #DEE0E0;">
-
         <!--Search Cache-->
         <div class="cache-search-wrapper pull-left">        
           <div class="flex-general-row-wrapper cache-search-container">
             <!--Search Icon-->           
-            <i class="icon ion-ios-search-strong" style="font-size: 24px;margin-top: 2px !important;color:#bcb4b0;" ></i>     
+            <i class="icon ion-ios-search-strong" style="font-size: 24px;margin-top: -2px !important;color:#bcb4b0;" ></i>     
 
             <!--Search Input-->
-            <div class=""  style="height:100%;width:92.5%;margin-left:4px;">
-              <input type="text" class="cache-search-input" style="width:100%;height:100%;" placeholder="Search Queue" ng-model="searchThisName.name">
+            <div class=""  style="height:100%;width:88.5%;margin-left:4px;">
+              <input type="text" class="cache-search-input" style="width:100%;height:100%;" placeholder="Search Queues" ng-model="searchThisName.name">
             </div>        
 
           </div> 
@@ -21,7 +20,7 @@
         <!--/Search Cache-->
 
         <!--Create Cache-->
-        <div class="pull-right" style="border-left:1px solid #DEE0E0;width:132px;background-color:#EDEDEF;">
+        <div class="pull-right flex-general-column-wrapper-center" style="border-left:1px solid #DEE0E0;width:34%;background-color:#EDEDEF;">
           <div class="flex-general-row-wrapper" style="padding-top:6px;cursor:pointer !important;" ng-click="initCreateQueue()">
 
             <div class=""  style="margin-top:5px;margin-left:3px;">
@@ -31,7 +30,7 @@
             </div>
 
             <div class=""  style="height:100%;">
-              <div class="" style="height:34px;width:100px;margin-top:9px;">
+              <div class="" style="height:34px;margin-top:9px;">
                 <span style="font-size:14px;color:#8F8F91;">Create Queue</span>
               </div>
             </div>
@@ -39,7 +38,6 @@
           </div>
         </div>
         <!--/Create Cache-->
-
       </div>
       
       <div class="cache-list-wrapper">
@@ -73,8 +71,9 @@
               </div>              
             </div>
 
-            <div class="queue-app-buttons flex-general-row-wrapper pull-right" style="">           
-              <div class="flex-general-column-wrapper-center queue-clear-btn-wrap" style="">
+            <div class="queue-app-buttons flex-general-row-wrapper pull-right" style=""> 
+                      
+              <div class="flex-general-column-wrapper-center queue-clear-btn-wrap" style="margin-left:12%;">
                 <button class="queue-clear-btn" style="" ng-click="editQueueACL(eachQ); $event.stopPropagation()">
                   <div class="flex-general-row-wrapper">
                       <div class="queue-clear-icon">
@@ -100,17 +99,8 @@
                 </button>                
               </div>
 
-
-              <div class="flex-general-column-wrapper-center queue-sel-btn-wrap" style="">
-                <button class="queue-sel-btn" style="">
-                  <div class="flex-general-row-wrapper">
-                      <div class="queue-sel-icon">
-                        <i class="icon ion-arrow-right-b" style=""></i>
-                      </div>                      
-                  </div>                 
-                </button>                
-              </div>
             </div>
+
 
           </div> 
           <!--/End info-->  

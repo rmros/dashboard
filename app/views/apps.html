@@ -134,7 +134,7 @@
                 <div class="app-info-box" style="margin-top:15px;">
 
                   <!--API CALLS Loading-->
-                  <div ng-show="apiCallsLoading[list.appId] && !apiCallsError[list.appId]">
+                  <div ng-if="apiCallsLoading[list.appId] && !apiCallsError[list.appId]">
                     <div class="app-api-brief-details">
 
                       <div class="flex-general-row-wrapper" style="height:20px;">  
@@ -158,7 +158,7 @@
                   <!--//API CALLS Loading-->
 
                   <!--API CALLS Error-->
-                  <div ng-show="apiCallsError[list.appId] && !apiCallsLoading[list.appId]">
+                  <div ng-if="apiCallsError[list.appId] && !apiCallsLoading[list.appId]">
                     <div class="app-api-brief-details">
 
                       <div class="flex-general-row-wrapper" style="height:20px;">  
@@ -184,9 +184,9 @@
                   <!--//API CALLS Error-->
 
                   <!--API CALLS Filled-->
-                  <div ng-show="!apiCallsLoading[list.appId] && !apiCallsError[list.appId]">
+                  <div ng-if="!apiCallsLoading[list.appId] && !apiCallsError[list.appId]">
                   <div ng-repeat="apidet in apiCallsUsed">
-                  <div ng-show="apidet.appId==list.appId" class="app-api-brief-details">
+                  <div ng-if="apidet.appId==list.appId" class="app-api-brief-details">
                     <div class="flex-general-row-wrapper" style="height:20px;">       
 
                       <div class="solo-vertical-center" style="height:100%;">
@@ -218,7 +218,7 @@
                   <!--//API CALLS Filled--> 
 
                   <!--Storage Loading-->
-                  <div ng-show="storageLoading[list.appId] && !storageError[list.appId]" style="margin-top:5px;">
+                  <div ng-if="storageLoading[list.appId] && !storageError[list.appId]" style="margin-top:5px;">
                     <div class="app-api-brief-details">
 
                       <div class="flex-general-row-wrapper" style="height:20px;">  
@@ -242,7 +242,7 @@
                   <!--//Storage Loading-->
 
                   <!--Storage Error-->
-                  <div ng-show="storageError[list.appId] && !storageLoading[list.appId]" style="margin-top:5px;">
+                  <div ng-if="storageError[list.appId] && !storageLoading[list.appId]" style="margin-top:5px;">
                     <div class="app-api-brief-details">
 
                       <div class="flex-general-row-wrapper" style="height:20px;">  
@@ -268,9 +268,9 @@
                   <!--//Storage Error-->
 
                   <!--Storage Filled-->
-                  <div ng-show="!storageLoading[list.appId] && !storageError[list.appId]" style="margin-top:5px;">
+                  <div ng-if="!storageLoading[list.appId] && !storageError[list.appId]" style="margin-top:5px;">
                   <div ng-repeat="storagedet in storageUsed">
-                  <div ng-show="storagedet.appId==list.appId" class="app-api-brief-details">
+                  <div ng-if="storagedet.appId==list.appId" class="app-api-brief-details">
                     <div class="flex-general-row-wrapper" style="height:20px;">       
 
                       <div class="solo-vertical-center" style="height:100%;">
