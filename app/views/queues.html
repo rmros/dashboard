@@ -1,4 +1,4 @@
- 
+
 <div class="queues-page" ng-init="init()">
 
   <div class="row" ng-show="!firstVisit"> 
@@ -44,7 +44,7 @@
         <div class="cache-list-container" malihuscrollbar-for-popup> 
 
           <!--Info-->
-          <div ng-repeat="eachQ in queueList | filter:searchThisName" ng-click="openQueueDetails(eachQ)" class="each-queue-wrapper flex-general-row-wrapper">
+          <div ng-repeat="eachQ in queueList | filter:searchThisName" ng-click="openQueueDetails(eachQ)" class="each-queue-wrapper flex-general-row-wrapper" ng-class="{activeQueue:selectedQueue[eachQ.id]}">
 
             <div class="cache-resembler-wrapper flex-general-column-wrapper-center pull-left">
               <div class="flex-general-column-wrapper-center cache-resembler-contain" style="">
@@ -139,7 +139,7 @@
   <!--/First Display-->
 
   <!--Normal Display-->
-  <div class="row" ng-show="activeQueue.length>0 && !firstVisit">
+  <div class="row" ng-show="activatedQueue.length>0 && !firstVisit">
     <div class="col-sm-12 col-md-12 col-lg-12">
       <div class="cf" style="width:100%;height:auto;">
         <div class="queue-items-details">
@@ -558,13 +558,13 @@
 
       <!--Saving Errors--> 
       <div style="width:100%;">
-        <div  ng-show="columnDeleteModalError" style="width:100%;height:30px;background-color:#C40101;color:white;padding-left:5px;padding-right:5px;padding-top:3.5px;" ng-class="{animated:columnDeleteModalError}" class="fadeIn">
+        <div  ng-show="queueModalError" style="width:100%;height:30px;background-color:#C40101;color:white;padding-left:5px;padding-right:5px;padding-top:3.5px;" ng-class="{animated:queueModalError}" class="fadeIn">
 
           <div class="pull-left" style="padding-top:1px;">                
-            <span>{{columnDeleteModalError}}</span>
+            <span>{{queueModalError}}</span>
           </div>
 
-          <div class="pull-right" ng-click="columnDeleteModalError=!columnDeleteModalError">
+          <div class="pull-right" ng-click="queueModalError=!queueModalError">
             <i class="icon ion-android-close" style="font-size:16px;color:white;"></i>
           </div>  
 
@@ -582,7 +582,7 @@
 
             <div class="" style="width:100%;">           
               <div class="" style="width:100%;border:2px solid #D6D6D6;border-radius:4px;">
-                <textarea rows="4" cols="50" class="defaultInput-txt" style="width:100%;height:100%;resize: none;"></textarea>
+                <textarea rows="4" cols="50" class="defaultInput-txt" ng-model="requestedMessage.message" style="width:100%;height:100%;resize: none;"></textarea>
               </div>
             </div>
           </div>          
@@ -596,7 +596,7 @@
 
               <div class="" style="width:100%;">           
                 <div class="" style="width:100%;height:29px;border:2px solid #D6D6D6;border-radius:4px;">
-                  <input type="text" class="defaultInput-txt" style="width:100%;height:90%;">
+                  <input type="text" class="defaultInput-txt" ng-model="requestedMessage.timeout" style="width:100%;height:90%;">
                 </div>
               </div>
             </div>
@@ -608,7 +608,7 @@
 
               <div class="" style="width:100%;">           
                 <div class="" style="width:100%;height:29px;border:2px solid #D6D6D6;border-radius:4px;">
-                  <input type="text" class="defaultInput-txt" style="width:100%;height:90%;">
+                  <input type="text" class="defaultInput-txt" ng-model="requestedMessage.delay" style="width:100%;height:90%;">
                 </div>
               </div>
             </div>
@@ -620,7 +620,7 @@
 
               <div class="" style="width:100%;">           
                 <div class="" style="width:100%;height:29px;border:2px solid #D6D6D6;border-radius:4px;">
-                  <input type="text" datetimepicker class="defaultInput-txt" style="width:100%;height:90%;">
+                  <input type="text" datetimepicker class="defaultInput-txt" ng-model="requestedMessage.expires" style="width:100%;height:90%;">
                 </div>
               </div>
             </div>
@@ -632,10 +632,16 @@
       </div>  
 
       <div class="modal-footer">        
-        <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>        
+        <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>              
+
+        <!--Disabled-->
+        <button type="button" ng-show="queueModalError && !editMsgSpinner" style="color:gray;cursor:pointer !important; width:125px;" class="btn">Edit Message</button>
 
         <!--Add-->
-        <button type="button" class="btn btn-primary" style="width:120px; border-radius:3px !important;">Edit Message</button>  
+        <button ng-show="!editMsgSpinner && !queueModalError" type="button" class="btn btn-primary" style="width:125px; border-radius:3px !important;" ng-click="editMessage()">Edit Message</button>
+
+        <!--While Adding-->
+        <button ng-show="editMsgSpinner && !queueModalError" type="button" class="btn btn-primary" style="width:140px; border-radius:3px !important;" ><i class="fa fa-spinner fa-spin"></i>&nbsp;Updating</button>   
  
       </div>
 

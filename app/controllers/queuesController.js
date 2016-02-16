@@ -28,8 +28,8 @@ tableService){
   $scope.showCreateQueueBox=false;
   $scope.queueList=[];
   $scope.queueListLoading=true;
-  $scope.queueSettings=[];
-  $scope.activeQueue=[];
+  $scope.activatedQueue=[];
+  $scope.selectedQueue={};
   $scope.queueMessagesList=[];
   $scope.newQueueType="pull";//Default
   $scope.creatingQueue=false;
@@ -71,24 +71,27 @@ tableService){
   };
 
   $scope.openQueueDetails=function(queue){
-    if($scope.previousIndex==0 || $scope.previousIndex>0){
-      $scope.activeQueue.splice($scope.previousIndex,1);
-    }
-
     var index=$scope.queueList.indexOf(queue);
 
     if(index!=$scope.previousIndex){
+      if($scope.previousIndex==0 || $scope.previousIndex>0){
+        $scope.activatedQueue.splice($scope.previousIndex,1);
+        var prevQ=$scope.queueList[$scope.previousIndex];
+        $scope.selectedQueue[prevQ.id]=false;
+      }
+
       $scope.previousIndex=index; 
-
+      $scope.activatedQueue[index]=queue;
+      $scope.selectedQueue[queue.id]=true;
       $scope.messagesLoading=true;
-      $scope.messagesError=null;          
+      $scope.messagesError=null;         
 
-      queueService.getQueueInfo(queue)
-      .then(function(queueInfo){        
-        $scope.activeQueue[index]=queueInfo; 
-        $scope.queueMessagesList=queueInfo.messages; 
+      queueService.getAllMessages(queue)
+      .then(function(list){ 
+        $scope.queueMessagesList=list; 
         $scope.messagesLoading=false;
-      }, function(error){         
+      }, function(error){ 
+        $scope.messagesLoading=false;        
         $scope.messagesError=error;        
       });
     }
@@ -96,8 +99,7 @@ tableService){
   };
 
   $scope.editQueueACL=function(queue){
-    var index=$scope.queueList.indexOf(queue);
-    $scope.closeQueueSettings(index);
+    var index=$scope.queueList.indexOf(queue);    
     $scope.editableQueue=queue;   
       
     sharedDataService.aclObject=queue.ACL;
@@ -135,7 +137,7 @@ tableService){
       queueService.deleteQueue($scope.deletableQueue)
       .then(function(resp){
         $scope.queueList.splice(index,1);
-        $scope.activeQueue.splice(index,1);
+        $scope.activatedQueue.splice(index,1);
         $("#md-deletequeue").modal("hide");
 
         $scope.confirmSpinner=false; 
@@ -166,10 +168,14 @@ tableService){
   $scope.addNewMessage=function(){
     if($scope.newMessage.msg){
 
+      if($scope.newMessage.expires){
+        $scope.newMessage.expires=new Date($scope.newMessage.expires);
+      } 
+
       $scope.queueModalError=null; 
       $scope.addMsgSpinner=true;
 
-      queueService.insertMessageIntoQueue($scope.activeQueue[$scope.previousIndex],$scope.newMessage.msg,$scope.newMessage.timeout,$scope.newMessage.delay,$scope.newMessage.expires)
+      queueService.insertMessageIntoQueue($scope.activatedQueue[$scope.previousIndex],$scope.newMessage.msg,$scope.newMessage.timeout,$scope.newMessage.delay,$scope.newMessage.expires)
       .then(function(resp){
 
         $("#md-addnewmsg").modal("hide");
@@ -193,9 +199,44 @@ tableService){
 
   };  
 
-  $scope.initEditMessage=function(){
+  $scope.initEditMessage=function(msgObj){
+    $scope.requestedIndex=$scope.queueMessagesList.indexOf(msgObj);
+    $scope.requestedMessage=angular.copy(msgObj);
     $("#md-editmsg").modal();
   };
+
+  $scope.editMessage=function(){    
+    if($scope.requestedMessage.message){
+
+      if($scope.requestedMessage.expires){
+        $scope.requestedMessage.expires=new Date($scope.requestedMessage.expires);
+      }
+
+      $scope.queueModalError=null;              
+      $scope.editMsgSpinner=true;
+      
+      queueService.editMessage($scope.activatedQueue[$scope.previousIndex],$scope.requestedMessage)
+      .then(function(resp){
+
+        $scope.queueMessagesList[$scope.requestedIndex]=resp;
+
+        $("#md-editmsg").modal("hide");     
+
+        $scope.queueModalError=null;              
+        $scope.editMsgSpinner=false;
+        $scope.requestedMessage=null;
+        $scope.requestedIndex=null;
+
+      }, function(error){  
+        $scope.queueModalError=error; 
+        $scope.editMsgSpinner=false;       
+      });
+
+    }else{
+      $scope.queueModalError="Message shoudn't be empty";
+    }
+  };
+
 
   $scope.initDeleteMessage=function(msgObj){
     $scope.requestedMessage=msgObj;
@@ -208,7 +249,7 @@ tableService){
     $scope.queueModalError=null;              
     $scope.deleteMsgSpinner=true;
 
-    queueService.deleteMsgById($scope.activeQueue[$scope.previousIndex],$scope.requestedMessage.id)
+    queueService.deleteMsgById($scope.activatedQueue[$scope.previousIndex],$scope.requestedMessage.id)
     .then(function(resp){
 
       $("#md-deletemsg").modal("hide");     
@@ -216,24 +257,14 @@ tableService){
       $scope.queueMessagesList.splice(index,1);
       $scope.queueModalError=null;              
       $scope.deleteMsgSpinner=false;
+       $scope.requestedMessage=null;
 
     }, function(error){  
       $scope.queueModalError=error; 
       $scope.deleteMsgSpinner=false;       
     });
   };
-
-  $scope.openQueueSettings=function(index){
-    if(!$scope.queueSettings[index] || $scope.queueSettings[index]==false){
-      $scope.queueSettings[index]=true;
-    }
-  };
-
-  $scope.closeQueueSettings=function(index){
-    if($scope.queueSettings[index]==true){
-      $scope.queueSettings[index]=false;
-    }
-  };
+  
 
   $scope.toggleMsgAdvanceOptions=function(){
     if($scope.openMsgAdvanceOptions==true){
@@ -251,17 +282,10 @@ tableService){
 
       $scope.queueListLoading=false;
       if($scope.queueList.length>0){
-        $scope.firstVisit=false; 
+        $scope.firstVisit=false;
+        $scope.openQueueDetails($scope.queueList[0]); 
       }
-
-      /*list[0].push("como estas nawaz bhai", {
-        success : function(queueMessage){
-         console.log(queueMessage);  
-        }, error : function(error){
-          console.log(error);
-        }
-      }); */
-
+     
     }, function(error){  
       $scope.queueListLoading=false;    
       errorNotify(error);        

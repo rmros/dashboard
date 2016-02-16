@@ -72,6 +72,20 @@ app.factory('queueService', ['$q','$http','$rootScope',function ($q,$http,$rootS
       return  q.promise;
     };
 
+    global.getAllMessages = function(queue){
+      var q=$q.defer();
+
+      queue.getAllMessages({
+        success : function(list){
+          q.resolve(list);
+        }, error : function(error){
+          q.reject(error);
+        }
+      });
+
+      return  q.promise;
+    };
+
     global.getMessageById = function(queue,messageId){
       var q=$q.defer();
 
@@ -92,11 +106,11 @@ app.factory('queueService', ['$q','$http','$rootScope',function ($q,$http,$rootS
       var queueMessage = new CB.QueueMessage();
       queueMessage.message = message;
 
-      if(timeout==0 || timeout>0){
-        queueMessage.timeout = 3600;
+      if(timeout>0){
+        queueMessage.timeout = timeout;
       }     
 
-      if(delay==0 || delay>0){
+      if(delay>0){
         queueMessage.delay = delay;
       }     
 
@@ -104,9 +118,23 @@ app.factory('queueService', ['$q','$http','$rootScope',function ($q,$http,$rootS
         queueMessage.expire = expire;
       }
 
-      queue.push(queueMessage, {
+      queue.addMessage(queueMessage, {
         success : function(queueMessage){
           q.resolve(queueMessage);  
+        }, error : function(error){
+          q.reject(error);
+        }
+      });
+
+      return  q.promise;
+    };
+
+    global.editMessage = function(queue,queueMessage){
+      var q=$q.defer();      
+
+      queue.updateMessage(queueMessage, {
+        success : function(updatedQueueMsg){
+          q.resolve(updatedQueueMsg);  
         }, error : function(error){
           q.reject(error);
         }
