@@ -748,25 +748,32 @@ app.controller('appsController',
       $scope.projectListObj=data;
 
       if($scope.projectListObj && $scope.projectListObj.length>0){
-        
-        for(var i=0;i<$scope.projectListObj.length;++i){
 
-           $scope.apiCallsError[$scope.projectListObj[i].appId]=false; 
-           $scope.apiCallsLoading[$scope.projectListObj[i].appId]=true;
+        var appIdArray=_.pluck($scope.projectListObj, 'appId');
 
-           analyticsService.apiCount($scope.projectListObj[i].appId).then(function(respObj){             
+        //Load and errors
+        for(var i=0;i<appIdArray.length;++i){
+          $scope.apiCallsError[appIdArray[i]]=false; 
+          $scope.apiCallsLoading[appIdArray[i]]=true;
 
-              var percentageObj=calculatePercentage(respObj,"api");
+          $scope.storageError[appIdArray[i]]=false; 
+          $scope.storageLoading[appIdArray[i]]=true;
+        }
+
+        analyticsService.bulkApiStorageDetails(appIdArray).then(function(list){
+          for(var i=0;i<list.api.length;++i){
+
+              var percentageObj=calculatePercentage(list.api[i],"api");
               var alreadyInserted=null;
 
               if($scope.apiCallsUsed && $scope.apiCallsUsed.length>0){
-                alreadyInserted=_.first(_.where($scope.apiCallsUsed, {appId: respObj.appId}));
+                alreadyInserted=_.first(_.where($scope.apiCallsUsed, {appId: list.api[i].appId}));
               }
               
               if(alreadyInserted){
                 var matchedIndex=null;
                 for(var i=0;i<$scope.apiCallsUsed.length;++i){
-                    if($scope.apiCallsUsed[i].appId==respObj.appId){
+                    if($scope.apiCallsUsed[i].appId==list.api[i].appId){
                       matchedIndex=i;
                       break;                      
                     }
@@ -779,28 +786,22 @@ app.controller('appsController',
                 $scope.apiCallsUsed.push(percentageObj);
               }
 
-              $scope.apiCallsLoading[respObj.appId]=false;
-           },function(error){ 
-              $scope.apiCallsLoading[error.appId]=false;
-              $scope.apiCallsError[error.appId]=true;             
-           });
+              $scope.apiCallsLoading[list.api[i].appId]=false;
+          }
 
+          for(var i=0;i<list.storage.length;++i){
 
-           $scope.storageError[$scope.projectListObj[i].appId]=false; 
-           $scope.storageLoading[$scope.projectListObj[i].appId]=true;
-           analyticsService.storageCount($scope.projectListObj[i].appId).then(function(respObj){
-
-              var percentageObj=calculatePercentage(respObj,"storage");
+            var percentageObj=calculatePercentage(list.storage[i],"storage");
               var alreadyInserted=null;
 
               if($scope.storageUsed && $scope.storageUsed.length>0){
-                alreadyInserted=_.first(_.where($scope.storageUsed, {appId: respObj.appId}));
+                alreadyInserted=_.first(_.where($scope.storageUsed, {appId: list.storage[i].appId}));
               }
               
               if(alreadyInserted){
                 var matchedIndex=null;
                 for(var i=0;i<$scope.storageUsed.length;++i){
-                    if($scope.storageUsed[i].appId==respObj.appId){
+                    if($scope.storageUsed[i].appId==list.storage[i].appId){
                       matchedIndex=i;
                       break;
                     }
@@ -812,15 +813,21 @@ app.controller('appsController',
                 $scope.storageUsed.push(percentageObj);
               } 
 
-              $scope.storageLoading[respObj.appId]=false;
-           },function(error){
-              $scope.storageLoading[error.appId]=false;
-              $scope.storageError[error.appId]=true;              
-           });
-        }       
+              $scope.storageLoading[list.storage[i].appId]=false;
+          }  
 
-      }
-      
+        },function(error){
+          //Load and errors
+          for(var i=0;i<appIdArray.length;++i){
+            $scope.apiCallsError[appIdArray[i]]=true; 
+            $scope.apiCallsLoading[appIdArray[i]]=false;
+
+            $scope.storageError[appIdArray[i]]=true; 
+            $scope.storageLoading[appIdArray[i]]=false;
+          }
+        });           
+
+      }      
 
       //getBeacon
       getBeacon();                              

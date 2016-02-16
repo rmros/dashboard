@@ -65,7 +65,21 @@ app.factory('analyticsService', ['$q','$http','$rootScope',function ($q,$http,$r
     });
 
     return  q.promise;
-  };       
+  }; 
+
+  global.bulkApiStorageDetails = function(appIdArray){
+    var q=$q.defer();
+ 
+    $http.post(frontendServerURL+'/analytics/api-storage/bulk/count',{appIdArray:appIdArray}).
+    success(function(data, status, headers, config) {
+      q.resolve(data);
+    }).
+    error(function(data, status, headers, config) {      
+      q.reject(data);       
+    });
+
+    return  q.promise;
+  };      
    
   return global;
 
