@@ -401,10 +401,8 @@
     color:black;    
 }
 
-.tableCreateBtn:hover{  
-    background-color: #3A5795;   
-    color:white;
-    border: 1px solid #3A5795;
+.tableCreateBtn:hover{       
+    color:white;    
 }
 
 .tableCancelBtn{   

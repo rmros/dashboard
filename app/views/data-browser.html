@@ -543,7 +543,8 @@
 
                 </div>
                   
-              </th>                        
+              </th>
+                                      
             </tr> 
             
           </thead> 
@@ -590,7 +591,7 @@
               </td>  
               <!--/default checkbox-->
 
-              <td ng-repeat="column in currentProject.currentTable.columns" ng-show="column.document.dataType=='Id'" class="dataTd"  style="border-right:1px solid #4892F9;">                 
+              <td ng-repeat="column in currentProject.currentTable.columns" ng-if="column.document.dataType=='Id'" class="dataTd"  style="border-right:1px solid #4892F9;">                 
                 <!--Id-->             
                 <div  class="tdDiv cf" style="min-width: 175px; cursor:default;">         
                   <div class="real-content pull-left">
@@ -602,8 +603,8 @@
             </tr>
 
             <!--Extra Add row-->
-            <tr>
-              <td class="ldataTd addRowTd" ng-click="addRow()">
+            <tr ng-click="addRow()" class="splextracolumn">
+              <td class="ldataTd addRowTd" >
                   <div class="lTdDiv">
                       <div class="flex-general-row-wrapper-center">
                         <span>+</span>
@@ -616,7 +617,7 @@
               </td>
 
                <td  class="dataTd fixColumn" ng-repeat="column in currentProject.currentTable.columns" ng-if="column.document.dataType==='Id'" style="border-right:1px solid #4892F9;">
-                <div class="tdDiv cf" ng-click="addRow()" style="cursor:cell;"> 
+                <div class="tdDiv cf"  style="cursor:cell;"> 
                 </div>  
               </td> 
 
@@ -965,10 +966,10 @@
                   <div class="fTdDiv flex-general-row-wrapper-center">
 
                     <!--SerialNo-->
-                    <span ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="btn-default checkBxDflt chckbx-fix" class="sno">{{$index+1}}</span>
+                    <span ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index] && !rowsSelected[$index]  && showSerialNo[$index]" class="btn-default checkBxDflt chckbx-fix" class="sno" style="margin-left:6.9px;">{{$index+1}}</span>
 
                     <!--Checkbox-->
-                    <checkbox  ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="btn-default checkBxDflt chckbx-fix"  ng-model="rowsSelected[$index]" ng-click="selectThisRow($index)"></checkbox>                    
+                    <checkbox  ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index] && !showSerialNo[$index]" class="btn-default checkBxDflt chckbx-fix"  ng-model="rowsSelected[$index]" ng-click="selectThisRow($index)"></checkbox>                   
 
                     <!--Edit mode-->
                     <span ng-if="rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="sno-edit">
@@ -1019,7 +1020,7 @@
                 <!--/Boolean-->
 
                 <!--DateTime-->
-                <div ng-if="column.document.dataType=='DateTime'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='DateTime'" ng-click="showCommonTypes(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
                     <span class="timeSpan">                      
@@ -1035,7 +1036,7 @@
                 <!--/DateTime-->
 
                 <!--ACL-->
-                <div ng-if="column.document.dataType=='ACL'" class="tdDiv cf" style="min-width: 260px" ng-dblclick="showCommonTypes(eachRow,column); $event.stopPropagation()"> 
+                <div ng-if="column.document.dataType=='ACL'" class="tdDiv cf" style="min-width: 260px" ng-click="showCommonTypes(eachRow,column); $event.stopPropagation()"> 
 
                   <div class="real-content-acl pull-left"> 
                     <div class="objectSpan-acl">
@@ -1184,7 +1185,7 @@
                 <!--/ACL-->
 
                 <!--JsonObject-->
-                <div ng-if="column.document.dataType=='Object'" class="tdDiv cf" style="min-width: 260px" ng-dblclick="showCommonTypes(eachRow,column); $event.stopPropagation()"> 
+                <div ng-if="column.document.dataType=='Object'" class="tdDiv cf" style="min-width: 260px" ng-click="showCommonTypes(eachRow,column); $event.stopPropagation()"> 
 
                   <div class="real-content pull-left"> 
                     <div class="objectSpan">
@@ -1204,7 +1205,7 @@
                 <!--/JsonObject-->
 
                 <!--Text-->
-                <div ng-if="column.document.dataType=='Text'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='Text'" ng-click="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">              
                       {{eachRow.get(column.name)}}                                
@@ -1218,7 +1219,7 @@
                 <!--/Text-->
 
                 <!--Encrypted Text-->
-                <div ng-if="column.document.dataType=='EncryptedText'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='EncryptedText'" ng-click="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
                       <span ng-if="eachRow.get(column.name)">********</span>                    
@@ -1240,7 +1241,7 @@
                 <!--/Encrypted Text-->
 
                 <!--Email-->
-                <div ng-if="column.document.dataType=='Email'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='Email'" ng-click="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
                     <a class="emailSpan" href="{{eachRow.get(column.name) }}" target="_blank">
@@ -1256,7 +1257,7 @@
                 <!--/Email-->
 
                 <!--URL-->
-                <div ng-if="column.document.dataType=='URL'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='URL'" ng-click="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
                     <a class="emailSpan" href="{{eachRow.get(column.name) }}" target="_blank">
@@ -1272,7 +1273,7 @@
                 <!--/URL-->
 
                 <!--Number-->
-                <div ng-if="column.document.dataType=='Number'" ng-dblclick="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='Number'" ng-click="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">                    
                       {{eachRow.get(column.name)}}                                   
@@ -1471,7 +1472,7 @@
 
 
                 <!--Geo Point-->
-                <div ng-if="column.document.dataType=='GeoPoint'" class="tdDiv cf geopoint-container" ng-dblclick="showCommonTypes(eachRow,column); $event.stopPropagation()"> 
+                <div ng-if="column.document.dataType=='GeoPoint'" class="tdDiv cf geopoint-container" ng-click="showCommonTypes(eachRow,column); $event.stopPropagation()"> 
 
                   <div ng-show="eachRow.document[column.name]" class="real-content geopoint-wrapper pull-left flex-general-row-wrapper-center"> 
 
@@ -1521,20 +1522,20 @@
             </tr>
 
            <!--Extra Add row-->
-            <tr>
-              <td class="ldataTd addRowTd" ng-click="addRow()">
+            <tr ng-click="addRow()" class="splextracolumn">
+              <td class="ldataTd addRowTd" >
                   <div class="lTdDiv">
                       <div class="flex-general-row-wrapper-center">
                         <span>+</span>
                       </div>
                       
                       <!--Beacon-->
-                      <div ng-if="beacon && !beacon.firstRow" ng-click="addRow()" class="first-row-beacon-container" style="cursor:pointer;"></div>  
+                      <div ng-if="beacon && !beacon.firstRow" ng-click="addRow(); $event.stopPropagation()" class="first-row-beacon-container" style="cursor:pointer;"></div>  
                   </div> 
                             
               </td>
-               <td  class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="hideColumn[$index]">
-                <div class="tdDiv cf" ng-click="addRow()" style="cursor:cell;"> 
+              <td  class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="hideColumn[$index]">
+                <div class="tdDiv cf" style="cursor:cell;"> 
                 </div>  
               </td>
               <td class="vacuumTd">
@@ -1685,7 +1686,7 @@
 
 <!--File Directive -->
 <div class="modal fade colored-header danger" id="md-fileviewer" tabindex="-1" role="dialog">
-  <cb-file filetype="fileAllowedTypes" edit="editableFile" delete="deleteFile()" save="setAndSaveFile(fileObj)"></cb-file>
+  <cb-file filetype="fileAllowedTypes" edit="editableFile[editableFile.length-1]" delete="deleteFile()" save="setAndSaveFile(fileObj)"></cb-file>
 </div> 
 <!--/File Directive -->
 

@@ -79,8 +79,9 @@ $scope.currentTableData=[];
 $scope.fileAllowedTypes="*";//All
 
 $scope.orderBy="createdAt"; 
-$scope.orderByType="asc";
+$scope.orderByType="desc";
 $scope.hiddenColumnCount=0;
+$scope.editableFile=[];
 
 $scope.init = function() { 
   id = $stateParams.appId;
@@ -148,14 +149,19 @@ $scope.showCommonTypes=function(row,column){
     if(!row.get(column.name)){
       $scope.editableJsonObj=null;
     }
-    if($scope.editableJsonObj){       
-      sharedDataService.aclObject=$scope.editableJsonObj; 
+    if($scope.editableJsonObj){      
+      var prevData=sharedDataService.aclObject;
+      if(!prevData){
+        prevData=[];
+      } 
+      prevData.push($scope.editableJsonObj);     
+      sharedDataService.aclObject=prevData; 
     }   
     $("#md-aclviewer").modal(); 
 
   }else if(column.document.dataType=="File"){
 
-    $scope.editableFile=angular.copy(row.get(column.name));
+    $scope.editableFile.push(angular.copy(row.get(column.name)));
     $("#md-fileviewer").modal();     
 
   }else if(column.document.dataType=="GeoPoint"){
@@ -238,17 +244,17 @@ $scope.setAndSaveBoolean=function(row,column){
     rowSpinnerMode(i);     
 
     //Save Cloud Object
-    cloudBoostApiService.saveCloudObject(row)
-    .then(function(obj){
-        //scope.$digest();         
-        if($scope.tableDef){
-          convertISO2DateObj($scope.tableDef,obj);
-        }
-        showSaveIconInSecond(i);
-
-    }, function(error){ 
-       rowErrorMode(i,error);    
+    var requestIndex=angular.copy(i);
+    saveWrapper(row,requestIndex)
+    .then(function(resp){
+      if($scope.tableDef){
+          convertISO2DateObj($scope.tableDef,resp.obj);
+      }               
+      showSaveIconInSecond(resp.rowIndex);
+    }, function(errorResp){                         
+      rowErrorMode(errorResp.rowIndex,errorResp.error);   
     });
+
   }       
   
 };
@@ -324,16 +330,16 @@ $scope.setAndSaveACLObject=function(cbACLObject){
     rowSpinnerMode($scope.editableIndex);        
 
     //Save Cloud Object
-    cloudBoostApiService.saveCloudObject($scope.editableRow)
-    .then(function(obj){           
+    var requestIndex=angular.copy($scope.editableIndex);
+    saveWrapper($scope.editableRow,requestIndex)
+    .then(function(resp){ 
       $scope.editableJsonObj=null;
-      sharedDataService.aclObject=null;
-      showSaveIconInSecond($scope.editableIndex);      
-    }, function(error){          
-      $scope.editableJsonObj=null;  
-      sharedDataService.aclObject=null;        
-      rowErrorMode($scope.editableIndex,error);     
-    });
+      sharedDataService.aclObject.splice(resp.rowIndex,1);;               
+      showSaveIconInSecond(resp.rowIndex,1);
+    }, function(errorResp){
+      sharedDataService.aclObject.splice(errorResp.rowIndex,1);;                         
+      rowErrorMode(errorResp.rowIndex,errorResp.error);   
+    });    
   }   
 };  
 //End ACL && JsonObject
@@ -361,16 +367,18 @@ $scope.setAndSaveFile=function(fileObj){
         }else{
           rowSpinnerMode($scope.editableIndex); 
             
-            $scope.editableRow.set($scope.editableColumn.name,cloudBoostFile);            
-            //Save Cloud Object
-            cloudBoostApiService.saveCloudObject($scope.editableRow)
-            .then(function(obj){                 
-              $scope.removeSelectdFile();
-              showSaveIconInSecond($scope.editableIndex);
-            }, function(error){                 
-              $scope.removeSelectdFile();                   
-              rowErrorMode($scope.editableIndex,error);
-            }); 
+            $scope.editableRow.set($scope.editableColumn.name,cloudBoostFile);  
+
+            //Save Cloud Objec
+            var requestIndex=angular.copy($scope.editableIndex);
+            saveWrapper($scope.editableRow,requestIndex)
+            .then(function(resp){ 
+              //$scope.removeSelectdFile();              
+              showSaveIconInSecond(resp.rowIndex);
+            }, function(errorResp){  
+              //$scope.removeSelectdFile();                       
+              rowErrorMode(errorResp.rowIndex,errorResp.error);   
+            });             
         }             
 
     }, function(err){
@@ -379,7 +387,7 @@ $scope.setAndSaveFile=function(fileObj){
   }
 };
 
-$scope.removeSelectdFile=function(){
+/*$scope.removeSelectdFile=function(){
   $scope.selectedFile=null;
   $scope.selectedfileName=null;
   $scope.selectedFileObj=null;
@@ -391,7 +399,7 @@ $scope.removeSelectdFile=function(){
     $scope.listEditableColumn=null;//row
     $scope.listIndex=null;
   }
-};
+};*/
 
 $scope.deleteFile=function(){
     $("#md-fileviewer").modal("hide");
@@ -410,19 +418,19 @@ $scope.deleteFile=function(){
       rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumn.name);
     }else{
       rowSpinnerMode($scope.editableIndex);
-                  
-      //Save Cloud Object
-      cloudBoostApiService.saveCloudObject($scope.editableRow)
-      .then(function(obj){  
-        $scope.editableFile=null;
-        $scope.removeSelectdFile();
-        showSaveIconInSecond($scope.editableIndex);
-        
-      }, function(error){ 
-        $scope.editableFile=null;
-        $scope.removeSelectdFile();
-        rowErrorMode($scope.editableIndex,error);            
-      });
+
+      //Save Cloud Objec
+      var requestIndex=angular.copy($scope.editableIndex);
+      saveWrapper($scope.editableRow,requestIndex)
+      .then(function(resp){ 
+        //$scope.removeSelectdFile();
+        $scope.editableFile.splice(resp.rowIndex,1);             
+        showSaveIconInSecond(resp.rowIndex);
+      }, function(errorResp){  
+        //$scope.removeSelectdFile(); 
+        $scope.editableFile.splice(resp.rowIndex,1);                     
+        rowErrorMode(errorResp.rowIndex,errorResp.error);   
+      });     
 
     }
 };
@@ -799,18 +807,40 @@ function save(){
       }else{
         rowSpinnerMode($scope.editableIndex);          
       
-        //Save Cloud Object
-        cloudBoostApiService.saveCloudObject($scope.editableRow)
-        .then(function(obj){               
-          showSaveIconInSecond($scope.editableIndex);
-        }, function(error){                         
-          rowErrorMode($scope.editableIndex,error);   
-        });
+        var requestIndex=angular.copy($scope.editableIndex);
+        saveWrapper($scope.editableRow,requestIndex)
+        .then(function(resp){               
+          showSaveIconInSecond(resp.rowIndex);
+        }, function(errorResp){                         
+          rowErrorMode(errorResp.rowIndex,errorResp.error);   
+        });       
       }
   }
 }
 //End of Save  
 
+
+function saveWrapper(row,rowIndex){
+  var q=$q.defer();
+
+  //Save Cloud Object
+  cloudBoostApiService.saveCloudObject(row)
+  .then(function(obj){ 
+    var respObj={
+      obj:obj,
+      rowIndex:rowIndex
+    };              
+    q.resolve(respObj);
+  }, function(error){ 
+    var respObj={
+      error:error,
+      rowIndex:rowIndex
+    };                         
+    q.reject(respObj);   
+  });
+
+  return  q.promise; 
+}
 
 /* PRIVATE FUNCTIONS */
 
@@ -878,7 +908,13 @@ function getProjectTables(){
 
   }).then(function(cbObjects){ 
     $scope.currentTableData=cbObjects;
-    $scope.totalRecords=10;
+
+    if($scope.currentTableData && $scope.currentTableData.length>0){
+      $scope.totalRecords=$scope.currentTableData.length;
+    }else{
+      $scope.totalRecords=0;
+    }
+    
     $scope.isTableLoaded=true; 
 
     for(var i=0;i<$scope.currentTableData.length;++i){
@@ -913,6 +949,7 @@ $scope.addMoreRecords=function(){
 
   if($scope.currentTableData && $rootScope.currentProject && $rootScope.currentProject.currentTable){
     $scope.loadingRecords=true;
+
     //load more data
     cloudBoostApiService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,5,$scope.totalRecords)
     .then(function(list){
@@ -1227,6 +1264,9 @@ $scope.addRow=function(){
   obj.set('updatedAt', new Date());     
   $scope.currentTableData.push(obj);
 
+  //Temporary
+  $scope.newlyAddedRow=obj;
+
   var index=$scope.currentTableData.indexOf(obj);
   $scope.showSerialNo[index]=true;
   $scope.holdSerialNoInfo[index]=true;
@@ -1236,6 +1276,48 @@ $scope.addRow=function(){
     $scope.beacon.firstRow=true;
     updateBeacon();   
   }                                         
+};
+
+$scope.saveNewlyCreatedRow=function(){
+  if($scope.newlyAddedRow){
+    var i=$scope.currentTableData.indexOf($scope.newlyAddedRow);   
+    rowEditMode(i);
+   
+    var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
+       if(everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
+         if(!$scope.newlyAddedRow.get(everyCol.name)){
+          return everyCol;
+         }          
+       }
+    });    
+
+    if(requiredField){      
+      rowWarningMode(i,$scope.newlyAddedRow,null);     
+    }else{
+      rowSpinnerMode(i);     
+
+      //Save Cloud Object
+      cloudBoostApiService.saveCloudObject($scope.newlyAddedRow)
+      .then(function(obj){
+          //scope.$digest();         
+          if($scope.tableDef){
+            convertISO2DateObj($scope.tableDef,obj);
+          }
+          showSaveIconInSecond(i);
+          $scope.newlyAddedRow=null;//Nullify
+
+          //Update Total
+          if($scope.currentTableData && $scope.currentTableData.length>0){
+            $scope.totalRecords=$scope.currentTableData.length;
+          }else{
+            $scope.totalRecords=0;
+          }
+
+      }, function(error){ 
+         rowErrorMode(i,error);    
+      });
+    }
+  }
 };
 
 $scope.sortASC=function(column){  
@@ -1418,8 +1500,14 @@ function rowWarningMode(index,row,columnName){
   var colNames="";
   var countColumns=0;
   for(var i=0;i<$scope.currentProject.currentTable.columns.length;++i){
-    var col=$scope.currentProject.currentTable.columns[i];    
-    if(col.name!=columnName && col.name!="id" && col.name!="createdAt" && col.name!="updatedAt" && col.name!="ACL" && col.required){
+    var col=$scope.currentProject.currentTable.columns[i]; 
+
+    var onColumn=true;
+    if(columnName && col.name==columnName){
+      onColumn=false;
+    }
+
+    if(onColumn && col.name!="id" && col.name!="createdAt" && col.name!="updatedAt" && col.name!="ACL" && col.required){
         if(!row.get(col.name)){
 
           if(countColumns==0){

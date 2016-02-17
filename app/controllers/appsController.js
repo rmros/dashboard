@@ -934,7 +934,8 @@ app.controller('appsController',
 
     if(featureName=="api" && respObj && respObj.monthlyApiCount){
       var used=respObj.monthlyApiCount;      
-      var percentageUsed=used*(100/apiLimit);      
+      var percentageUsed=used*(100/apiLimit);
+      percentageUsed=Math.floor(percentageUsed);        
       if(percentageUsed>0 && percentageUsed<1){
         percentageUsed=1;
       }
@@ -965,6 +966,7 @@ app.controller('appsController',
       var used=(respObj.size/1000);//Convert to GBs
       var limit=storageLimit;//(already in GBs)
       var percentageUsed=used*(100/limit);
+      percentageUsed=Math.floor(percentageUsed);
       if(percentageUsed>0 && percentageUsed<1){
         percentageUsed=1;
       }

@@ -197,8 +197,8 @@ app.directive('cbAcl', function(){
             /****************************************Initialization************************************/
             $scope.sharedDataService=sharedDataService;
             $scope.$watch("sharedDataService.aclObject",function(newValue, oldValue) {
-                if(newValue){                
-                  $scope.aclObject = newValue;
+                if(newValue && newValue.length>0){                
+                  $scope.aclObject = newValue[newValue.length-1];
                   initCbApp();
                   prepareACLDisplay(newValue);
                   $scope.addACL=[];
