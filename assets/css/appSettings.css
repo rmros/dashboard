@@ -1,0 +1,54 @@
+.appSettings-wrap{
+  width: 100%;  
+  height: auto;
+  background-color: white;
+  overflow-y: scroll;
+  height: 90vh;  
+}
+
+.appSettings{
+  width: 938px;   
+}
+
+.app-settings-menusectionwrap{
+  border-right:1px solid #D3D3D3;
+}
+
+.app-settings-menusection{
+  width: 100%;
+  height: 598px; 
+  padding-top: 20px;
+  padding-left: 15px;   
+}
+
+.eachSetMenu{
+  height: 30px;  
+  margin-top:6px;
+  padding-left: 7px;
+  cursor: pointer;
+}
+.eachSetMenu:first-child{
+  margin-top:0px;
+}
+
+.eachSetMenu:hover,.activeAppSettingsMenu{
+  background-color:#EDEDED; 
+}
+
+.app-editing-section{
+  width: 100%;
+  height: 598px; 
+  padding-top: 20px;
+  padding-left: 15px;  
+}
+
+.appprod-switch{
+  width: 80px;
+}
+.appprod-switch.checked small{
+  margin-left:28px;
+}
+.actual-fields{
+  width: 94%;    
+  border-radius: 2px;   
+}

@@ -37,19 +37,19 @@
 
                           <div style="height:100%;width:100%;" class="flex-general-column-wrapper-center">  
 
-                            <div style="padding-top: 13px;">                          
-                              <div>  
+                            <div style="padding-top: 13px;" class="flex-general-column-wrapper-center">                          
+                              <div  class="cf">  
                                  <!--User-->                        
                                  <i ng-if="t.document.type=='user'" class="icon ion-person-stalker tableIcon"></i>
                                  <!--Role-->                        
                                  <i ng-if="t.document.type=='role'" class="icon ion-unlocked tableIcon"></i>
                                  <!--Custom-->                        
                                  <i ng-if="t.document.type=='custom'" class="icon ion-ios-list tableIcon"></i>
-                              </div>
+                              </div>                              
+                            </div>
 
-                              <div>
-                                <span class="tableText">{{t.name}}</span>
-                              </div>
+                            <div>
+                              <span class="tableText">{{t.name}}</span>
                             </div>
 
                           </div>
@@ -96,8 +96,9 @@
                           </div>
 
 
-                          <div style="width:100%;" class="solo-horizontal-center">
-                            <div>                            
+                          <div style="width:100%;" class="flex-general-column-wrapper-center">
+
+                            <div class="flex-general-column-wrapper-center">                            
                                <div>  
                                  <!--User-->                        
                                  <i ng-if="t.document.type=='user'" class="icon ion-person-stalker tableIcon" style="cursor:default;"></i>
@@ -105,12 +106,13 @@
                                  <i ng-if="t.document.type=='role'" class="icon ion-unlocked tableIcon" style="cursor:default;"></i>
                                  <!--Custom-->                        
                                  <i ng-if="t.document.type=='custom'" class="icon ion-ios-list tableIcon" style="cursor:default;"></i>
-                               </div>
+                               </div>                               
+                            </div>
 
-                               <div>
-                                <span class="tableText">{{t.name}}</span>
-                              </div>
-                            </div> 
+                            <div>
+                              <span class="tableText">{{t.name}}</span>
+                            </div>
+
                           </div>
 
                         </div> 

@@ -20,3 +20,24 @@ app.directive('datetimepicker', function(){
     };
 });
 
+app.directive('clickElsewhere', function ($parse, $rootScope) {
+    return {
+        restrict: 'A',
+        compile: function ($element, attr) {
+            var fn;
+            fn = $parse(attr['clickElsewhere']);
+            return function (scope, element) {
+                var offEvent;
+                offEvent = $rootScope.$on('click', function (event, target) {
+                    if (element.find($(target)).length || element.is($(target))) {
+                        return;
+                    }
+                    return scope.$apply(function () {
+                        return fn(scope);
+                    });
+                });
+                return scope.$on('$destroy', offEvent);
+            };
+        }
+    };
+});

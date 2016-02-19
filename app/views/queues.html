@@ -64,7 +64,7 @@
                     <span class="cache-size-label" style="">QUEUE SIZE:</span>
                   </div>
                   <div>
-                    <span class="cache-size-val" style="">10</span>
+                    <span class="cache-size-val" style="">{{queueSizes[$index]}}</span>
                   </div>
                 </div>               
 
@@ -194,22 +194,22 @@
                         <div style="color: #939393;">
                           TIMEOUT:
                         </div>
-                         <div style="font-size:14px;margin-top:-2px;">
+                         <div style="font-size:14px;margin-top:-2px;margin-left:1px;">
                           {{eachMsg.timeout}}
                         </div>
 
                         <div ng-show="eachMsg.delay" style="margin-left:30px;color: #939393;">
                           DELAY:
                         </div>
-                         <div ng-show="eachMsg.delay" style="font-size:14px;margin-top:-2px;">
+                         <div ng-show="eachMsg.delay" style="font-size:14px;margin-top:-2px;margin-left:1px;">
                           {{eachMsg.delay}}
                         </div>
 
                         <div ng-show="eachMsg.expires" style="margin-left:30px;color: #939393;">
                           EXPIRES:
                         </div>
-                        <div ng-show="eachMsg.expires" style="font-size:14px;margin-top:-2px;">
-                          {{eachMsg.expires}}
+                        <div ng-show="eachMsg.expires" style="font-size:14px;margin-left:1px;margin-top:-2px;">
+                          {{eachMsg.expires  | date:'medium'}}
                         </div>
                       </div>
 
@@ -608,9 +608,10 @@
 
               <div class="" style="width:100%;">           
                 <div class="" style="width:100%;height:29px;border:2px solid #D6D6D6;border-radius:4px;">
-                  <input type="text" class="defaultInput-txt" ng-model="requestedMessage.delay" style="width:100%;height:90%;">
+                  <input type="text" class="defaultInput-txt" ng-model="requestedSplDelay" style="width:100%;height:90%;">
                 </div>
               </div>
+              
             </div>
 
             <div class="" style="width:80%;margin-top:7px;">

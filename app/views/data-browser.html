@@ -1013,7 +1013,7 @@
                 <!--Boolean-->
                 <div ng-if="column.document.dataType=='Boolean'"  class="tdDiv boolean-div cf" style="min-width: 165px">     
                   <div class="real-content-center flex-general-row-wrapper-center">  
-                      <checkbox  class="btn-default checkBxDflt2 data-checkbx"  ng-model="eachRow.document[column.name]" ng-click="setAndSaveBoolean(eachRow,column)">
+                      <checkbox  class="btn-default checkBxDflt2 data-checkbx"  ng-model="eachRow.document[column.name]" ng-change="setAndSaveBoolean(eachRow,column)">
                       </checkbox>                     
                   </div>                  
                 </div>
@@ -1036,8 +1036,8 @@
                 <!--/DateTime-->
 
                 <!--ACL-->
-                <div ng-if="column.document.dataType=='ACL'" class="tdDiv cf" style="min-width: 260px" ng-click="showCommonTypes(eachRow,column); $event.stopPropagation()"> 
-
+                <div ng-if="column.document.dataType=='ACL'" class="tdDiv cf" style="min-width: 260px"> 
+                <!-- ng-click="showCommonTypes(eachRow,column); $event.stopPropagation()"-->
                   <div class="real-content-acl pull-left"> 
                     <div class="objectSpan-acl">
 
@@ -1175,7 +1175,7 @@
 
                   <!--Popup Edit Button-->
                   <div class="modal-wrapper pull-right">
-                      <a class="round-btn" ng-click="showCommonTypes(eachRow,column)">
+                      <a class="round-btn" ng-click="showCommonTypes(eachRow,column); $event.stopPropagation()">
                         <i class="fa fa-expand db-color-fg"></i>&nbsp;
                       </a>  
                   </div>
@@ -1185,7 +1185,8 @@
                 <!--/ACL-->
 
                 <!--JsonObject-->
-                <div ng-if="column.document.dataType=='Object'" class="tdDiv cf" style="min-width: 260px" ng-click="showCommonTypes(eachRow,column); $event.stopPropagation()"> 
+                <div ng-if="column.document.dataType=='Object'" class="tdDiv cf" style="min-width: 260px"> 
+                  <!--ng-click="showCommonTypes(eachRow,column); $event.stopPropagation()"-->
 
                   <div class="real-content pull-left"> 
                     <div class="objectSpan">
@@ -1205,14 +1206,14 @@
                 <!--/JsonObject-->
 
                 <!--Text-->
-                <div ng-if="column.document.dataType=='Text'" ng-click="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='Text'" class="tdDiv-fields cf" ng-click="showCommonTypes(eachRow,column)" style="min-width: 260px"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">              
-                      {{eachRow.get(column.name)}}                                
+                    {{eachRow.get(column.name)}}                                
                   </div>
 
                    <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">                             
-                    <input type="text"  focus-on="{{column.id}}column" ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput"  ng-blur="setAndSave()" />               
+                    <input type="text"  focus-on="{{column.id}}column" ng-blur="setAndSave()"  ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput"/>               
                   </div>
 
                 </div>
@@ -1335,18 +1336,40 @@
                 </div>
                 <!--/Relation-->
 
+                <!--Geo Point-->
+                <div ng-if="column.document.dataType=='GeoPoint'" class="tdDiv cf geopoint-container"> 
+                <!-- ng-click="showCommonTypes(eachRow,column); $event.stopPropagation()"-->
+                  <div ng-show="eachRow.document[column.name]" class="real-content geopoint-wrapper pull-left flex-general-row-wrapper-center"> 
+
+                    <div  class="geopoint">
+                      { <span>{{eachRow.get(column.name).longitude}}</span>,&nbsp;
+                      <span>{{eachRow.get(column.name).latitude}}</span> }
+                    </div> 
+                  </div>
+
+                  <!--Popup Edit Button-->
+                  <div class="modal-wrapper pull-right">
+                      <a class="round-btn" ng-click="showCommonTypes(eachRow,column)">
+                        <i class="fa fa-expand db-color-fg"></i>&nbsp;
+                      </a>  
+                  </div>
+                  <!--/Popup Edit Button--> 
+
+                </div>
+                <!--/Geo Point-->
+
                 <!--List-->
                 <div ng-if="column.document.dataType=='List'" class="tdDiv cf" style="min-width:325px"> 
 
                   <div class="real-content-list-text pull-left"> 
                       <!--TextText,Email,Number,URL--> 
-                      <div ng-show="eachRow.document[column.name]" ng-if="column.document.relatedTo=='Text' || column.document.relatedTo=='Email' || column.document.relatedTo=='Number' || column.document.relatedTo=='URL'" class="cf list-text-wrapper">
+                      <div ng-if="column.document.relatedTo=='Text' || column.document.relatedTo=='Email' || column.document.relatedTo=='Number' || column.document.relatedTo=='URL'" class="cf list-text-wrapper">
 
                         <div class="pull-left text-list-torrent flex-general-row-wrapper">
                          
                           <div ng-repeat="eachText in eachRow.document[column.name] track by $index" class="list-text">
-                            <span ng-if="column.document.relatedTo!='EncryptedText'">{{eachText}}</span>
-                            <span ng-if="column.document.relatedTo=='EncryptedText'" style="font-size:14px;">*****</span>
+                            <span>{{eachText}}</span>
+                            
                           </div>                        
 
                         </div>           
@@ -1354,7 +1377,7 @@
                       </div>
 
                       <!--DateTime--> 
-                      <div ng-show="column.document.relatedTo=='DateTime'" class="cf list-text-wrapper">
+                      <div ng-if="column.document.relatedTo=='DateTime'" class="cf list-text-wrapper">
 
                         <div class="pull-left text-list-torrent flex-general-row-wrapper">
                          
@@ -1367,7 +1390,7 @@
                       </div> 
 
                      <!--Boolean--> 
-                     <div ng-show="column.document.relatedTo=='Boolean'" class="cf list-text-wrapper">
+                     <div ng-if="column.document.relatedTo=='Boolean'" class="cf list-text-wrapper">
 
                         <div class="pull-left text-list-torrent flex-general-row-wrapper">
                          
@@ -1387,7 +1410,7 @@
                       </div>
 
                       <!--JSON-Object--> 
-                      <div ng-show="column.document.relatedTo=='Object'" class="cf list-text-wrapper">
+                      <div ng-if="column.document.relatedTo=='Object'" class="cf list-text-wrapper">
 
                         <div class="pull-left text-list-torrent flex-general-row-wrapper">
                          
@@ -1404,7 +1427,7 @@
                       </div>
 
                       <!--File--> 
-                      <div ng-show="column.document.relatedTo=='File'" class="cf list-text-wrapper">
+                      <div ng-if="column.document.relatedTo=='File'" class="cf list-text-wrapper">
 
                         <div class="pull-left text-list-torrent flex-general-row-wrapper">
                          
@@ -1442,7 +1465,7 @@
                       </div>
 
                       <!--Relation--> 
-                      <div ng-show="eachRow.document[column.name]" ng-if="column.document.relatedTo!='Text' && column.document.relatedTo!='Email' && column.document.relatedTo!='Number' && column.document.relatedTo!='URL' && column.document.relatedTo!='DateTime' && column.document.relatedTo!='Boolean' && column.document.relatedTo!='File' && column.document.relatedTo!='Object' && column.document.relatedTo!='Geo Point'" class="cf list-text-wrapper">
+                      <div ng-if="eachRow.document[column.name]" ng-if="column.document.relatedTo!='Text' && column.document.relatedTo!='Email' && column.document.relatedTo!='Number' && column.document.relatedTo!='URL' && column.document.relatedTo!='DateTime' && column.document.relatedTo!='Boolean' && column.document.relatedTo!='File' && column.document.relatedTo!='Object' && column.document.relatedTo!='Geo Point'" class="cf list-text-wrapper">
 
                         <div class="pull-left text-list-torrent flex-general-row-wrapper">
                          
@@ -1469,29 +1492,7 @@
 
                 </div>
                 <!--/List-->
-
-
-                <!--Geo Point-->
-                <div ng-if="column.document.dataType=='GeoPoint'" class="tdDiv cf geopoint-container" ng-click="showCommonTypes(eachRow,column); $event.stopPropagation()"> 
-
-                  <div ng-show="eachRow.document[column.name]" class="real-content geopoint-wrapper pull-left flex-general-row-wrapper-center"> 
-
-                    <div  class="geopoint">
-                      { <span>{{eachRow.get(column.name).longitude}}</span>,&nbsp;
-                      <span>{{eachRow.get(column.name).latitude}}</span> }
-                    </div> 
-                  </div>
-
-                  <!--Popup Edit Button-->
-                  <div class="modal-wrapper pull-right">
-                      <a class="round-btn" ng-click="showCommonTypes(eachRow,column)">
-                        <i class="fa fa-expand db-color-fg"></i>&nbsp;
-                      </a>  
-                  </div>
-                  <!--/Popup Edit Button--> 
-
-                </div>
-                <!--/Geo Point-->
+                
 
                 <!--Others-->
                 <div ng-if="column.document.dataType!='Id' && column.document.dataType!='Boolean' && column.document.dataType!='DateTime' && column.document.dataType!='ACL' && column.document.dataType!='Text' && column.document.dataType!='EncryptedText' && column.document.dataType!='Email' && column.document.dataType!='URL' && column.document.dataType!='Number' && column.document.dataType!='Object' && column.document.dataType!='File' && column.document.dataType!='Relation' && column.document.dataType!='List' && column.document.dataType!='GeoPoint'" class="tdDiv cf" style="min-width: 210px"> 
@@ -1527,10 +1528,7 @@
                   <div class="lTdDiv">
                       <div class="flex-general-row-wrapper-center">
                         <span>+</span>
-                      </div>
-                      
-                      <!--Beacon-->
-                      <div ng-if="beacon && !beacon.firstRow" ng-click="addRow(); $event.stopPropagation()" class="first-row-beacon-container" style="cursor:pointer;"></div>  
+                      </div>                       
                   </div> 
                             
               </td>

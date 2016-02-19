@@ -2067,14 +2067,11 @@
 
 .tableIcon{
    color:white;
-   font-size : 30px;
-   padding:12px;
-   padding-right:0px;
+   font-size : 30px;   
 }
 
 .tableText{
-    color:white;
-    padding-left:6px;
+    color:white;    
     font-weight:600;
     margin-bottom:10px !important;
 }

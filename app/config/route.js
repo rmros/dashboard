@@ -31,6 +31,12 @@ app.config([
         controller: 'pricingController'
     });
 
+    $stateProvider.state('profile', {
+        url: '/profile',
+        templateUrl: 'app/views/profile.html',
+        controller: 'profileController'
+    });
+
     $stateProvider.state('admin', {
         url: '/admin',
         templateUrl: 'app/views/admin.html',
@@ -62,11 +68,11 @@ app.config([
         controller: 'fileBrowserController'
     });
 
-    $stateProvider.state('profile', {
-        url: '/profile',
-        templateUrl: 'app/views/profile.html',
-        controller: 'profileController'
-    });    
+    $stateProvider.state('settings', {
+        url: '/:appId/settings',
+        templateUrl: 'app/views/app-settings.html',
+        controller: 'appSettingsController'
+    });        
 
   //cors.
   $httpProvider.defaults.withCredentials = true;

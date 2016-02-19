@@ -115,7 +115,7 @@ app.factory('queueService', ['$q','$http','$rootScope',function ($q,$http,$rootS
       }     
 
       if(expire){
-        queueMessage.expire = expire;
+        queueMessage.expires = expire;
       }
 
       queue.addMessage(queueMessage, {
