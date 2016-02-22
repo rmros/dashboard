@@ -13,8 +13,11 @@ app.directive('cbList', function(){
         controller:['$scope','$rootScope','cloudBoostApiService',function($scope,$rootScope,cloudBoostApiService) { 
           
           $scope.modifyListItemError=[];          
-          $scope.listFileSpinner=[];         
-         
+          $scope.listFileSpinner=[];
+
+          $scope.init=function(){
+            clearListErrors();
+          };          
 
           $scope.addListItem=function(item){
             
@@ -33,13 +36,13 @@ app.directive('cbList', function(){
               newListItem={}; 
             }
             if($scope.editableColumn.relatedTo=="Number"){ 
-              newListItem=0;              
+              //newListItem=0;              
             }
             if($scope.editableColumn.relatedTo=="Email"){     
-              newListItem="hello@cloudboost.io";    
+              //newListItem="hello@cloudboost.io";    
             }
             if($scope.editableColumn.relatedTo=="URL"){     
-              newListItem="http://cloudboost.io";    
+              //newListItem="http://cloudboost.io";    
             }
 
             if($scope.editableColumn.relatedTo=="GeoPoint"){    
@@ -75,7 +78,7 @@ app.directive('cbList', function(){
 
           };
 
-          $scope.modifyListItem=function(data,index){  
+          $scope.modifyListItem=function(data,index){ 
 
             $scope.modifyListItemError[index]=null;
             if(data || $scope.editableColumn.relatedTo=="Boolean" || $scope.editableColumn.relatedTo=="Object"){
@@ -275,6 +278,10 @@ app.directive('cbList', function(){
             if(!checkListErrors()){
               $scope.save({updatedList:$scope.editableList});
             }
+          };
+
+          $scope.closeListModal=function(){
+            clearListErrors();
           };
 
           $scope.goToDataBrowser=function(t){              

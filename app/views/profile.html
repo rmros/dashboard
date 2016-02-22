@@ -42,7 +42,7 @@
 
                 <div ng-show="!loadingProfile" class="cf" style="width:100%;">
                   <!--Block1-->
-                  <div    class="flex-general-row-wrapper pull-left" style="width:23.99%;height:auto;">
+                  <div  class="flex-general-row-wrapper pull-left" style="width:23.99%;height:auto;">
                     <!--Profile Pic-->
                     <div class="flex-general-column-wrapper-center" style="width:100%;margin-left:10px;"> 
 
@@ -232,120 +232,8 @@
 
               </div>
 
-              <div role="tabpanel" class="tab-pane" ng-class="{active:profileTabs.billing}">
-                <div class="billing-tab">                 
-
-                  <form role="form" name="cardForm" ng-submit="addOrEditCreditCard(cardForm.$valid)">                       
-                      <div class="modal-body form">
-                        <div class="form-group">
-                          <span class="billing-card-labels">Full Name on Card</span> 
-                          <input type="text" ng-model="creditcardInfo.name" class="form-control" placeholder="John Smith" required>
-                        </div>
-                        <div class="form-group">
-                          <span class="billing-card-labels">Card Number</span> 
-                          <input type="name" ng-model="creditcardInfo.number" maxlength="16" minlength="16" class="form-control" placeholder="Card Number" required>
-                        </div>
-                        <div class="row">
-                          <div class="form-group col-md-3 no-margin">
-                            <span class="billing-card-labels">Exp.Month</span>
-                          </div>
-                           <div class="form-group col-md-3 no-margin">
-                            <span class="billing-card-labels">Exp.Year</span>
-                          </div>
-                           <div class="form-group col-md-3 no-margin">
-                            <span class="billing-card-labels">Security Code</span>
-                          </div>
-                        </div>
-                        <div class="row no-margin-y">
-                          <div class="form-group col-md-3 col-sm-3  col-xs-3 no-margin">
-                            <input type="name" ng-model="creditcardInfo.exp_month" class="form-control" placeholder="MM" maxlength="2" minlength="1" required>
-                          </div>
-                          <div class="form-group col-md-3 col-sm-3  col-xs-3 no-margin">
-                            <input type="name" ng-model="creditcardInfo.exp_year" class="form-control" placeholder="YYYY" maxlength="4" minlength="4" required>
-                          </div>
-                          <div class="form-group col-md-3 col-sm-3  col-xs-3 no-margin">
-                            <input type="password" ng-model="creditcardInfo.cvc" class="form-control" placeholder="CVC" maxlength="3" minlength="3" required>
-                          </div>
-                        </div>
-                        
-                        <div style="width:100%;margin-top:40px;margin-bottom:10px;border-bottom:1px solid #F0F0F0;">
-                        </div> 
-
-                        <div class="row">                         
-
-                          <div class="form-group col-md-6 no-margin">
-                            <div class="form-group">
-                            <span class="billing-card-labels">Address Line1</span> 
-                            <input type="text" ng-model="creditcardInfo.address_line1" class="form-control" placeholder="Address Line1" required>
-                          </div>
-                          </div>
-                           <div class="form-group col-md-6 no-margin">
-                            <div class="form-group">
-                            <span class="billing-card-labels">Address Line2</span> 
-                            <input type="text" ng-model="creditcardInfo.address_line2" class="form-control" placeholder="Address Line2" required>
-                          </div>
-                          </div>          
-                        </div>
-                        <div class="row">
-                          <div class="form-group col-md-6 no-margin">
-                            <div class="form-group">
-                            <span class="billing-card-labels">City</span> 
-                            <input type="text" ng-model="creditcardInfo.address_city" class="form-control" placeholder="City" required>
-                          </div>          
-                          </div>
-                           <div class="form-group col-md-6 no-margin">
-                            <div class="form-group">
-                            <span class="billing-card-labels">State</span> 
-                            <input type="text" ng-model="creditcardInfo.address_state" class="form-control" placeholder="State" required>
-                          </div>
-                          </div>          
-                        </div>
-                        <div class="row">
-                          <div class="form-group col-md-6 no-margin">
-                            <div class="form-group">
-                            <span class="billing-card-labels">Country</span> 
-                            <input type="text" ng-model="creditcardInfo.address_country" class="form-control" placeholder="Country" required>
-                          </div>          
-                          </div>
-
-                           <div class="form-group col-md-6 no-margin">
-                            <div class="form-group">
-                            <span class="billing-card-labels">Zip</span> 
-                            <input type="text" ng-model="creditcardInfo.address_zip" class="form-control" placeholder="Zip" required>
-                          </div>
-                          </div>          
-                        </div>
-
-                        <div class="row">
-                          <div class="form-group col-md-6 no-margin">                                    
-                          </div>
-
-                          <div class="form-group col-md-6 no-margin">                            
-
-                            <!--<div class="pull-right" style="margin-left:10px;">
-                             <!--Remove Card-->
-                             <!--<button type="button" ng-show="isCardAdded" ng-disabled="validCardShowSpinner" class="btn btn-default btn-flat md-close">Remove</button>
-
-                            </div>-->
-
-                            <div class="pull-right">
-                             <!--Before validation-->
-                             <button type="submit" ng-show="!validCardShowSpinner" class="btn btn-primary btn-flat md-close">{{cardAddEditText}}</button>
-
-                             <!--validating-->
-                             <button type="button" ng-show="validCardShowSpinner" class="btn btn-primary btn-flat md-close">
-                              <i class="fa fa-spinner fa-spin"></i>&nbsp;Processing..</button>
-
-                            </div> 
-
-                                                      
-                          </div>                          
-
-                        </div>
-                      </div>
-                      
-                    </form>                    
-                </div>             
+              <div role="tabpanel" class="tab-pane">   
+                <!--New Tab Content goes here-->                          
               </div>  
 
             </div>

@@ -25,10 +25,10 @@ app.config([
         controller: 'dataBrowserController'
     });   
 
-    $stateProvider.state('pricing', {
-        url: '/:appId/pricing',
-        templateUrl: 'app/views/pricing.html',
-        controller: 'pricingController'
+    $stateProvider.state('analytics', {
+        url: '/:appId/analytics',
+        templateUrl: 'app/views/analytics.html',
+        controller: 'analyticsController'
     });
 
     $stateProvider.state('profile', {

@@ -187,10 +187,10 @@ paymentService){
   $scope.toggleTabs=function(tabName){
     if(tabName=="profile"){
       $scope.profileTabs.profile=true;
-      $scope.profileTabs.billing=false;     
+      //$scope.profileTabs.billing=false;     
     }else if(tabName=="billing"){
-      $scope.profileTabs.profile=false;
-      $scope.profileTabs.billing=true;
+      //$scope.profileTabs.profile=false;
+      //$scope.profileTabs.billing=true;
     }
   };
 

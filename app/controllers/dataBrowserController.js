@@ -4,6 +4,7 @@ app.controller('dataBrowserController',
 function($scope, 
 $rootScope,
 $q,
+$document,
 $location,
 $stateParams,
 utilityService,
@@ -67,6 +68,7 @@ $scope.rowInfo=null;
 $scope.showInputForEdit=[[]]; 
 $scope.editableField=[[]];
 $scope.holdFieldData=[[]];
+$scope.activeUIelm=[];
 
 /****Relation Modal ****/
 $scope.relatedTableDefArray=[];
@@ -101,134 +103,176 @@ $scope.init = function() {
 
   if(!__isDevelopment){
     /****Tracking*********/            
-     mixpanel.track('Visited databrowser', { "Table name": tableName,"appId": $rootScope.currentProject.appId});
+     mixpanel.track('Visited databrowser', { "Table name": tableName,"appId": id});
     /****End of Tracking*****/
   }     
 }; 
 
 //Invoke Common Type Input enable
-$scope.showCommonTypes=function(row,column){
+$scope.showCommonTypes=function(row,column,event){
   var currentIndex=$scope.currentTableData.indexOf(row);//index 
   if(!$scope.showInputForEdit[currentIndex][column.name]){
-    nullifyFields();
-    $scope.editableRow=row;//row  
-    $scope.editableColumn=column;
-    $scope.editableIndex=$scope.currentTableData.indexOf(row);//index      
 
-    //Show INPUT Box to Edit for Commong DataTypes
-    if(column.document.dataType!="Object" && column.document.dataType!="ACL" && column.document.dataType!="File" && column.document.dataType!="GeoPoint" && column.document.dataType!="List"){
-      var arry=[column.name];
-      var arry2=[column.name];
-      var arry3=[column.name];
-      var index=angular.copy($scope.editableIndex);
+    //Save Last Field
+    if(lastDocumentClick(event)){
 
-      //Enable column to edit         
-      $scope.showInputForEdit[index]=arry;
-      $scope.showInputForEdit[index][column.name]=true;
+      //Nullify if any
+      nullifyFields();
 
-      $scope.editableField[index]=arry2;
-      $scope.holdFieldData[index]=arry3;    
-    }
+      $scope.editableRow=row;//row  
+      $scope.editableColumn=column;
+      $scope.editableIndex=$scope.currentTableData.indexOf(row);//index      
 
-    //Set Field or value      
-    if(column.document.dataType=="EncryptedText"){ 
-      $scope.holdFieldData[index][column.name]=angular.copy(row.get(column.name));     
-      $scope.editableField[index][column.name]=null;
+      //Show INPUT Box to Edit for Commong DataTypes
+      if(column.document.dataType!="Object" && column.document.dataType!="ACL" && column.document.dataType!="File" && column.document.dataType!="GeoPoint" && column.document.dataType!="List"){
+        var arry=[column.name];
+        var arry2=[column.name];
+        var arry3=[column.name];      
+        var index=angular.copy($scope.editableIndex);
 
-    }else if(column.document.dataType=="DateTime"){
-      $scope.editableField[index][column.name]=angular.copy(new Date(row.get(column.name)));     
-    }else if(column.dataType=="Object"){
+        //Enable column to edit         
+        $scope.showInputForEdit[index]=arry;
+        $scope.showInputForEdit[index][column.name]=true;
 
-      var editableJsonObj=angular.copy(row.get(column.name));   
-      if(!row.get(column.name)){
-        editableJsonObj=null;
-      }    
-      //$scope.cloudObjectColumn=$scope.editableColumn;      
-      $scope.cloudObjectForJson =JSON.stringify(editableJsonObj,null,2);            
-      $("#md-objectviewer").modal();  
+        $scope.editableField[index]=arry2;
+        $scope.holdFieldData[index]=arry3;
+        
 
-    }else if(column.dataType=="ACL"){
-
-      var editableAclJsonObj=angular.copy(row.get(column.name));   
-      if(!row.get(column.name)){
-        editableAclJsonObj=null;
+        //Save Active UI Element
+        $scope.activeUIelm.push(event.currentTarget);   
       }
-      if(editableAclJsonObj){   
-        //Sharing Data through a service         
-        sharedDataService.pushAclObject(editableAclJsonObj); 
-      }   
-      $("#md-aclviewer").modal(); 
 
-    }else if(column.document.dataType=="File"){
+      //Set Field or value      
+      if(column.document.dataType=="EncryptedText"){ 
+        $scope.holdFieldData[index][column.name]=angular.copy(row.get(column.name));     
+        $scope.editableField[index][column.name]=null;
 
-      $scope.editableFile.push(angular.copy(row.get(column.name)));
-      $("#md-fileviewer").modal();     
+      }else if(column.document.dataType=="DateTime"){
+        $scope.editableField[index][column.name]=angular.copy(new Date(row.get(column.name)));     
+      }else if(column.dataType=="Object"){
 
-    }else if(column.document.dataType=="GeoPoint"){
-      //$scope.cloudObjectColumn=$scope.editableColumn;  
-      //$scope.editableGeopoint=angular.copy(row.get(column.name));
-      $scope.cloudObjectGeopoint=angular.copy(row.get(column.name));     
-      if(!row.get(column.name)){    
-        $scope.cloudObjectGeopoint={};     
-        $scope.cloudObjectGeopoint.latitude=null;
-        $scope.cloudObjectGeopoint.longitude=null;
-      }
-      $("#md-geodocumentviewer").modal();
+        var editableJsonObj=angular.copy(row.get(column.name));   
+        if(!row.get(column.name)){
+          editableJsonObj=null;
+        }    
+        //$scope.cloudObjectColumn=$scope.editableColumn;      
+        $scope.cloudObjectForJson =JSON.stringify(editableJsonObj,null,2);            
+        $("#md-objectviewer").modal();  
 
-    }else if(column.document.dataType=="List"){            
-      $scope.addListItemError=null; 
-      clearListErrors();   
-      $scope.editableList=angular.copy(row.get(column.name));
-    
-      if(column.relatedTo=="DateTime"){    
-        convertFieldsISO2DateObj(); 
-      } 
-      if((!$scope.editableList || $scope.editableList.length==0) && column.relatedTo!='Text' && column.relatedTo!='Email' && column.relatedTo!='URL' && column.relatedTo!='Number' && column.relatedTo!='DateTime' && column.relatedTo!='Object' && column.relatedTo!='Boolean' && column.relatedTo!='File' && column.relatedTo!='GeoPoint'){      
-        $("#mdlistcommontypes").modal();
-        //$scope.listSearchRelationDocs(); 
-      }else if(($scope.editableList && $scope.editableList.length>0) && column.relatedTo!='Text' && column.relatedTo!='Email' && column.relatedTo!='URL' && column.relatedTo!='Number' && column.relatedTo!='DateTime' && column.relatedTo!='Object' && column.relatedTo!='Boolean' && column.relatedTo!='File' && column.relatedTo!='GeoPoint'){
-        var cbIdArray=[];
-        for(var j=0;j<$scope.editableList.length;++j){
-          cbIdArray.push($scope.editableList[j].get("id"));
+      }else if(column.dataType=="ACL"){
+
+        var editableAclJsonObj=angular.copy(row.get(column.name));   
+        if(!row.get(column.name)){
+          editableAclJsonObj=null;
+        }
+        if(editableAclJsonObj){   
+          //Sharing Data through a service         
+          sharedDataService.pushAclObject(editableAclJsonObj); 
+        }   
+        $("#md-aclviewer").modal(); 
+
+      }else if(column.document.dataType=="File"){
+
+        $scope.editableFile.push(angular.copy(row.get(column.name)));
+        $("#md-fileviewer").modal();     
+
+      }else if(column.document.dataType=="GeoPoint"){
+        //$scope.cloudObjectColumn=$scope.editableColumn;  
+        //$scope.editableGeopoint=angular.copy(row.get(column.name));
+        $scope.cloudObjectGeopoint=angular.copy(row.get(column.name));     
+        if(!row.get(column.name)){    
+          $scope.cloudObjectGeopoint={};     
+          $scope.cloudObjectGeopoint.latitude=null;
+          $scope.cloudObjectGeopoint.longitude=null;
+        }
+        $("#md-geodocumentviewer").modal();
+
+      }else if(column.document.dataType=="List"){            
+        $scope.addListItemError=null; 
+        clearListErrors();   
+        $scope.editableList=angular.copy(row.get(column.name));
+      
+        if(column.relatedTo=="DateTime"){    
+          convertFieldsISO2DateObj(); 
+        } 
+        if((!$scope.editableList || $scope.editableList.length==0) && column.relatedTo!='Text' && column.relatedTo!='Email' && column.relatedTo!='URL' && column.relatedTo!='Number' && column.relatedTo!='DateTime' && column.relatedTo!='Object' && column.relatedTo!='Boolean' && column.relatedTo!='File' && column.relatedTo!='GeoPoint'){      
+          $("#mdlistcommontypes").modal();
+          //$scope.listSearchRelationDocs(); 
+        }else if(($scope.editableList && $scope.editableList.length>0) && column.relatedTo!='Text' && column.relatedTo!='Email' && column.relatedTo!='URL' && column.relatedTo!='Number' && column.relatedTo!='DateTime' && column.relatedTo!='Object' && column.relatedTo!='Boolean' && column.relatedTo!='File' && column.relatedTo!='GeoPoint'){
+          var cbIdArray=[];
+          for(var j=0;j<$scope.editableList.length;++j){
+            cbIdArray.push($scope.editableList[j].get("id"));
+          }
+
+          //Array CloudObjects
+          cloudBoostApiService.queryContainedIn(column.document.relatedTo,'id',cbIdArray)
+          .then(function(list){
+            if(list && list.length>0){
+              $scope.editableList=list;
+              //$scope.$digest();
+            }else{
+              $scope.editableList=null;
+              //$scope.$digest();
+            }          
+            $("#mdlistcommontypes").modal();
+          },function(err){
+            $scope.editableList=null;
+            $("#mdlistcommontypes").modal();
+          });      
+          //Array CloudObjects
+          
+        }else{
+          $("#mdlistcommontypes").modal();
         }
 
-        //Array CloudObjects
-        cloudBoostApiService.queryContainedIn(column.document.relatedTo,'id',cbIdArray)
-        .then(function(list){
-          if(list && list.length>0){
-            $scope.editableList=list;
-            //$scope.$digest();
-          }else{
-            $scope.editableList=null;
-            //$scope.$digest();
-          }          
-          $("#mdlistcommontypes").modal();
-        },function(err){
-          $scope.editableList=null;
-          $("#mdlistcommontypes").modal();
-        });      
-        //Array CloudObjects
-        
       }else{
-        $("#mdlistcommontypes").modal();
+        $scope.editableField[index][column.name]=angular.copy(row.get(column.name));      
       }
 
-    }else{
-      $scope.editableField[index][column.name]=angular.copy(row.get(column.name));      
-    }
+      //Focus INPUT Box to Edit for Commong DataTypes
+      //if(column.document.dataType!="Object" && column.document.dataType!="ACL" && column.document.dataType!="File" && column.document.dataType!="GeoPoint" && column.document.dataType!="List"){
+        //focus(column.id+"column"); 
+      //}
 
-    //Focus INPUT Box to Edit for Commong DataTypes
-    if(column.document.dataType!="Object" && column.document.dataType!="ACL" && column.document.dataType!="File" && column.document.dataType!="GeoPoint" && column.document.dataType!="List"){
-      focus(column.id+"column"); 
     }
 
   }             
 };
 //End Text
 
-$(document).on('click', function (e) {
+$document.on("click",function(event) {
+  var clickedOnCell=$(event.target).data("identity");
+  if(!clickedOnCell){
+    lastDocumentClick(event);
+  }
   
 });
+
+function lastDocumentClick(event){
+  if($scope.activeUIelm && $scope.activeUIelm.length>0){
+
+    var firstElm=$scope.activeUIelm[0];
+
+    var isClickedSameElm=firstElm.contains(event.target);
+
+    if(!isClickedSameElm){
+
+      var elmIdentity=$(firstElm).data("identity");
+      var currentElmIdentity=$(event.target).data("identity");
+
+      if(!currentElmIdentity || (currentElmIdentity!=elmIdentity)){
+        var resp=$scope.setAndSave();
+        if(resp){
+          $scope.activeUIelm.splice(0,1);
+        }
+        return resp;
+      }
+
+    }   
+
+  }
+  return true;
+}
 
 //Save Boolean
 $scope.setAndSaveBoolean=function(row,column){
@@ -677,7 +721,6 @@ function convertFieldsISO2DateObj(){
   }      
 }
 
-
 $scope.deleteListItemFromTable=function(row,column,index){
   nullifyFields();
   $scope.editableRow=row;//row
@@ -703,23 +746,43 @@ $scope.setAndSaveList=function(updatedList){
     }
   });  
   
-  $scope.editableRow.set($scope.editableColumn.name,$scope.editableList);
+  //Splicing off empty or null fields from list
+  if($scope.editableList && $scope.editableList.length>0){
+    var emptyFieldIndx=[];
+    for(var i=0;i<$scope.editableList.length;++i){
+      if(!$scope.editableList[i]){
+        emptyFieldIndx.push(i);
+      }
+    }
+    if(emptyFieldIndx && emptyFieldIndx.length>0){
+      for(var i=0;i<emptyFieldIndx.length;++i){
+       $scope.editableList.splice(emptyFieldIndx[i],1);
+      }
+    }
+  }
+  
+  //Set and Save if List has some fields
+  if($scope.editableList && $scope.editableList.length>0){ 
 
-  if(requiredField){      
-    rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumn.name);     
-  }else{
-    rowSpinnerMode($scope.editableIndex);
+    $scope.editableRow.set($scope.editableColumn.name,$scope.editableList);
 
-    //Save Cloud Object
-    var requestIndex=angular.copy($scope.editableIndex);
-    saveWrapper($scope.editableRow,requestIndex)
-    .then(function(resp){ 
-      $scope.editableRow=resp.obj;  
-      $scope.editableList=[];            
-      showSaveIconInSecond(resp.rowIndex);
-    }, function(errorResp){                         
-      rowErrorMode(errorResp.rowIndex,errorResp.error);   
-    });
+    if(requiredField){      
+      rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumn.name);     
+    }else{
+      rowSpinnerMode($scope.editableIndex);
+
+      //Save Cloud Object
+      var requestIndex=angular.copy($scope.editableIndex);
+      saveWrapper($scope.editableRow,requestIndex)
+      .then(function(resp){ 
+        $scope.editableRow=resp.obj;  
+        $scope.editableList=[];            
+        showSaveIconInSecond(resp.rowIndex);
+      }, function(errorResp){                         
+        rowErrorMode(errorResp.rowIndex,errorResp.error);   
+      });
+
+    }
 
   } 
  
@@ -769,8 +832,47 @@ $scope.setAndSave=function(){
   if(!$scope.nullAccepted && $scope.editableColumn.document.dataType=="EncryptedText" && (!data || data==null)){
     $scope.editableField[$scope.editableIndex][$scope.editableColumn.name]=holdData;
     $scope.showInputForEdit[$scope.editableIndex][$scope.editableColumn.name]=false;
-  }else{         
-    save();
+  }else{ 
+
+    var validFields=true;
+    var message=null;
+    if($scope.editableColumn.dataType=="Email"){
+      var email=$scope.editableField[$scope.editableIndex][$scope.editableColumn.name];
+      if(email && !validateEmail(email)){
+        validFields=false;
+        message="Column "+$scope.editableColumn.name+" is of email type.";
+      }
+    }
+
+    if($scope.editableColumn.dataType=="URL"){
+      var url=$scope.editableField[$scope.editableIndex][$scope.editableColumn.name];
+      if(url && !validateURL(url)){
+        validFields=false;
+        message="Column "+$scope.editableColumn.name+" is of url type.";
+      }
+    }
+
+    if($scope.editableColumn.dataType=="Number"){
+      var data=$scope.editableField[$scope.editableIndex][$scope.editableColumn.name];
+      var tempData=data;
+      if(data){
+        data=parseInt(data);
+        if(data.toString()!=tempData){
+          validFields=false;
+          message="Column "+$scope.editableColumn.name+" is of number type.";
+        }
+      }      
+    }
+
+    if(validFields){
+      rowInitMode($scope.editableIndex);
+      save();
+      return true;
+    }else{
+      throughRowWarning($scope.editableIndex,message);
+      return false;
+    }
+    
   }      
   
 };
@@ -1063,7 +1165,7 @@ $scope.addColumn = function(valid) {
     .then(function(table){  
       $rootScope.currentProject.currentTable=table; 
       $('#scrollbar-wrapper').scrollTo('#extra-col-th',400,{axis:'x',duration:9000});       
-      $scope.newColumnObj=null;
+      
       $scope.commonSpinner=false; 
       $scope.commonSaved=true;
       $timeout(function(){ 
@@ -1075,7 +1177,9 @@ $scope.addColumn = function(valid) {
          mixpanel.track('Create Column', { "Table Name":$rootScope.currentProject.currentTable.name,"Column name": $scope.newColumnObj.name,"appId": $rootScope.currentProject.appId,
           "DateType":$scope.newColumnObj.dataType});
         /****End of Tracking*****/
-      }                                               
+      }
+
+      $scope.newColumnObj=null;                                               
     },
     function(error){      
       $scope.commonSpinner=false;
@@ -1574,6 +1678,15 @@ function rowSavedMode(index){
 
   //Update SerialNo Info  
   $scope.showSerialNo=angular.copy($scope.holdSerialNoInfo); 
+}
+
+function throughRowWarning(index,mesage){  
+  $scope.rowInfo=mesage;  
+  $scope.rowEditMode[index]=false;
+  $scope.rowWarningMode[index]=true;
+  $scope.rowErrorMode[index]=false;
+  $scope.rowSpinnerMode[index]=false; 
+  $scope.rowSavedMode[index]=false;
 }
 
 $scope.flipToCheckBox=function(index){

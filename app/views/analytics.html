@@ -1,0 +1,175 @@
+<div ng-init="init()">   
+
+  <div class="analytics-navi solo-horizontal-center" style="">
+    <div style="width:60%;height:100%;margin-top: 0.5px;" class="solo-horizontal-center">
+
+      <div ng-click="toggleTabs('api')" ng-class="{activeanalyticstab:analyticsTabs.api,disabledanalytics:!analyticsTabs.api}" class="analtycs-tab flex-general-column-wrapper-center">  
+
+        <div class="flex-general-row-wrapper">
+
+          <div class="flex-general-column-wrapper-center" style="height:36px;">
+            <i class="icon ion-arrow-graph-up-right" style="font-size:24px;"></i>
+          </div>
+
+          <div class="flex-general-column-wrapper-center" style="height:36px;">
+            <span>&nbsp;API</span>
+          </div>          
+        </div>      
+        
+      </div>
+
+      <div ng-click="toggleTabs('storage')" ng-class="{activeanalyticstab:analyticsTabs.storage,disabledanalytics:!analyticsTabs.storage}" class="analtycs-tab flex-general-column-wrapper-center">   
+
+        <div class="flex-general-row-wrapper">
+          <div class="flex-general-column-wrapper-center" style="height:35px;">
+            <img ng-show="!analyticsTabs.storage" src="assets/images/database.png" style="height:17px;width:14px;">
+            <img ng-show="analyticsTabs.storage" src="assets/images/activedatabase.png" style="height:17px;width:14px;">
+          </div>
+
+          <div class="flex-general-column-wrapper-center" style="height:36px;">
+            <span>&nbsp;Storage</span>
+          </div>          
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!--API-->
+  <div class="container analytics-page" ng-if="!usageSpinner && analyticsTabs.api">  
+
+    <div ng-show="apiUsage.displayGraph" class="row">
+    	<div class="col-sm-12 col-md-12 col-lg-12">
+        
+    		<div class="billing-details-Bx">
+            <div>
+      				<!--bill-category-->
+      				<div class="" style="margin-top:20px;margin-bottom:20px;">              
+
+                <div class="flex-general-row-wrapper">                 
+
+                  <div class="cf" style="height:60px;"> 
+                    <div class="pull-left"> 
+                       <div style="height:60px;font-size: 82px;margin-top: -30px;">
+                         API
+                       </div>             
+                    </div>                   
+                  </div>
+
+                  <div class="cf" style="width:30%;margin-left: 30px;"> 
+                    <div class="pull-left"> 
+                       <div style="height:60px;width:5px;background-color: #549afc;"></div>             
+                    </div>
+                    <div class="pull-left" style="margin-left: 6px;"> 
+                      <p style="color:#AAAAAA;margin-top: -3px;">CALLS MADE</p>
+                      <p style="font-size:48px;font-weight: 700;margin-top: -3px;">{{apiUsage.totalApiCount}} </p>             
+                    </div>
+                  </div>              
+                 
+                </div>
+
+                <!--Graph-->
+                <div style="height:200px;width:100%;padding:10px;margin-top: 20px;">
+                  <canvas  class="chart chart-line" chart-data="apiData"
+                    chart-labels="apiLabels" chart-legend="false" style="height:200px;width:100%;">
+                  </canvas>                                
+                </div>
+                <!--/Graph-->
+
+      				</div>            
+      				<!--/bill-category-->                             
+
+            </div>             
+    					
+    		</div>
+    	</div>        		  
+   	</div>
+
+    <div ng-show="!apiUsage.displayGraph" style="width:100%;height:100%;" class="flex-general-column-wrapper-center">
+      <div>
+        <span style="font-size:20px;color:#D1D1D1;">No API Analytics</span>
+      </div>         
+    </div>
+
+  </div>
+  <!--/API-->
+
+  <!--Storage-->
+  <div class="container analytics-page" ng-if="!usageSpinner && analyticsTabs.storage">    
+    <div ng-show="storageUsage.displayGraph" class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+       
+        <div  class="billing-details-Bx">
+            <div>      
+
+              <!--bill-category-->
+              <div  class="" style="margin-top:40px;margin-bottom:20px;">
+                <div class="flex-general-row-wrapper">
+
+                  <div class="cf" style="width:30%;"> 
+                    <div class="pull-left api-category-name"> 
+                      Category:               
+                    </div>
+                    <div class="pull-left api-category-value"> 
+                      {{storageUsage.categoryName}}               
+                    </div>
+                  </div>
+
+                  <div class="cf" style="width:30%;"> 
+                    <div class="pull-left api-total-count"> 
+                      Total Storage:               
+                    </div>
+                    <div class="pull-left api-total-count-value"> 
+                      {{storageUsage.totalStorage}} MB             
+                    </div>
+                  </div>
+                
+                 
+                </div> 
+
+                <!--Graph-->
+                <div style="height:200px;width:100%;padding:10px;">
+                  <canvas  class="chart chart-line" chart-data="storageData"
+                    chart-labels="storageLabels" chart-legend="false" style="height:200px;width:100%;">
+                  </canvas>                                
+                </div>
+                <!--/Graph-->
+
+              </div>            
+              <!--/bill-category-->                      
+
+            </div>             
+              
+        </div>
+
+      </div>    
+    </div>    
+
+    <div ng-show="!storageUsage.displayGraph" style="width:100%;height:100%;" class="flex-general-column-wrapper-center">
+      <div>
+        <span style="font-size:20px;color:#D1D1D1;">No Storage Analytics</span>
+      </div>         
+    </div>
+  </div>
+  <!--/Storage--> 
+
+  <!--Loading Analytics-->
+  <div class="container analytics-page" ng-show="usageSpinner"> 
+    <div  style="width:100%;height:100%;" class="flex-general-column-wrapper-center">
+      <div>
+        <span style="font-size:20px;">Loading..</span>
+      </div>         
+    </div>
+  </div>
+  <!--/Loading Analytics-->	
+     
+</div>
+
+<!--Slack chat-->
+<a href="http://slack.cloudboost.io" target="_blank">
+    <div class="intercomm flex-general-column-wrapper-center">    
+        <i class="icon ion-ios-chatboxes" style="font-size:26px !important; color:white;margin-top:3px;"></i>
+    </div> 
+</a>
+<!--/Slack chat-->

@@ -1,4 +1,4 @@
-app.controller('pricingController',
+app.controller('analyticsController',
 	['$scope',
 	'$rootScope',
 	'$stateParams',
@@ -21,6 +21,11 @@ app.controller('pricingController',
 	var id;
 	$rootScope.showAppPanel=true;
 	$rootScope.isFullScreen=false;	
+
+	$scope.analyticsTabs={
+		api:true,
+		storage:false
+	};
 
 	$scope.init = function(){
 		$rootScope.page='pricing';
@@ -55,8 +60,7 @@ app.controller('pricingController',
 
 		var promises=[];
 		promises.push(analyticsService.apiUsage(id));
-		promises.push(analyticsService.storageUsage(id));
-		//promises.push(analyticsService.getStatisticsByAppId(id,"Object","Queues"));
+		promises.push(analyticsService.storageUsage(id));		
 
 		$q.all(promises).then(function(dataList){			
 
@@ -96,30 +100,7 @@ app.controller('pricingController',
 					displayGraph:false
 				};
 				$scope.storageUsage=defParams;
-			}			
-
-					
-
-			//Queues
-			/*if(dataList[2]){
-				$scope.queuesUsage=dataList[2];	
-				$scope.searchUsage.category="Queues";	
-				var queuesObj=angular.copy(_sanitizeGraph(dataList[2]));
-				$scope.queuesUsage.totalApiCount=queuesObj.apiCount;
-				$scope.queuesUsage.totalCost=queuesObj.totalCost;
-
-				$scope.queuesLabels=angular.copy(queuesObj.labels);
-				$scope.queuesData=angular.copy(queuesObj.data);
-				$scope.queuesUsage.displayGraph=true;
-			}else{
-				var defParams={
-					totalApiCount:0,
-					totalCost:0,
-					category:"Queues",
-					displayGraph:false
-				};
-				$scope.queuesUsage=defParams;
-			}*/			
+			}		
 
 			$scope.usageSpinner=false;
 		},function(error){			
@@ -154,7 +135,19 @@ app.controller('pricingController',
 	}
 
 
-    function nextBillingCycleDays(){
+      
+
+    $scope.toggleTabs=function(tabName){
+	    if(tabName=="api"){
+	      $scope.analyticsTabs.api=true;
+	      $scope.analyticsTabs.storage=false;     
+	    }else if(tabName=="storage"){
+	      $scope.analyticsTabs.api=false;
+	      $scope.analyticsTabs.storage=true;
+	    }
+	};
+
+  	function nextBillingCycleDays(){
     	var nxt_year=null;
 		var one_day=1000*60*60*24;
       	var today = new Date();
@@ -188,7 +181,7 @@ app.controller('pricingController',
         var diff=Math.round((nxtMonth-today)/one_day);
 
         return diff;
-    }  
+    }
 
 		
 }]);

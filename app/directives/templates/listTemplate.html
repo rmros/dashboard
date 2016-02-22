@@ -1,4 +1,4 @@
-<div class="modal-dialog">
+<div class="modal-dialog" ng-init="init()">
   <div class="modal-content">        
    
     <div style="height:80px; width:100%;padding:13px;background-color:#549afc;border-top-left-radius:4px;border-top-right-radius:4px;">
@@ -63,7 +63,7 @@
               <div class="document-list-txt-wrapper flex-general-row-wrapper-center cf">
                 
                 <div  class="list-text-aura">
-                    <input type="email" ng-model="eachEmail" ng-blur="modifyListItem(eachEmail,$index)" class="list-modal-text">         
+                  <input type="text" ng-model="eachEmail" ng-blur="modifyListItem(eachEmail,$index)" class="list-modal-text">   
                 </div>                  
 
                 <div class="m-remove-document list-text-remv-show">
@@ -395,7 +395,7 @@
 
     <!--Footer-->
     <div class="modal-footer">        
-      <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal" ng-click="closeListModal()">Close</button>
 
       <!--Save-->
       <button ng-if="!isRelationalList" type="button" ng-click="setAndSaveList()" class="btn btn-primary cb-modal-default-btn" >Save List</button> 

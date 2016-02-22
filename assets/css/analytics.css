@@ -1,0 +1,39 @@
+.analytics-page{	
+	height: 80vh;
+	width: 100%;
+	overflow-y:scroll;
+	background-color: white;
+}
+
+.analytics-navi{
+	height:60px;
+	width: 100%;
+	border-bottom:1px solid #E8E8E8;
+	background-color: white;
+}
+
+.analtycs-tab{
+	height: 100%;	
+	cursor: pointer;
+	padding-left:10px; 
+	padding-right:10px;
+	margin-left: 10px;
+}
+.analtycs-tab:first-child{	
+	margin-left: 0px;
+}
+.analtycs-tab span{
+	font-size: 16px;
+}
+.disabledanalytics:hover{
+	border-bottom: 1px solid #A0A0A0;
+}
+.activeanalyticstab{
+	border-bottom: 1px solid #549afc;
+	color:#549afc;
+}
+
+.billing-details-Bx{
+  background-color: white;
+  padding: 10px;
+}

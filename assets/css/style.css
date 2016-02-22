@@ -8776,25 +8776,6 @@ ul.timeline li > .date {
   color:#AAA4A4;
 }
 
-.billing-details-Bx{
-  background-color: white;
-  padding: 10px;
-}
-
-.api-category-name,.api-total-count,.api-total-cost{
-  font-size: 20px;
-  font-weight: 700;
-  color: #777;
-}
-
-.api-category-value,.api-total-count-value,.api-total-cost-value{
-  font-size: 20px;
-  margin-left: 4px; 
-}
-
-.api-total-currency{
-  font-size: 20px;
-}
 
 /*****New Sign Up page*****/
 .port-labelfeat{
@@ -8851,3 +8832,8 @@ ul.timeline li > .date {
 
 }
 /*****End New Sign Up page*****/
+
+.fa-spin {
+    -webkit-transform-origin: 50% calc(50% - .5px);
+    transform-origin: 50% calc(50% - .5px);
+}

@@ -935,10 +935,10 @@ app.controller('appsController',
     if(featureName=="api" && respObj && respObj.monthlyApiCount){
       var used=respObj.monthlyApiCount;      
       var percentageUsed=used*(100/apiLimit);
-      percentageUsed=Math.floor(percentageUsed);        
+              
       if(percentageUsed>0 && percentageUsed<1){
         percentageUsed=1;
-      }
+      }      
       if(percentageUsed>100){
         percentageUsed=100;
       }      
@@ -946,6 +946,7 @@ app.controller('appsController',
         apiColor="#C90606";
       }
 
+      percentageUsed=Math.floor(percentageUsed);
       var resp={
         appId:respObj.appId,
         percentage:percentageUsed+"%",
@@ -965,8 +966,7 @@ app.controller('appsController',
     if(featureName=="storage" && respObj && respObj.size){
       var used=(respObj.size/1000);//Convert to GBs
       var limit=storageLimit;//(already in GBs)
-      var percentageUsed=used*(100/limit);
-      percentageUsed=Math.floor(percentageUsed);
+      var percentageUsed=used*(100/limit);      
       if(percentageUsed>0 && percentageUsed<1){
         percentageUsed=1;
       }
@@ -976,7 +976,7 @@ app.controller('appsController',
       if(percentageUsed>80){
         storageColor="#C90606";
       }
-
+      percentageUsed=Math.floor(percentageUsed);
       var resp={
         appId:respObj.appId,
         percentage:percentageUsed+"%",

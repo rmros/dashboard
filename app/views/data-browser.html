@@ -1020,15 +1020,15 @@
                 <!--/Boolean-->
 
                 <!--DateTime-->
-                <div ng-if="column.document.dataType=='DateTime'" ng-click="showCommonTypes(eachRow,column)" class="tdDiv cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='DateTime'" ng-click="showCommonTypes(eachRow,column,$event)" class="tdDiv cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
-                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
-                    <span class="timeSpan">                      
+                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                    <span class="timeSpan" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">                      
                       {{eachRow.get(column.name) | date:'medium'}}
                     </span>                                
                   </div>                  
-                  <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">          
-                    <input kendo-date-time-picker  focus-on="{{column.id}}column" value="{{editableField[$parent.$parent.$index][column.name]}}" k-ng-model="editableField[$parent.$parent.$parent.$index][column.name]"  class="dateTimeInput"  ng-blur="setAndSave()"/>
+                  <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">          
+                    <input kendo-date-time-picker value="{{editableField[$parent.$parent.$index][column.name]}}" k-ng-model="editableField[$parent.$parent.$parent.$index][column.name]"  class="dateTimeInput"   data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"/>
 
                   </div>
 
@@ -1206,34 +1206,34 @@
                 <!--/JsonObject-->
 
                 <!--Text-->
-                <div ng-if="column.document.dataType=='Text'" class="tdDiv-fields cf" ng-click="showCommonTypes(eachRow,column)" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='Text'" class="tdDiv-fields cf" ng-click="showCommonTypes(eachRow,column,$event)" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
-                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">              
+                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">              
                     {{eachRow.get(column.name)}}                                
                   </div>
 
-                   <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">                             
-                    <input type="text"  focus-on="{{column.id}}column" ng-blur="setAndSave()"  ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput"/>               
+                   <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">                             
+                    <input type="text"  ng-blur="setAndSave()"  ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"/>               
                   </div>
 
                 </div>
                 <!--/Text-->
 
                 <!--Encrypted Text-->
-                <div ng-if="column.document.dataType=='EncryptedText'" ng-click="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='EncryptedText'" ng-click="showCommonTypes(eachRow,column,$event)" class="tdDiv-fields cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
-                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
-                      <span ng-if="eachRow.get(column.name)">********</span>                    
+                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                      <span style="font-weight:700;color:#AAAAAA;" ng-if="eachRow.get(column.name)" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">hidden</span>                    
                   </div>                
 
-                  <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">                             
-                    <input type="text"  focus-on="{{column.id}}column" ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput"  ng-blur="setAndSave()" />               
+                  <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">                             
+                    <input type="text"  ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"/>               
                   </div>
 
                   <!--Delete data-->
-                  <div ng-if="(!column.required) && eachRow.get(column.name) && (!showInputForEdit[$parent.$parent.$parent.$index][column.name])" class="modal-wrapper pull-right"> 
-                      <a class="delete-data-btn" ng-click="deleteData(eachRow,column)">             
-                       <i class="fa fa-minus-circle"></i>&nbsp;
+                  <div ng-if="(!column.required) && eachRow.get(column.name) && (!showInputForEdit[$parent.$parent.$parent.$index][column.name])" class="modal-wrapper pull-right" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                      <a class="delete-data-btn" ng-click="deleteData(eachRow,column)" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">             
+                       <i class="fa fa-minus-circle" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"></i>&nbsp;
                       </a>                    
                   </div>
                   <!--/Delete data-->
@@ -1242,46 +1242,46 @@
                 <!--/Encrypted Text-->
 
                 <!--Email-->
-                <div ng-if="column.document.dataType=='Email'" ng-click="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='Email'" ng-click="showCommonTypes(eachRow,column,$event)" class="tdDiv-fields cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
-                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
-                    <a class="emailSpan" href="{{eachRow.get(column.name) }}" target="_blank">
+                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                    <a class="emailSpan" href="{{eachRow.get(column.name) }}" target="_blank" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">
                       {{eachRow.get(column.name) }}
                     </a>                
                   </div>
 
-                  <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">                             
-                    <input type="text"  focus-on="{{column.id}}column" ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput"  ng-blur="setAndSave()" />               
+                  <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">                             
+                    <input type="text"  ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"/>               
                   </div> 
 
                 </div>
                 <!--/Email-->
 
                 <!--URL-->
-                <div ng-if="column.document.dataType=='URL'" ng-click="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='URL'" ng-click="showCommonTypes(eachRow,column,$event)" class="tdDiv-fields cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
-                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left"> 
-                    <a class="emailSpan" href="{{eachRow.get(column.name) }}" target="_blank">
+                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                    <a class="emailSpan" href="{{eachRow.get(column.name) }}" target="_blank" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">
                       {{eachRow.get(column.name)}}
                     </a>                
                   </div>
 
-                   <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">                             
-                    <input type="text"  focus-on="{{column.id}}column" ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput"  ng-blur="setAndSave()" />               
+                   <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">                             
+                    <input type="text"  ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"/>               
                   </div> 
 
                 </div>
                 <!--/URL-->
 
                 <!--Number-->
-                <div ng-if="column.document.dataType=='Number'" ng-click="showCommonTypes(eachRow,column)" class="tdDiv-fields cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='Number'" ng-click="showCommonTypes(eachRow,column,$event)" class="tdDiv-fields cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
-                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">                    
+                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">                    
                       {{eachRow.get(column.name)}}                                   
                   </div>
 
-                   <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left">                             
-                    <input type="text"  focus-on="{{column.id}}column" ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput"  ng-blur="setAndSave()" />               
+                   <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">                             
+                    <input type="text" ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"/>               
                   </div> 
 
                 </div>
