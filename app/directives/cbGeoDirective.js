@@ -9,44 +9,38 @@ app.directive('cbGeo', function(){
           'save': '&save'
         },   
         templateUrl: 'app/directives/templates/geoTemplate.html',       
-        controller:['$scope','$rootScope',function($scope,$rootScope) {  
+        controller:['$scope','$rootScope',function($scope,$rootScope) { 
+         
           //Set And Save
           $scope.setAndSaveGeopoint=function(valid){
-            if(!$scope.geoPointValidation('longitude',$scope.editableGeopoint.longitude)){
-              $scope.geoPointValidation('latitude',$scope.editableGeopoint.latitude);    
+            if(!$scope.editableGeopoint.longitude && $scope.editableGeopoint.longitude!=0){
+              $scope.geopointEditError="Longitude must be in between -180 to 180";
             }
-            if(valid && !$scope.geopointEditError){
-              $scope.save({updateGeo:$scope.editableGeopoint});
-            }  
+
+            if(!$scope.editableGeopoint.latitude && $scope.editableGeopoint.latitude!=0){
+              $scope.geopointEditError="Latitude must be in between -90 to 90";
+            }
+            $scope.geopointEditError=_geoPointValidation($scope.editableGeopoint);
+
+            if(!$scope.geopointEditError){
+              if(valid && !$scope.geopointEditError){
+                $scope.save({updateGeo:$scope.editableGeopoint});
+              }
+            }            
+              
           };    
 
           //Validation
-          $scope.geoPointValidation=function(type,value){
-            $scope.geopointEditError=null;
-            if(type=="latitude"){
-
-                if(!value || value<-90 || value>90){
-                  $scope.geopointEditError={
-                    type:type,
-                    msg:"Latitude must be in between -90 to 90"
-                  };
-                  
-                }else{
-                  $scope.geopointEditError=null;
-                }    
-            }
-            if(type=="longitude"){
-
-                if(!value || value<-180 || value>180){
-                  $scope.geopointEditError={
-                    type:type,
-                    msg:"Longitude must be in between -180 to 180"
-                  };
-                }else{
-                  $scope.geopointEditError=null;
-                }    
-            }
-            return $scope.geopointEditError;
+          function _geoPointValidation(geoPointObj){          
+            if(geoPointObj.latitude<-90 || geoPointObj.latitude>90){                 
+              return "Latitude must be in between -90 to 90";                  
+            }            
+            
+            if(geoPointObj.longitude<-180 || geoPointObj.longitude>180){
+              return "Longitude must be in between -180 to 180";                 
+            } 
+           
+            return null;
           };
 
         }]    

@@ -535,7 +535,7 @@
                     <div class="col-name">
                        <span style="display:inline; cursor:default;">
                         <!--Id-->
-                        <i class="fa fa-bullseye col-icon-size" style="cursor:default;"></i>
+                        <i class="icon ion-pound col-icon-size" style="cursor:default;color:gray;"></i>                        
                         {{column.name}}
                       </span>
                     </div>
@@ -695,10 +695,10 @@
 
                 <div class="cust-cell flex-general-row-wrapper" ng-class="{true: 'cust-cell-width'}[!currentTableData || currentTableData.length==0]">
                   <div class="cust-cell-name flex-general-row-wrapper">                    
-                    <div class="col-name">
-                       <span style="display:inline; cursor:default;">
-                        <!--Id-->
-                        <i ng-if="column.document.dataType==='Id'" class="fa fa-bullseye col-icon-size" style="cursor:default;"></i>
+                    <div class="col-name" style="margin-top: 2px;">
+                       <div style="display:inline; cursor:default;">
+                        <!--Id-->                        
+                        <i ng-if="column.document.dataType=='Id'" class="icon ion-pound col-icon-size" style="cursor:default;color:gray;"></i>                        
 
                         <!--Boolean-->
                         <i ng-if="column.document.dataType=='Boolean'"  class="fa fa-check col-icon-size" style="cursor:default;"></i>
@@ -709,8 +709,9 @@
                         <!--ACL-->
                         <i ng-if="column.document.dataType=='ACL'" class="fa fa-lock col-icon-size" style="cursor:default;"></i>
 
-                        <!--Object-->
-                        <i ng-if="column.document.dataType=='Object'" class="fa fa-circle col-icon-size" style="cursor:default;"></i>
+                        <!--Object-->                       
+                        <span ng-if="column.document.dataType=='Object'" class="fa col-icon-size" style="cursor:default;color:gray;">{&nbsp;}</span>
+
 
                         <!--Text-->
                         <i ng-if="column.document.dataType=='Text'" class="fa fa-text-height col-icon-size" style="cursor:default;"></i>
@@ -740,21 +741,21 @@
                         <i ng-if="column.document.dataType=='GeoPoint'" class="fa fa-map-marker col-icon-size" style="cursor:default;"></i>
 
                         {{column.name}}
-                      </span>
+                      </div>
                     </div>
                   </div> 
 
                   <div ng-if="column.document.dataType!='Id'" class="cust-cell-dropdwn" id="cust-cell-dropdwn-btn{{$index}}" ng-click="toggleColOptions($index)">
                       <!--Active Column-->
                       <!--ASC-->
-                      <i ng-if="orderBy==column.name && orderByType=='asc'" class="fa fa-angle-up dropdown-icon-size" style="padding-top: 4.6px;"></i>
+                      <i ng-if="orderBy==column.name && orderByType=='asc'" class="fa fa-angle-up dropdown-icon-size" style="padding-top: 4px;margin-top: -1.5px;"></i>
 
                       <!--DESC-->
-                      <i ng-if="orderBy==column.name && orderByType=='desc'" class="fa fa-angle-down dropdown-icon-size" style="padding-top: 4.6px;"></i>
+                      <i ng-if="orderBy==column.name && orderByType=='desc'" class="fa fa-angle-down dropdown-icon-size" style="padding-top: 4px;margin-top: -1.5px;"></i>
 
                       <!--Passive Columns-->
                       <!--DESC-->
-                      <i ng-if="orderBy!=column.name" class="fa fa-angle-down dropdown-icon-size" style="padding-top: 4.6px;"></i>
+                      <i ng-if="orderBy!=column.name" class="fa fa-angle-down dropdown-icon-size" style="padding-top: 4px;margin-top: -1.5px;"></i>
                   </div>
                 </div>
 
@@ -1020,7 +1021,7 @@
                 <!--/Boolean-->
 
                 <!--DateTime-->
-                <div ng-if="column.document.dataType=='DateTime'" ng-click="showCommonTypes(eachRow,column,$event)" class="tdDiv cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                <div ng-if="column.document.dataType=='DateTime'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
                     <span class="timeSpan" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">                      
@@ -1206,21 +1207,21 @@
                 <!--/JsonObject-->
 
                 <!--Text-->
-                <div ng-if="column.document.dataType=='Text'" class="tdDiv-fields cf" ng-click="showCommonTypes(eachRow,column,$event)" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                <div ng-if="column.document.dataType=='Text'" class="tdDiv-fields cf" ng-click="invokeFields(eachRow,column,$event)" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">              
                     {{eachRow.get(column.name)}}                                
                   </div>
 
                    <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">                             
-                    <input type="text"  ng-blur="setAndSave()"  ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"/>               
+                    <input type="text"  ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"/>               
                   </div>
 
                 </div>
                 <!--/Text-->
 
                 <!--Encrypted Text-->
-                <div ng-if="column.document.dataType=='EncryptedText'" ng-click="showCommonTypes(eachRow,column,$event)" class="tdDiv-fields cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                <div ng-if="column.document.dataType=='EncryptedText'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
                       <span style="font-weight:700;color:#AAAAAA;" ng-if="eachRow.get(column.name)" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">hidden</span>                    
@@ -1242,7 +1243,7 @@
                 <!--/Encrypted Text-->
 
                 <!--Email-->
-                <div ng-if="column.document.dataType=='Email'" ng-click="showCommonTypes(eachRow,column,$event)" class="tdDiv-fields cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                <div ng-if="column.document.dataType=='Email'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
                     <a class="emailSpan" href="{{eachRow.get(column.name) }}" target="_blank" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">
@@ -1258,7 +1259,7 @@
                 <!--/Email-->
 
                 <!--URL-->
-                <div ng-if="column.document.dataType=='URL'" ng-click="showCommonTypes(eachRow,column,$event)" class="tdDiv-fields cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                <div ng-if="column.document.dataType=='URL'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
                     <a class="emailSpan" href="{{eachRow.get(column.name) }}" target="_blank" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">
@@ -1274,7 +1275,7 @@
                 <!--/URL-->
 
                 <!--Number-->
-                <div ng-if="column.document.dataType=='Number'" ng-click="showCommonTypes(eachRow,column,$event)" class="tdDiv-fields cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                <div ng-if="column.document.dataType=='Number'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">                    
                       {{eachRow.get(column.name)}}                                   

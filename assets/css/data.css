@@ -562,7 +562,7 @@
 .col-name{
     min-width:120px;
 }
-.col-name span{
+.col-name div{
     font-size: 14px;
     color:gray;
 }

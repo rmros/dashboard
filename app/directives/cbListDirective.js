@@ -189,26 +189,24 @@ app.directive('cbList', function(){
 
           //List Geopoint
           $scope.addListGeopointModal=function(){ 
-            var loc = new CB.CloudGeoPoint(12,22);
+            var loc = new CB.CloudGeoPoint(0,0);
             if(!$scope.editableList || $scope.editableList.length==0){
               $scope.editableList=[];
             }
             $scope.editableList.push(loc);
-            $scope.cloudObjectGeopoint=loc;          
+
+            $scope.cloudObjectGeopoint={}; 
+            $scope.cloudObjectGeopoint.longitude=loc.longitude;
+            $scope.cloudObjectGeopoint.latitude=loc.latitude;
+
             $scope.geopointListIndex=$scope.editableList.indexOf(loc);
             $("#md-listgeodocumentviewer").modal("show");
           };
 
           $scope.modifyListGeoPoint=function(modifiedGeo){ 
-            $scope.listEditableGeopoint=modifiedGeo;
-
-            var loc = new CB.CloudGeoPoint($scope.listEditableGeopoint.longitude,$scope.listEditableGeopoint.latitude);   
-            $scope.editableList[$scope.geopointListIndex]=loc;      
-            
-            $scope.listEditableGeopoint.latitude=null;
-            $scope.listEditableGeopoint.longitude=null; 
-            $("#md-listgeodocumentviewer").modal("hide");     
-            
+            var loc = new CB.CloudGeoPoint(modifiedGeo.longitude,modifiedGeo.latitude);   
+            $scope.editableList[$scope.geopointListIndex]=loc;             
+            $("#md-listgeodocumentviewer").modal("hide");            
           };
 
           $scope.editListGeoPoint=function(index){            

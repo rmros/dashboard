@@ -24,7 +24,7 @@
       <div ng-show="geopointEditError" style="width:100%;height:30px;background-color:#C40101;color:white;padding-left:5px;padding-right:5px;padding-top:3.5px;" ng-class="{animated:geopointEditError}" class="fadeIn">
 
         <div class="pull-left" style="padding-top:1px;">                
-          <span>{{geopointEditError.msg}}</span>
+          <span>{{geopointEditError}}</span>
         </div>
 
         <div class="pull-right" ng-click="geopointEditError=!geopointEditError">
@@ -53,7 +53,7 @@
                       <h4>Longitude</h4>
                     </div>
 
-                    <input type="text" ng-model="editableGeopoint.longitude" class="geopoint-inputz" ng-blur="geoPointValidation('longitude',editableGeopoint.longitude)" minlength="-180" maxlength="180" required>
+                    <input type="text" ng-model="editableGeopoint.longitude" class="geopoint-inputz" minlength="-180" maxlength="180" required>
                    
                   </div>
 
@@ -64,7 +64,7 @@
                       <h4>Latitude</h4>                          
                     </div>  
                     
-                    <input type="text" ng-model="editableGeopoint.latitude" class="geopoint-inputz"  ng-blur="geoPointValidation('latitude',editableGeopoint.latitude)" minlength="-90" maxlength="90" required>                        
+                    <input type="text" ng-model="editableGeopoint.latitude" class="geopoint-inputz" minlength="-90" maxlength="90" required>                        
                   </div>
                  
 
