@@ -42,7 +42,14 @@
 
         <!--Other section-->
         <div class="col-sm-12 col-md-9 col-lg-9 app-editing-sectionwrap">
-          <div class="app-editing-section">
+
+          <!--/While Loading-->
+          <div ng-if="settingsLoading" class="while-settings-loading flex-general-column-wrapper-center">
+            <i class="fa fa-spinner fa-spin" style="font-size: 34px;color:#AAAAAA;"></i>
+          </div>
+          <!--While Loading-->
+
+          <div ng-if="!settingsLoading" class="app-editing-section">
             <!--Dynamically general-->
             <div ng-if="settingsMenu.general" class="appeditablefields-general">
               <div style="height:30px;" class="solo-vertical-center">

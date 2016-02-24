@@ -5,7 +5,8 @@ app.directive('cbDatabrowser', function(){
         transclude: true, 
         scope: {
           'relatedTableDefArray': '=definition',
-          'relatedTableRecordArray': '=record', 
+          'relatedTableRecordArray': '=record',
+          'fieldsorder': '=fields', 
           'closeRelModal': '&close'          
         },   
         templateUrl: 'app/directives/templates/dataBrowserTemplate.html',       
@@ -35,6 +36,8 @@ app.directive('cbDatabrowser', function(){
             $scope.modifyListItemError=[];            
 
             //clearRelationErrors();
+            //Flush Acl data in sharedDataService
+            sharedDataService.flushAclArray();
 
             //View Data Browser 
             $scope.viewRelationData=function(row,column,index){
@@ -335,12 +338,13 @@ app.directive('cbDatabrowser', function(){
               //ACL
               if(column.document.dataType=="ACL"){
                 
-                $scope.relEditableJsonObj=angular.copy(cloudObject.get(column.name));   
+                var relEditableJsonObj=angular.copy(cloudObject.get(column.name));   
                 if(!cloudObject.get(column.name)){
-                  $scope.relEditableJsonObj=null;
+                  relEditableJsonObj=null;
                 }                     
-                if($scope.relEditableJsonObj){                                                                        
-                  sharedDataService.aclObject=$scope.relEditableJsonObj;
+                if(relEditableJsonObj){ 
+                  //Sharing Data through a service         
+                  sharedDataService.pushAclObject(relEditableJsonObj);
                 }
                 $("#md-relaclviewer").modal();                 
               }
@@ -425,7 +429,8 @@ app.directive('cbDatabrowser', function(){
             //Operations
             $scope.setAndSaveACLObject=function(cbaclobject){
               $("#md-relaclviewer").modal("hide");             
-              $scope.setRelationData($scope.relEditableRow,$scope.relEditableColumn,cbaclobject);              
+              $scope.setRelationData($scope.relEditableRow,$scope.relEditableColumn,cbaclobject); 
+              sharedDataService.spliceAclObjectByIndex(0);             
             };  
 
             $scope.setAndSaveJsonObject=function(modifiedJson){  
@@ -471,7 +476,7 @@ app.directive('cbDatabrowser', function(){
                     $scope.relEditableColumn=null;                    
                     $scope.relEditableFile=null;
                     //progress bar
-                    $scope.relFileProgress.progressTimer('complete');      
+                    //$scope.relFileProgress.progressTimer('complete');      
 
                 }, function(err){
                   $scope.setRelFileSpinner[$scope.relEditableColumn.name]=false; 

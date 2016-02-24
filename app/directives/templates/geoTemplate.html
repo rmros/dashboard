@@ -39,36 +39,47 @@
     <div style="border-top:1px solid #dddbdb;">
       <form role="form" name="geoPointForm" ng-submit="setAndSaveGeopoint(geoPointForm.$valid)">
 
-        <div class="madd-relation-wrapper">            
+        <div class="madd-geo-wrapper">            
           <div class="geopoint-list-wrapper">
 
-              <div class="geo-point-add-remv flex-general-row-wrapper-center">
-                <div class="flex-general-row-wrapper">
+              <div class="geo-point-add-remv" style="width:100%;">
+                <div class="flex-general-row-wrapper" style="width:100%;"> 
 
-
-                  <!--Longitude-->
-                  <div>
-                    
-                    <div class="geopoint-name">
-                      <h4>Longitude</h4>
+                  <div style="height: 90px;width:55%;padding-left: 20px;padding-top:15px;">                    
+                    <div>
+                      <span style="font-size: 20px;">Longitude</span>
                     </div>
 
-                    <input type="text" ng-model="editableGeopoint.longitude" class="geopoint-inputz" minlength="-180" maxlength="180" required>
-                   
+                    <div>
+                      <span style="color:#BABABA;">Longitude must be range of -180 to 180</span>
+                    </div>
+
                   </div>
 
-                  <!--Latitude-->
-                  <div style="margin-left:4px;">
-
-                    <div class="geopoint-name">
-                      <h4>Latitude</h4>                          
-                    </div>  
-                    
-                    <input type="text" ng-model="editableGeopoint.latitude" class="geopoint-inputz" minlength="-90" maxlength="90" required>                        
-                  </div>
-                 
+                  <div class="solo-vertical-center" style="height: 90px;background-color:#F2F8FF;width:44.99%;padding-left:10px;padding-right: 10px;">
+                    <input type="text" ng-model="editableGeopoint.longitude"  placeholder="Enter Longitude" minlength="-180" maxlength="180" required style="width:100%;height: 36px;background-color: transparent;font-size: 20px;" class="default-inputfield">
+                  </div>               
 
                 </div> 
+
+                 <div class="flex-general-row-wrapper" style="width:100%;border:1px solid #E8E8E8;"> 
+
+                  <div style="height: 90px;width:55%;padding-left: 20px;padding-top:15px;">                    
+                    <div>
+                      <span style="font-size: 20px;">Latitude</span>
+                    </div>
+
+                    <div>
+                      <span style="color:#BABABA;">Latitude must be range of -90 to 90</span>
+                    </div>
+
+                  </div>
+
+                  <div class="solo-vertical-center" style="height: 90px;background-color:#F2F8FF;width:44.99%;padding-left:10px;padding-right: 10px;">
+                    <input type="text" ng-model="editableGeopoint.latitude"  placeholder="Enter Latitude" minlength="-90" maxlength="90" required style="width:100%;height: 36px;background-color: transparent;font-size: 20px;" class="default-inputfield">
+                  </div>               
+
+                </div>
               </div>
               
           </div> 

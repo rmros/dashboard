@@ -484,7 +484,7 @@
     z-index: 9999; 
     top: 0;   
     width:98.99vw;
-    height:78vh;   
+    height:78vh;
 }
 
 .wyl-table-first-loading{   
@@ -670,8 +670,9 @@
     margin-top: -5px !important;       
 }
 .real-content{   
-    margin-top:4.4px;
-    width:75%;       
+    padding-left:4px;
+    width:75%;
+    margin-top: -1px;       
 }
 .real-content-acl{   
     margin-top:2px;
@@ -681,9 +682,8 @@
     margin-top:4.4px;
     width:98.99%;
 }
-.objectSpan{   
-    overflow: hidden;
-    width: 75%;
+.objectSpan{    
+    width: 95%;
     height:20px !important;    
 }
 .objectSpan-acl{
@@ -876,14 +876,12 @@
 
 .dateTimeInput{
     width:247.8px;
-    border-radius: 0 !important;
-    margin-top: -4px;
+    border-radius: 0 !important;    
 }
 
 .commonInput{
     width:252px;
-    height:32px;
-    margin-top: -3.5px;    
+    height:32px;        
 }
 .commonInput:focus{
     outline: 0;    
@@ -892,9 +890,7 @@
 .fileT-thumb-width{
     width:40px !important;
     height:34px;
-    cursor: pointer;
-    border: 1px solid #EAEAEA;
-    border-radius: 1px;
+    cursor: pointer;   
 }
 
 .fileT-thumb-width2{
@@ -926,7 +922,7 @@
 
 .modal-view-file{
     width: 99.99%;
-    height:auto;
+    height:100%;
     padding: 5px;     
 }
 
@@ -965,8 +961,7 @@
     padding: 4px;
     background-color: #ECF0F5;
     border-radius: 2.4px;
-    cursor: pointer;
-    margin-top:-2.5px;    
+    cursor: pointer;       
 }
 .relation-id-wrapper:hover .rel-del-times{   
     visibility: visible;
@@ -985,7 +980,7 @@
 
 #relationTable{   
     width:100%; 
-    height:390px;   
+    height:390px;      
 }
 
 .modal-rel-form{
@@ -994,7 +989,7 @@
    padding-top: 5px;
    padding-bottom: 5px;  
    padding-right: 5px;
-   padding-left: 10px;
+   padding-left: 10px;   
 }
 
 #modal-i{
@@ -1033,10 +1028,10 @@
 } 
  
 .m-data-container{
-    padding-top: 4px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 4px;
+    padding-top: 2px;
+    padding-left: 6px;
+    padding-right: 6px;  
+
     background-color: white;
     border: 1px solid #DEDFE0;
     border-radius: 2px;
@@ -1096,7 +1091,10 @@
 .m-data-container:hover .m-round-btn{
     visibility: visible;    
 }
-.m-data-container:hover .m-delete-data-btn{
+.rel-object-wrap:hover .m-round-btn{
+    visibility: visible;    
+}
+.rel-ecryptdtxt-wrap:hover .m-delete-data-btn{
     visibility: visible;    
 }
 .m-real-content{
@@ -1175,8 +1173,7 @@
 .m-acl-aura{
     width:220px;
     overflow: hidden;
-    height: 30px; 
-    padding-top: 4px;      
+    height: 30px;         
 }
 .m-commontypes-aura{
      height:100%;
@@ -1303,6 +1300,10 @@
     padding-right: 2px;     
     background-color: #F5F7FA;
 }
+.madd-geo-wrapper{
+    width:100%;
+    height: auto;       
+}
 .nuevo-add-list-btn{
     width: 100%;
     border-radius: 2px;
@@ -1355,15 +1356,12 @@
     height:250px;    
 }
 
-.geopoint-list-wrapper{
-    margin-top: 20px;
-    width: 100%;
-    height:90px;
+.geopoint-list-wrapper{    
+    width: 100%;    
 }
 .geopoint-list{
     width:99.99%;
-    height:34px;
-    background-color: #E0EDFF;
+    height:34px;   
 }
 .relationid-list{
     width: 570px;
@@ -1502,13 +1500,11 @@
     border-radius: 2px;      
 }
 
-.list-relation{
-    padding-top: 2px;
-    padding-bottom: 1px;
+.list-relation{    
     padding-left: 3px;
     padding-right: 3px;
-    margin-left: 5px;
-    margin-top:4px;
+    margin-left: 2px;
+    margin-top:2px;
     height:24px;
     background-color: #E8E8E8;  
     cursor: pointer;   
@@ -1773,7 +1769,9 @@
 }
 .geopoint-wrapper{
     padding: 3px;
-    background-color: #EBEBEB;   
+    background-color: #EBEBEB;
+    margin-top: 2.5px;
+    cursor: pointer;   
 }
 .googlemap-popup-wrapper{
     padding: 9px;
@@ -2123,7 +2121,7 @@
 
 /******Normal single file uploader******/
 .uploader{
-    border: 2px dotted #A5A5C7;
+    border: 2px dotted #DDDDDD;
     width: 100%;
     color: #92AAB0;
     text-align: center;
@@ -2575,4 +2573,44 @@
    padding-right: 5px;
    padding-bottom: 3px;
    background-color: white;
+}
+
+.masons-bx{
+    width:100%;
+    height: auto;    
+    margin-top:24px;
+}
+.brick{
+   flex:1;
+  -moz-flex:1;
+  -webkit-flex:1; 
+}
+
+.common-brick{
+    height: 100%;
+}
+
+.first-brick{    
+    height: 100%;
+}
+.second-brick{   
+    height: 100%;    
+} 
+
+.brick .content-wrapper{
+    height: 100%;
+    width: 100%;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+.brick .value-field{
+    margin-top:3px;
+}
+.relmod-datetime{
+    width: 100%;    
+}
+.custm-modal-footer{
+    padding: 20px;
+    border-top: 1px solid #CCCCCC;
+    width: 100%;
 }

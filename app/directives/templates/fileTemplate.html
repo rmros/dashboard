@@ -20,9 +20,9 @@
     </div>
 
     <span id="fakeclick"></span>
-    <div class="modal-body" style="border-top:1px solid #dddbdb;">
+    <div class="modal-body" style="border-top:1px solid #dddbdb;height: 360px;">
 
-      <div class="flex-general-row-wrapper-center">   
+      <div class="flex-general-row-wrapper-center" style="height: 100%;">   
          
         <!-- Add File D&D Markup -->
         <div ng-show="!editableFile && (!fileInfo || !fileInfo.rawFile)" class="uploader" ddfile>
@@ -37,68 +37,92 @@
         </div>
         <!-- /Add File D&D Markup -->           
 
-        <div  ng-show="fileInfo && fileInfo.rawFile && fileInfo.extension">  
+        <div  ng-show="fileInfo && fileInfo.rawFile && fileInfo.extension" style="height: 100%;width: 100%;"> 
+
           <!--View File for Images-->
-          <div ng-show="fileInfo.rawFile  && (fileInfo.extension=='jpeg' || fileInfo.extension=='jpg' || fileInfo.extension=='png' || fileInfo.extension=='tif' || fileInfo.extension=='gif')" class="modal-view-file flex-general-column-wrapper-center">  
+          <div ng-show="fileInfo.rawFile  && (fileInfo.extension=='jpeg' || fileInfo.extension=='jpg' || fileInfo.extension=='png' || fileInfo.extension=='tif' || fileInfo.extension=='gif')" style="height: 100%;width: 100%;" class="">  
 
             <!--Image-->
-            <div class="">
-              <a class="modal-anchor">
-                <img id="selectd-file-img">                  
-              </a>                  
+            <div style="height: 90%;width: 100%;" class="flex-general-column-wrapper-center">             
+              <img id="selectd-file-img" style="height: 100%;">                               
             </div>
 
-            <div class="flex-general-row-wrapper-center">
+            <div style="width: 100%;" class="flex-general-row-wrapper-center">
               <span style="margin-top:12px;">{{fileInfo.obj.name}}</span> 
             </div>
 
           </div> 
 
           <!--View File for Other Files-->
-          <div ng-show="fileInfo && fileInfo.rawFile  && (fileInfo.extension!='jpeg' && fileInfo.extension!='jpg' && fileInfo.extension!='png' && fileInfo.extension!='tif' && fileInfo.extension!='gif')" class="modal-view-other-file flex-general-column-wrapper-center">
+          <div ng-show="fileInfo && fileInfo.rawFile  && (fileInfo.extension!='jpeg' && fileInfo.extension!='jpg' && fileInfo.extension!='png' && fileInfo.extension!='tif' && fileInfo.extension!='gif')" style="height: 100%;width: 100%;">
 
-              <!--Image-->
-              <div>
-                <a class="modal-anchor flex-general-row-wrapper-center">
-                  <img src="assets/images/file2.png">                  
-                </a>                  
+              <!--Other Files-->
+              <div style="height: 90%;width: 100%;" class="flex-general-column-wrapper-center">
+                
+                <!--Word-->
+                <img ng-if="fileInfo.extension=='doc' || fileInfo.extension=='docx'" src="assets/images/msword.png" style="height:100%;">
+
+                <!--Ppt-->
+                <img ng-if="fileInfo.extension=='ppt' || fileInfo.extension=='pptx'" src="assets/images/msppt.png" style="height:100%;">
+
+                <!--Excel-->
+                <img ng-if="fileInfo.extension=='xls' || fileInfo.extension=='xlsx'" src="assets/images/msexcel.png" style="height:100%;">
+
+                <!--Pdf-->
+                <img ng-if="fileInfo.extension=='pdf'" src="assets/images/pdf.png" style="height:100%;"> 
+
+                <!--Others-->
+                <img ng-if="fileInfo.extension!='pdf' && fileInfo.extension!='doc' && fileInfo.extension!='docx' && fileInfo.extension!='ppt' && fileInfo.extension!='pptx' && fileInfo.extension!='xls' && fileInfo.extension!='xlsx'" src="assets/images/random2.png" style="height:100%;">                    
+                                
               </div> 
 
-              <div class="flex-general-row-wrapper-center">
+              <div style="width: 100%;" class="flex-general-row-wrapper-center">
                 <span style="margin-top:12px;">{{fileInfo.obj.name}}</span> 
               </div>               
 
-            </div>
+          </div>
           
         </div>
 
-        <div  ng-show="!fileInfo || fileInfo.rawFile">  
+        <div  ng-show="(!fileInfo || fileInfo.rawFile) && editableFile" style="height: 100%;width: 100%;">  
           <!--View File for Images-->
-          <div ng-show="editableFile && editableFile.document.url && ((editableFile.document.name | extension)=='jpeg' || (editableFile.document.name | extension)=='jpg' || (editableFile.document.name | extension)=='png' || (editableFile.document.name | extension)=='tif' || (editableFile.document.name | extension)=='gif')" class="modal-view-file">
+          <div ng-if="editableFile && editableFile.document.url && ((editableFile.document.name | extension)=='jpeg' || (editableFile.document.name | extension)=='jpg' || (editableFile.document.name | extension)=='png' || (editableFile.document.name | extension)=='tif' || (editableFile.document.name | extension)=='gif')" style="height: 100%;width: 100%;">
 
             <!--Image-->
-            <div>
-              <a class="modal-anchor flex-general-row-wrapper-center">
-                <img ng-src="{{editableFile.document.url}}">                  
-              </a>                  
+            <div style="height: 90%;width: 100%;" class="flex-general-column-wrapper-center">              
+              <img ng-src="{{editableFile.document.url}}" style="height: 100%;">                               
             </div>
-            <div class="flex-general-row-wrapper-center">
+
+            <div style="width: 100%;" class="flex-general-row-wrapper-center">
               <span style="margin-top:14px;">{{editableFile.document.name}}</span> 
             </div>           
 
           </div> 
 
-           <!--View File for Other Files-->
-          <div ng-show="editableFile && editableFile.document.url && ((editableFile.document.name | extension)!='jpeg' && (editableFile.document.name | extension)!='jpg' && (editableFile.document.name | extension)!='png' && (editableFile.document.name | extension)!='tif' && (editableFile.document.name | extension)!='gif')" class="modal-view-other-file">
+          <!--View File for Other Files-->
+          <div ng-show="editableFile && editableFile.document.url && ((editableFile.document.name | extension)!='jpeg' && (editableFile.document.name | extension)!='jpg' && (editableFile.document.name | extension)!='png' && (editableFile.document.name | extension)!='tif' && (editableFile.document.name | extension)!='gif')" style="height: 100%;width: 100%;">
 
               <!--Image-->
-              <div>
-                <a class="modal-anchor flex-general-row-wrapper-center">
-                  <img src="assets/images/file2.png">                  
-                </a>                  
+              <div style="height: 90%;width: 100%;" class="flex-general-column-wrapper-center"> 
+
+                <!--Word-->
+                <img ng-if="(editableFile.document.name | extension)=='doc' || (editableFile.document.name | extension)=='docx'" src="assets/images/msword.png" style="height:100%;">
+
+                <!--Ppt-->
+                <img ng-if="(editableFile.document.name | extension)=='ppt' || (editableFile.document.name | extension)=='pptx'" src="assets/images/msppt.png" style="height:100%;">
+
+                <!--Excel-->
+                <img ng-if="(editableFile.document.name | extension)=='xls' || (editableFile.document.name | extension)=='xlsx'" src="assets/images/msexcel.png" style="height:100%;">
+
+                <!--Pdf-->
+                <img ng-if="(editableFile.document.name | extension)=='pdf'" src="assets/images/pdf.png" style="height:100%;"> 
+
+                <!--Others-->
+                <img ng-if="(editableFile.document.name | extension)!='pdf' && (editableFile.document.name | extension)!='doc' && (editableFile.document.name | extension)!='docx' && (editableFile.document.name | extension)!='ppt' && (editableFile.document.name | extension)!='pptx' && (editableFile.document.name | extension)!='xls' && (editableFile.document.name | extension)!='xlsx'" src="assets/images/random2.png" style="height:100%;"> 
+
               </div> 
 
-              <div class="flex-general-row-wrapper-center">
+              <div style="width: 100%;" class="flex-general-row-wrapper-center">
                 <span style="margin-top:14px;">{{editableFile.document.name}}</span>  
               </div>             
 

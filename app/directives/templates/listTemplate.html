@@ -289,9 +289,23 @@
                 </div> 
 
                 <!--Other Files-->
-                <div class="rel-list-file-view" ng-if="(file.document.name | extension)!='jpeg' && (file.document.name | extension)!='jpg' && (file.document.name | extension)!='png' && (file.document.name | extension)!='tif' && (file.document.name | extension)!='gif'">
+                <div class="rel-list-file-view" ng-if="(file.document.name | extension)!='jpeg' && (file.document.name | extension)!='jpg' && (file.document.name | extension)!='png' && (file.document.name | extension)!='tif' && (file.document.name | extension)!='gif'">                 
 
-                  <img src="assets/images/file2.png" style="width:125px;height:120px;margin-left:15px;margin-top:6px;">
+                  <!--Word-->
+                  <img ng-if="(file.document.name | extension)=='doc' || (file.document.name | extension)=='docx'" src="assets/images/msword.png" style="width:125px;height:120px;margin-left:15px;margin-top:6px;">
+
+                  <!--Ppt-->
+                  <img ng-if="(file.document.name | extension)=='ppt' || (file.document.name | extension)=='pptx'" src="assets/images/msppt.png" style="width:125px;height:120px;margin-left:15px;margin-top:6px;">
+
+                  <!--Excel-->
+                  <img ng-if="(file.document.name | extension)=='xls' || (file.document.name | extension)=='xlsx'" src="assets/images/msexcel.png" style="width:125px;height:120px;margin-left:15px;margin-top:6px;">
+
+                  <!--Pdf-->
+                  <img ng-if="(file.document.name | extension)=='pdf'" src="assets/images/pdf.png" style="height:100%;"> 
+
+                  <!--Others-->
+                  <img ng-if="(file.document.name | extension)!='pdf' && (file.document.name | extension)!='doc' && (file.document.name | extension)!='docx' && (file.document.name | extension)!='ppt' && (file.document.name | extension)!='pptx' && (file.document.name | extension)!='xls' && (file.document.name | extension)!='xlsx'" src="assets/images/random2.png" style="width:125px;height:120px;margin-left:15px;margin-top:6px;">
+
 
                   <!--Image controllers-->
                   <div class="m-rel-static-file-toolz flex-general-row-wrapper cf">
@@ -314,7 +328,7 @@
                 <!--File Name-->
                 <div class="rel-list-file-view-name flex-general-column-wrapper-center">
                   <div style="color:black;">
-                    {{file.document.name}}
+                    {{file.document.name | characters:15}}
                   </div>  
                 </div> 
               </div>                           
@@ -330,7 +344,7 @@
         <!--List of GeoPoint-->
         <div ng-if="editableColumn.relatedTo=='GeoPoint'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
 
-            <div ng-repeat="eachGeopoint in editableList track by $index" class="geopoint-list flex-general-row-wrapper-center cf" style="margin-top:3px;">
+            <div ng-repeat="eachGeopoint in editableList track by $index" class="geopoint-list flex-general-row-wrapper-center cf" style="margin-top:3px;background-color: #E2E2E2;">
 
               <div class="m-relationid id-show" style="cursor:pointer;" ng-click="editListGeoPoint($index)">
                 <div ng-click="editListGeoPoint($index)">

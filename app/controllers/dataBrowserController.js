@@ -101,6 +101,8 @@ $scope.init = function() {
   //Flush Acl data in sharedDataService
   sharedDataService.flushAclArray();
 
+  closeAllModals();
+
   if(!__isDevelopment){
     /****Tracking*********/            
      mixpanel.track('Visited databrowser', { "Table name": tableName,"appId": id});
@@ -304,7 +306,7 @@ $scope.setAndSaveBoolean=function(row,column){
     }
   });
 
-  row.set(column.name,row.get(column.name));
+  row.set(column.name,!row.get(column.name));
   if(requiredField){      
     rowWarningMode(i,row,column.name);     
   }else{
@@ -652,7 +654,12 @@ $scope.viewRelationData=function(row,column,index){
         //Convert ISODate 2 DateObject
         convertISO2DateObj(tableDef,record); 
         $scope.relatedTableDefArray.push(tableDef);       
-        $scope.relatedTableRecordArray.push(record);                 
+        $scope.relatedTableRecordArray.push(record);
+
+        var response=fieldOrder(tableDef,record);
+        $scope.fieldsOrderArray=[];
+        $scope.fieldsOrderArray.push(response);
+
       }     
     
       $("#mdrelationviewer").modal();
@@ -662,6 +669,118 @@ $scope.viewRelationData=function(row,column,index){
     });
     //End of get Table data       
 }; 
+
+function fieldOrder(table,cloudObject){
+  var fields=[];
+  var consumedFields={};
+
+  //Default Fields
+  var newRow=[];
+  var fieldObj={};
+  fieldObj.relCol=_.first(_.where(table.columns, {dataType: "Id"}));
+  newRow.push(fieldObj);
+  consumedFields["id"]=true;
+
+  var fieldObj={};
+  fieldObj.relCol=_.first(_.where(table.columns, {dataType: "DateTime",name:"expires"}));
+  newRow.push(fieldObj);
+  consumedFields["expires"]=true;
+
+  fields.push(newRow);
+
+  var newRow=[];
+  var fieldObj={};
+  fieldObj.relCol=_.first(_.where(table.columns, {dataType: "DateTime",name:"createdAt"}));
+  newRow.push(fieldObj);
+  consumedFields["createdAt"]=true;
+
+ var fieldObj={};
+  fieldObj.relCol=_.first(_.where(table.columns, {dataType: "DateTime",name:"updatedAt"}));
+  newRow.push(fieldObj);
+  consumedFields["updatedAt"]=true;
+
+  fields.push(newRow);
+
+  var newRow=[];
+  var fieldObj={};
+  fieldObj.relCol=_.first(_.where(table.columns, {dataType: "ACL"}));
+  newRow.push(fieldObj);
+  consumedFields["ACL"]=true;
+
+  fields.push(newRow);
+  //Default Fields
+
+
+  for(var i=0;i<table.columns.length;++i){
+    if(!consumedFields[table.columns[i].name]){    
+      var newRow=[]; 
+
+          
+      if(table.columns[i].dataType=="Text" || table.columns[i].dataType=="File" || table.columns[i].dataType=="List" || table.columns[i].dataType=="Object"){
+        var fieldObj={};
+        fieldObj.relCol=table.columns[i];
+        newRow.push(fieldObj);
+        consumedFields[table.columns[i].name]=true;
+      }
+
+         
+      if(table.columns[i].dataType=="Email" || table.columns[i].dataType=="URL" || table.columns[i].dataType=="Number" || table.columns[i].dataType=="EncryptedText"){
+        var fieldObj={};
+        fieldObj.relCol=table.columns[i];
+        newRow.push(fieldObj);
+        consumedFields[table.columns[i].name]=true;
+      }    
+
+      //MID SIZE FIELDS
+      if(table.columns[i].dataType=="Boolean" || table.columns[i].dataType=="DateTime" || table.columns[i].dataType=="GeoPoint" || table.columns[i].dataType=="Relation"){
+        var fieldObj={};
+        fieldObj.relCol=table.columns[i];
+        newRow.push(fieldObj);
+        consumedFields[table.columns[i].name]=true;
+
+        var result=getMidSizeField(table,consumedFields);
+        if(result){
+          var fieldObj={};
+          fieldObj.relCol=result;
+          newRow.push(fieldObj);
+          consumedFields[result.name]=true;
+        }
+      }
+     
+      fields.push(newRow);
+    }
+
+  }
+
+  return fields; 
+
+}
+
+function getMidSizeField(table,consumedFields){
+  var midSizeFields={      
+    "Text":false,
+    "List":false, 
+    "File":false,
+    "Object":false,       
+    "Email":false,
+    "URL":false,
+    "Number":false,
+    "EncryptedText":false,
+    "Id":true,
+    "Boolean":true,
+    "DateTime":true,
+    "GeoPoint":true,
+    "Relation":true,
+  };
+
+  for(var i=0;i<table.columns.length;++i){
+    if(midSizeFields[table.columns[i].dataType] && !consumedFields[table.columns[i].name]){
+      return table.columns[i];
+    }
+  }
+
+  return null;
+}
 
 $scope.closeRelModal=function(){  
   $scope.relatedTableDefArray=[];
@@ -753,7 +872,7 @@ $scope.setAndSaveList=function(updatedList){
   
   $("#mdlistcommontypes").modal("hide");
   $scope.editableList=updatedList;
-  rowEditMode($scope.editableIndex);
+  rowEditMode($scope.editableIndex);  
  
   var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
     if(everyCol.name!=$scope.editableColumn.name && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
@@ -772,7 +891,7 @@ $scope.setAndSaveList=function(updatedList){
       }
     }
     if(emptyFieldIndx && emptyFieldIndx.length>0){
-      for(var i=0;i<emptyFieldIndx.length;++i){
+      for(var i=emptyFieldIndx.length-1;i>=0;--i){
        $scope.editableList.splice(emptyFieldIndx[i],1);
       }
     }
@@ -801,6 +920,8 @@ $scope.setAndSaveList=function(updatedList){
 
     }
 
+  }else{
+    rowInitMode($scope.editableIndex);
   } 
  
 };
@@ -1067,6 +1188,38 @@ function getProjectTables(){
 
 } 
 
+$scope.refreshRows=function(){
+  $scope.refreshingRows=true;  
+
+  cloudBoostApiService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0)
+  .then(function(cbObjects){
+    $scope.currentTableData=cbObjects;
+
+    if($scope.currentTableData && $scope.currentTableData.length>0){
+      $scope.totalRecords=$scope.currentTableData.length;
+    }else{
+      $scope.totalRecords=0;
+    }
+    
+    $scope.refreshingRows=false;   
+
+    $scope.rowInfo=null;
+    for(var i=0;i<$scope.currentTableData.length;++i){
+      $scope.showSerialNo[i]=true;
+      $scope.holdSerialNoInfo[i]=true;
+      
+      $scope.rowEditMode[i]=false;
+      $scope.rowWarningMode[i]=false;
+      $scope.rowErrorMode[i]=false;
+      $scope.rowSpinnerMode[i]=false; 
+      $scope.rowSavedMode[i]=false;
+    }
+
+  },function(err){
+    $scope.refreshingRows=false;       
+  });
+};
+
 function getProjectTableByName(tableDefName){
   var q=$q.defer();
 
@@ -1092,6 +1245,10 @@ $scope.addMoreRecords=function(){
     //load more data
     cloudBoostApiService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,5,$scope.totalRecords)
     .then(function(list){
+
+      //Initial Length
+      var initialLenth=$scope.currentTableData.length;
+
       if(list && list.length>0){
         if($scope.currentTableData.length>0){
           $scope.currentTableData=$scope.currentTableData.concat(list); 
@@ -1100,7 +1257,21 @@ $scope.addMoreRecords=function(){
         }
         $scope.totalRecords=$scope.totalRecords+list.length;
       } 
-      $scope.loadingRecords=false;       
+      $scope.loadingRecords=false; 
+
+      //Final Length
+      var finalLength=$scope.currentTableData.length;
+
+      for(var i=initialLenth;i<finalLength;++i){
+        $scope.showSerialNo[i]=true;
+        $scope.holdSerialNoInfo[i]=true;
+        
+        $scope.rowEditMode[i]=false;
+        $scope.rowWarningMode[i]=false;
+        $scope.rowErrorMode[i]=false;
+        $scope.rowSpinnerMode[i]=false; 
+        $scope.rowSavedMode[i]=false;
+      }      
       //$scope.$digest();                                      
     },
     function(error){ 
@@ -2011,6 +2182,18 @@ $scope.goToDocumentation=function(){
   //Redirect to documentation  
   window.open("https://docs.cloudboost.io", "_blank");
 };
+
+function closeAllModals(){
+  $("#md-aclviewer").modal("hide");
+  $("#md-objectviewer").modal("hide");
+  $("#md-fileviewer").modal("hide");
+  $("#md-geodocumentviewer").modal("hide");
+  $("#md-searchreldocument").modal("hide");
+  $("#md-mdlistcommontypes").modal("hide");
+  $("#md-mdrelationviewer").modal("hide");
+  $("#md-reldocumentviewer").modal("hide");
+  $("#md-deleteColumn").modal("hide");
+}
 
 //get Beacon Obj from backend
 function getBeacon(){

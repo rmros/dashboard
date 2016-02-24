@@ -62,7 +62,7 @@
         <!-- Details --> 
         <div class="success" data-ng-class="{block: !animateApp[$index],'block-color': !animateApp[$index]}" ng-hide="showProject[$index]" style="height:298px;box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)">
 
-          <div ng-if="!animateApp[$index]" data-ng-class="{animated:isAppCreated==true,fadeIn:$index==0,slideInLeft:$index==1}"> 
+          <div ng-if="!animateApp[$index]" data-ng-class="{animated:isAppCreated==true,fadeIn:$index==0,fadeIn:$index==1}"> 
               <div class="header" style="position:relative;">
                 <div class="actions" ng-show="list | validUser">
                   <a  id="app-todo-options-btn{{$index}}" class="app-todo-options-btn"  ng-click="toggleAppOptions($index)">
@@ -390,25 +390,9 @@
     <!--While Loading-->
     <div ng-show="dataLoading && !loadingError" class="row flex-general-column-wrapper-center" style="height:78vh;">
       <div style="margin-top:-10px;">
-          <!--Animated Circle-->
-          <div class="cssload-bell">
-            <div class="cssload-circle">
-              <div class="cssload-inner"></div>
-            </div>
-            <div class="cssload-circle">
-              <div class="cssload-inner"></div>
-            </div>
-            <div class="cssload-circle">
-              <div class="cssload-inner"></div>
-            </div>
-            <div class="cssload-circle">
-              <div class="cssload-inner"></div>
-            </div>
-            <div class="cssload-circle">
-              <div class="cssload-inner"></div>
-            </div>
-          </div>
-          <!--/Animated Circle-->
+          <div>
+            <img src="assets/images/ajax-loader.gif">
+          </div>          
       </div>     
     </div>
     <!--/While Loading-->

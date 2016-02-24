@@ -6,13 +6,15 @@ app.controller('appSettingsController',
 '$location',
 'projectService',
 '$timeout',
+'appSettingsService',
 function($scope,
 $q,  
 $rootScope,
 $stateParams,
 $location,
 projectService,
-$timeout){	    
+$timeout,
+appSettingsService){	    
 
   
   var id;
@@ -29,15 +31,16 @@ $timeout){
   $scope.init= function() {            
     id = $stateParams.appId;
 
+    $rootScope.pageHeaderDisplay="App Settings";
     if($rootScope.currentProject && $rootScope.currentProject.appId === id){
       //if the same project is already in the rootScope, then dont load it.
-      initCB(); 
-      //$rootScope.pageHeaderDisplay=$rootScope.currentProject.name;                         
+      getSettings();                                
     }else{
-      //loadProject(id);              
+      loadProject(id);              
     }
   };
 
+  //Toggler
   $scope.selectSettings=function(settingsName){
     if(settingsName=="general"){
       $scope.settingsMenu.general=true;
@@ -56,10 +59,28 @@ $timeout){
     }
   };  
 
-  /**************Private fuctions*********************/
-  function initCB(){
-    //CB.CloudApp.init(SERVER_URL,$rootScope.currentProject.appId, $rootScope.currentProject.keys.master);
-  }  
- 				
+/********************************Private fuctions****************************/
+  function loadProject(id){ 
+    $scope.settingsLoading=true;  
+    projectService.getProject(id)
+    .then(function(currentProject){
+      if(currentProject){
+        $rootScope.currentProject=currentProject; 
+        getSettings();                
+      }                              
+    }, function(error){            
+    });   
+  }	
+
+  function getSettings(){ 
+    $scope.settingsLoading=true;  
+    appSettingsService.getSettings($rootScope.currentProject.appId,$rootScope.currentProject.keys.master)
+    .then(function(settings){
+      $scope.appsettings=settings;
+      $scope.settingsLoading=false;                               
+    }, function(error){ 
+      $scope.settingsLoading=false;           
+    });   
+  }	
 		
 }]);

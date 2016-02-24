@@ -115,6 +115,17 @@
         </button>
         <!--/Delete rows-->
 
+        <!--Refresh rows-->
+        <button ng-if="!refreshingRows" type="button" ng-click="refreshRows()" class="table-tool-btn" style="margin-left: 3px;width: 130px;">
+          <i ng-if="!refreshingRows" class="fa fa-refresh"></i>          
+          Refresh rows
+        </button>
+        <button ng-if="refreshingRows" type="button" class="table-tool-btn" style="margin-left: 3px;width: 130px;">          
+          <i ng-if="refreshingRows" class="fa fa-refresh fa-spin"></i>
+          Refreshing rows..
+        </button>
+        <!--/Refresh rows-->
+
         <!--Hide columns-->
         <div class="hide-col-btn-group">
           <button type="button" id="hide-col-btn-id" class="hide-col-btn" ng-click="toggleHiddenColShow()">
@@ -492,7 +503,8 @@
           <!--Common Saving Spinner-->
           <div  class="data-info-div" ng-if="commonSpinner && !commonError && !commonWarning && !commonSaved">
             <p class="sno-savingSpin" style="margin-right:25px;">            
-              <i class="fa fa-spinner fa-spin fa-2x"></i>
+              <!--<i class="fa fa-spinner fa-spin fa-2x"></i>-->
+              <img src="assets/images/ajax-loader.gif" style="height:8px;">
             </p>            
           </div> 
           <!--/Common Saving Spinner-->
@@ -535,7 +547,7 @@
                     <div class="col-name">
                        <span style="display:inline; cursor:default;">
                         <!--Id-->
-                        <i class="icon ion-pound col-icon-size" style="cursor:default;color:gray;"></i>                        
+                        <i class="icon ion-pound" style="cursor:default;color:gray;font-size: 15px;"></i>                        
                         {{column.name}}
                       </span>
                     </div>
@@ -593,7 +605,7 @@
 
               <td ng-repeat="column in currentProject.currentTable.columns" ng-if="column.document.dataType=='Id'" class="dataTd"  style="border-right:1px solid #4892F9;">                 
                 <!--Id-->             
-                <div  class="tdDiv cf" style="min-width: 175px; cursor:default;">         
+                <div  class="tdDiv cf solo-vertical-center" style="min-width: 175px; cursor:default;">         
                   <div class="real-content pull-left">
                     {{eachRow.get(column.name)}}                 
                   </div>            
@@ -710,7 +722,7 @@
                         <i ng-if="column.document.dataType=='ACL'" class="fa fa-lock col-icon-size" style="cursor:default;"></i>
 
                         <!--Object-->                       
-                        <span ng-if="column.document.dataType=='Object'" class="fa col-icon-size" style="cursor:default;color:gray;">{&nbsp;}</span>
+                        <span ng-if="column.document.dataType=='Object'" class="fa col-icon-size" style="cursor:default;color:gray;font-weight:700;">{&nbsp;}</span>
 
 
                         <!--Text-->
@@ -1004,7 +1016,7 @@
               <td ng-repeat="column in currentProject.currentTable.columns" ng-if="hideColumn[$index]"  class="dataTd">   
                 
                 <!--Id-->             
-                <div ng-if="column.document.dataType==='Id'" class="tdDiv cf" style="min-width: 175px; cursor:default;">         
+                <div ng-if="column.document.dataType==='Id'" class="tdDiv cf solo-vertical-center" style="min-width: 175px; cursor:default;">         
                   <div class="real-content pull-left">
                     {{eachRow.get(column.name)}}                 
                   </div>            
@@ -1013,21 +1025,27 @@
 
                 <!--Boolean-->
                 <div ng-if="column.document.dataType=='Boolean'"  class="tdDiv boolean-div cf" style="min-width: 165px">     
-                  <div class="real-content-center flex-general-row-wrapper-center">  
-                      <checkbox  class="btn-default checkBxDflt2 data-checkbx"  ng-model="eachRow.document[column.name]" ng-change="setAndSaveBoolean(eachRow,column)">
-                      </checkbox>                     
+                  <div class="real-content-center flex-general-row-wrapper-center"> 
+                                        
+                      <div class="flex-general-column-wrapper-center" ng-click="setAndSaveBoolean(eachRow,column)" style="height:20px;width:20px;border:1px solid #BCBCBC;cursor: pointer;">
+                        <span ng-if="eachRow.document[column.name]"style="cursor: pointer;">
+                          <i class="fa fa-check"></i>
+                        </span>
+                      </div>
+
                   </div>                  
                 </div>
                 <!--/Boolean-->
 
                 <!--DateTime-->
-                <div ng-if="column.document.dataType=='DateTime'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                <div ng-if="column.document.dataType=='DateTime'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv cf solo-vertical-center" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
                     <span class="timeSpan" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">                      
                       {{eachRow.get(column.name) | date:'medium'}}
                     </span>                                
-                  </div>                  
+                  </div> 
+
                   <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">          
                     <input kendo-date-time-picker value="{{editableField[$parent.$parent.$index][column.name]}}" k-ng-model="editableField[$parent.$parent.$parent.$index][column.name]"  class="dateTimeInput"   data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"/>
 
@@ -1037,10 +1055,10 @@
                 <!--/DateTime-->
 
                 <!--ACL-->
-                <div ng-if="column.document.dataType=='ACL'" class="tdDiv cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='ACL'" class="tdDiv cf " style="min-width: 260px"> 
                 <!-- ng-click="showCommonTypes(eachRow,column); $event.stopPropagation()"-->
                   <div class="real-content-acl pull-left"> 
-                    <div class="objectSpan-acl">
+                    <div class="objectSpan-acl solo-vertical-center">
 
                       <!--Write User-->
                       <div ng-if="eachRow.get(column.name).document.write.allow.user.length>0 && eachRow.get(column.name).document.write.allow.user[0]!='all'">
@@ -1189,9 +1207,9 @@
                 <div ng-if="column.document.dataType=='Object'" class="tdDiv cf" style="min-width: 260px"> 
                   <!--ng-click="showCommonTypes(eachRow,column); $event.stopPropagation()"-->
 
-                  <div class="real-content pull-left"> 
-                    <div class="objectSpan">
-                      {{eachRow.get(column.name) }} 
+                  <div class="real-content pull-left solo-vertical-center" style="margin-top: 3px;"> 
+                    <div class="objectSpan solo-vertical-center">
+                      {{eachRow.get(column.name) | json : spacing | characters:40}} 
                     </div>                
                   </div>
 
@@ -1207,7 +1225,7 @@
                 <!--/JsonObject-->
 
                 <!--Text-->
-                <div ng-if="column.document.dataType=='Text'" class="tdDiv-fields cf" ng-click="invokeFields(eachRow,column,$event)" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                <div ng-if="column.document.dataType=='Text'" class="tdDiv-fields cf solo-vertical-center" ng-click="invokeFields(eachRow,column,$event)" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">              
                     {{eachRow.get(column.name)}}                                
@@ -1223,16 +1241,16 @@
                 <!--Encrypted Text-->
                 <div ng-if="column.document.dataType=='EncryptedText'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
-                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
-                      <span style="font-weight:700;color:#AAAAAA;" ng-if="eachRow.get(column.name)" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">hidden</span>                    
+                  <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left solo-vertical-center" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}" style="height:100%;"> 
+                      <span style="font-weight:700;color:#CCCCCC;" ng-if="eachRow.get(column.name)" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">hidden</span>                    
                   </div>                
 
-                  <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">                             
-                    <input type="text"  ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"/>               
+                  <div ng-show="showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left solo-vertical-center" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">                             
+                    <input type="text"  ng-model="editableField[$parent.$parent.$parent.$index][column.name]"   class="commonInput" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}" style="margin-top: 1px;"/>               
                   </div>
 
                   <!--Delete data-->
-                  <div ng-if="(!column.required) && eachRow.get(column.name) && (!showInputForEdit[$parent.$parent.$parent.$index][column.name])" class="modal-wrapper pull-right" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                  <div ng-if="(!column.required) && eachRow.get(column.name) && (!showInputForEdit[$parent.$parent.$parent.$index][column.name])" class="modal-wrapper pull-right solo-vertical-center" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
                       <a class="delete-data-btn" ng-click="deleteData(eachRow,column)" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">             
                        <i class="fa fa-minus-circle" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"></i>&nbsp;
                       </a>                    
@@ -1243,10 +1261,10 @@
                 <!--/Encrypted Text-->
 
                 <!--Email-->
-                <div ng-if="column.document.dataType=='Email'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                <div ng-if="column.document.dataType=='Email'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf solo-vertical-center" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
-                    <a class="emailSpan" href="{{eachRow.get(column.name) }}" target="_blank" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">
+                    <a class="emailSpan" href="mailto:{{eachRow.get(column.name) }}" target="_blank" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">
                       {{eachRow.get(column.name) }}
                     </a>                
                   </div>
@@ -1259,7 +1277,7 @@
                 <!--/Email-->
 
                 <!--URL-->
-                <div ng-if="column.document.dataType=='URL'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                <div ng-if="column.document.dataType=='URL'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf solo-vertical-center" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
                     <a class="emailSpan" href="{{eachRow.get(column.name) }}" target="_blank" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">
@@ -1275,7 +1293,7 @@
                 <!--/URL-->
 
                 <!--Number-->
-                <div ng-if="column.document.dataType=='Number'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                <div ng-if="column.document.dataType=='Number'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf solo-vertical-center" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">                    
                       {{eachRow.get(column.name)}}                                   
@@ -1299,8 +1317,23 @@
                       </a> 
 
                       <!--Other Files-->
-                      <a  ng-if="(eachRow.get(column.name).document.name | extension) && ((eachRow.get(column.name).document.name | extension)!='jpeg' && (eachRow.get(column.name).document.name | extension)!='jpg' && (eachRow.get(column.name).document.name | extension)!='png' && (eachRow.get(column.name).document.name | extension)!='tif' && (eachRow.get(column.name).document.name | extension)!='gif')" ng-click="showCommonTypes(eachRow,column)">
-                        <img src="assets/images/file2.png" class="fileT-thumb-width2" alt="image" />
+                      <a  ng-if="(eachRow.get(column.name).document.name | extension) && ((eachRow.get(column.name).document.name | extension)!='jpeg' && (eachRow.get(column.name).document.name | extension)!='jpg' && (eachRow.get(column.name).document.name | extension)!='png' && (eachRow.get(column.name).document.name | extension)!='tif' && (eachRow.get(column.name).document.name | extension)!='gif')" ng-click="showCommonTypes(eachRow,column)">                        
+
+                        <!--Word-->
+                        <img ng-if="(eachRow.get(column.name).document.name | extension)=='doc' || (eachRow.get(column.name).document.name | extension)=='docx'" src="assets/images/msword.png" class="fileT-thumb-width2" alt="image" >
+
+                        <!--Ppt-->
+                        <img ng-if="(eachRow.get(column.name).document.name | extension)=='ppt' || (eachRow.get(column.name).document.name | extension)=='pptx'" src="assets/images/msppt.png" class="fileT-thumb-width2" alt="image" >
+
+                        <!--Excel-->
+                        <img ng-if="(eachRow.get(column.name).document.name | extension)=='xls' || (eachRow.get(column.name).document.name | extension)=='xlsx'" src="assets/images/msexcel.png"  class="fileT-thumb-width2" alt="image" >
+
+                        <!--Pdf-->
+                        <img ng-if="(eachRow.get(column.name).document.name | extension)=='pdf'" src="assets/images/pdf.png" class="fileT-thumb-width2" alt="image" > 
+
+                        <!--Others-->
+                        <img ng-if="(eachRow.get(column.name).document.name | extension)!='pdf' && (eachRow.get(column.name).document.name | extension)!='doc' && (eachRow.get(column.name).document.name | extension)!='docx' && (eachRow.get(column.name).document.name | extension)!='ppt' && (eachRow.get(column.name).document.name | extension)!='pptx' && (eachRow.get(column.name).document.name | extension)!='xls' && (eachRow.get(column.name).document.name | extension)!='xlsx'" src="assets/images/random2.png"  class="fileT-thumb-width2" alt="image" >
+
                       </a>
                          
                       <!--Add File-->   
@@ -1317,7 +1350,7 @@
                 <!--Relation-->
                 <div ng-if="column.document.dataType=='Relation'"  class="tdDiv cf" style="min-width: 240px"> 
 
-                  <div class="real-content pull-left"> 
+                  <div class="real-content pull-left solo-vertical-center" style="margin-top: 2px;"> 
                     <div ng-click="viewRelationData(eachRow,column,null)" ng-if="eachRow.document[column.name]" class="relation-id-wrapper cf">
                       <span class="pull-left">{{eachRow.get(column.name).document._id}}</span>
                       <span class="pull-right rel-del-times">
@@ -1340,7 +1373,8 @@
                 <!--Geo Point-->
                 <div ng-if="column.document.dataType=='GeoPoint'" class="tdDiv cf geopoint-container"> 
                 <!-- ng-click="showCommonTypes(eachRow,column); $event.stopPropagation()"-->
-                  <div ng-show="eachRow.document[column.name]" class="real-content geopoint-wrapper pull-left flex-general-row-wrapper-center"> 
+
+                  <div ng-show="eachRow.document[column.name]" class="real-content geopoint-wrapper pull-left flex-general-row-wrapper-center" ng-click="showCommonTypes(eachRow,column)"> 
 
                     <div  class="geopoint">
                       { <span>{{eachRow.get(column.name).longitude}}</span>,&nbsp;
@@ -1439,8 +1473,23 @@
                             </div>
                             
                             <!--Other Files-->               
-                            <div ng-if="eachFile && eachFile.document.url && ((eachFile.document.name | extension)!='jpeg' && (eachFile.document.name | extension)!='jpg' && (eachFile.document.name | extension)!='png' && (eachFile.document.name | extension)!='tif' && (eachFile .document.name | extension)!='gif')" class="list-File-others">
-                              <img src="assets/images/file2.png">                             
+                            <div ng-if="eachFile && eachFile.document.url && ((eachFile.document.name | extension)!='jpeg' && (eachFile.document.name | extension)!='jpg' && (eachFile.document.name | extension)!='png' && (eachFile.document.name | extension)!='tif' && (eachFile .document.name | extension)!='gif')" class="list-File-others">                              
+
+                              <!--Word-->
+                              <img ng-if="(eachFile.document.name | extension)=='doc' || (eachFile.document.name | extension)=='docx'" src="assets/images/msword.png">
+
+                              <!--Ppt-->
+                              <img ng-if="(eachFile.document.name | extension)=='ppt' || (eachFile.document.name | extension)=='pptx'" src="assets/images/msppt.png">
+
+                              <!--Excel-->
+                              <img ng-if="(eachFile.document.name | extension)=='xls' || (eachFile.document.name | extension)=='xlsx'" src="assets/images/msexcel.png" >
+
+                              <!--Pdf-->
+                              <img ng-if="(eachFile.document.name | extension)=='pdf'" src="assets/images/pdf.png"> 
+
+                              <!--Others-->
+                              <img ng-if="(eachFile.document.name | extension)!='pdf' && (eachFile.document.name | extension)!='doc' && (eachFile.document.name | extension)!='docx' && (eachFile.document.name | extension)!='ppt' && (eachFile.document.name | extension)!='pptx' && (eachFile.document.name | extension)!='xls' && (eachFile.document.name | extension)!='xlsx'" src="assets/images/random2.png">
+
                             </div>
                          </div>
 
@@ -1466,12 +1515,12 @@
                       </div>
 
                       <!--Relation--> 
-                      <div ng-if="eachRow.document[column.name]" ng-if="column.document.relatedTo!='Text' && column.document.relatedTo!='Email' && column.document.relatedTo!='Number' && column.document.relatedTo!='URL' && column.document.relatedTo!='DateTime' && column.document.relatedTo!='Boolean' && column.document.relatedTo!='File' && column.document.relatedTo!='Object' && column.document.relatedTo!='Geo Point'" class="cf list-text-wrapper">
+                      <div ng-if="eachRow.document[column.name] && column.document.relatedTo!='Text' && column.document.relatedTo!='Email' && column.document.relatedTo!='Number' && column.document.relatedTo!='URL' && column.document.relatedTo!='DateTime' && column.document.relatedTo!='Boolean' && column.document.relatedTo!='File' && column.document.relatedTo!='Object' && column.document.relatedTo!='GeoPoint'" class="cf list-text-wrapper">
 
                         <div class="pull-left text-list-torrent flex-general-row-wrapper">
                          
-                          <div ng-repeat="eachRelation in eachRow.document[column.name] track by $index" class="list-relation" ng-click="viewRelationData(eachRow,column,$index)">
-                            <span class="pull-left">{{eachRelation.document._id}}</span>&nbsp;
+                          <div ng-repeat="eachRelation in eachRow.document[column.name] track by $index" class="list-relation solo-vertical-center" ng-click="viewRelationData(eachRow,column,$index)">
+                            <span class="pull-left" style="margin-top: -2px;">{{eachRelation.document._id}}</span>&nbsp;
                             <span class="pull-right list-rel-del-times">
                               <i class="fa fa-times" ng-click="deleteListItemFromTable(eachRow,column,$index); $event.stopPropagation()"></i>
                             </span>
@@ -1526,12 +1575,11 @@
            <!--Extra Add row-->
             <tr ng-click="addRow()" class="splextracolumn">
               <td class="ldataTd addRowTd" >
-                  <div class="lTdDiv">
-                      <div class="flex-general-row-wrapper-center">
-                        <span>+</span>
-                      </div>                       
-                  </div> 
-                            
+                <div class="lTdDiv">
+                    <div class="flex-general-row-wrapper-center">
+                      <span>+</span>
+                    </div>                       
+                </div>                             
               </td>
               <td  class="dataTd" ng-repeat="column in currentProject.currentTable.columns" ng-if="hideColumn[$index]">
                 <div class="tdDiv cf" style="cursor:cell;"> 
@@ -1599,8 +1647,7 @@
 
             <tr class="vacuumTr">
               <td class="ldataTd">
-                 <div class="lTdDiv">
-                       
+                 <div class="lTdDiv">                       
                   </div> 
               </td>
 
@@ -1621,9 +1668,9 @@
         <!--/Normal Flow Table-->
 
         <!--Load spinner for Records-->
-        <div ng-if="loadingRecords"class="wyl-records-loading flex-general-column-wrapper-center">
-          <div>
-            <i class="fa fa-spinner fa-spin fa-3x"></i>
+        <div ng-if="loadingRecords" class="wyl-records-loading solo-horizontal-center" style="position: relative;">
+          <div style="position: absolute;bottom:12%;">
+            <img src="assets/images/ajax-loader.gif">
           </div> 
         </div> 
         <!--/Load spinner for Records-->       
@@ -1638,25 +1685,7 @@
   <div ng-show="!isTableLoaded || tableLoadedError" class="wyl-table-first-loading">
     <div id="table-spinner" class="flex-general-column-wrapper-center">
         <div ng-show="!isTableLoaded">
-          <!--Animated Circle-->
-          <div class="cssload-bell">
-            <div class="cssload-circle">
-              <div class="cssload-inner"></div>
-            </div>
-            <div class="cssload-circle">
-              <div class="cssload-inner"></div>
-            </div>
-            <div class="cssload-circle">
-              <div class="cssload-inner"></div>
-            </div>
-            <div class="cssload-circle">
-              <div class="cssload-inner"></div>
-            </div>
-            <div class="cssload-circle">
-              <div class="cssload-inner"></div>
-            </div>
-          </div>
-          <!--/Animated Circle-->
+         <img src="assets/images/ajax-loader.gif">
         </div>     
 
         <!--Error in loading records-->
@@ -1709,7 +1738,7 @@
 
 <!--Relation Directive -->
 <div class="modal fade colored-header danger" id="mdrelationviewer" tabindex="-1" role="dialog">
-  <cb-databrowser definition="relatedTableDefArray" record="relatedTableRecordArray" close="closeRelModal()"></cb-databrowser>
+  <cb-databrowser definition="relatedTableDefArray" record="relatedTableRecordArray" fields="fieldsOrderArray" close="closeRelModal()"></cb-databrowser>
 </div> 
 <!--/Relation Directive -->
 

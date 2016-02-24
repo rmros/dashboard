@@ -17,8 +17,8 @@ app.directive('cbSearchObjects', function(){
           };
 
           $scope.goToDataBrowser=function(t){  
-            $("#md-searchreldocument").modal("hide"); 
-            $("#md-searchlistdocument").modal("hide");     
+            $("#md-searchreldocument").modal("hide");
+            $("#md-mdlistcommontypes").modal("hide");;     
             window.location.href="#/"+$rootScope.currentProject.appId+"/table/"+t.name;
           };
 

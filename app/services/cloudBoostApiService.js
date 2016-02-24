@@ -20,6 +20,11 @@ app.factory('cloudBoostApiService', ['$q','$http','$rootScope',function ($q,$htt
         for(var i=0;i<table.columns.length;++i){
           if(table.columns[i].dataType=="File"){
             query.include(table.columns[i].name);
+          }
+
+          //List of files
+          if(table.columns[i].dataType=="List" && table.columns[i].relatedTo=="File"){
+            query.include(table.columns[i].name);
           }        
         } 
 
