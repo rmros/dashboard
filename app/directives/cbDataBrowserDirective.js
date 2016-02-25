@@ -2,11 +2,11 @@
 app.directive('cbDatabrowser', function(){
     return {
         restrict: 'E',
-        transclude: true, 
+        transclude: true,       
         scope: {
           'relatedTableDefArray': '=definition',
           'relatedTableRecordArray': '=record',
-          'fieldsorder': '=fields', 
+          'fieldsOrderArray': '=fields', 
           'closeRelModal': '&close'          
         },   
         templateUrl: 'app/directives/templates/dataBrowserTemplate.html',       
@@ -33,7 +33,8 @@ app.directive('cbDatabrowser', function(){
             $scope.editableColumn=null;
             $scope.relEditableRow=null;
             $scope.relEditableColumn=null; 
-            $scope.modifyListItemError=[];            
+            $scope.modifyListItemError=[]; 
+            $scope.relationTableData=[];           
 
             //clearRelationErrors();
             //Flush Acl data in sharedDataService
@@ -43,8 +44,7 @@ app.directive('cbDatabrowser', function(){
             $scope.viewRelationData=function(row,column,index){
                 nullifyEditable();                  
 
-                if(row.get(column.name) instanceof Array){
-                  $("#md-list-commontypes").modal("hide")
+                if(row.get(column.name) instanceof Array){                  
                   var tableName=row.get(column.name)[index].document._tableName;
                   var rowId=row.get(column.name)[index].document._id;
                 }else{
@@ -61,7 +61,10 @@ app.directive('cbDatabrowser', function(){
                     //Convert ISODate 2 DateObject
                     convertISO2DateObj(tableDef,record); 
                     $scope.relatedTableDefArray.push(tableDef);       
-                    $scope.relatedTableRecordArray.push(record);        
+                    $scope.relatedTableRecordArray.push(record); 
+
+                    var response=_fieldOrder(tableDef,record);        
+                    $scope.fieldsOrderArray.push(response);       
 
                     //Nullify errors
                     clearRelationErrors();        
@@ -75,6 +78,118 @@ app.directive('cbDatabrowser', function(){
                 });
                 //End of get Table data       
             };
+
+            function _fieldOrder(table,cloudObject){
+              var fields=[];
+              var consumedFields={};
+
+              //Default Fields
+              var newRow=[];
+              var fieldObj={};
+              fieldObj.relCol=_.first(_.where(table.columns, {dataType: "Id"}));
+              newRow.push(fieldObj);
+              consumedFields["id"]=true;
+
+              var fieldObj={};
+              fieldObj.relCol=_.first(_.where(table.columns, {dataType: "DateTime",name:"expires"}));
+              newRow.push(fieldObj);
+              consumedFields["expires"]=true;
+
+              fields.push(newRow);
+
+              var newRow=[];
+              var fieldObj={};
+              fieldObj.relCol=_.first(_.where(table.columns, {dataType: "DateTime",name:"createdAt"}));
+              newRow.push(fieldObj);
+              consumedFields["createdAt"]=true;
+
+             var fieldObj={};
+              fieldObj.relCol=_.first(_.where(table.columns, {dataType: "DateTime",name:"updatedAt"}));
+              newRow.push(fieldObj);
+              consumedFields["updatedAt"]=true;
+
+              fields.push(newRow);
+
+              var newRow=[];
+              var fieldObj={};
+              fieldObj.relCol=_.first(_.where(table.columns, {dataType: "ACL"}));
+              newRow.push(fieldObj);
+              consumedFields["ACL"]=true;
+
+              fields.push(newRow);
+              //Default Fields
+
+
+              for(var i=0;i<table.columns.length;++i){
+                if(!consumedFields[table.columns[i].name]){    
+                  var newRow=[]; 
+
+                      
+                  if(table.columns[i].dataType=="Text" || table.columns[i].dataType=="File" || table.columns[i].dataType=="List" || table.columns[i].dataType=="Object"){
+                    var fieldObj={};
+                    fieldObj.relCol=table.columns[i];
+                    newRow.push(fieldObj);
+                    consumedFields[table.columns[i].name]=true;
+                  }
+
+                     
+                  if(table.columns[i].dataType=="Email" || table.columns[i].dataType=="URL" || table.columns[i].dataType=="Number" || table.columns[i].dataType=="EncryptedText"){
+                    var fieldObj={};
+                    fieldObj.relCol=table.columns[i];
+                    newRow.push(fieldObj);
+                    consumedFields[table.columns[i].name]=true;
+                  }    
+
+                  //MID SIZE FIELDS
+                  if(table.columns[i].dataType=="Boolean" || table.columns[i].dataType=="DateTime" || table.columns[i].dataType=="GeoPoint" || table.columns[i].dataType=="Relation"){
+                    var fieldObj={};
+                    fieldObj.relCol=table.columns[i];
+                    newRow.push(fieldObj);
+                    consumedFields[table.columns[i].name]=true;
+
+                    var result=_getMidSizeField(table,consumedFields);
+                    if(result){
+                      var fieldObj={};
+                      fieldObj.relCol=result;
+                      newRow.push(fieldObj);
+                      consumedFields[result.name]=true;
+                    }
+                  }
+                 
+                  fields.push(newRow);
+                }
+
+              }
+
+              return fields; 
+
+            }
+
+            function _getMidSizeField(table,consumedFields){
+              var midSizeFields={      
+                "Text":false,
+                "List":false, 
+                "File":false,
+                "Object":false,       
+                "Email":false,
+                "URL":false,
+                "Number":false,
+                "EncryptedText":false,
+                "Id":true,
+                "Boolean":true,
+                "DateTime":true,
+                "GeoPoint":true,
+                "Relation":true,
+              };
+
+              for(var i=0;i<table.columns.length;++i){
+                if(midSizeFields[table.columns[i].dataType] && !consumedFields[table.columns[i].name]){
+                  return table.columns[i];
+                }
+              }
+
+              return null;
+            }
 
             //Relation List
             $scope.showRelationList=function(cloudObject,column,functionality,data,index){
@@ -318,7 +433,7 @@ app.directive('cbDatabrowser', function(){
                     //Nullify errors
                     clearRelationErrors();
                     clearListErrors();
-                    $scope.closeRelModal();
+                    $scope.closeModal();
 
                   }, function(error){ 
                     $scope.relationSpinnerMode=false;   
@@ -405,7 +520,8 @@ app.directive('cbDatabrowser', function(){
               if($scope.relatedTableDefArray && $scope.relatedTableDefArray.length>1){
                 var lastIndex=$scope.relatedTableDefArray.length-1;
                 $scope.relatedTableDefArray.splice(lastIndex,1);
-                $scope.relatedTableRecordArray.splice(lastIndex,1);                     
+                $scope.relatedTableRecordArray.splice(lastIndex,1); 
+                $scope.fieldsOrderArray.splice(lastIndex,1);                    
               }
             };
 
@@ -414,10 +530,12 @@ app.directive('cbDatabrowser', function(){
               if($scope.relatedTableDefArray && $scope.relatedTableDefArray.length>1){
                 var lastIndex=$scope.relatedTableDefArray.length-1;
                 $scope.relatedTableDefArray.splice(lastIndex,1);
-                $scope.relatedTableRecordArray.splice(lastIndex,1);                     
+                $scope.relatedTableRecordArray.splice(lastIndex,1);
+                $scope.fieldsOrderArray.splice(lastIndex,1);                      
               }else{
                 $scope.relatedTableDefArray=[];
                 $scope.relatedTableRecordArray=[];
+                $scope.fieldsOrderArray=[];
                 $scope.closeRelModal();
               }
             };
@@ -679,25 +797,33 @@ app.directive('cbDatabrowser', function(){
               
                 var rowId=cloudObject.get(column.name).document._id; 
                 $scope.linkedRelatedDoc=rowId;
-                $scope.relToRel=true;
-                $("#md-reldocumentviewer").modal();
+                //$scope.relToRel=true;
+
+                $scope.viewRelationData(cloudObject,column,null);
                 
               }else{
                 $scope.linkedRelatedDoc=null;
-                $scope.relToRel=true;    
+                //$scope.relToRel=true;    
                 $scope.searchRelationDocs();
               } 
-            };
+            }; 
 
-            $scope.searchRelationDocs=function(){
-              $("#md-reldocumentviewer").modal("hide");              
+            $scope.deleteRelLink=function(row,column){
+              row.set(column.name,null);
+            };       
+
+            $scope.searchRelationDocs=function(){                           
 
               //List Relations records 
               cloudBoostApiService.loadTableData($scope.tableDef,"createdAt","asc",20,0)
-              .then(function(list){        
-                   
-               $scope.relationTableData=list;   
-               $("#md-relsearchreldocument").modal();          
+              .then(function(listCBObjs){        
+               
+               if(listCBObjs && listCBObjs.length>0){
+                $scope.relationTableData=listCBObjs;
+               }    
+                  
+               $("#md-splrelsearchreldocument").modal();
+               $scope.searchRelDocsError=null;          
                //$scope.$digest(); 
                                                       
               },function(error){ 
@@ -707,7 +833,7 @@ app.directive('cbDatabrowser', function(){
             };
 
             $scope.linkRecord=function(relationCBRecord){ 
-              $("#md-relsearchreldocument").modal("hide"); 
+              $("#md-splrelsearchreldocument").modal("hide"); 
               if($scope.editableColumn && $scope.editableColumn.relatedTo!='Text' && $scope.editableColumn.relatedTo!='Email' && $scope.editableColumn.relatedTo!='URL' && $scope.editableColumn.relatedTo!='Number' && $scope.editableColumn.relatedTo!='DateTime' && $scope.editableColumn.relatedTo!='Object' && $scope.editableColumn.relatedTo!='Boolean' && $scope.editableColumn.relatedTo!='File' && $scope.editableColumn.relatedTo!='GeoPoint'){
                 $scope.addListItem(relationCBRecord);
               }else{

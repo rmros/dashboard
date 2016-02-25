@@ -2,7 +2,7 @@
 app.directive('cbJson', function(){
     return {
         restrict: 'E',
-        transclude: true, 
+        transclude: true,       
         scope: {
           'editableJsonObj': '=json', 
           'editableColumn': '=column',          

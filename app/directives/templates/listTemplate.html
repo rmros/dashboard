@@ -112,7 +112,7 @@
               <div class="document-list-txt-wrapper flex-general-row-wrapper-center cf">
                 
                 <div  class="list-text-aura">
-                    <input type="text" ng-model="eachNumber" class="list-modal-text" ng-blur="modifyListItem(eachNumber,$index)">
+                  <input type="text" ng-model="eachNumber" class="list-modal-text" ng-blur="modifyListItem(eachNumber,$index)">
                 </div>
               
 
@@ -205,7 +205,72 @@
           </div>
 
         </div>
-        <!--/List of JSON-Object-->
+        <!--/List of JSON-Object-->        
+
+
+        <!--List of GeoPoint-->
+        <div ng-if="editableColumn.relatedTo=='GeoPoint'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
+
+            <div ng-repeat="eachGeopoint in editableList track by $index" class="geopoint-list flex-general-row-wrapper-center cf" style="margin-top:3px;background-color: #E2E2E2;">
+
+              <div class="m-relationid id-show" style="cursor:pointer;" ng-click="editListGeoPoint($index)">
+                <div ng-click="editListGeoPoint($index)">
+                  { <span>{{eachGeopoint.longitude}}</span>,&nbsp;
+                  <span>{{eachGeopoint.latitude}}</span> }
+                </div>  
+              </div>
+
+              <div class="m-remove-relation remv-show">
+                <div ng-click="deleteListItem($index)">
+                 <i class="fa fa-times"></i>
+                </div>
+              </div>
+
+            </div>
+            
+        </div>
+        <!--/List of GeoPoint-->
+
+
+        <!--List of Relation Objects-->
+        <div ng-if="editableColumn.relatedTo!='Text' &&editableColumn.relatedTo!='Email' && editableColumn.relatedTo!='URL' && editableColumn.relatedTo!='Number' && editableColumn.relatedTo!='DateTime' && editableColumn.relatedTo!='Object' && editableColumn.relatedTo!='Boolean' && editableColumn.relatedTo!='File' && editableColumn.relatedTo!='GeoPoint'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
+
+            <!--show list-->
+            <div ng-repeat="eachRelRow in editableList | filter:searchRelListDoc" class="relationid-list-show">
+              <div class="m-relationid" ng-click="viewRelationalBrowser(null,null,$index)">
+                <div class="neorel-wrapper cf">                     
+
+                  <!--Image-->
+                  <div class="pull-left" ng-repeat="fileCol in (filterImages=(tableDef.columns | getImageFromArray))">
+
+                    <div ng-show="eachRelRow.get(fileCol.name) && ((eachRelRow.get(fileCol.name).document.name | extension)=='jpeg' || (eachRelRow.get(fileCol.name).document.name | extension)=='jpg' || (eachRelRow.get(fileCol.name).document.name | extension)=='png' || (eachRelRow.get(fileCol.name).document.name | extension)=='tif' || (eachRelRow.get(fileCol.name).document.name | extension)=='gif')" style="margin-right:5px;">  
+                                             
+                      <img  ng-src="eachRelRow.get(fileCol.name).document.url" class="neorel-img">
+                    </div>
+
+                  </div>
+
+                  <!--Content-->
+                  <div class="pull-left" style="padding-top:4px; padding-bottom:2px;padding-left:2px;">
+                    <div style="font-size:14px;">{{eachRelRow.get("id")}}</div>     
+
+                    <div style="font-size:12px;" ng-repeat="textCol in (Texts=(tableDef.columns | getTextFromArray))" ng-show="eachRelRow.get(textCol.name)">{{eachRelRow.get(textCol.name)}}</div>
+                  
+                    <div style="margin-top:3.5px;color:#A09F9F;font-style: italic;">{{eachRelRow.get('createdAt') | date:'medium'}}</div>
+                  </div>
+
+                  <!--Delete Button-->
+                  <div class="pull-right" style="margin-top:-1px; padding-bottom:2px;padding-right:6px;">
+                    <i class="icon ion-close" style="font-size:12px;" ng-click="deleteListItem($index); $event.stopPropagation()"></i>                        
+                  </div>
+
+                 </div>
+              </div>  
+            </div>
+            <!--show list-->  
+
+        </div>
+        <!--/List of Relation Objects-->
 
         <!--List of File-->
         <div ng-if="editableColumn.relatedTo=='File'" class="document-file-list-wrapper list-mat" malihuscrollbar-for-popup>
@@ -340,70 +405,6 @@
         </div>
         <!--List of File-->
 
-
-        <!--List of GeoPoint-->
-        <div ng-if="editableColumn.relatedTo=='GeoPoint'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>
-
-            <div ng-repeat="eachGeopoint in editableList track by $index" class="geopoint-list flex-general-row-wrapper-center cf" style="margin-top:3px;background-color: #E2E2E2;">
-
-              <div class="m-relationid id-show" style="cursor:pointer;" ng-click="editListGeoPoint($index)">
-                <div ng-click="editListGeoPoint($index)">
-                  { <span>{{eachGeopoint.longitude}}</span>,&nbsp;
-                  <span>{{eachGeopoint.latitude}}</span> }
-                </div>  
-              </div>
-
-              <div class="m-remove-relation remv-show">
-                <div ng-click="deleteListItem($index)">
-                 <i class="fa fa-times"></i>
-                </div>
-              </div>
-
-            </div>
-            
-        </div>
-        <!--/List of GeoPoint-->
-
-        <!--List of Relation Objects-->
-        <div ng-if="editableColumn.relatedTo!='Text' &&editableColumn.relatedTo!='Email' && editableColumn.relatedTo!='URL' && editableColumn.relatedTo!='Number' && editableColumn.relatedTo!='DateTime' && editableColumn.relatedTo!='Object' && editableColumn.relatedTo!='Boolean' && editableColumn.relatedTo!='File' && editableColumn.relatedTo!='GeoPoint'" class="document-list-wrapper list-mat" malihuscrollbar-for-popup>               
-
-            <!--show list-->
-            <div ng-repeat="eachRelRow in editableList | filter:searchRelListDoc" class="relationid-list-show">
-              <div class="m-relationid" ng-click="viewRelationalBrowser(editableRow,editableColumn,$index)">
-                 <div class="neorel-wrapper cf">                     
-
-                  <!--Image-->
-                  <div class="pull-left" ng-repeat="fileCol in (filterImages=(tableDef.columns | getImageFromArray))">
-
-                    <div ng-show="eachRelRow.get(fileCol.name) && ((eachRelRow.get(fileCol.name).document.name | extension)=='jpeg' || (eachRelRow.get(fileCol.name).document.name | extension)=='jpg' || (eachRelRow.get(fileCol.name).document.name | extension)=='png' || (eachRelRow.get(fileCol.name).document.name | extension)=='tif' || (eachRelRow.get(fileCol.name).document.name | extension)=='gif')" style="margin-right:5px;">  
-                                             
-                      <img  ng-src="eachRelRow.get(fileCol.name).document.url" class="neorel-img">
-                    </div>
-
-                  </div>
-
-                  <!--Content-->
-                  <div class="pull-left" style="padding-top:4px; padding-bottom:2px;padding-left:2px;">
-                    <div style="font-size:14px;">{{eachRelRow.get("id")}}</div>     
-
-                    <div style="font-size:12px;" ng-repeat="textCol in (Texts=(tableDef.columns | getTextFromArray))" ng-show="eachRelRow.get(textCol.name)">{{eachRelRow.get(textCol.name)}}</div>
-                  
-                    <div style="margin-top:3.5px;color:#A09F9F;font-style: italic;">{{eachRelRow.get('createdAt') | date:'medium'}}</div>
-                  </div>
-
-                  <!--Delete Button-->
-                  <div class="pull-right" style="margin-top:-1px; padding-bottom:2px;padding-right:6px;">
-                    <i class="icon ion-close" style="font-size:12px;" ng-click="deleteListItem($index); $event.stopPropagation()"></i>                        
-                  </div>
-
-                 </div>
-              </div>  
-            </div>
-            <!--show list-->  
-
-        </div>
-        <!--/List of Relation Objects-->
-
       </div> 
     </div>
 
@@ -423,7 +424,7 @@
 </div><!-- /.modal-dialog -->
 
 <!--JSON Directive -->
-<div class="modal fade colored-header danger" id="md-listobjectviewer" tabindex="-1" role="dialog">
+<div  class="modal fade colored-header danger" id="md-listobjectviewer" tabindex="-1" role="dialog">
   <cb-json json="cloudObjectForJson" column="editableColumn" save="setAndSaveJsonObject(updateJson)"></cb-json>
 </div>
 <!--/JSON Directive -->
@@ -441,7 +442,10 @@
 <!--/Search Documents Directive-->
 
 <!--Relation Directive -->
-<div ng-if="openMiniBrowser" class="modal fade colored-header danger" id="splmdlistrelationviewer" tabindex="-1" role="dialog">
-  <cb-databrowser definition="tableDefArray" record="tableRecordArray" close="closeRelModal()"></cb-databrowser>
+
+<div class="modal fade colored-header danger" id="splmdlistrelationviewer" tabindex="-1" role="dialog">
+  <div ng-if="openMiniBrowser">
+  <cb-databrowser definition="tableDefArray" record="tableRecordArray" fields="fieldsOrderArray" close="closeRelModal()"></cb-databrowser>
+  </div>
 </div> 
 <!--/Relation Directive -->

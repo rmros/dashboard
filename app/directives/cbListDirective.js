@@ -2,11 +2,11 @@
 app.directive('cbList', function(){
     return {
         restrict: 'E',
-        transclude: true, 
+        transclude: true,      
         scope: {
-          'editableRow':'=cbobject',
-          'editableList': '=list', 
-          'editableColumn': '=column',          
+          'editableRow':'=cbobject',          
+          'editableColumn': '=column', 
+          'editableList': '=list',          
           'save': '&save'
         },   
         templateUrl: 'app/directives/templates/listTemplate.html',       
@@ -14,6 +14,10 @@ app.directive('cbList', function(){
           
           $scope.modifyListItemError=[];          
           $scope.listFileSpinner=[];
+
+          $scope.tableDefArray=[];
+          $scope.tableRecordArray=[];
+          $scope.fieldsOrderArray=[];
 
           $scope.init=function(){
             clearListErrors();
@@ -220,7 +224,13 @@ app.directive('cbList', function(){
           };
 
           $scope.viewRelationalBrowser=function(row,column,index){
-              nullifyEditable();      
+
+              if(!row){
+                row=$scope.editableRow;
+              }
+              if(!column){
+                column=$scope.editableColumn;
+              }                  
 
               if(row.get(column.name) instanceof Array){
                 //$("#md-list-commontypes").modal("hide")
@@ -240,7 +250,11 @@ app.directive('cbList', function(){
                   //Convert ISODate 2 DateObject
                   convertISO2DateObj(tableDef,record); 
                   $scope.tableDefArray.push(tableDef);       
-                  $scope.tableRecordArray.push(record);                          
+                  $scope.tableRecordArray.push(record);
+
+                  var response=_fieldOrder(tableDef,record);                  
+                  $scope.fieldsOrderArray.push(response);
+
                 }     
                 $scope.openMiniBrowser=true;
                 $("#splmdlistrelationviewer").modal();                
@@ -252,6 +266,118 @@ app.directive('cbList', function(){
               });
               //End of get Table data       
           };
+
+          function _fieldOrder(table,cloudObject){
+            var fields=[];
+            var consumedFields={};
+
+            //Default Fields
+            var newRow=[];
+            var fieldObj={};
+            fieldObj.relCol=_.first(_.where(table.columns, {dataType: "Id"}));
+            newRow.push(fieldObj);
+            consumedFields["id"]=true;
+
+            var fieldObj={};
+            fieldObj.relCol=_.first(_.where(table.columns, {dataType: "DateTime",name:"expires"}));
+            newRow.push(fieldObj);
+            consumedFields["expires"]=true;
+
+            fields.push(newRow);
+
+            var newRow=[];
+            var fieldObj={};
+            fieldObj.relCol=_.first(_.where(table.columns, {dataType: "DateTime",name:"createdAt"}));
+            newRow.push(fieldObj);
+            consumedFields["createdAt"]=true;
+
+           var fieldObj={};
+            fieldObj.relCol=_.first(_.where(table.columns, {dataType: "DateTime",name:"updatedAt"}));
+            newRow.push(fieldObj);
+            consumedFields["updatedAt"]=true;
+
+            fields.push(newRow);
+
+            var newRow=[];
+            var fieldObj={};
+            fieldObj.relCol=_.first(_.where(table.columns, {dataType: "ACL"}));
+            newRow.push(fieldObj);
+            consumedFields["ACL"]=true;
+
+            fields.push(newRow);
+            //Default Fields
+
+
+            for(var i=0;i<table.columns.length;++i){
+              if(!consumedFields[table.columns[i].name]){    
+                var newRow=[]; 
+
+                    
+                if(table.columns[i].dataType=="Text" || table.columns[i].dataType=="File" || table.columns[i].dataType=="List" || table.columns[i].dataType=="Object"){
+                  var fieldObj={};
+                  fieldObj.relCol=table.columns[i];
+                  newRow.push(fieldObj);
+                  consumedFields[table.columns[i].name]=true;
+                }
+
+                   
+                if(table.columns[i].dataType=="Email" || table.columns[i].dataType=="URL" || table.columns[i].dataType=="Number" || table.columns[i].dataType=="EncryptedText"){
+                  var fieldObj={};
+                  fieldObj.relCol=table.columns[i];
+                  newRow.push(fieldObj);
+                  consumedFields[table.columns[i].name]=true;
+                }    
+
+                //MID SIZE FIELDS
+                if(table.columns[i].dataType=="Boolean" || table.columns[i].dataType=="DateTime" || table.columns[i].dataType=="GeoPoint" || table.columns[i].dataType=="Relation"){
+                  var fieldObj={};
+                  fieldObj.relCol=table.columns[i];
+                  newRow.push(fieldObj);
+                  consumedFields[table.columns[i].name]=true;
+
+                  var result=_getMidSizeField(table,consumedFields);
+                  if(result){
+                    var fieldObj={};
+                    fieldObj.relCol=result;
+                    newRow.push(fieldObj);
+                    consumedFields[result.name]=true;
+                  }
+                }
+               
+                fields.push(newRow);
+              }
+
+            }
+
+            return fields; 
+
+          }
+
+          function _getMidSizeField(table,consumedFields){
+            var midSizeFields={      
+              "Text":false,
+              "List":false, 
+              "File":false,
+              "Object":false,       
+              "Email":false,
+              "URL":false,
+              "Number":false,
+              "EncryptedText":false,
+              "Id":true,
+              "Boolean":true,
+              "DateTime":true,
+              "GeoPoint":true,
+              "Relation":true,
+            };
+
+            for(var i=0;i<table.columns.length;++i){
+              if(midSizeFields[table.columns[i].dataType] && !consumedFields[table.columns[i].name]){
+                return table.columns[i];
+              }
+            }
+
+            return null;
+          }
 
           //List Relationdocs search
           $scope.searchRelationDocs=function(){
@@ -304,7 +430,9 @@ app.directive('cbList', function(){
           $scope.closeRelModal=function(){  
             $scope.tableDefArray=[];
             $scope.tableRecordArray=[];
+            $scope.fieldsOrderArray=[];
             $("#splmdlistrelationviewer").modal("hide");
+            $scope.openMiniBrowser=false;
           };
 
 
@@ -316,13 +444,7 @@ app.directive('cbList', function(){
               }
             }
           }
-
-          function nullifyEditable(){             
-            $scope.editableRow=null;//row 
-            $scope.editableIndex=null;//index 
-            $scope.nullAccepted=false;
-          }
-
+         
           function convertISO2DateObj(table,cloudObject){
             for(var i=0;i<table.columns.length;++i){
               if(table.columns[i].document.dataType=="DateTime"){
@@ -368,6 +490,6 @@ app.directive('cbList', function(){
             }        
           }          
 
-        }]    
+        }] 
     };
 });

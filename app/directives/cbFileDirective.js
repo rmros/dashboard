@@ -2,7 +2,7 @@
 app.directive('cbFile', function(){
     return {
         restrict: 'E',
-        transclude: true, 
+        transclude: true,         
         scope: {
           'allowedFileTypes': '=filetype',
           'editableFile': '=edit', 

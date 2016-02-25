@@ -73,6 +73,7 @@ $scope.activeUIelm=[];
 /****Relation Modal ****/
 $scope.relatedTableDefArray=[];
 $scope.relatedTableRecordArray=[];
+$scope.fieldsOrderArray=[];
 
 
 //Random
@@ -656,10 +657,8 @@ $scope.viewRelationData=function(row,column,index){
         $scope.relatedTableDefArray.push(tableDef);       
         $scope.relatedTableRecordArray.push(record);
 
-        var response=fieldOrder(tableDef,record);
-        $scope.fieldsOrderArray=[];
+        var response=_fieldOrder(tableDef,record);        
         $scope.fieldsOrderArray.push(response);
-
       }     
     
       $("#mdrelationviewer").modal();
@@ -670,7 +669,7 @@ $scope.viewRelationData=function(row,column,index){
     //End of get Table data       
 }; 
 
-function fieldOrder(table,cloudObject){
+function _fieldOrder(table,cloudObject){
   var fields=[];
   var consumedFields={};
 
@@ -738,7 +737,7 @@ function fieldOrder(table,cloudObject){
         newRow.push(fieldObj);
         consumedFields[table.columns[i].name]=true;
 
-        var result=getMidSizeField(table,consumedFields);
+        var result=_getMidSizeField(table,consumedFields);
         if(result){
           var fieldObj={};
           fieldObj.relCol=result;
@@ -756,7 +755,7 @@ function fieldOrder(table,cloudObject){
 
 }
 
-function getMidSizeField(table,consumedFields){
+function _getMidSizeField(table,consumedFields){
   var midSizeFields={      
     "Text":false,
     "List":false, 
@@ -785,6 +784,7 @@ function getMidSizeField(table,consumedFields){
 $scope.closeRelModal=function(){  
   $scope.relatedTableDefArray=[];
   $scope.relatedTableRecordArray=[];
+  $scope.fieldsOrderArray=[];
   $("#mdrelationviewer").modal("hide");
 };
 
@@ -806,12 +806,13 @@ $scope.deleteRelLink=function(row,column){
     rowEditMode(i);
    
     var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
-       if(everyCol.name!=column.name && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
-         if(!$scope.editableRow.get(everyCol.name)){
+      if(everyCol.name!=column.name && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
+        if(!$scope.editableRow.get(everyCol.name)){
           return everyCol;
-         }          
-       }
+        }          
+      }
     });
+
     row.set(column.name,null);
 
     if(requiredField){      
@@ -823,9 +824,10 @@ $scope.deleteRelLink=function(row,column){
       var requestIndex=i;
       saveWrapper(row,requestIndex)
       .then(function(resp){ 
-        $scope.relatedTableDefArray=[];
-        $scope.relatedTableRecordArray=[];
-        $scope.linkedRelatedDoc=null;
+        //$scope.relatedTableDefArray=[];
+        //$scope.relatedTableRecordArray=[];
+        //$scope.fieldsOrderArray=[];
+        //$scope.linkedRelatedDoc=null;
 
         showSaveIconInSecond(resp.rowIndex);
       }, function(errorResp){                         
@@ -834,8 +836,6 @@ $scope.deleteRelLink=function(row,column){
 
     }
 };
-
-
 
 //Clear All Errors
 function clearRelationErrors(){
@@ -898,7 +898,7 @@ $scope.setAndSaveList=function(updatedList){
   }
   
   //Set and Save if List has some fields
-  if($scope.editableList && $scope.editableList.length>0){ 
+  //if($scope.editableList && $scope.editableList.length>0){ 
 
     $scope.editableRow.set($scope.editableColumn.name,$scope.editableList);
 
@@ -920,9 +920,9 @@ $scope.setAndSaveList=function(updatedList){
 
     }
 
-  }else{
-    rowInitMode($scope.editableIndex);
-  } 
+  //}else{
+    //rowInitMode($scope.editableIndex);
+  //} 
  
 };
 

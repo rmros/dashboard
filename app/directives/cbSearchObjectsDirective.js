@@ -2,7 +2,7 @@
 app.directive('cbSearchObjects', function(){
     return {
         restrict: 'E',
-        transclude: true, 
+        transclude: true,       
         scope: {
           'relationTableData': '=objectlist', 
           'tableDef': '=table', 

@@ -2,7 +2,7 @@
 app.directive('cbGeo', function(){
     return {
         restrict: 'E',
-        transclude: true, 
+        transclude: true,        
         scope: {
           'editableGeopoint': '=geo', 
           'editableColumn': '=column',          

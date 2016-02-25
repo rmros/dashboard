@@ -1,7 +1,7 @@
 app.directive('cbAcl', function(){
     return {
         restrict: 'E',
-        transclude: true, 
+        transclude: true,       
         scope: {          
           'setAndSaveACLObject':'&save'         
         },   

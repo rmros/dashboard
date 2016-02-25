@@ -4,7 +4,7 @@
     <div style="height:80px; width:100%;
     padding-left:15px;padding-right:15px;padding-top:13px;padding-bottom:13px;background-color:#549afc;border-top-left-radius:4px;border-top-right-radius:4px;">
       <div class="pull-left" style="padding-left:8px;">
-        <div style="font-size:22px;color:white;font-weight: 100;">
+        <div style="font-size:22px;color:white;">
           Record from 
           <span style="font-size:22px;color:white;font-weight: 700;">{{relatedTableDefArray[relatedTableDefArray.length-1].name}}</span>
         </div>
@@ -64,7 +64,7 @@
             <!--DEFAULTS-->
             <div class="the-defaults"style="width: 100%;">
             <!--each row-->
-              <div class="masons-bx" ng-repeat="eachRow in fieldsorder[fieldsorder.length-1]">
+              <div class="masons-bx" ng-repeat="eachRow in fieldsOrderArray[fieldsOrderArray.length-1]">
 
                 <div class="flex-general-row-wrapper">
                  
@@ -527,11 +527,15 @@
 
                             <div style="width:100%;">
                               <div class="pull-left">
-                                <div style="height:100%;overflow:hidden;margin-top:2.5px;">
+                                <div class="" style="height:100%;overflow:hidden;margin-top:2.5px;">
 
-                                 <div ng-if="relatedTableRecordArray[relatedTableRecordArray.length-1].document[eachField.relCol.name]" class="m-rel-id-aura" ng-click="viewRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],eachField.relCol)" style="width:100px;">                          
+                                 <div ng-if="relatedTableRecordArray[relatedTableRecordArray.length-1].document[eachField.relCol.name]" class="m-rel-id-aura pull-left" ng-click="viewRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],eachField.relCol,null)" style="width:100px;">                          
                                     {{relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).document._id}}
-                                  </div>
+                                    &nbsp;
+                                    <span class="pull-right">
+                                      <i class="fa fa-times" ng-click="deleteRelLink(relatedTableRecordArray[relatedTableRecordArray.length-1],eachField.relCol); $event.stopPropagation()"></i>
+                                    </span>
+                                  </div>                                 
 
                                 </div>
                               </div>
@@ -694,9 +698,9 @@
 
                         <div class="value-field">
                           <!--List DataTypes except File-->
-                          <div class="solo-vertical-center rel-object-wrap cf" style="width: 100%;height:auto;margin-top:4px;border:1px solid red;padding: 10px;background-color: white;border-radius: 2px;border:1px solid #E2E2E2;">
+                          <div ng-if="eachField.relCol.document.relatedTo!='File'" class="solo-vertical-center rel-object-wrap cf" style="width: 100%;height:auto;margin-top:4px;border:1px solid red;padding: 10px;background-color: white;border-radius: 2px;border:1px solid #E2E2E2;">
 
-                           <!--Add Button-->
+                            <!--Add Button-->
                             <div class="document-rel-list-add-wrapper flex-general-row-wrapper">                       
                               <button type="button" ng-click="showRelationList(relatedTableRecordArray[relatedTableRecordArray.length-1],eachField.relCol,'add',null,null)" class="nuevo-rel-add-list-btn" >Add New Record</button>           
                             </div>
@@ -848,7 +852,7 @@
                                   <!--show list-->
                                   <div ng-repeat="eachRelRow in relatedTableRecordArray[relatedTableRecordArray.length-1].document[eachField.relCol.name]" class="relationid-rel-list-show">
 
-                                    <div class="m-relationid" ng-click="listViewRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],eachField.relCol,$index)">
+                                    <div class="m-relationid" ng-click="viewRelationData(relatedTableRecordArray[relatedTableRecordArray.length-1],eachField.relCol,$index)">
                                        <div class="neorel-wrapper cf">                     
 
                                         <!--Image-->
@@ -888,9 +892,9 @@
                           <!--List DataTypes except File-->
 
                           <!--List of Files-->
-                          <div class="solo-vertical-center cf" style="width: 100%;height:auto;margin-top:4px;">
+                          <div ng-if="eachField.relCol.document.relatedTo=='File'" class="solo-vertical-center cf" style="width: 100%;height:auto;margin-top:4px;">
                                                      
-                            <div ng-if="eachField.relCol.document.relatedTo=='File'" class="m-real-content-list-file pull-left" style="width:100%;">                          
+                            <div class="m-real-content-list-file pull-left" style="width:100%;">                          
                          
                               <!--Empty List-->   
                               <div  ng-if="relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).length==0 || !relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name)" class="m-list-condition flex-general-row-wrapper cf">  
@@ -912,13 +916,13 @@
                               </div>
 
                               <!--List items>0-->  
-                              <div ng-if="relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).length>0" class="m-list-condition flex-general-row-wrapper cf">
+                              <div ng-if="relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).length>0" class="m-list-condition flex-general-row-wrapper cf">
 
                                 <!--Addition-->
                                 <div class="new-rel-list-file-up pull-left" style="background-color:white;">
 
                                     <!-- D&D Markup -->
-                                    <div  class="rel-list-uploader cf flex-general-row-wrapper-center" listreldmuploader data-column="{{relCol}}">
+                                    <div  class="rel-list-uploader cf flex-general-row-wrapper-center" listreldmuploader data-column="{{eachField.relCol}}">
 
                                       <div class="browser">
                                         <label class="flex-general-column-wrapper-center">
@@ -935,7 +939,7 @@
                                 </div>
 
                                 <!--List-->
-                                <div ng-repeat="file in relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name) track by $index" class="flex-general-row-wrapper cf">
+                                <div ng-repeat="file in relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name) track by $index" class="flex-general-row-wrapper cf">
 
                                   <!--Spinner-->
                                   <div ng-show="listFileSpinner[$index]" class="new-rel-list-file pull-left flex-general-column-wrapper-center">
@@ -968,7 +972,7 @@
                                           </a>  
 
                                           <!--Delete-->
-                                          <div class="pull-left flex-general-column-wrapper-center" style="margin-left:3px; height:26px; width:26px;border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;" ng-click="deleteRelationListItem($index,relCol)">
+                                          <div class="pull-left flex-general-column-wrapper-center" style="margin-left:3px; height:26px; width:26px;border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;" ng-click="deleteRelationListItem($index,eachField.relCol)">
                                             <i class="icon ion-ios-trash-outline" style="color:white;font-size:20px;"></i>
                                           </div>
                                       </div>
@@ -991,7 +995,7 @@
                                           </a>  
 
                                           <!--Delete-->
-                                          <div class="pull-left flex-general-column-wrapper-center" style="margin-left:3px; height:26px; width:26px;border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;" ng-click="deleteRelationListItem($index,relCol)">
+                                          <div class="pull-left flex-general-column-wrapper-center" style="margin-left:3px; height:26px; width:26px;border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;" ng-click="deleteRelationListItem($index,eachField.relCol)">
                                             <i class="icon ion-ios-trash-outline" style="color:white;font-size:20px;"></i>
                                           </div>
                                       </div>
@@ -1002,7 +1006,7 @@
                                     <!--File Name-->
                                     <div class="rel-list-file-view-name flex-general-column-wrapper-center">
                                       <div style="color:black;">
-                                        {{file.document.name}}
+                                        {{file.document.name | characters:24}}
                                       </div>  
                                     </div> 
                                   </div>                           
@@ -1024,142 +1028,7 @@
               </div>
               <!--/each row-->
             </div>  
-            <!--END OF DEFAULTS-->
-                    
-
-
-            <!--OLD DESIGN-->
-            <div class="m-key-value flex-general-column-wrapper-center" ng-repeat="relCol in relatedTableDefArray[relatedTableDefArray.length-1].columns">                  
-                  
-
-                  <!--List of Files-->                         
-                  <div ng-if="relCol.document.relatedTo=='File'" class="m-real-content-list-file pull-left" style="width:100%;">                          
-               
-                    <!--Empty List-->   
-                    <div  ng-if="relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).length==0 || !relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name)" class="m-list-condition flex-general-row-wrapper cf">  
-
-                      <!-- D&D Markup -->
-                      <div  class="rel-uploader cf flex-general-row-wrapper-center" listreldmuploader data-column="{{relCol}}">
-                        <div class="browser pull-left">
-                          <label class="flex-general-column-wrapper-center">
-                            <span style="position:absolute; margin-top:14px;margin-left:-8px;">                          
-                              <i class="icon ion-plus" style="color:#CECCCC; font-size:18px;"></i>
-                            </span>
-                            <input type="file" name="files[]" multiple="multiple" title='Click to add Files'>
-                          </label>
-                        </div>                                               
-                        <div class="pull-left">&nbsp;Drag &amp; Drop File Here</div>                          
-                      </div>
-                      <!-- /D&D Markup -->
-
-                    </div>
-
-                    <!--List items>0-->  
-                    <div ng-if="relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name).length>0" class="m-list-condition flex-general-row-wrapper cf">
-
-                      <!--Addition-->
-                      <div class="new-rel-list-file-up pull-left" style="background-color:white;">
-
-                          <!-- D&D Markup -->
-                          <div  class="rel-list-uploader cf flex-general-row-wrapper-center" listreldmuploader data-column="{{relCol}}">
-
-                            <div class="browser">
-                              <label class="flex-general-column-wrapper-center">
-                                <div style="position:absolute !important;margin-top:60px;">                          
-                                  <i class="icon ion-plus list-file-up-icon" style="color:#DCDCDC;  margin-left:65px;font-size:28px;"></i>
-                                </div>
-                                <input type="file" name="files[]" multiple="multiple" title='Click to add Files'>
-                              </label>
-                            </div>               
-                                                      
-                          </div>
-                          <!-- /D&D Markup -->
-
-                      </div>
-
-                      <!--List-->
-                      <div ng-repeat="file in relatedTableRecordArray[relatedTableRecordArray.length-1].get(relCol.name) track by $index" class="flex-general-row-wrapper cf">
-
-                        <!--Spinner-->
-                        <div ng-show="listFileSpinner[$index]" class="new-rel-list-file pull-left flex-general-column-wrapper-center">
-                          <div style="width:100%;">
-                            <div class="loading-progress-1" fileloading style="margin-left:5px;margin-top:12px;width:90%;"></div>
-                          </div>  
-                        </div>
-
-                        <!--Error-->
-                        <div ng-show="listFileError[$index]" class="new-rel-list-file pull-left flex-general-column-wrapper-center">
-                          <div style="width:100%;">
-                            <div>{{listFileError[$index]}}</div>
-                          </div>  
-                        </div> 
-
-                        <!--File Content-->
-                        <div ng-show="!listFileSpinner[$index] && !listFileError[$index]" class="new-rel-list-file pull-left">
-                          <!--Img Files-->
-                          <div class="rel-list-file-view" ng-if="(file.document.name | extension)=='jpeg' || (file.document.name | extension)=='jpg' || (file.document.name | extension)=='png' || (file.document.name | extension)=='tif' || (file.document.name | extension)=='gif'">
-
-                            <img ng-src="{{file.document.url}}" style="width:150px;height:130px;">
-
-                            <!--Image controllers-->
-                            <div class="m-rel-static-file-toolz flex-general-row-wrapper cf">
-                                <!--Download-->
-                                <a href="{{file.document.url}}" target="_blank">
-                                  <div class="pull-left flex-general-column-wrapper-center" style="height:26px; width:26px; border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;">
-                                    <i class="icon ion-ios-download-outline" style="color:white;font-size:20px;"></i>
-                                  </div>
-                                </a>  
-
-                                <!--Delete-->
-                                <div class="pull-left flex-general-column-wrapper-center" style="margin-left:3px; height:26px; width:26px;border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;" ng-click="deleteRelationListItem($index,relCol)">
-                                  <i class="icon ion-ios-trash-outline" style="color:white;font-size:20px;"></i>
-                                </div>
-                            </div>
-                            <!--/Image controllers-->  
-
-                          </div> 
-
-                          <!--Other Files-->
-                          <div class="rel-list-file-view" ng-if="(file.document.name | extension)!='jpeg' && (file.document.name | extension)!='jpg' && (file.document.name | extension)!='png' && (file.document.name | extension)!='tif' && (file.document.name | extension)!='gif'">
-
-                            <img src="assets/images/file2.png" style="width:125px;height:120px;margin-left:15px;margin-top:6px;">
-
-                            <!--Image controllers-->
-                            <div class="m-rel-static-file-toolz flex-general-row-wrapper cf">
-                                <!--Download-->
-                                <a href="{{file.document.url}}" target="_blank">
-                                  <div class="pull-left flex-general-column-wrapper-center" style="height:26px; width:26px; border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;">
-                                    <i class="icon ion-ios-download-outline" style="color:white;font-size:20px;"></i>
-                                  </div>
-                                </a>  
-
-                                <!--Delete-->
-                                <div class="pull-left flex-general-column-wrapper-center" style="margin-left:3px; height:26px; width:26px;border-radius:25px;background-color:#212121;opacity:0.8;cursor:pointer;" ng-click="deleteRelationListItem($index,relCol)">
-                                  <i class="icon ion-ios-trash-outline" style="color:white;font-size:20px;"></i>
-                                </div>
-                            </div>
-                            <!--/Image controllers-->  
-
-                          </div>
-
-                          <!--File Name-->
-                          <div class="rel-list-file-view-name flex-general-column-wrapper-center">
-                            <div style="color:black;">
-                              {{file.document.name}}
-                            </div>  
-                          </div> 
-                        </div>                           
-                      </div>                                                    
-                      
-                    </div>
-
-                  </div>
-                  <!--/List of Files-->  
-  
-              </div>
-
-              <!--OLD DESIGN-->               
-         
+            <!--END OF DEFAULTS-->         
 
         </div>  
       </div>
@@ -1176,7 +1045,7 @@
       </div>
 
       <div class="pull-right">
-        <button type="button" class="btn btn-default cb-modal-default-btn" ng-click="closeRelModal()">Close</button>
+        <button type="button" class="btn btn-default cb-modal-default-btn" ng-click="closeModal()">Close</button>
 
         <!--Disabled Save(On Relation View Error)-->
         <button type="button" style="color:gray;cursor:pointer !important;" class="btn cb-modal-default-btn" ng-if="(viewRelDataError[viewRelDataError.length-1]) || (relatedTableRecordArray.length==0) || !relatedTableRecordArray[relatedTableRecordArray.length-1] || relationErrorMode">Save</button>
@@ -1215,8 +1084,9 @@
 <!--/GeoPoint Directive-->
 
 <!--Search Documents Directive-->
-<div class="modal fade colored-header danger" id="md-relsearchreldocument" tabindex="-1" role="dialog">
+<div class="modal fade colored-header danger" id="md-splrelsearchreldocument" tabindex="-1" role="dialog">
   <cb-search-objects objectlist="relationTableData" table="tableDef" error="searchRelDocsError" link="linkRecord(cbRecord)"></cb-search-objects>
 </div> 
 <!--/Search Documents Directive-->
+
 
