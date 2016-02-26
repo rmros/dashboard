@@ -24,9 +24,11 @@ app.directive('cbDatabrowser', function(){
 
             $scope.setRelFileError=[]; 
             $scope.setRelFileSpinner=[];
+            $scope.setRelFileProgress=[];
             $scope.viewRelDataError=[];
             $scope.relFileProgress=null;
             $scope.listFileSpinner=[];
+            $scope.listFileProgress=[];
             $scope.listFileError=[]; 
 
             $scope.editableRow=null;
@@ -580,29 +582,38 @@ app.directive('cbDatabrowser', function(){
 
             //relation File
             $scope.setRelFile=function(){    
-              if($scope.selectedFileObj) {
-                //$("#md-rel-fileviewer").modal("hide");
-                $scope.setRelFileSpinner[$scope.relEditableColumn.name]=true;
+              if($scope.selectedFileObj) {               
+                $scope.setRelFileSpinner[$scope.relEditableColumn.name]=true; 
+                $scope.setRelFileProgress[$scope.relEditableColumn.name]=0;
+                $scope.$digest();          
 
-                cloudBoostApiService.getCBFile($scope.selectedFileObj)
-                .then(function(cloudBoostFile){
-                
-                    $scope.relEditableRow.set($scope.relEditableColumn.name,cloudBoostFile);        
-                    $scope.removeSelectdFile(); 
-                    $scope.setRelFileSpinner[$scope.relEditableColumn.name]=false; 
-                    $scope.relEditableRow=null; 
-                    $scope.relEditableColumn=null;                    
-                    $scope.relEditableFile=null;
-                    //progress bar
-                    //$scope.relFileProgress.progressTimer('complete');      
+                cloudBoostApiService.getCBFile($scope.selectedFileObj,function(cloudBoostFile){
 
-                }, function(err){
+                  $scope.relEditableRow.set($scope.relEditableColumn.name,cloudBoostFile);        
+                  $scope.removeSelectdFile();
+                  $scope.setRelFileSpinner[$scope.relEditableColumn.name]=false;  
+                  $scope.setRelFileProgress[$scope.relEditableColumn.name]=100;                
+                  $scope.relEditableRow=null; 
+                  $scope.relEditableColumn=null;                    
+                  $scope.relEditableFile=null;
+                  $scope.$digest();                  
+
+                },function(error){
+
                   $scope.setRelFileSpinner[$scope.relEditableColumn.name]=false; 
+                  $scope.setRelFileProgress[$scope.relEditableColumn.name]=0;
                   $scope.setRelFileError[$scope.relEditableColumn.name]="Something went wrong .try again";
-                  $timeout(function(){ 
-                    $scope.setRelFileError[$scope.relEditableColumn.name]=null;         
-                  }, 1500);
-                });            
+                  $scope.$digest();
+                  
+                },function(uploadProgress){
+
+                  uploadProgress=uploadProgress*100;
+                  uploadProgress=Math.round(uploadProgress);                   
+
+                  $scope.setRelFileProgress[$scope.relEditableColumn.name]=uploadProgress;
+                  $scope.$digest();
+                });             
+
               }
             };
             //End of Relation File
@@ -741,26 +752,47 @@ app.directive('cbDatabrowser', function(){
               }
               
               var dummyObj={};
-              $scope.editableList.unshift(dummyObj);  
+              $scope.editableList.push(dummyObj);  
               var newIndex=$scope.editableList.indexOf(dummyObj);  
               $scope.editableRow.set($scope.editableColumn.name,$scope.editableList);
 
               $scope.listFileSpinner[newIndex]=true;
-              $scope.$digest();  
+              $scope.listFileProgress[newIndex]=0;
+              $scope.$digest();              
 
-              cloudBoostApiService.getCBFile($scope.selectedFileObj)
-              .then(function(cloudBoostFile){   
-                    
-                $scope.editableList[newIndex]=cloudBoostFile;      
+              fileSaveWrapper($scope.selectedFileObj,newIndex,function(cloudBoostFile,respIndex){
+                $scope.editableList[respIndex]=cloudBoostFile;      
                 $scope.removeSelectdFile();
                 $scope.editableRow.set($scope.editableColumn.name,$scope.editableList);
-                $scope.listFileSpinner[newIndex]=false;
-                //progress bar
-                $scope.relFileProgress.progressTimer('complete'); 
-              }, function(err){    
-                $scope.listFileSpinner[newIndex]=false;
+                $scope.listFileSpinner[respIndex]=false;
+                $scope.listFileProgress[respIndex]=100;
+                $scope.$digest();                  
+
+              },function(error,respIndex){                
+                $scope.listFileSpinner[respIndex]=false;
+                $scope.listFileError[respIndex]="Something went wrong. try again";
+                $scope.$digest();                
+              },function(uploadProgress,respIndex){
+                uploadProgress=uploadProgress*100;
+                uploadProgress=Math.round(uploadProgress);                   
+
+                $scope.listFileProgress[respIndex]=uploadProgress;
+                $scope.$digest();
               }); 
             };
+
+
+            function fileSaveWrapper(fileObj,index,successCallBk,errorCallBk,progressCallBk){
+
+              cloudBoostApiService.getCBFile(fileObj,function(cloudBoostFile){
+                successCallBk(cloudBoostFile,index);
+              },function(error){
+                errorCallBk(error,index);               
+              },function(uploadProgress){
+                progressCallBk(uploadProgress,index);
+              });
+
+            }
 
             $scope.deleteRelationListItem=function(index,column){ 
 

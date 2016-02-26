@@ -88,20 +88,6 @@ app.directive('ddfile', function(){
     };
 });
 
-app.directive('fileloading', function(){
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs){
-                    
-            scope.relFileProgress=$(element).progressTimer({
-               timeLimit: 25,
-               onFinish: function () {                   
-               }
-            });
-        }
-    }
-}); 
-
 
 /*app.directive('filechange', function(){
     return {

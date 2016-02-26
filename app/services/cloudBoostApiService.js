@@ -121,21 +121,24 @@ app.factory('cloudBoostApiService', ['$q','$http','$rootScope',function ($q,$htt
     return  q.promise;      
   };
 
-  global.getCBFile = function(fileObj){  
+  global.getCBFile = function(fileObj,successCallBk,errorCallBk,progressCallBk){  
 
-    var q=$q.defer();
+    //var q=$q.defer();
 
       var file = new CB.CloudFile(fileObj);
       file.save({
         success: function(newFile) {          
-          q.resolve(newFile); 
+          successCallBk(newFile); 
         },
         error: function(err) {         
-          q.reject(err); 
+          errorCallBk(err); 
+        },
+        uploadProgress : function(percentComplete){
+          progressCallBk(percentComplete);
         }
       });                
 
-    return  q.promise;
+    //return  q.promise;
   }; 
 
   global.cloudSearch = function(table,columnArray,searchValue) {          

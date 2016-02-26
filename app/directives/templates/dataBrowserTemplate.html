@@ -584,8 +584,16 @@
 
                             <!--Spinner-->
                             <div ng-if="setRelFileSpinner[eachField.relCol.name]" class="m-img-add flex-general-column-wrapper-center">
-                              <div style="width:100%;">
-                                <div class="loading-progress-1" fileloading style="width:90%;"></div>
+                              <div style="width:100%;" class="flex-general-column-wrapper-center"> 
+
+                                  <div style="width:80%">
+                                    <div class="progress">
+                                      <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="{{setRelFileProgress[eachField.relCol.name]}}" aria-valuemin="0" aria-valuemax="100" style="width:{{setRelFileProgress[eachField.relCol.name]}}%">
+                                        <span>{{setRelFileProgress[eachField.relCol.name]}}% Complete</span>
+                                      </div>
+                                    </div>
+                                  </div>
+
                               </div>
                             </div>
                             <!--/Spinner-->
@@ -604,9 +612,8 @@
                               <div class="solo-horizontal-center" style="width:100%;">
                                 <div class="rel-single-static-img " style="position:relative;">
 
-                                  <a ng-click="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],eachField.relCol)">
-                                    <img class="m-dynamix-img" ng-src="{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).url}}">
-                                  </a>                             
+                                  <img class="m-dynamix-img" ng-src="{{relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).url}}">
+                                                            
 
                                   <!--Image controllers-->
                                   <div class="m-rel-static-file-toolz flex-general-row-wrapper cf">
@@ -642,10 +649,23 @@
 
                               <div class="solo-horizontal-center" style="width:100%;">
                                 <div class="rel-single-static-img " style="position:relative;">
+                                  <div style="width: 100%;">
+                                    <!--Word-->
+                                    <img ng-if="(relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).document.name | extension)=='doc' || (relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).document.name | extension)=='docx'" src="assets/images/msword.png" class="m-dynamix-img" alt="image" >
 
-                                  <a ng-click="showRelationModals(relatedTableRecordArray[relatedTableRecordArray.length-1],eachField.relCol)" >
-                                    <img class="m-static-img" src="assets/images/file2.png">
-                                  </a>                             
+                                    <!--Ppt-->
+                                    <img ng-if="(relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).document.name | extension)=='ppt' || (relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).document.name | extension)=='pptx'" src="assets/images/msppt.png" class="m-dynamix-img" alt="image" >
+
+                                    <!--Excel-->
+                                    <img ng-if="(relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).document.name | extension)=='xls' || (relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).document.name | extension)=='xlsx'" src="assets/images/msexcel.png"  class="m-dynamix-img" alt="image" >
+
+                                    <!--Pdf-->
+                                    <img ng-if="(relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).document.name | extension)=='pdf'" src="assets/images/pdf.png" class="m-dynamix-img" alt="image" > 
+
+                                    <!--Others-->
+                                    <img ng-if="(relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).document.name | extension)!='pdf' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).document.name | extension)!='doc' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).document.name | extension)!='docx' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).document.name | extension)!='ppt' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).document.name | extension)!='pptx' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).document.name | extension)!='xls' && (relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).document.name | extension)!='xlsx'" src="assets/images/random2.png"  class="m-dynamix-img" alt="image" >
+                                  </div>
+                                                             
 
                                   <!--Image controllers-->
                                   <div class="m-rel-static-file-toolz flex-general-row-wrapper cf">
@@ -666,7 +686,7 @@
 
                                 <div style="width:100%" class="solo-horizontal-center">
                                   <p>
-                                    {{relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).name}}
+                                    {{relatedTableRecordArray[relatedTableRecordArray.length-1].get(eachField.relCol.name).name | characters:20}}
                                   </p>
                                 </div>
                                   
@@ -943,9 +963,15 @@
 
                                   <!--Spinner-->
                                   <div ng-show="listFileSpinner[$index]" class="new-rel-list-file pull-left flex-general-column-wrapper-center">
-                                    <div style="width:100%;">
-                                      <div class="loading-progress-1" fileloading style="margin-left:5px;margin-top:12px;width:90%;"></div>
-                                    </div>  
+                                    <div style="width:100%;" class="flex-general-column-wrapper-center">
+                                        <div style="width:85%">
+                                          <div class="progress">
+                                            <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="{{listFileProgress[$index]}}" aria-valuemin="0" aria-valuemax="100" style="width:{{listFileProgress[$index]}}%">
+                                              <span>{{listFileProgress[$index]}}% Complete</span>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>  
                                   </div>
 
                                   <!--Error-->
@@ -983,7 +1009,20 @@
                                     <!--Other Files-->
                                     <div class="rel-list-file-view" ng-if="(file.document.name | extension)!='jpeg' && (file.document.name | extension)!='jpg' && (file.document.name | extension)!='png' && (file.document.name | extension)!='tif' && (file.document.name | extension)!='gif'">
 
-                                      <img src="assets/images/file2.png" style="width:125px;height:120px;margin-left:15px;margin-top:6px;">
+                                      <!--Word-->
+                                      <img ng-if="(file.document.name | extension)=='doc' || (file.document.name | extension)=='docx'" src="assets/images/msword.png" style="width:125px;height:120px;margin-left:15px;margin-top:6px;" alt="image" >
+
+                                      <!--Ppt-->
+                                      <img ng-if="(file.document.name | extension)=='ppt' || (file.document.name | extension)=='pptx'" src="assets/images/msppt.png"style="width:125px;height:120px;margin-left:15px;margin-top:6px;" alt="image" >
+
+                                      <!--Excel-->
+                                      <img ng-if="(file.document.name | extension)=='xls' || (file.document.name | extension)=='xlsx'" src="assets/images/msexcel.png" style="width:125px;height:120px;margin-left:15px;margin-top:6px;" alt="image" >
+
+                                      <!--Pdf-->
+                                      <img ng-if="(file.document.name | extension)=='pdf'" src="assets/images/pdf.png" style="width:125px;height:120px;margin-left:15px;margin-top:6px;" alt="image" > 
+
+                                      <!--Others-->
+                                      <img ng-if="(file.document.name | extension)!='pdf' && (file.document.name | extension)!='doc' && (file.document.name | extension)!='docx' && (file.document.name | extension)!='ppt' && (file.document.name | extension)!='pptx' && (file.document.name | extension)!='xls' && (file.document.name | extension)!='xlsx'" src="assets/images/random2.png"  style="width:125px;height:120px;margin-left:15px;margin-top:6px;" alt="image" >
 
                                       <!--Image controllers-->
                                       <div class="m-rel-static-file-toolz flex-general-row-wrapper cf">
@@ -1006,7 +1045,7 @@
                                     <!--File Name-->
                                     <div class="rel-list-file-view-name flex-general-column-wrapper-center">
                                       <div style="color:black;">
-                                        {{file.document.name | characters:24}}
+                                        {{file.document.name | characters:20}}
                                       </div>  
                                     </div> 
                                   </div>                           

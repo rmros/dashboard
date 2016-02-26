@@ -316,9 +316,17 @@
 
               <!--Spinner-->
               <div ng-show="listFileSpinner[$index]" class="new-rel-list-file pull-left flex-general-column-wrapper-center">
-                <div style="width:100%;">
-                  <div class="loading-progress-1" fileloading style="margin-left:5px;margin-top:12px;width:90%;"></div>
-                </div>  
+                
+                <div style="width:100%;" class="flex-general-column-wrapper-center">
+                    <div style="width:85%">
+                      <div class="progress">
+                        <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="{{listFileProgress[$index]}}" aria-valuemin="0" aria-valuemax="100" style="width:{{listFileProgress[$index]}}%">
+                          <span>{{listFileProgress[$index]}}% Complete</span>
+                        </div>
+                      </div>
+                    </div>
+                </div> 
+
               </div> 
 
               <!--Error-->

@@ -14,6 +14,7 @@ app.directive('cbList', function(){
           
           $scope.modifyListItemError=[];          
           $scope.listFileSpinner=[];
+          $scope.listFileProgress=[];
 
           $scope.tableDefArray=[];
           $scope.tableRecordArray=[];
@@ -173,23 +174,46 @@ app.directive('cbList', function(){
                 $scope.editableList=[];
               }
               var dummyObj={};    
-              $scope.editableList.unshift(dummyObj);
+              $scope.editableList.push(dummyObj);
                  
               var index=$scope.editableList.indexOf(dummyObj);
               $scope.listFileSpinner[index]=true;
-              $scope.$digest();
+              $scope.listFileProgress[index]=0;
+              $scope.$digest();           
 
-              cloudBoostApiService.getCBFile(fileObj)
-              .then(function(cloudBoostFile){     
-                $scope.editableList[index]=cloudBoostFile;       
+              fileSaveWrapper(fileObj,index,function(cloudBoostFile,respIndex){
+                $scope.editableList[respIndex]=cloudBoostFile;       
                 $scope.removeSelectdFile();
-                $scope.listFileSpinner[index]=false;       
+                $scope.listFileSpinner[respIndex]=false;
+                $scope.listFileProgress[respIndex]=100;
+                $scope.$digest();                  
 
-              }, function(err){
-                $scope.listFileError[index]="Something went wrong. try again";
+              },function(error,respIndex){
+                $scope.listFileSpinner[respIndex]=false;
+                $scope.listFileError[respIndex]="Something went wrong. try again";
+                $scope.$digest();                
+              },function(uploadProgress,respIndex){
+                uploadProgress=uploadProgress*100;
+                uploadProgress=Math.round(uploadProgress);                   
+
+                $scope.listFileProgress[respIndex]=uploadProgress;
+                $scope.$digest();
               });
+                          
             }
           };
+
+          function fileSaveWrapper(fileObj,index,successCallBk,errorCallBk,progressCallBk){
+
+            cloudBoostApiService.getCBFile(fileObj,function(cloudBoostFile){
+              successCallBk(cloudBoostFile,index);
+            },function(error){
+              errorCallBk(error,index);               
+            },function(uploadProgress){
+              progressCallBk(uploadProgress,index);
+            });
+
+          }
 
           //List Geopoint
           $scope.addListGeopointModal=function(){ 
