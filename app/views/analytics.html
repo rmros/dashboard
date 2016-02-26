@@ -62,7 +62,7 @@
                        <div style="height:60px;width:5px;background-color: #549afc;"></div>             
                     </div>
                     <div class="pull-left" style="margin-left: 6px;"> 
-                      <p style="color:#AAAAAA;margin-top: -3px;">CALLS MADE</p>
+                      <p style="color:#AAAAAA;margin-top: -3px;">CALLS MADE THIS MONTH</p>
                       <p style="font-size:48px;font-weight: 700;margin-top: -3px;">{{apiUsage.totalApiCount}} </p>             
                     </div>
                   </div>              
@@ -70,9 +70,9 @@
                 </div>
 
                 <!--Graph-->
-                <div style="height:200px;width:100%;padding:10px;margin-top: 20px;">
+                <div style="height:360px;width:100%;padding:10px;margin-top: 20px;">
                   <canvas  class="chart chart-line" chart-data="apiData"
-                    chart-labels="apiLabels" chart-legend="false" style="height:200px;width:100%;">
+                    chart-labels="apiLabels" chart-legend="false" style="height:330px;width:100%;">
                   </canvas>                                
                 </div>
                 <!--/Graph-->
@@ -105,33 +105,32 @@
 
               <!--bill-category-->
               <div  class="" style="margin-top:40px;margin-bottom:20px;">
-                <div class="flex-general-row-wrapper">
+                <div class="flex-general-row-wrapper">                 
 
-                  <div class="cf" style="width:30%;"> 
-                    <div class="pull-left api-category-name"> 
-                      Category:               
-                    </div>
-                    <div class="pull-left api-category-value"> 
-                      {{storageUsage.categoryName}}               
-                    </div>
+                  <div class="cf" style="height:60px;"> 
+                    <div class="pull-left"> 
+                       <div style="height:60px;font-size: 82px;margin-top: -30px;">
+                         STORAGE
+                       </div>             
+                    </div>                   
                   </div>
 
-                  <div class="cf" style="width:30%;"> 
-                    <div class="pull-left api-total-count"> 
-                      Total Storage:               
+                  <div class="cf" style="width:30%;margin-left: 30px;"> 
+                    <div class="pull-left"> 
+                       <div style="height:60px;width:5px;background-color: #549afc;"></div>             
                     </div>
-                    <div class="pull-left api-total-count-value"> 
-                      {{storageUsage.totalStorage}} MB             
+                    <div class="pull-left" style="margin-left: 6px;"> 
+                      <p style="color:#AAAAAA;margin-top: -3px;">CALLS MADE THIS MONTH</p>
+                      <p style="font-size:48px;font-weight: 700;margin-top: -3px;">{{storageUsage.totalStorage}} </p>             
                     </div>
-                  </div>
-                
+                  </div>              
                  
                 </div> 
 
                 <!--Graph-->
-                <div style="height:200px;width:100%;padding:10px;">
+                <div style="height:360px;width:100%;padding:10px;">
                   <canvas  class="chart chart-line" chart-data="storageData"
-                    chart-labels="storageLabels" chart-legend="false" style="height:200px;width:100%;">
+                    chart-labels="storageLabels" chart-legend="false" style="height:330px;width:100%;">
                   </canvas>                                
                 </div>
                 <!--/Graph-->
