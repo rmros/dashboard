@@ -1038,7 +1038,7 @@ app.controller('appsController',
     //updateHeight();
   }
 
-    function validateCardMainDetails(cardDetails){
+  function validateCardMainDetails(cardDetails){
     var errorMsg=null;
     if(!cardDetails.billing.name){
       return "Card holder's name is required";

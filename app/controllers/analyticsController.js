@@ -28,15 +28,17 @@ app.controller('analyticsController',
 	};
 
 	$scope.init = function(){
-		$rootScope.page='pricing';
+		$rootScope.page='analytics';
 		id = $stateParams.appId;
 
+		$scope.pricingPlans=pricingPlans;
       	if($rootScope.currentProject && $rootScope.currentProject.appId === id){        
-          $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;                                        
+          $rootScope.pageHeaderDisplay=$rootScope.currentProject.name; 
+          _loadUsage();                                       
         }else{
           loadProject(id);              
         }
-        _loadUsage();
+                
 	};	
 
 
@@ -47,7 +49,8 @@ app.controller('analyticsController',
         .then(function(currentProject){
             if(currentProject){
                 $rootScope.currentProject=currentProject;                 
-                $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;                                			                          
+                $rootScope.pageHeaderDisplay=$rootScope.currentProject.name; 
+                _loadUsage();                               			                          
             }                              
         },function(error){              
             errorNotify("We cannot load your project at this point in time. Please try again later.");
@@ -56,6 +59,29 @@ app.controller('analyticsController',
 
 
     function _loadUsage() {
+
+    	//APP PLAN
+    	var appPlan=null;
+	    var app=$rootScope.currentProject;
+	    if(!app.planId || app.planId==1){
+	      appPlan=1;
+	    }else if(app.planId){
+	      appPlan=app.planId;
+	    }
+
+	    var appPlan=_.first(_.where($scope.pricingPlans, {id: appPlan}));
+	    var databaseUsage=_.first(_.where(appPlan.usage, {category: "DATABASE"}));
+
+	    var planApiLimit=_.first(_.where(databaseUsage.features, {name: "API Calls"}));
+	    var apiLimit=planApiLimit.limit.value;
+	    
+
+	    var planStorageLimit=_.first(_.where(databaseUsage.features, {name: "Storage"})); 
+	    var storageLimit=planStorageLimit.limit.value; 
+	    storageLimit=storageLimit*1000;
+	    //APP PLAN
+   
+
 		$scope.usageSpinner=true;
 
 		var promises=[];
@@ -68,12 +94,57 @@ app.controller('analyticsController',
 			if(dataList[0]){
 				$scope.apiUsage=dataList[0];
 
-				var apiObj=angular.copy(_sanitizeGraph(dataList[0],"dayApiCount"));
-				$scope.apiLabels=angular.copy(apiObj.labels);				
-				$scope.apiData=angular.copy([apiObj.data]);	
+				var apiData=angular.copy(_sanitizeApiGraph(dataList[0]));
+								
+				$scope.apiData= [{
+		            "key" : "API Calls" ,
+		            "values" : apiData
+		        }];	
 
 				$scope.apiUsage.categoryName="API";
 				$scope.apiUsage.displayGraph=true;
+				$scope.apiUsage.options = {
+		            chart: {
+		                type: 'stackedAreaChart',
+		                height: 360,
+		                margin : {
+		                    top: 30,
+		                    right: 20,
+		                    bottom: 30,
+		                    left: 40
+		                },
+		                x: function(d){return d[0];},
+		                y: function(d){return d[1];},	
+		                	               
+		                useVoronoi: false,
+		                clipEdge: true,
+		                duration: 100,
+		                useInteractiveGuideline: true,
+		                xAxis: {
+		                    showMaxMin: false,
+		                    tickFormat: function(d) {
+		                        return d3.time.format('%x')(new Date(d))
+		                    }
+		                },
+		                yAxis: {		                	
+		                    tickFormat: function(d){
+		                        return d3.format(',.2f')(d);
+		                    }
+		                },
+		                zoom: {
+		                    enabled: true,
+		                    scaleExtent: [1, 10],
+		                    useFixedDomain: false,
+		                    useNiceScale: false,
+		                    horizontalOff: false,
+		                    verticalOff: true,
+		                    unzoomEventType: 'dblclick.zoom'
+		                },		                
+		                showControls:false,		                
+		                margin:{"left":55}
+		            }
+		            
+		        };
 			}else{
 				var defParams={
 					totalApiCount:0,					
@@ -87,12 +158,60 @@ app.controller('analyticsController',
 			if(dataList[1]){
 				$scope.storageUsage=dataList[1];
 
-				var storageObj=angular.copy(_sanitizeGraph(dataList[1],"size"));
-				$scope.storageLabels=angular.copy(storageObj.labels);				
-				$scope.storageData=angular.copy([storageObj.data]);	
+				var storageData=angular.copy(_sanitizeStorageData(dataList[1]));			
+
+				$scope.storageData = [{
+		            "key" : "Space Consumed" ,
+		            "values" : storageData
+		        }];
 
 				$scope.storageUsage.categoryName="Storage";
 				$scope.storageUsage.displayGraph=true;
+
+				$scope.storageUsage.options = {
+		            chart: {
+		                type: 'stackedAreaChart',
+		                height: 360,
+		                margin : {
+		                    top: 20,
+		                    right: 20,
+		                    bottom: 30,
+		                    left: 40
+		                },
+		                x: function(d){return d[0];},
+		                y: function(d){return d[1];},	
+		                	               
+		                useVoronoi: false,
+		                clipEdge: true,
+		                duration: 100,
+		                useInteractiveGuideline: true,
+		                xAxis: {
+		                    showMaxMin: false,
+		                    tickFormat: function(d) {
+		                        return d3.time.format('%x')(new Date(d))
+		                    }
+		                },
+		                yAxis: {		                	
+		                    tickFormat: function(d){
+		                        return d3.format(',.2f')(d);
+		                    }
+		                },
+		                zoom: {
+		                    enabled: true,
+		                    scaleExtent: [1, 10],
+		                    useFixedDomain: false,
+		                    useNiceScale: false,
+		                    horizontalOff: false,
+		                    verticalOff: true,
+		                    unzoomEventType: 'dblclick.zoom'
+		                },		                
+		                showControls:false,
+		                yDomain:[0,storageLimit],
+		                margin:{"left":55}
+		            }
+		            
+		        };
+
 			}else{
 				var defParams={
 					totalStorage:0,										
@@ -105,36 +224,29 @@ app.controller('analyticsController',
 			$scope.usageSpinner=false;
 		},function(error){			
 			$scope.usageSpinner=false;
-		});	
+		});       
+	
 	}
 
-	function _sanitizeGraph(data,dataStringName){			
-
-		var labels=_.pluck(data.usage, 'timeStamp');
-		for(var i=0;i<labels.length;++i){				
-			labels[i]=new Date(labels[i]);				
+	function _sanitizeApiGraph(data){			
+		var responseData=[];
+		for(var i=0;i<data.usage.length;++i){
+			var dateAndValue=[];
+			dateAndValue.push(data.usage[i].timeStamp,data.usage[i].dayApiCount);
+			responseData.push(dateAndValue);
 		}
-		labels=$filter('orderBy')(labels);
-
-		var newLabels=[];
-		for(var i=0;i<labels.length;++i){
-			
-			if((i+1)%2==0){
-				newLabels.push("");
-			}else{
-				var dateFormated=$filter('date')(labels[i], 'MM/dd');
-				newLabels.push(dateFormated);	
-			}
-		}		
-		var mainData=_.pluck(data.usage, dataStringName);		
-
-		var response={};		
-		response.labels=newLabels;
-		response.data=mainData;
-		return response;
+		return responseData;	
 	}
 
-
+	function _sanitizeStorageData(data){			
+		var responseData=[];
+		for(var i=0;i<data.usage.length;++i){
+			var dateAndValue=[];
+			dateAndValue.push(data.usage[i].timeStamp,data.usage[i].size);
+			responseData.push(dateAndValue);
+		}
+		return responseData;
+	}
       
 
     $scope.toggleTabs=function(tabName){
@@ -145,43 +257,7 @@ app.controller('analyticsController',
 	      $scope.analyticsTabs.api=false;
 	      $scope.analyticsTabs.storage=true;
 	    }
-	};
-
-  	function nextBillingCycleDays(){
-    	var nxt_year=null;
-		var one_day=1000*60*60*24;
-      	var today = new Date();
-      	var nxtMonth = new Date();
-      	var month=today.getMonth(); 
-
-      	today.setHours(0);
-        today.setMinutes(0);
-        today.setSeconds(0); 
-        today=new Date(today);                  	
-
-      	if(month==11){
-      		month=0;
-      		nxt_year=today.getFullYear()+1; 
-      	}else{
-      		month=month+1;
-      	}
-
-      	if(nxt_year){
-      		nxtMonth.setYear(nxt_year);
-      	}
-      	nxtMonth.setMonth(month);
-        nxtMonth.setDate(1);
-        nxtMonth.setHours(0);
-        nxtMonth.setMinutes(0);
-        nxtMonth.setSeconds(0);
-        nxtMonth=new Date(nxtMonth);
-
-        today=today.getTime();
-        nxtMonth=nxtMonth.getTime();
-        var diff=Math.round((nxtMonth-today)/one_day);
-
-        return diff;
-    }
+	};  
 
 		
 }]);

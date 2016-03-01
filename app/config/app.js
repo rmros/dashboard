@@ -15,7 +15,8 @@ var app=angular.module('CloudBoostDashboard',
     'uiSwitch',
     'truncate',
     'ngContextMenu', 
-    'ngSanitize',   
+    'ngSanitize', 
+    'nvd3'  
     ]);
 
 app.value('THROTTLE_MILLISECONDS', 1250);
