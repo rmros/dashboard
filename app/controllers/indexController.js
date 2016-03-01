@@ -1,6 +1,6 @@
 app.controller('indexController',
-	['$scope','$rootScope','userService','$location','notificationService','projectService','$sce',
-	function($scope,$rootScope,userService,$location,notificationService,projectService,$sce){	
+	['$scope','$rootScope','userService','$location','notificationService','projectService','$sce','serverSettingsService',
+	function($scope,$rootScope,userService,$location,notificationService,projectService,$sce,serverSettingsService){	
 
     $scope.isAdminLoggedIn=false;   
 
@@ -17,9 +17,25 @@ app.controller('indexController',
     $scope.okGotItSpinner=[];   
     //End Inform notifications(app-upgraded)
 
-    getUserInfo(); 
+    getUserInfo();
+    isHosted(); 
 
   //Private Functions
+  function isHosted(){
+    serverSettingsService.isHosted()
+    .then(function(result){
+
+      if(result && result=="true"){
+        $rootScope.isHosted=true;
+      }else{
+        $rootScope.isHosted=false;
+      }  
+       
+    }, function(error){            
+    });     
+  }
+
+
   function getUserInfo(){  
     $scope.notifySpinner=true;  
     userService.getUserInfo()

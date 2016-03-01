@@ -40,4 +40,17 @@ app.service('serverSettingsService', function($q,$http){
     return q.promise;
   }
 
+  this.isHosted=function(){
+    var q=$q.defer();
+
+    $http.get(frontendServerURL+'/server/isHosted').
+      success(function(data, status, headers, config) {
+        q.resolve(data);
+      }).
+      error(function(data, status, headers, config) {
+        q.reject(data);
+      });
+    return q.promise;
+  }
+
 });

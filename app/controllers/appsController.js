@@ -572,28 +572,32 @@ app.controller('appsController',
 
   //Billing
   $scope.initUpgradePlan=function(projectObj) {
-    $("#upgradeModal").modal();
-    $scope.upgradePlanApp=projectObj;
+    if($rootScope.isHosted){
 
-    $scope.cardDetailsStep1=true;
-    $scope.cardDetailsStep2=false;
-    $scope.cardAlreadyFreePlan=false;
-    $scope.cardNeedFreePlan=false;
+      $("#upgradeModal").modal();
+      $scope.upgradePlanApp=projectObj;
 
-    //Show Next Plan
-    if(projectObj.planId && projectObj.planId>1 && projectObj.planId<6){
-      $scope.requestedPlan=getPlanById(projectObj.planId+1);
-    }else if(projectObj.planId==6){
-      $scope.requestedPlan=getPlanById(6);
-    }else if(!projectObj.planId || projectObj.planId==1){
-      $scope.requestedPlan=getPlanById(3);
+      $scope.cardDetailsStep1=true;
+      $scope.cardDetailsStep2=false;
+      $scope.cardAlreadyFreePlan=false;
+      $scope.cardNeedFreePlan=false;
+
+      //Show Next Plan
+      if(projectObj.planId && projectObj.planId>1 && projectObj.planId<6){
+        $scope.requestedPlan=getPlanById(projectObj.planId+1);
+      }else if(projectObj.planId==6){
+        $scope.requestedPlan=getPlanById(6);
+      }else if(!projectObj.planId || projectObj.planId==1){
+        $scope.requestedPlan=getPlanById(3);
+      }
+      
+      if(!__isDevelopment){
+        /****Tracking*********/              
+         mixpanel.track('Upgrade Plan', {"App id": projectObj.appId,"App Name": projectObj.name});
+        /****End of Tracking*****/
+      }
     }
-    
-    if(!__isDevelopment){
-      /****Tracking*********/              
-       mixpanel.track('Upgrade Plan', {"App id": projectObj.appId,"App Name": projectObj.name});
-      /****End of Tracking*****/
-    }
+  
   };
 
   $scope.nextToBillingDetails=function(){
@@ -802,7 +806,7 @@ app.controller('appsController',
 
       for(var i=0;i<list.storage.length;++i){
 
-        var percentageObj=calculatePercentage(list.storage[i],"storage");
+          var percentageObj=calculatePercentage(list.storage[i],"storage");
           var alreadyInserted=null;
 
           if($scope.storageUsed && $scope.storageUsed.length>0){
@@ -950,6 +954,7 @@ app.controller('appsController',
       var resp={
         appId:respObj.appId,
         percentage:percentageUsed+"%",
+        originalCount:respObj.monthlyApiCount,
         limit:apiLabel,
         color:apiColor
       };
@@ -958,6 +963,7 @@ app.controller('appsController',
       var resp={
         appId:respObj.appId,
         percentage:percentageUsed+"%",
+        originalCount:0,
         limit:apiLabel,
         color:apiColor
       };
@@ -980,6 +986,7 @@ app.controller('appsController',
       var resp={
         appId:respObj.appId,
         percentage:percentageUsed+"%",
+        originalSize:used,
         limit:storageLabel,
         color:storageColor
       };
@@ -988,6 +995,7 @@ app.controller('appsController',
       var resp={
         appId:respObj.appId,
         percentage:percentageUsed+"%",
+        originalSize:0,
         limit:storageLabel,
         color:storageColor
       };
