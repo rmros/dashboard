@@ -6,11 +6,11 @@ app.directive('dmuploader', function(){
             $(element).dmUploader({               
                 onNewFile: function(id, file){                 
                     
-                    var reader = new FileReader();
-                    reader.onload = function (e) {                       
-                        scope.fileSelected(reader.result,file.name,file);
-                    }
-                    reader.readAsDataURL(file);
+                    //var reader = new FileReader();
+                    //reader.onload = function (e) {                       
+                        scope.fileSelected("reader.result",file.name,file);
+                    //}
+                    //reader.readAsDataURL(file);
                     
                 }
             });
@@ -28,11 +28,11 @@ app.directive('reldmuploader', function(){
                     
                     var column = $(element).data('column');
                     
-                    var reader = new FileReader();
-                    reader.onload = function (e) {                       
-                        scope.relfileSelected(column,reader.result,file.name,file);
-                    }
-                    reader.readAsDataURL(file);                    
+                    //var reader = new FileReader();
+                    //reader.onload = function (e) {                       
+                        scope.relfileSelected(column,"reader.result",file.name,file);
+                    //}
+                    //reader.readAsDataURL(file);                    
                 }
             });
         }
@@ -50,11 +50,11 @@ app.directive('listreldmuploader', function(){
                     
                     var column = $(element).data('column');
                     
-                    var reader = new FileReader();
-                    reader.onload = function (e) {                       
-                        scope.relListFileSelected(column,reader.result,file.name,file);
-                    }
-                    reader.readAsDataURL(file);                    
+                    //var reader = new FileReader();
+                    //reader.onload = function (e) {                       
+                        scope.relListFileSelected(column,"reader.result",file.name,file);
+                    //}
+                    //reader.readAsDataURL(file);                    
                 }
             });
         }
@@ -76,11 +76,50 @@ app.directive('ddfile', function(){
                 allowedTypes:allowedTypes,              
                 onNewFile: function(id, file){                 
                     
-                    var reader = new FileReader();
-                    reader.onload = function (e) {                       
-                        scope.fileSelected(reader.result,file);
-                    }
-                    reader.readAsDataURL(file);
+                    var fileSize=((file.size/1024)/1024);//Convert Bytes to MBs
+
+                    if(fileSize<13){
+                        var reader = new FileReader();
+                        reader.onload = function (e) {                       
+                            scope.fileSelected(reader.result,file);
+                        }
+                        reader.readAsDataURL(file);
+                    }else{
+                        scope.fileSelected("reader.result",file);
+                    }                    
+                    
+                }
+            });
+        }
+    };
+});
+
+//File Directive
+app.directive('normalddfile', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){ 
+            var allowedTypes="*";            
+
+            if(scope.allowedFileTypes){
+                allowedTypes=scope.allowedFileTypes;
+            }  
+
+            $(element).dmUploader({ 
+                allowedTypes:allowedTypes,              
+                onNewFile: function(id, file){                 
+                    
+                    var fileSize=((file.size/1024)/1024);//Convert Bytes to MBs
+
+                    if(fileSize<13){
+                        var reader = new FileReader();
+                        reader.onload = function (e) {                       
+                            scope.fileSelected(reader.result,file);
+                        }
+                        reader.readAsDataURL(file);
+                    }else{
+                        scope.fileSelected("reader.result",file);
+                    }                    
                     
                 }
             });

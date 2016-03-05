@@ -412,47 +412,39 @@ $scope.setAndSaveACLObject=function(cbACLObject){
 //End ACL && JsonObject
 
 
-$scope.setAndSaveFile=function(fileObj){ 
+$scope.setAndSaveFile=function(cloudBoostFile){ 
   $("#md-fileviewer").modal("hide");   
-  if(fileObj) {   
-    rowSpinnerMode($scope.editableIndex);     
+  if(cloudBoostFile) {
+    rowEditMode($scope.editableIndex);  
+    rowSpinnerMode($scope.editableIndex);       
+    var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
+      if(everyCol.name!=$scope.editableColumn.name && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
+       if(!$scope.editableRow.get(everyCol.name)){
+        return everyCol;
+       }          
+      } 
+    });
 
-    cloudBoostApiService.getCBFile(fileObj,function(cloudBoostFile){
+    $scope.editableRow.set($scope.editableColumn.name,cloudBoostFile);
+    if(requiredField){                
+      rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumn.name);
+    }else{
+      rowSpinnerMode($scope.editableIndex); 
+        
+      $scope.editableRow.set($scope.editableColumn.name,cloudBoostFile);  
 
-      rowEditMode($scope.editableIndex);   
-      var requiredField = _.find($scope.currentProject.currentTable.columns, function(everyCol){
-        if(everyCol.name!=$scope.editableColumn.name && everyCol.name!="id" && everyCol.name!="createdAt" && everyCol.name!="updatedAt" && everyCol.name!="ACL" && everyCol.required){
-         if(!$scope.editableRow.get(everyCol.name)){
-          return everyCol;
-         }          
-        } 
-      });
-
-      $scope.editableRow.set($scope.editableColumn.name,cloudBoostFile);
-      if(requiredField){                
-        rowWarningMode($scope.editableIndex,$scope.editableRow,$scope.editableColumn.name);
-      }else{
-        rowSpinnerMode($scope.editableIndex); 
-          
-        $scope.editableRow.set($scope.editableColumn.name,cloudBoostFile);  
-
-        //Save Cloud Objec
-        var requestIndex=angular.copy($scope.editableIndex);
-        saveWrapper($scope.editableRow,requestIndex)
-        .then(function(resp){ 
-          //$scope.removeSelectdFile();              
-          showSaveIconInSecond(resp.rowIndex);
-        }, function(errorResp){  
-          //$scope.removeSelectdFile();                       
-          rowErrorMode(errorResp.rowIndex,errorResp.error);   
-        });             
-      }
-
-    },function(error){
-      rowErrorMode($scope.editableIndex,err);                      
-    },function(uploadProgress){  
-      //Upload progress    
-    });                   
+      //Save Cloud Objec
+      var requestIndex=angular.copy($scope.editableIndex);
+      saveWrapper($scope.editableRow,requestIndex)
+      .then(function(resp){ 
+        //$scope.removeSelectdFile();              
+        showSaveIconInSecond(resp.rowIndex);
+      }, function(errorResp){  
+        //$scope.removeSelectdFile();                       
+        rowErrorMode(errorResp.rowIndex,errorResp.error);   
+      });             
+    }
+                   
   }
 };
 

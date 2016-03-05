@@ -258,7 +258,7 @@ app.controller('tableDesignerController',
         }                              
       }, function(error){ 
        $rootScope.dataLoading=false;
-       $scope.loadingError="We cannot load your project at this point of time. Please try again later.";    
+       $scope.loadingError="We cannot load your project at this point of time. Please try again later.";
       });
     }
     
@@ -278,7 +278,10 @@ app.controller('tableDesignerController',
        
     }, function(error){  
       $rootScope.dataLoading=false;     
-      $scope.loadingError="We cannot load your tables at this point of time. Please try again later";  
+      $scope.loadingError="We cannot load your tables at this point of time. Please try again later";
+      if(error=="Reached Plan Limit. Upgrade Plan."){
+       $scope.loadingError=error;
+      }  
     });
   }
    

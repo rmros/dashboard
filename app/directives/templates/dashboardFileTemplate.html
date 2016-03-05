@@ -25,7 +25,7 @@
       <div class="flex-general-row-wrapper-center" style="height: 100%;">   
          
         <!-- Add File D&D Markup -->
-        <div ng-show="!editableFile && (!fileInfo || !fileInfo.rawFile)" class="uploader" ddfile>
+        <div ng-show="!editableFile && (!fileInfo || !fileInfo.rawFile)" class="uploader" normalddfile>
           <div>Drag &amp; Drop Files Here</div>
           <div class="or">-or-</div>
           <div class="browser">
@@ -60,7 +60,7 @@
         <!--Error,Spinner,Progress-->
 
 
-        <div  ng-show="fileInfo && fileInfo.rawFile && fileInfo.extension && !fileInfo.spinner && !fileInfo.error" style="height: 100%;width: 100%;"> 
+        <div  ng-show="fileInfo && fileInfo.rawFile && fileInfo.extension" style="height: 100%;width: 100%;"> 
 
           <!--View File for Images-->
           <div ng-show="fileInfo.rawFile  && (fileInfo.extension=='jpeg' || fileInfo.extension=='jpg' || fileInfo.extension=='png' || fileInfo.extension=='tif' || fileInfo.extension=='gif')" style="height: 100%;width: 100%;" class="">  
@@ -107,7 +107,7 @@
           
         </div>
 
-        <div  ng-show="(!fileInfo || fileInfo.rawFile) && editableFile && !fileInfo.spinner && !fileInfo.error" style="height: 100%;width: 100%;">  
+        <div  ng-show="(!fileInfo || fileInfo.rawFile) && editableFile" style="height: 100%;width: 100%;">  
           <!--View File for Images-->
           <div ng-if="editableFile && editableFile.document.url && ((editableFile.document.name | extension)=='jpeg' || (editableFile.document.name | extension)=='jpg' || (editableFile.document.name | extension)=='png' || (editableFile.document.name | extension)=='tif' || (editableFile.document.name | extension)=='gif')" style="height: 100%;width: 100%;">
 
@@ -159,17 +159,14 @@
 
     <!--Footer-->
     <div class="modal-footer">        
-      <button ng-show="!fileInfo.spinner" type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal" ng-click="closeModal()">Close</button>
+      <button  type="button" class="btn btn-default cb-modal-default-btn" data-dismiss="modal" ng-click="closeModal()">Close</button>
 
       <!--New File-->
       <!--Save-->
-      <button ng-show="!fileInfo.spinner" type="button"  ng-click="saveFile()" class="btn btn-primary cb-modal-default-btn-long" ><i class="fa fa-floppy-o"></i>&nbsp;Save</button>
-
-      <!--Processing-->
-      <button ng-show="fileInfo.spinner" type="button" class="btn btn-primary cb-modal-default-btn-long" ></i>&nbsp;Processing..</button>
+      <button  type="button"  ng-click="saveFile()" class="btn btn-primary cb-modal-default-btn-long" ><i class="fa fa-floppy-o"></i>&nbsp;Save</button>
 
       <!--Remove File-->
-      <button type="button" ng-if="fileInfo && fileInfo.rawFile && fileInfo.extension && !fileInfo.spinner" ng-click="removeFile()" class="btn btn-danger cb-modal-default-btn-long" ><i class="fa fa-times-circle-o"></i>&nbsp;Remove</button> 
+      <button type="button" ng-if="fileInfo && fileInfo.rawFile && fileInfo.extension" ng-click="removeFile()" class="btn btn-danger cb-modal-default-btn-long" ><i class="fa fa-times-circle-o"></i>&nbsp;Remove</button> 
       <!--/New File-->
 
 
