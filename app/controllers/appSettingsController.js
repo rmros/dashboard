@@ -22,6 +22,25 @@ appSettingsService){
   $rootScope.isFullScreen=false;
   $rootScope.page='appsettings'; 
 
+  $scope.spinners={};
+
+  $scope.generalSettings={
+    category:"general",
+    settings:{
+      appName:null,
+      appInProduction:false
+    }
+  };
+
+  $scope.emailSettings={
+    category:"email",
+    settings:{
+      mandrillApiKey:null,
+      email:null,
+      from:null
+    }
+  };
+
   $scope.settingsMenu={
     general:true,
     email:false,
@@ -37,6 +56,42 @@ appSettingsService){
       getSettings();                                
     }else{
       loadProject(id);              
+    }
+  };
+
+  $scope.updateSettings=function(categoryName){
+
+    var settingsObj=null;
+    var validate=false;
+    var validateMsg=null;
+
+    if(categoryName=="general"){
+      settingsObj=$scope.generalSettings.settings;
+      validate=true;
+      validateMsg=null;
+    }
+    if(categoryName=="email"){
+      settingsObj=$scope.emailSettings.settings;
+      if(settingsObj.mandrillApiKey && settingsObj.email && settingsObj.from){
+        validate=true;
+      }else{
+        validate=false;
+        validateMsg="All fields are required";
+      }
+    }
+    
+    if(validate){
+   
+      $scope.spinners[categoryName]=true;
+      appSettingsService.putSettings($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,categoryName,settingsObj)
+      .then(function(settings){
+        $scope.spinners[categoryName]=false;                                    
+      }, function(error){ 
+        $scope.spinners[categoryName]=false;                
+      });
+
+    }else{
+      WarningNotify(validateMsg);
     }
   };
 
@@ -76,7 +131,20 @@ appSettingsService){
     $scope.settingsLoading=true;  
     appSettingsService.getSettings($rootScope.currentProject.appId,$rootScope.currentProject.keys.master)
     .then(function(settings){
-      $scope.appsettings=settings;
+
+      if(settings && settings.length>0){
+        var general=_.where(settings, {category: "general"});
+        if(general && general.length>0){
+          $scope.generalSettings=general[0];
+        } 
+
+        var email=_.where(settings, {category: "email"});
+        if(email && email.length>0){
+          $scope.emailSettings=email[0];
+        }       
+      }
+      
+      
       $scope.settingsLoading=false;                               
     }, function(error){ 
       $scope.settingsLoading=false;           

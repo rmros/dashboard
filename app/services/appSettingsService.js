@@ -6,35 +6,51 @@ app.factory('appSettingsService', ['$q','$http','$rootScope',function ($q,$http,
         var q=$q.defer();
 
         var params = {};
-        params.key = masterKey;
+        params.key = masterKey;       
 
-        $http.post(SERVER_URL+'/settings/'+appId,params).
-          success(function(data, status, headers, config) {
-              q.resolve(data);
-          }).
-          error(function(data, status, headers, config) {
-            q.reject(status);             
-          });
+        var data = new FormData();
+        data.append('key', masterKey);
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onload  = function() {
+          if (xhttp.readyState == 4 && xhttp.status == 200) {
+            if(xhttp.responseText){
+              var resp=JSON.parse(xhttp.responseText);
+              q.resolve(resp);
+            }            
+          }else{
+            q.reject(xhttp.responseText);
+          }
+        };
+        xhttp.open("POST", SERVER_URL+'/settings/'+appId, true);        
+        xhttp.send(data);
 
         return  q.promise;
     };
 
-    global.updateBeacon = function(beaconObj){
+    global.putSettings = function(appId,masterKey,categoryName,settingsObject){
         var q=$q.defer();
-        $http.post(frontendServerURL+'/beacon/update',beaconObj).
-        success(function(data, status, headers, config) {
-            q.resolve(data);
-        }).
-        error(function(data, status, headers, config) {
-            q.reject(status);
-            if(status===401){
-              $rootScope.logOut();
-            }
-        });
+        
+        var data = new FormData();
+        data.append('key', masterKey);
+        data.append('settings', JSON.stringify(settingsObject));
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onload  = function() {
+          if(xhttp.readyState == 4 && xhttp.status == 200) {
+            if(xhttp.responseText){
+              var resp=JSON.parse(xhttp.responseText);
+              q.resolve(resp);
+            }            
+          }else{
+            q.reject(xhttp.responseText);
+          }
+        };
+        xhttp.open("PUT", SERVER_URL+'/settings/'+appId+'/'+categoryName, true);        
+        xhttp.send(data);
 
         return  q.promise;
      };
-
 
     return global;
 
