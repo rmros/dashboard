@@ -163,7 +163,7 @@
 
       <!--New File-->
       <!--Save-->
-      <button ng-show="!fileInfo.spinner" type="button"  ng-click="saveFile()" class="btn btn-primary cb-modal-default-btn-long" ><i class="fa fa-floppy-o"></i>&nbsp;Save</button>
+      <button ng-show="fileInfo.obj && !fileInfo.spinner" type="button"  ng-click="saveFile()" class="btn btn-primary cb-modal-default-btn-long" ><i class="fa fa-floppy-o"></i>&nbsp;Save</button>
 
       <!--Processing-->
       <button ng-show="fileInfo.spinner" type="button" class="btn btn-primary cb-modal-default-btn-long" ></i>&nbsp;Processing..</button>
