@@ -16,7 +16,8 @@ var app=angular.module('CloudBoostDashboard',
     'truncate',
     'ngContextMenu', 
     'ngSanitize', 
-    'nvd3'  
+    'nvd3',   
+    'froala'  
     ]);
 
 app.value('THROTTLE_MILLISECONDS', 1250);

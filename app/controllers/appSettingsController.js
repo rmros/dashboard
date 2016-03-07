@@ -37,8 +37,16 @@ appSettingsService){
     settings:{
       mandrillApiKey:null,
       email:null,
-      from:null
+      from:null,
+      template:""
     }
+  };
+
+  $scope.templateEditorOptions={
+    height:"200", 
+    heightMax:"300",   
+    theme: 'gray',   
+    toolbarButtons : ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'fontFamily', 'fontSize', '|', 'color','insertLink','insertTable', 'undo', 'redo','html']
   };
 
   $scope.settingsMenu={
@@ -48,7 +56,7 @@ appSettingsService){
   }; 
   
   $scope.init= function() {            
-    id = $stateParams.appId;
+    id = $stateParams.appId;   
 
     $rootScope.pageHeaderDisplay="App Settings";
     if($rootScope.currentProject && $rootScope.currentProject.appId === id){
@@ -57,6 +65,7 @@ appSettingsService){
     }else{
       loadProject(id);              
     }
+    //_setDefaultTemplate();
   };
 
   $scope.updateSettings=function(categoryName){
@@ -123,7 +132,9 @@ appSettingsService){
         $rootScope.currentProject=currentProject; 
         getSettings();                
       }                              
-    }, function(error){            
+    }, function(error){ 
+      console.log(error); 
+      $scope.settingsLoading=false;          
     });   
   }	
 
@@ -150,5 +161,16 @@ appSettingsService){
       $scope.settingsLoading=false;           
     });   
   }	
+
+  function _setDefaultTemplate(){   
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function(){
+      if(xmlhttp.status == 200 && xmlhttp.readyState == 4){
+        $scope.emailSettings.settings.template = xmlhttp.responseText;
+      }
+    };
+    xmlhttp.open("GET","assets/files/reset-password.html",true);
+    xmlhttp.send();
+  }
 		
 }]);

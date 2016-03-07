@@ -11,13 +11,14 @@
 	<title>CloudBoost Dashboard</title>
 	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700,800' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Signika+Negative:400,300,600,700' rel='stylesheet' type='text/css'>
 
 	<!-- Bootstrap core CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	
   <!-- Fonts -->
   <link rel="stylesheet" href="assets/fonts/font-awesome-4/css/font-awesome.min.css">
-  <link rel="stylesheet" href="bower_components/ionicons/css/ionicons.min.css">   
+  <link rel="stylesheet" href="bower_components/ionicons/css/ionicons.min.css"> 
   
   <!-- Kendo -->
   <link href="assets/css/kendo.common.min.css" rel="stylesheet">    
@@ -42,7 +43,21 @@
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">   
   <link rel="stylesheet" href="bower_components/datetimepicker/jquery.datetimepicker.css">  
   <link rel="stylesheet" href="bower_components/angular-ui-switch/angular-ui-switch.min.css"/> 
-  <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css"/>  
+  <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css"/> 
+  <!-- Include Froala Editor Plugins styles --> 
+  <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/froala_editor.min.css"/>
+  <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/themes/gray.css">
+  <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/char_counter.css">
+  <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/code_view.css">
+  <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/colors.css">
+  <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/emoticons.css">
+  <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/file.css">
+  <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/fullscreen.css">
+  <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/image_manager.css">
+  <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/image.css">
+  <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/line_breaker.css">
+  <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/table.css">
+  <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/video.css">
 
   <!-- CB Custom -->
 	<link href="assets/css/style.css" rel="stylesheet"/>
@@ -404,6 +419,34 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
 <script type="text/javascript" src="assets/js/livestamp.js"></script>
 <script type="text/javascript" src="assets/js/dotdot.js"></script>
 <script type="text/javascript" src="assets/js/contextMenu.js"></script>
+
+<!-- Include Froala Editor Plugins -->
+<script type="text/javascript" src="bower_components/froala-wysiwyg-editor/js/froala_editor.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-froala/src/angular-froala.js"></script>
+<script type="text/javascript" src="bower_components/angular-froala/src/froala-sanitize.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/align.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/char_counter.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/code_beautifier.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/code_view.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/colors.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/emoticons.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/entities.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/file.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/font_family.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/font_size.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/fullscreen.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/image.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/image_manager.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/inline_style.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/line_breaker.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/link.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/lists.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/paragraph_format.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/paragraph_style.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/quote.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/save.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/table.min.js"></script>
+<script src="bower_components/froala-wysiwyg-editor/js/plugins/video.min.js"></script>
 
 <!--2Checkout-->
 <script src="https://www.2checkout.com/checkout/api/2co.min.js"></script>
