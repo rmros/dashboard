@@ -53,6 +53,12 @@ appSettingsService){
     general:true,
     email:false,
     push:false
+  };
+
+  $scope.settingsMenuHover={
+    general:false,
+    email:false,
+    push:false
   }; 
   
   $scope.init= function() {            
@@ -85,7 +91,7 @@ appSettingsService){
         validate=true;
       }else{
         validate=false;
-        validateMsg="All fields are required";
+        validateMsg="All Mandrill API Key,From Email,From Name are required";
       }
     }
     
@@ -121,7 +127,37 @@ appSettingsService){
       $scope.settingsMenu.email=false;
       $scope.settingsMenu.push=true;
     }
-  };  
+  }; 
+
+  $scope.menuHover=function(settingsName){
+    if(settingsName=="general" && !$scope.settingsMenu.general && !$scope.settingsMenuHover.general){     
+      $scope.settingsMenuHover.general=true;
+    }    
+
+    if(settingsName=="email" && !$scope.settingsMenu.email && !$scope.settingsMenuHover.email){
+      $scope.settingsMenuHover.email=true;
+    }
+   
+    if(settingsName=="push" && !$scope.settingsMenu.push && !$scope.settingsMenuHover.push){
+      $scope.settingsMenuHover.push=true;
+    }
+    
+  };
+
+  $scope.menuLeave=function(settingsName){
+    
+    if(settingsName=="general" && !$scope.settingsMenu.general && $scope.settingsMenuHover.general){     
+      $scope.settingsMenuHover.general=false;
+    }
+    
+    if(settingsName=="email" && !$scope.settingsMenu.email && $scope.settingsMenuHover.email){
+      $scope.settingsMenuHover.email=false;
+    }
+    
+    if(settingsName=="push" && !$scope.settingsMenu.push && $scope.settingsMenuHover.pus){
+      $scope.settingsMenuHover.push=false;
+    }
+  }; 
 
 /********************************Private fuctions****************************/
   function loadProject(id){ 

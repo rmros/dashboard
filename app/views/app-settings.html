@@ -9,32 +9,32 @@
           <div class="app-settings-menusection">
             
             <!--Menu Items-->
-            <div  ng-click="selectSettings('general')" ng-class="{activeAppSettingsMenu:settingsMenu.general}" class="eachSetMenu flex-general-row-wrapper">
+            <div  ng-click="selectSettings('general')" ng-class="{activeAppSettingsMenu:settingsMenu.general,hoverAppSettingsMenu:settingsMenuHover.general}" ng-mouseover="menuHover('general')" ng-mouseleave="menuLeave('general')" class="eachSetMenu flex-general-row-wrapper">
               <div class="flex-general-column-wrapper-center" style="height: 100%;width:24px;">
-                <i class="fa fa-cogs" style="font-size: 18px;"></i>
+                <i class="icon ion-gear-b" style="font-size: 24px;"></i>
               </div>
               <div class="solo-vertical-center" style="height: 100%;margin-left: 3px;">
                 <span style="font-size: 18px;">General</span>
               </div>
             </div>
 
-            <div  ng-click="selectSettings('email')" ng-class="{activeAppSettingsMenu:settingsMenu.email}" class="eachSetMenu flex-general-row-wrapper">
-              <div class="flex-general-column-wrapper-center" style="height: 100%;width:24px;">
-                <i class="fa fa-envelope" style="font-size: 18px;"></i>
+            <div  ng-click="selectSettings('email')" ng-class="{activeAppSettingsMenu:settingsMenu.email,hoverAppSettingsMenu:settingsMenuHover.email}" class="eachSetMenu flex-general-row-wrapper" ng-mouseover="menuHover('email')" ng-mouseleave="menuLeave('email')">
+              <div class="flex-general-column-wrapper-center" style="height: 100%;width:24px;">                
+                <i class="icon ion-email" style="font-size: 24px;"></i>
               </div>
               <div class="solo-vertical-center" style="height: 100%;margin-left: 3px;">
                 <span style="font-size: 18px;">Email</span>
               </div>
             </div>
 
-            <div  ng-click="selectSettings('push')" ng-class="{activeAppSettingsMenu:settingsMenu.push}" class="eachSetMenu flex-general-row-wrapper">
-              <div class="flex-general-column-wrapper-center" style="height: 100%;width:24px;">
-                <i class="fa fa-bell" style="font-size: 18px;"></i>
+            <!--<div  ng-click="selectSettings('push')" ng-class="{activeAppSettingsMenu:settingsMenu.push}" class="eachSetMenu flex-general-row-wrapper">
+              <div class="flex-general-column-wrapper-center" style="height: 100%;width:24px;">                
+                <i class="icon ion-ios-bell" style="font-size: 24px;"></i>
               </div>
               <div class="solo-vertical-center" style="height: 100%;margin-left: 3px;">
                 <span style="font-size: 18px;">Push Notifications</span>
               </div>
-            </div>
+            </div>-->
             <!--/Menu Items-->            
 
           </div>        
@@ -44,8 +44,8 @@
     </div>   
 
     <!--Other section-->
-    <div class="pull-left solo-horizontal-center" style="width:75.5%;margin-left:1.5%;">
-      <div style="width:650px;">
+    <div class="appSettings-maincontent pull-left solo-horizontal-center" style="">
+      <div style="width:85%;">
         <div class="row"> 
 
           <div class="col-sm-12 col-md-12 col-lg-12 app-editing-sectionwrap">
