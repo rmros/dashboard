@@ -9,7 +9,7 @@
           <div class="app-settings-menusection">
             
             <!--Menu Items-->
-            <div  ng-click="selectSettings('general')" ng-class="{activeAppSettingsMenu:settingsMenu.general,hoverAppSettingsMenu:settingsMenuHover.general}" ng-mouseover="menuHover('general')" ng-mouseleave="menuLeave('general')" class="eachSetMenu flex-general-row-wrapper">
+            <div ng-click="selectSettings('general')" ng-class="{activeAppSettingsMenu:settingsMenu.general,hoverAppSettingsMenu:settingsMenuHover.general}" ng-mouseover="menuHover('general')" ng-mouseleave="menuLeave('general')" class="eachSetMenu flex-general-row-wrapper">
               <div class="flex-general-column-wrapper-center" style="height: 100%;width:24px;">
                 <i class="icon ion-gear-b" style="font-size: 24px;"></i>
               </div>
@@ -18,7 +18,7 @@
               </div>
             </div>
 
-            <div  ng-click="selectSettings('email')" ng-class="{activeAppSettingsMenu:settingsMenu.email,hoverAppSettingsMenu:settingsMenuHover.email}" class="eachSetMenu flex-general-row-wrapper" ng-mouseover="menuHover('email')" ng-mouseleave="menuLeave('email')">
+            <div ng-click="selectSettings('email')" ng-class="{activeAppSettingsMenu:settingsMenu.email,hoverAppSettingsMenu:settingsMenuHover.email}" class="eachSetMenu flex-general-row-wrapper" ng-mouseover="menuHover('email')" ng-mouseleave="menuLeave('email')">
               <div class="flex-general-column-wrapper-center" style="height: 100%;width:24px;">                
                 <i class="icon ion-email" style="font-size: 24px;"></i>
               </div>
@@ -206,8 +206,10 @@
 
                   <!--HTML Editor-->
                   <div class="actual-fields cf" style="border:1px solid #EDEDED;">
-                    <div style="height: auto;">
-                      <textarea froala="templateEditorOptions" ng-model="emailSettings.settings.template"></textarea>             
+                    <div style="height: auto;">                     
+
+                      <text-angular ng-model="emailSettings.settings.template"></text-angular>
+
                     </div>                  
                   </div>
                   <!--/HTML Editor-->                
