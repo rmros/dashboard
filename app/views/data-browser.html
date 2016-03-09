@@ -562,7 +562,7 @@
           </thead> 
           <tbody>
 
-            <tr ng-repeat="eachRow in currentTableData" ng-mouseenter="flipToCheckBox($index)" ng-mouseleave="flipToSerialNo($index)">
+            <tr ng-repeat="fixedEachRow in currentTableData" ng-mouseenter="flipToCheckBox($index)" ng-mouseleave="flipToSerialNo($index)">
 
               <!--default checkbox-->
               <td  class="fdataTd fix-collective-chkbx fixedTd">
@@ -607,7 +607,7 @@
                 <!--Id-->             
                 <div ng-if="column.document.dataType=='Id'" class="tdDiv cf solo-vertical-center" style="min-width: 175px; cursor:default;">         
                   <div class="real-content pull-left">
-                    {{eachRow.get(column.name)}}                 
+                    {{fixedEachRow.get(column.name)}}                 
                   </div>            
                 </div>
                 <!--/Id--> 

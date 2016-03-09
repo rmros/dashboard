@@ -64,11 +64,11 @@
             <!--DEFAULTS-->
             <div class="the-defaults"style="width: 100%;">
             <!--each row-->
-              <div class="masons-bx" ng-repeat="eachRow in fieldsOrderArray[fieldsOrderArray.length-1]">
+              <div class="masons-bx" ng-repeat="thisRow in fieldsOrderArray[fieldsOrderArray.length-1]">
 
                 <div class="flex-general-row-wrapper">
                  
-                  <div ng-repeat="eachField in eachRow" class="brick common-brick">
+                  <div ng-repeat="eachField in thisRow" class="brick common-brick">
 
                     <!--ID-->
                     <div ng-if="eachField.relCol.dataType=='Id'" class="content-wrapper">
