@@ -1016,7 +1016,7 @@
               <td ng-repeat="column in currentProject.currentTable.columns" ng-if="hideColumn[$index]"  class="dataTd">   
                 
                 <!--Id-->             
-                <div ng-if="column.document.dataType==='Id'" class="tdDiv cf solo-vertical-center" style="min-width: 175px; cursor:default;">         
+                <div ng-if="column.document.dataType=='Id'" class="tdDiv cf solo-vertical-center" style="min-width: 175px; cursor:default;">         
                   <div class="real-content pull-left">
                     {{eachRow.get(column.name)}}                 
                   </div>            
@@ -1264,8 +1264,8 @@
                 <div ng-if="column.document.dataType=='Email'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf solo-vertical-center" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
-                    <a class="emailSpan" href="mailto:{{eachRow.get(column.name) }}" target="_blank" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">
-                      {{eachRow.get(column.name) }}
+                    <a class="emailSpan" ng-href="mailto:{{eachRow.get(column.name) }}" target="_blank" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">
+                      {{eachRow.get(column.name)}}
                     </a>                
                   </div>
 
@@ -1280,7 +1280,7 @@
                 <div ng-if="column.document.dataType=='URL'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf solo-vertical-center" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
-                    <a class="emailSpan" href="{{eachRow.get(column.name) }}" target="_blank" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">
+                    <a class="emailSpan" ng-href="{{eachRow.get(column.name) }}" target="_blank" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">
                       {{eachRow.get(column.name)}}
                     </a>                
                   </div>

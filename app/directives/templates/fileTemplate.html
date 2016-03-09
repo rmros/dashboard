@@ -175,7 +175,7 @@
 
       <!--File View-->
       <!--Download-->
-      <a ng-if="!selectedFile && editableFile && editableFile.document.url" href="{{editableFile.document.url}}" target="_blank" class="btn btn-primary cb-modal-default-btn-long" ><i class="fa fa-download"></i>&nbsp;Download</a>
+      <a ng-if="!selectedFile && editableFile && editableFile.document.url" ng-href="{{editableFile.document.url}}" target="_blank" class="btn btn-primary cb-modal-default-btn-long" ><i class="fa fa-download"></i>&nbsp;Download</a>
 
       <!--Remove File-->
       <button ng-if="(!fileInfo || !fileInfo.rawFile) && editableFile && editableFile.document.url" type="button" ng-click="deleteFile()" class="btn btn-danger cb-modal-default-btn-long" ><i class="fa fa-trash-o"></i>&nbsp;Delete</button> 
