@@ -40,11 +40,17 @@
                             <div style="padding-top: 13px;" class="flex-general-column-wrapper-center">                          
                               <div  class="cf">  
                                  <!--User-->                        
-                                 <i ng-if="t.document.type=='user'" class="icon ion-person-stalker tableIcon"></i>
-                                 <!--Role-->                        
-                                 <i ng-if="t.document.type=='role'" class="icon ion-unlocked tableIcon"></i>
-                                 <!--Custom-->                        
-                                 <i ng-if="t.document.type=='custom'" class="icon ion-ios-list tableIcon"></i>
+                                 <span ng-show="t.document.type=='user'">
+                                    <i class="icon ion-person-stalker tableIcon"></i>
+                                 </span>
+                                 <!--Role--> 
+                                 <span ng-show="t.document.type=='role'">                       
+                                    <i class="icon ion-unlocked tableIcon"></i>
+                                 </span>
+                                 <!--Custom-->
+                                 <span ng-show="t.document.type=='custom'">                        
+                                    <i  class="icon ion-ios-list tableIcon"></i>
+                                 </span>
                               </div>                              
                             </div>
 
@@ -61,7 +67,7 @@
                               </div>                             
                             </div>
 
-                            <div ng-if="t.document.type=='custom'" ng-click="deleteTableModal(t); $event.stopPropagation()" class="flex-general-column-wrapper-center" style="height:50%;width:100%;border-top:1px solid #2A3D56;">
+                            <div ng-show="t.document.type=='custom'" ng-click="deleteTableModal(t); $event.stopPropagation()" class="flex-general-column-wrapper-center" style="height:50%;width:100%;border-top:1px solid #2A3D56;">
                               <div>
                                 <i class="icon ion-ios-trash" style="color:white;font-size: 24px;"></i>
                               </div>                            
