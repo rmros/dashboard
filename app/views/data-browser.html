@@ -540,9 +540,9 @@
                 </div>                  
               </th>
              
-              <th ng-repeat="column in currentProject.currentTable.columns"  ng-if="column.document.dataType==='Id'" class="cust-th" style="border-right:1px solid #4892F9;"> 
+              <th ng-repeat="column in currentProject.currentTable.columns"   ng-show="column.document.dataType==='Id'" class="cust-th" style="border-right:1px solid #4892F9;"> 
 
-                <div class="cust-cell flex-general-row-wrapper" ng-class="{true: 'cust-cell-width'}[!currentTableData || currentTableData.length==0]">
+                <div ng-show="column.document.dataType==='Id'" class="cust-cell flex-general-row-wrapper" ng-class="{true: 'cust-cell-width'}[!currentTableData || currentTableData.length==0]">
                   <div class="cust-cell-name flex-general-row-wrapper">                    
                     <div class="col-name">
                        <span style="display:inline; cursor:default;">
@@ -569,33 +569,33 @@
                   <div class="fTdDiv flex-general-row-wrapper-center">
 
                     <!--SerialNo-->
-                    <span ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index] && !rowsSelected[$index]  && showSerialNo[$index]" class="btn-default checkBxDflt chckbx-fix" class="sno" style="margin-left:6.9px;">{{$index+1}}</span>
+                    <span ng-show="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index] && !rowsSelected[$index]  && showSerialNo[$index]" class="btn-default checkBxDflt chckbx-fix" class="sno" style="margin-left:6.9px;">{{$index+1}}</span>
 
                     <!--Checkbox-->
-                    <checkbox  ng-if="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index] && !showSerialNo[$index]" class="btn-default checkBxDflt chckbx-fix"  ng-model="rowsSelected[$index]" ng-click="selectThisRow($index)"></checkbox>                   
+                    <checkbox  ng-show="!rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index] && !showSerialNo[$index]" class="btn-default checkBxDflt chckbx-fix"  ng-model="rowsSelected[$index]" ng-click="selectThisRow($index)"></checkbox>                   
 
                     <!--Edit mode-->
-                    <span ng-if="rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="sno-edit">
+                    <span ng-show="rowEditMode[$index] && !rowErrorMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="sno-edit">
                       <i class="fa fa-pencil"></i>
                     </span>
 
                     <!--Warning mode-->
-                    <span ng-if="rowWarningMode[$index] && !rowEditMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowErrorMode[$index]" class="sno-warninginfo" infotooltipright="rowInfo">
+                    <span ng-show="rowWarningMode[$index] && !rowEditMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index] && !rowErrorMode[$index]" class="sno-warninginfo" infotooltipright="rowInfo">
                       <i class="fa fa-exclamation-triangle"></i>
                     </span>
 
                     <!--Error mode-->
-                    <span ng-if="rowErrorMode[$index] && !rowWarningMode[$index] && !rowEditMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index]" class="sno-errorinfo" infotooltipright="rowInfo">
+                    <span ng-show="rowErrorMode[$index] && !rowWarningMode[$index] && !rowEditMode[$index] && !rowSpinnerMode[$index] && !rowSavedMode[$index]" class="sno-errorinfo" infotooltipright="rowInfo">
                       <i class="fa fa-exclamation-triangle"></i>
                     </span>
 
                     <!--Spinner-->
-                    <span ng-if="rowSpinnerMode[$index] && !rowEditMode[$index] && !rowErrorMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="sno-spinner">
+                    <span ng-show="rowSpinnerMode[$index] && !rowEditMode[$index] && !rowErrorMode[$index] && !rowSavedMode[$index] && !rowWarningMode[$index]" class="sno-spinner">
                       <i class="fa fa-spinner fa-spin"></i>
                     </span>
 
                     <!--Saved Tick-->
-                    <span ng-if="rowSavedMode[$index] && !rowSpinnerMode[$index] && !rowEditMode[$index] && !rowErrorMode[$index] && !rowWarningMode[$index]" class="sno-saved">
+                    <span ng-show="rowSavedMode[$index] && !rowSpinnerMode[$index] && !rowEditMode[$index] && !rowErrorMode[$index] && !rowWarningMode[$index]" class="sno-saved">
                       <i class="fa fa-check"></i>
                     </span>                               
 
@@ -603,7 +603,7 @@
               </td>  
               <!--/default checkbox-->
 
-              <td ng-repeat="column in currentProject.currentTable.columns" ng-if="column.document.dataType=='Id'" class="dataTd"  style="border-right:1px solid #4892F9;">                 
+              <td ng-repeat="column in currentProject.currentTable.columns" ng-show="column.document.dataType=='Id'" class="dataTd"  style="border-right:1px solid #4892F9;">                 
                 <!--Id-->             
                 <div ng-if="column.document.dataType=='Id'" class="tdDiv cf solo-vertical-center" style="min-width: 175px; cursor:default;">         
                   <div class="real-content pull-left">
