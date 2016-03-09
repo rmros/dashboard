@@ -40,15 +40,15 @@
                             <div style="padding-top: 13px;" class="flex-general-column-wrapper-center">                          
                               <div  class="cf">  
                                  <!--User-->                        
-                                 <span data-ng-show="t.document.type=='user'">
+                                 <span data-ng-if="t.document.type=='user'">
                                     <i class="icon ion-person-stalker tableIcon"></i>
                                  </span>
                                  <!--Role--> 
-                                 <span data-ng-show="t.document.type=='role'">                       
+                                 <span data-ng-if="t.document.type=='role'">                       
                                     <i class="icon ion-unlocked tableIcon"></i>
                                  </span>
                                  <!--Custom-->
-                                 <span data-ng-show="t.document.type=='custom'">                        
+                                 <span data-ng-if="t.document.type=='custom'">                        
                                     <i  class="icon ion-ios-list tableIcon"></i>
                                  </span>
                               </div>                              
