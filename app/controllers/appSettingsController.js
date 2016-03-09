@@ -42,13 +42,6 @@ appSettingsService){
     }
   };
 
-  $scope.templateEditorOptions={
-    height:"200", 
-    heightMax:"300",   
-    theme: 'gray',   
-    toolbarButtons : ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'fontFamily', 'fontSize', '|', 'color','insertLink','insertTable', 'undo', 'redo','html']
-  };
-
   $scope.settingsMenu={
     general:true,
     email:false,
@@ -61,17 +54,34 @@ appSettingsService){
     push:false
   }; 
   
-  $scope.init= function() {            
+  $scope.init= function() {  
+
     id = $stateParams.appId;   
 
     $rootScope.pageHeaderDisplay="App Settings";
-    if($rootScope.currentProject && $rootScope.currentProject.appId === id){
-      //if the same project is already in the rootScope, then dont load it.
-      getSettings();                                
-    }else{
-      loadProject(id);              
-    }
-    //_setDefaultTemplate();
+
+    _setDefaultTemplate().then(function(defTemplate){
+
+      $scope.emailSettings.settings.template =defTemplate;
+
+      if($rootScope.currentProject && $rootScope.currentProject.appId === id){
+        //if the same project is already in the rootScope, then dont load it.
+        getSettings();                                
+      }else{
+        loadProject(id);              
+      }
+
+    },function(error){
+
+      if($rootScope.currentProject && $rootScope.currentProject.appId === id){
+        //if the same project is already in the rootScope, then dont load it.
+        getSettings();                                
+      }else{
+        loadProject(id);              
+      }
+      
+    });
+
   };
 
   $scope.updateSettings=function(categoryName){
@@ -161,7 +171,7 @@ appSettingsService){
 
 /********************************Private fuctions****************************/
   function loadProject(id){ 
-    $scope.settingsLoading=true;  
+    //$scope.settingsLoading=true;  
     projectService.getProject(id)
     .then(function(currentProject){
       if(currentProject){
@@ -175,7 +185,7 @@ appSettingsService){
   }	
 
   function getSettings(){ 
-    $scope.settingsLoading=true;  
+    //$scope.settingsLoading=true;  
     appSettingsService.getSettings($rootScope.currentProject.appId,$rootScope.currentProject.keys.master)
     .then(function(settings){
 
@@ -198,15 +208,21 @@ appSettingsService){
     });   
   }	
 
-  function _setDefaultTemplate(){   
+  function _setDefaultTemplate(){ 
+    var q=$q.defer();
+
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function(){
       if(xmlhttp.status == 200 && xmlhttp.readyState == 4){
-        $scope.emailSettings.settings.template = xmlhttp.responseText;
+        q.resolve(xmlhttp.responseText);
+      }else{
+        q.reject("Error in loading default template.");
       }
     };
     xmlhttp.open("GET","assets/files/reset-password.html",true);
     xmlhttp.send();
+
+    return  q.promise;
   }
 		
 }]);

@@ -40,7 +40,7 @@
     "angular-chart.js": "~0.8.8",
     "angular-nvd3": "~1.0.5",
     "ngQuill": "ngquill#~1.4.0",
-    "angular-froala": "~2.2.1"
+    "textAngular": "~1.5.0"
   },
   "devDependencies": {}
 }

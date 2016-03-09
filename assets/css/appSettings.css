@@ -31,14 +31,17 @@
   padding-left: 12px;
   cursor: pointer;  
   width: 100%;
+  color:#AFAFAF;
 }
 
 .hoverAppSettingsMenu{
-  background-color:#F9F9F9; 
+  background-color:#F9F9F9;
+  color:#606060; 
 }
 
 .activeAppSettingsMenu{
-  background-color:#EDEDED; 
+  background-color:#EDEDED;
+  color:#606060; 
 }
 
 .while-settings-loading{
