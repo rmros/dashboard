@@ -605,7 +605,7 @@
 
               <td ng-repeat="column in currentProject.currentTable.columns" ng-if="column.document.dataType=='Id'" class="dataTd"  style="border-right:1px solid #4892F9;">                 
                 <!--Id-->             
-                <div  class="tdDiv cf solo-vertical-center" style="min-width: 175px; cursor:default;">         
+                <div ng-if="column.document.dataType=='Id'" class="tdDiv cf solo-vertical-center" style="min-width: 175px; cursor:default;">         
                   <div class="real-content pull-left">
                     {{eachRow.get(column.name)}}                 
                   </div>            
