@@ -40,15 +40,15 @@
                             <div style="padding-top: 13px;" class="flex-general-column-wrapper-center">                          
                               <div  class="cf">  
                                  <!--User-->                        
-                                 <span ng-show="t.document.type=='user'">
+                                 <span ng-if="t.document.type=='users'">
                                     <i class="icon ion-person-stalker tableIcon"></i>
                                  </span>
                                  <!--Role--> 
-                                 <span ng-show="t.document.type=='role'">                       
+                                 <span ng-if="t.document.type=='roles'">                       
                                     <i class="icon ion-unlocked tableIcon"></i>
                                  </span>
                                  <!--Custom-->
-                                 <span ng-show="t.document.type=='custom'">                        
+                                 <span>                        
                                     <i  class="icon ion-ios-list tableIcon"></i>
                                  </span>
                               </div>                              
@@ -67,7 +67,7 @@
                               </div>                             
                             </div>
 
-                            <div ng-show="t.document.type=='custom'" ng-click="deleteTableModal(t); $event.stopPropagation()" class="flex-general-column-wrapper-center" style="height:50%;width:100%;border-top:1px solid #2A3D56;">
+                            <div ng-if="t.document.type=='custom'" ng-click="deleteTableModal(t); $event.stopPropagation()" class="flex-general-column-wrapper-center" style="height:50%;width:100%;border-top:1px solid #2A3D56;">
                               <div>
                                 <i class="icon ion-ios-trash" style="color:white;font-size: 24px;"></i>
                               </div>                            
