@@ -213,10 +213,11 @@ appSettingsService){
 
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function(){
-      if(xmlhttp.status == 200 && xmlhttp.readyState == 4){
+      if(xmlhttp.status === 200 && xmlhttp.readyState === 4){
         q.resolve(xmlhttp.responseText);
-      }else{
-        q.reject("Error in loading default template.");
+      }
+      if(xmlhttp.status !== 200 && xmlhttp.status!==0){
+        q.reject("Failed to load default email template");
       }
     };
     xmlhttp.open("GET","assets/files/reset-password.html",true);
