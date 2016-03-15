@@ -979,25 +979,30 @@ CB._defaultColumns = function(type) {
     id.unique = true;
     id.document.isDeletable = false;
     id.document.isEditable = false;
+
     var expires = new CB.Column('expires');
     expires.dataType = 'DateTime';
     expires.document.isDeletable = false;
     expires.document.isEditable = false;
+
     var createdAt = new CB.Column('createdAt');
     createdAt.dataType = 'DateTime';
     createdAt.required = true;
     createdAt.document.isDeletable = false;
     createdAt.document.isEditable = false;
+
     var updatedAt = new CB.Column('updatedAt');
     updatedAt.dataType = 'DateTime';
     updatedAt.required = true;
     updatedAt.document.isDeletable = false;
     updatedAt.document.isEditable = false;
+
     var ACL = new CB.Column('ACL');
     ACL.dataType = 'ACL';
     ACL.required = true;
     ACL.document.isDeletable = false;
     ACL.document.isEditable = false;
+
     var col = [id,expires,updatedAt,createdAt,ACL];
     if (type === "custom") {
         return col;
@@ -1008,16 +1013,19 @@ CB._defaultColumns = function(type) {
         username.unique = true;
         username.document.isDeletable = false;
         username.document.isEditable = false;
+
         var email = new CB.Column('email');
         email.dataType = 'Email';
         email.unique = true;
         email.document.isDeletable = false;
         email.document.isEditable = false;
+
         var password = new CB.Column('password');
         password.dataType = 'EncryptedText';
         password.required = true;
         password.document.isDeletable = false;
         password.document.isEditable = false;
+
         var roles = new CB.Column('roles');
         roles.dataType = 'List';
         roles.relatedTo = 'Role';
@@ -1025,6 +1033,7 @@ CB._defaultColumns = function(type) {
         roles.document.relationType = 'table';
         roles.document.isDeletable = false;
         roles.document.isEditable = false;
+
         col.push(username);
         col.push(roles);
         col.push(password);
@@ -1039,7 +1048,41 @@ CB._defaultColumns = function(type) {
         name.document.isEditable = false;
         col.push(name);
         return col;
-   }
+    }else if(type === "device") {
+        var channels = new CB.Column('channels');
+        channels.dataType = 'List';
+        channels.relatedTo = 'Text';         
+        channels.document.isDeletable = false;
+        channels.document.isEditable = false;
+
+        var deviceToken = new CB.Column('deviceToken');
+        deviceToken.dataType = 'Text';        
+        deviceToken.unique = true;
+        deviceToken.document.isDeletable = false;
+        deviceToken.document.isEditable = false;
+
+        var deviceOS = new CB.Column('deviceOS');
+        deviceOS.dataType = 'Text';        
+        deviceOS.document.isDeletable = false;
+        deviceOS.document.isEditable = false;
+
+        var timezone = new CB.Column('timezone');
+        timezone.dataType = 'Text';        
+        timezone.document.isDeletable = false;
+        timezone.document.isEditable = false;
+
+        var metadata = new CB.Column('metadata');
+        metadata.dataType = 'Object';        
+        metadata.document.isDeletable = false;
+        metadata.document.isEditable = false;
+
+        col.push(channels);
+        col.push(deviceToken);
+        col.push(deviceOS);
+        col.push(timezone);
+        col.push(metadata);
+        return col;
+    }
 };
 
 CB._fileCheck = function(obj){
@@ -8352,9 +8395,9 @@ CB.CloudApp.init = function(serverUrl, applicationId, applicationKey, opts) { //
             CB.io = io;
         }
 
-        CB.Socket = CB.io(CB.socketIoUrl);
-        CB.CloudApp._isConnected = true;
-    }   
+        CB.Socket = CB.io(CB.socketIoUrl);        
+    } 
+    CB.CloudApp._isConnected = true;  
 };
 
 CB.CloudApp.onConnect = function(functionToFire) { //static function for initialisation of the app
@@ -9335,6 +9378,91 @@ CB.CloudQuery.prototype.setLimit = function(data) {
 CB.CloudQuery.prototype.setSkip = function(data) {
     this.skip = data;
     return this;
+};
+
+CB.CloudQuery.prototype.paginate = function(pageNo,totalItemsInPage,callback) {   
+
+    if (!CB.appId) {
+        throw "CB.appId is null.";
+    }
+    if (!this.tableName) {
+        throw "TableName is null.";
+    }
+    var def;
+    var callback;
+    if(typeof callback === 'object' && typeof callback.success === 'function'){
+        callback=callback;
+    }    
+    if (!callback) {
+        def = new CB.Promise();
+    }  
+
+    if(pageNo && typeof pageNo === 'object' && typeof pageNo.success === 'function'){
+        callback=pageNo;
+        pageNo=null;
+    }
+    if(totalItemsInPage && typeof totalItemsInPage === 'object' && typeof totalItemsInPage.success === 'function'){
+        callback=totalItemsInPage;
+        totalItemsInPage=null;
+    }    
+
+    if(pageNo && typeof pageNo === 'number' && pageNo>0){
+        if(typeof totalItemsInPage === 'number' && totalItemsInPage>0){
+            var skip=(pageNo*totalItemsInPage)-totalItemsInPage;
+            this.setSkip(skip);
+            this.setLimit(totalItemsInPage);
+        }
+    }      
+
+    if(totalItemsInPage && typeof totalItemsInPage === 'number' && totalItemsInPage>0){        
+        this.setLimit(totalItemsInPage);
+    }
+    var thisObj=this;    
+
+    var promises = [];
+    promises.push(this.find());
+
+    var countQuery = Object.create(this);
+    countQuery.setSkip(0);
+    countQuery.setLimit(99999999);
+
+    promises.push(countQuery.count());
+
+    CB.Promise.all(promises).then(function(list){
+        var objectsList=null;
+        var count=null;
+        var totalPages=0;
+
+        if(list && list.length>0){
+            objectsList=list[0];
+            count=list[1];
+            if(!count){
+                count=0;
+                totalPages=0;
+            }else{
+                totalPages=Math.ceil(count/thisObj.limit);
+            }            
+            if(totalPages && totalPages<0){
+                totalPages=0;
+            }
+        }
+        if(callback) {
+            callback.success(objectsList,count,totalPages);
+        }else {            
+            def.resolve(objectsList,count,totalPages);
+        }
+    },function(error){
+        if(callback){
+            callback.error(error);
+        }else {
+            def.reject(error);
+        }
+    });
+
+    if (!callback) {
+        return def;
+    }  
+
 };
 
 //select/deselect columns to show
@@ -11650,6 +11778,10 @@ CB.CloudTable = function(tableName){  //new table constructor
   }
   else if(tableName.toLowerCase() === "role") {
       this.document.type = "role";
+      this.document.maxCount = 1;
+  }
+  else if(tableName.toLowerCase() === "device") {
+      this.document.type = "device";
       this.document.maxCount = 1;
   }
   else {
