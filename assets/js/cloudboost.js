@@ -8352,9 +8352,9 @@ CB.CloudApp.init = function(serverUrl, applicationId, applicationKey, opts) { //
             CB.io = io;
         }
 
-        CB.Socket = CB.io(CB.socketIoUrl);
-        CB.CloudApp._isConnected = true;
-    }   
+        CB.Socket = CB.io(CB.socketIoUrl);        
+    } 
+    CB.CloudApp._isConnected = true;  
 };
 
 CB.CloudApp.onConnect = function(functionToFire) { //static function for initialisation of the app
@@ -9335,6 +9335,91 @@ CB.CloudQuery.prototype.setLimit = function(data) {
 CB.CloudQuery.prototype.setSkip = function(data) {
     this.skip = data;
     return this;
+};
+
+CB.CloudQuery.prototype.paginate = function(pageNo,totalItemsInPage,callback) {   
+
+    if (!CB.appId) {
+        throw "CB.appId is null.";
+    }
+    if (!this.tableName) {
+        throw "TableName is null.";
+    }
+    var def;
+    var callback;
+    if(typeof callback === 'object' && typeof callback.success === 'function'){
+        callback=callback;
+    }    
+    if (!callback) {
+        def = new CB.Promise();
+    }  
+
+    if(pageNo && typeof pageNo === 'object' && typeof pageNo.success === 'function'){
+        callback=pageNo;
+        pageNo=null;
+    }
+    if(totalItemsInPage && typeof totalItemsInPage === 'object' && typeof totalItemsInPage.success === 'function'){
+        callback=totalItemsInPage;
+        totalItemsInPage=null;
+    }    
+
+    if(pageNo && typeof pageNo === 'number' && pageNo>0){
+        if(typeof totalItemsInPage === 'number' && totalItemsInPage>0){
+            var skip=(pageNo*totalItemsInPage)-totalItemsInPage;
+            this.setSkip(skip);
+            this.setLimit(totalItemsInPage);
+        }
+    }      
+
+    if(totalItemsInPage && typeof totalItemsInPage === 'number' && totalItemsInPage>0){        
+        this.setLimit(totalItemsInPage);
+    }
+    var thisObj=this;    
+
+    var promises = [];
+    promises.push(this.find());
+
+    var countQuery = Object.create(this);
+    countQuery.setSkip(0);
+    countQuery.setLimit(99999999);
+
+    promises.push(countQuery.count());
+
+    CB.Promise.all(promises).then(function(list){
+        var objectsList=null;
+        var count=null;
+        var totalPages=0;
+
+        if(list && list.length>0){
+            objectsList=list[0];
+            count=list[1];
+            if(!count){
+                count=0;
+                totalPages=0;
+            }else{
+                totalPages=Math.ceil(count/thisObj.limit);
+            }            
+            if(totalPages && totalPages<0){
+                totalPages=0;
+            }
+        }
+        if(callback) {
+            callback.success(objectsList,count,totalPages);
+        }else {            
+            def.resolve(objectsList,count,totalPages);
+        }
+    },function(error){
+        if(callback){
+            callback.error(error);
+        }else {
+            def.reject(error);
+        }
+    });
+
+    if (!callback) {
+        return def;
+    }  
+
 };
 
 //select/deselect columns to show

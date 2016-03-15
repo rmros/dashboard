@@ -183,7 +183,7 @@ app.controller('appsController',
 
           //Add default tables
           addDefaultTables(data)
-          .then(function(userdata){ 
+          .then(function(promiseList){ 
 
             $scope.creatingDefaultTables=false;
             $scope.yourAppIsReady=true;            
@@ -1015,18 +1015,27 @@ app.controller('appsController',
 
       CB.CloudApp.init(SERVER_URL,project.appId, project.keys.master);
 
-      var roleTable = new CB.CloudTable("Role"); 
-
+      var roleTable = new CB.CloudTable("Role");
 
       tableService.saveTable(roleTable)
       .then(function(roledata){      
 
-        var userTable = new CB.CloudTable("User");          
-        return tableService.saveTable(userTable);
+        var promises=[];
 
-      }).then(function(userdata){      
-        q.resolve(userdata);
-        $rootScope.currentProject=null;
+        var userTable = new CB.CloudTable("User");          
+        promises.push(tableService.saveTable(userTable));
+
+        var deviceTable = new CB.CloudTable("Device");          
+        promises.push(tableService.saveTable(deviceTable));
+
+        $q.all(promises).then(function(promiseList){
+          q.resolve(promiseList);
+          $rootScope.currentProject=null;
+        },function(error){
+          q.reject(error); 
+          $rootScope.currentProject=null; 
+        });
+      
       },function(error){
         q.reject(error); 
         $rootScope.currentProject=null;                      
