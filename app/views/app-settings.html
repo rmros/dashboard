@@ -263,7 +263,7 @@
                       </span>
                     </div>
                     <div class="width:100%;">
-                      <span style="font-size: 14px;color:#576175;">You may upload up to 6 push certificates. This limit cannot be raised.</span>
+                      <span style="font-size: 14px;color:#576175;"></span>
                     </div>                  
                   </div>
 
@@ -291,8 +291,9 @@
                         </div>
 
                         <div ng-if="pushSettings.settings.apple.certificates.length>0" class="flex-general-row-wrapper" style="">
-                          <p style="font-size: 18px;font-weight: 700;color:#9E9E9E;">+</p>
-                          <p style="font-size: 18px;font-weight: 500;color:#9E9E9E;">Change Certificate</p>
+                          <p style="font-size: 16px;font-weight: 700;color:#9E9E9E;">
+                          <i class="fa fa-refresh"></i></p>
+                          <p style="font-size: 18px;font-weight: 500;color:#9E9E9E;">&nbsp;Change Certificate</p>
                         </div>
 
                       </div>
@@ -313,13 +314,7 @@
                         <i class="fa fa-android" style="margin-right: 4px;"></i>
                         Android Push Credentials
                       </span>
-                    </div>
-                    <div class="width:100%;">
-                      <span style="font-size: 14px;color:#576175;">This information is not necessary for most Parse apps. It is only necessary if </span>
-                    </div>
-                    <div class="width:100%;">
-                      <span style="font-size: 14px;color:#576175;">you import GCM registration IDs from another push provider via the installation upload API.</span>
-                    </div>                  
+                    </div>                                     
                   </div>
 
 
@@ -327,17 +322,17 @@
                     <div class="pull-left" style="height:95px;width:60%;padding:15px;">
 
                       <div style="width: 100%;">
-                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">SenderID</span>
+                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Sender ID</span>
                       </div>
 
                       <div style="width: 100%;margin-top: 3px;">
-                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Upload your .p12 certificate file to enable push for iOS and OS X.</span>
+                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is an integer listed under "Project Number" in the Google API console.</span>
                       </div>
 
                     </div>
 
                     <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                      <input type="text" ng-model="pushSettings.settings.andriod.credentials[0].senderId" class="default-inputfield" placeholder="Enter SenderId" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      <input type="text" ng-model="pushSettings.settings.andriod.credentials[0].senderId" class="default-inputfield" placeholder="Enter Sender ID" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                     </div>
                   </div>
 
@@ -349,7 +344,7 @@
                       </div>
 
                       <div style="width: 100%;margin-top: 3px;">
-                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Upload your .p12 certificate file to enable push for iOS and OS X.</span>
+                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
                       </div>
 
                     </div>
@@ -365,10 +360,7 @@
                         <i class="fa fa-windows" style="margin-right: 4px;"></i>
                         Windows Push Credentials
                       </span>
-                    </div>
-                    <div class="width:100%;">
-                      <span style="font-size: 14px;color:#576175;">Enable push for Windows apps.</span>
-                    </div>                                   
+                    </div>                                                      
                   </div>
 
 
@@ -380,7 +372,7 @@
                       </div>
 
                       <div style="width: 100%;margin-top: 3px;">
-                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Upload your .p12 certificate file to enable push for iOS and OS X.</span>
+                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">The unique identifier of your Windows Store app.</span>
                       </div>
 
                     </div>
@@ -397,7 +389,7 @@
                       </div>
 
                       <div style="width: 100%;margin-top: 3px;">
-                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Upload your .p12 certificate file to enable push for iOS and OS X.</span>
+                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">The secret key.</span>
                       </div>
 
                     </div>
