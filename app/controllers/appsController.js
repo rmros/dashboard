@@ -1025,8 +1025,8 @@ app.controller('appsController',
         var userTable = new CB.CloudTable("User");          
         promises.push(tableService.saveTable(userTable));
 
-        //var deviceTable = new CB.CloudTable("Device");          
-        //promises.push(tableService.saveTable(deviceTable));
+        var deviceTable = new CB.CloudTable("Device");          
+        promises.push(tableService.saveTable(deviceTable));
 
         $q.all(promises).then(function(promiseList){
           q.resolve(promiseList);

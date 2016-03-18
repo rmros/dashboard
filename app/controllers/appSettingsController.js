@@ -42,6 +42,23 @@ appSettingsService){
     }
   };
 
+  $scope.pushSettings={
+    category:"push",
+    settings:{
+      apple:{
+        certificates:[]
+      },
+      andriod:{
+        credentials:[]
+      },
+      windows:{
+        credentials:[]
+      }
+    }
+  };
+
+  $scope.fileAllowedTypes="*";//Files
+
   $scope.settingsMenu={
     general:true,
     email:false,
@@ -104,6 +121,11 @@ appSettingsService){
         validateMsg="All Mandrill API Key,From Email,From Name are required";
       }
     }
+    if(categoryName=="push"){
+      settingsObj=$scope.pushSettings.settings; 
+      validate=true;
+      validateMsg=null;     
+    }
     
     if(validate){
    
@@ -118,6 +140,36 @@ appSettingsService){
     }else{
       WarningNotify(validateMsg);
     }
+  };
+
+  $scope.initAddAppleCertificate=function(){
+    $scope.editableFile=null;
+    $("#md-applefileviewer").modal();
+  };
+
+  $scope.saveFile=function(appleCertificate){
+    if(appleCertificate){
+      var names=appleCertificate.name.split(".");
+      if(names[1]=="p12"){
+        $("#md-applefileviewer").modal("hide");
+
+        appSettingsService.upsertAppleCertificate($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,appleCertificate)
+        .then(function(resp){
+
+          if($scope.pushSettings.settings.apple.certificates.length==0){
+            $scope.pushSettings.settings.apple.certificates.push(resp);
+          }else if($scope.pushSettings.settings.apple.certificates.length>0){
+            $scope.pushSettings.settings.apple.certificates[0]=resp;
+          }
+
+        },function(error){
+          errorNotify("Error on saving apple certificate, try again..");
+        });
+        
+      }else{
+        errorNotify("Invalid .p12 file");
+      } 
+    }    
   };
 
   //Toggler
@@ -164,7 +216,7 @@ appSettingsService){
       $scope.settingsMenuHover.email=false;
     }
     
-    if(settingsName=="push" && !$scope.settingsMenu.push && $scope.settingsMenuHover.pus){
+    if(settingsName=="push" && !$scope.settingsMenu.push && $scope.settingsMenuHover.push){
       $scope.settingsMenuHover.push=false;
     }
   }; 
@@ -198,15 +250,20 @@ appSettingsService){
         var email=_.where(settings, {category: "email"});
         if(email && email.length>0){
           $scope.emailSettings=email[0];
-        }       
-      }
-      
+        } 
+
+        var push=_.where(settings, {category: "push"});
+        if(push && push.length>0){
+          $scope.pushSettings=push[0];
+        }      
+      }      
       
       $scope.settingsLoading=false;                               
     }, function(error){ 
       $scope.settingsLoading=false;           
-    });   
-  }	
+    });
+ 
+  }  
 
   function _setDefaultTemplate(){ 
     var q=$q.defer();

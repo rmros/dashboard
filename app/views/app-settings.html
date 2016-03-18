@@ -27,14 +27,14 @@
               </div>
             </div>
 
-            <!--<div  ng-click="selectSettings('push')" ng-class="{activeAppSettingsMenu:settingsMenu.push}" class="eachSetMenu flex-general-row-wrapper">
+            <div  ng-click="selectSettings('push')" ng-class="{activeAppSettingsMenu:settingsMenu.push,hoverAppSettingsMenu:settingsMenuHover.push}" ng-mouseover="menuHover('push')" ng-mouseleave="menuLeave('push')" class="eachSetMenu flex-general-row-wrapper">
               <div class="flex-general-column-wrapper-center" style="height: 100%;width:24px;">                
                 <i class="icon ion-ios-bell" style="font-size: 24px;"></i>
               </div>
               <div class="solo-vertical-center" style="height: 100%;margin-left: 3px;">
                 <span style="font-size: 18px;">Push Notifications</span>
               </div>
-            </div>-->
+            </div>
             <!--/Menu Items-->            
 
           </div>        
@@ -253,7 +253,7 @@
                   <span style="color:#549afc;font-size:24px;font-weight:bold;font-family: 'Signika Negative', sans-serif;">Push Notifications Settings</span>
                 </div>               
 
-                <div style="margin-top: 20px;height: auto;width: 100%;" class="flex-general-column-wrapper-center">
+                <div style="margin-top: 30px;height: auto;width: 100%;" class="flex-general-column-wrapper-center">
 
                   <div style="width:94%;margin-top: 25px;" class="flex-general-column-wrapper-center">
                     <div class="width:100%;">
@@ -281,12 +281,33 @@
                     </div>
 
                     <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                      <input type="text" class="default-inputfield" placeholder="Enter App Name" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+
+                      <!--Add File-->
+                      <div style="width:100%;height: 100%;cursor: pointer;" ng-click="initAddAppleCertificate()" class="flex-general-column-wrapper-center">
+
+                        <div ng-if="pushSettings.settings.apple.certificates.length==0" class="flex-general-row-wrapper" style="">
+                          <p style="font-size: 18px;font-weight: 700;color:#9E9E9E;">+</p>
+                          <p style="font-size: 18px;font-weight: 500;color:#9E9E9E;">Add Certificate</p>
+                        </div>
+
+                        <div ng-if="pushSettings.settings.apple.certificates.length>0" class="flex-general-row-wrapper" style="">
+                          <p style="font-size: 18px;font-weight: 700;color:#9E9E9E;">+</p>
+                          <p style="font-size: 18px;font-weight: 500;color:#9E9E9E;">Change Certificate</p>
+                        </div>
+
+                      </div>
+                      <!--Add File-->
+
+                      <!--Certificates List-->
+                      <div>
+                      </div>
+                      <!--Certificates List-->
+
                     </div>
                   </div>
 
 
-                  <div style="width:94%;margin-top: 35px;" class="flex-general-column-wrapper-center">
+                  <div style="width:94%;margin-top: 65px;" class="flex-general-column-wrapper-center">
                     <div class="width:100%;">
                       <span style="font-size: 18px;font-weight: bold;color:#549afc;">
                         <i class="fa fa-android" style="margin-right: 4px;"></i>
@@ -306,7 +327,7 @@
                     <div class="pull-left" style="height:95px;width:60%;padding:15px;">
 
                       <div style="width: 100%;">
-                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Certificate file</span>
+                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">SenderID</span>
                       </div>
 
                       <div style="width: 100%;margin-top: 3px;">
@@ -316,11 +337,29 @@
                     </div>
 
                     <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                      <input type="text" class="default-inputfield" placeholder="Enter App Name" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      <input type="text" ng-model="pushSettings.settings.andriod.credentials[0].senderId" class="default-inputfield" placeholder="Enter SenderId" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                    </div>
+                  </div>
+
+                  <div class="actual-fields cf" style="border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                    <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                      <div style="width: 100%;">
+                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">API Key</span>
+                      </div>
+
+                      <div style="width: 100%;margin-top: 3px;">
+                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Upload your .p12 certificate file to enable push for iOS and OS X.</span>
+                      </div>
+
+                    </div>
+
+                    <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                      <input type="text" ng-model="pushSettings.settings.andriod.credentials[0].apiKey" class="default-inputfield" placeholder="Enter API Key" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                     </div>
                   </div>
                 
-                  <div style="width:94%;margin-top: 35px;" class="flex-general-column-wrapper-center">
+                  <div style="width:94%;margin-top: 65px;" class="flex-general-column-wrapper-center">
                     <div class="width:100%;">
                       <span style="font-size: 18px;font-weight: bold;color:#549afc;">
                         <i class="fa fa-windows" style="margin-right: 4px;"></i>
@@ -333,11 +372,11 @@
                   </div>
 
 
-                  <div class="actual-fields cf" style="border: 1px solid #EDEDED;margin-top: 15px;">
+                  <div class="actual-fields cf" style="border-top: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;margin-top: 15px;">
                     <div class="pull-left" style="height:95px;width:60%;padding:15px;">
 
                       <div style="width: 100%;">
-                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Certificate file</span>
+                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F"> Package Security Identifier (SID)</span>
                       </div>
 
                       <div style="width: 100%;margin-top: 3px;">
@@ -347,8 +386,44 @@
                     </div>
 
                     <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                      <input type="text" class="default-inputfield" placeholder="Enter App Name" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      <input type="text" ng-model="pushSettings.settings.windows.credentials[0].securityId" class="default-inputfield" placeholder="Enter Security Identifier" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                     </div>
+                  </div>
+                  <div class="actual-fields cf" style="border: 1px solid #EDEDED;">
+                    <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                      <div style="width: 100%;">
+                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Client Secret</span>
+                      </div>
+
+                      <div style="width: 100%;margin-top: 3px;">
+                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Upload your .p12 certificate file to enable push for iOS and OS X.</span>
+                      </div>
+
+                    </div>
+
+                    <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                      <input type="text" class="default-inputfield" ng-model="pushSettings.settings.windows.credentials[0].clientSecret" placeholder="Enter Client Secret" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                    </div>
+                  </div>
+
+                  <div class="flex-general-column-wrapper-center" style="width: 94%;margin-top: 45px;">     
+
+                    <!--Save-->
+                    <div ng-show="!spinners[pushSettings.category]" style="margin-left:3px;width: 140px;">
+                      <button ng-click="updateSettings(pushSettings.category)" class="default-inputfield" style="width:100%;height: 37px;background: #549afc;color:white;font-size: 18px;border-radius: 3px;">
+                      Save
+                      </button>
+                    </div>
+
+                    <!--While Saving..-->
+                    <div ng-show="spinners[pushSettings.category]" style="margin-left:3px;width: 170px;">               
+                      <button  class="default-inputfield" style="width:100%;height: 37px;background: #549afc;color:white;font-size: 18px;border-radius: 3px;">&nbsp;
+                      <i class="fa fa-spinner fa-spin"></i>
+                      Saving..
+                      </button>
+                    </div>
+
                   </div>
 
                 </div>
@@ -371,3 +446,9 @@
   </div> 
 </a>
 <!--/Slack chat-->
+
+<!--File Directive -->
+<div class="modal fade colored-header danger" id="md-applefileviewer" tabindex="-1" role="dialog">
+  <dashboard-file filetype="fileAllowedTypes" edit="editableFile" delete="deleteFile()" save="saveFile(fileObj)"></dashboard-file>
+</div> 
+<!--/File Directive -->
