@@ -24,7 +24,8 @@ app.directive('dashboardFile', function(){
             };
 
             $scope.saveFile=function(){
-                $scope.save({fileObj:$scope.fileInfo.obj});                
+                $scope.save({fileObj:$scope.fileInfo.obj}); 
+                $scope.removeFile();               
             };           
 
             $scope.removeFile=function(){

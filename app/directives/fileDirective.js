@@ -99,14 +99,19 @@ app.directive('normalddfile', function(){
     return {
         restrict: 'A',
         link: function(scope, element, attrs){ 
-            var allowedTypes="*";            
+            var allowedTypes="*"; 
+            var extFilter=null;           
 
             if(scope.allowedFileTypes){
                 allowedTypes=scope.allowedFileTypes;
+            }
+            if(scope.extFilter){
+                extFilter=scope.extFilter;
             }  
 
             $(element).dmUploader({ 
-                allowedTypes:allowedTypes,              
+                allowedTypes:allowedTypes, 
+                extFilter: extFilter,            
                 onNewFile: function(id, file){                 
                     
                     var fileSize=((file.size/1024)/1024);//Convert Bytes to MBs

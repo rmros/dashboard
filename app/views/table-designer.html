@@ -47,6 +47,10 @@
                                  <span data-ng-if="t.document.type=='role'">                       
                                     <i class="icon ion-unlocked tableIcon"></i>
                                  </span>
+                                 <!--Device--> 
+                                 <span data-ng-if="t.document.type=='device'">                       
+                                    <i class="icon ion-android-phone-portrait tableIcon"></i>
+                                 </span>
                                  <!--Custom-->
                                  <span data-ng-if="t.document.type=='custom'">                        
                                     <i  class="icon ion-ios-list tableIcon"></i>
@@ -110,6 +114,8 @@
                                  <i ng-if="t.document.type=='user'" class="icon ion-person-stalker tableIcon" style="cursor:default;"></i>
                                  <!--Role-->                        
                                  <i ng-if="t.document.type=='role'" class="icon ion-unlocked tableIcon" style="cursor:default;"></i>
+                                 <!--Device-->                        
+                                 <i ng-if="t.document.type=='device'" class="icon ion-android-phone-portrait tableIcon" style="cursor:default;"></i>
                                  <!--Custom-->                        
                                  <i ng-if="t.document.type=='custom'" class="icon ion-ios-list tableIcon" style="cursor:default;"></i>
                                </div>                               
