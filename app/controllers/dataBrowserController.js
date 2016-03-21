@@ -83,6 +83,7 @@ $scope.fileAllowedTypes="*";//All
 
 $scope.orderBy="createdAt"; 
 $scope.orderByType="desc";
+$scope.docsLimit=50;
 $scope.hiddenColumnCount=0;
 $scope.editableFile=[];
 
@@ -1158,7 +1159,7 @@ function getProjectTables(){
     };
     $scope.filtersList.push(defaultFilterColumn);
 
-    return cloudBoostApiService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0);
+    return cloudBoostApiService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,$scope.docsLimit,0);
 
   }).then(function(cbObjects){ 
     $scope.currentTableData=cbObjects;
@@ -1185,7 +1186,7 @@ function getProjectTables(){
 $scope.refreshRows=function(){
   $scope.refreshingRows=true;  
 
-  cloudBoostApiService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0)
+  cloudBoostApiService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,$scope.docsLimit,0)
   .then(function(cbObjects){
     $scope.currentTableData=cbObjects;
 
@@ -1640,7 +1641,7 @@ $scope.sortASC=function(column){
     $scope.orderBy=column.name;
     $scope.orderByType="asc";    
 
-    cloudBoostApiService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0)
+    cloudBoostApiService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,$scope.docsLimit,0)
     .then(function(list){ 
 
        $scope.currentTableData=list; 
@@ -1667,7 +1668,7 @@ $scope.sortDESC=function(column){
 
     $scope.orderBy=column.name;
     $scope.orderByType="desc";
-    cloudBoostApiService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,10,0)
+    cloudBoostApiService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,$scope.docsLimit,0)
     .then(function(list){ 
 
        $scope.currentTableData=list; 
