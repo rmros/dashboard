@@ -9,13 +9,13 @@ app.service('userService', function($q,$http){
 
           if(!__isDevelopment){
             /****Tracking*********/                
-             mixpanel.alias(data._id);
+             mixpanel.alias(email);
 
-             mixpanel.people.set({ "Name": data.name,"$email": data.email});
+             mixpanel.people.set({ "Name": name,"$email": email});
              //mixpanel.identify(data._id);
 
-             mixpanel.register({ "Name": data.name,"Email": data.email});
-             mixpanel.track('Signup', { "Name": data.name,"Email": data.email});
+             mixpanel.register({ "Name": name,"Email": email});
+             mixpanel.track('Signup', { "Name": name,"Email": email});
             /****End of Tracking*****/
           }
               
@@ -54,10 +54,10 @@ app.service('userService', function($q,$http){
 
        $http.post(frontendServerURL+'/user/ResetPassword', {email:email}).
          success(function(data, status, headers, config) {
-           q.resolve();
+          q.resolve();
          }).
          error(function(data, status, headers, config) {
-               q.reject(data);
+          q.reject(data);
          });
 
        return q.promise;
@@ -73,10 +73,10 @@ app.service('userService', function($q,$http){
 
       $http.post(frontendServerURL+'/user/updatePassword', {code:code, password:newPass}).
       success(function(data, status, headers, config) {
-          q.resolve();
+        q.resolve();
       }).
       error(function(data, status, headers, config) {
-           q.reject(data);
+        q.reject(data);
       });
 
       return q.promise;
