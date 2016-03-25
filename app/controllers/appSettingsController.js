@@ -48,7 +48,7 @@ appSettingsService){
       apple:{
         certificates:[]
       },
-      andriod:{
+      android:{
         credentials:[]
       },
       windows:{
