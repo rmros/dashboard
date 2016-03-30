@@ -319,7 +319,7 @@ app.controller('appsController',
         $scope.developers=devs;        
         $('#developersModal').modal('show');                        
       },function(error){
-        console.log(error);           
+        errorNotify("Something went wrong to add developer!");          
       });
     }   
        
@@ -776,6 +776,8 @@ app.controller('appsController',
     }
 
     analyticsService.bulkApiStorageDetails(appIdArray).then(function(list){
+
+      //For API
       for(var i=0;i<list.api.length;++i){
 
           var percentageObj=calculatePercentage(list.api[i],"api");
@@ -804,6 +806,7 @@ app.controller('appsController',
           $scope.apiCallsLoading[list.api[i].appId]=false;
       }
 
+      //For Storage
       for(var i=0;i<list.storage.length;++i){
 
           var percentageObj=calculatePercentage(list.storage[i],"storage");
