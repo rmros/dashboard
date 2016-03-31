@@ -60,7 +60,7 @@ if(window.location.hostname==="dashboard.cloudboost.io"){
     SERVER_URL="https://beta-api.cloudboost.io";
 }else{
     frontendServerURL = window.location.protocol+"//"+window.location.hostname + ":3000";
-    SERVER_URL = "http://beta-api.cloudboost.io";
+    SERVER_URL = "https://beta-api.cloudboost.io";
 }
 
 

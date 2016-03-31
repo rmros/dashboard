@@ -45,15 +45,17 @@ app.controller('appsController',
   $scope.invitees=[];
 
   //App Usages
-  $scope.apiCallsUsed=[];
-  $scope.storageUsed=[];
+  $scope.apiCallsUsed={};
+  $scope.storageUsed={};
 
-  $scope.apiCallsLoading={};  
+  //App Loadings
+  $scope.apiCallsLoading={};
+  $scope.storageLoading={}; 
+
+  //App Errors  
   $scope.apiCallsError={};
-
-  $scope.storageLoading={};
   $scope.storageError={};
-  //App Usages
+  
 
   $scope.openBillingPlan=false;
   $scope.cardDetailsStep1=true;
@@ -777,62 +779,19 @@ app.controller('appsController',
 
     analyticsService.bulkApiStorageDetails(appIdArray).then(function(list){
 
-      //For API
+      
       for(var i=0;i<list.api.length;++i){
+        //For API
+        var apiPercentageObj=calculatePercentage(list.api[i],"api");         
+        $scope.apiCallsUsed[list.api[i].appId]=apiPercentageObj;
+        $scope.apiCallsLoading[list.api[i].appId]=false;
 
-          var percentageObj=calculatePercentage(list.api[i],"api");
-          var alreadyInserted=null;
-
-          if($scope.apiCallsUsed && $scope.apiCallsUsed.length>0){
-            alreadyInserted=_.first(_.where($scope.apiCallsUsed, {appId: list.api[i].appId}));
-          }
-          
-          if(alreadyInserted){
-            var matchedIndex=null;
-            for(var i=0;i<$scope.apiCallsUsed.length;++i){
-                if($scope.apiCallsUsed[i].appId==list.api[i].appId){
-                  matchedIndex=i;
-                  break;                      
-                }
-            }
-            if(matchedIndex==0 || matchedIndex>0){
-              $scope.apiCallsUsed[matchedIndex]=percentageObj;
-            }
-            
-          }else{
-            $scope.apiCallsUsed.push(percentageObj);
-          }
-
-          $scope.apiCallsLoading[list.api[i].appId]=false;
+        //For Storage
+        var storagePercentageObj=calculatePercentage(list.storage[i],"storage"); 
+        $scope.storageUsed[list.storage[i].appId]=storagePercentageObj;
+        $scope.storageLoading[list.storage[i].appId]=false;
       }
-
-      //For Storage
-      for(var i=0;i<list.storage.length;++i){
-
-          var percentageObj=calculatePercentage(list.storage[i],"storage");
-          var alreadyInserted=null;
-
-          if($scope.storageUsed && $scope.storageUsed.length>0){
-            alreadyInserted=_.first(_.where($scope.storageUsed, {appId: list.storage[i].appId}));
-          }
-          
-          if(alreadyInserted){
-            var matchedIndex=null;
-            for(var i=0;i<$scope.storageUsed.length;++i){
-                if($scope.storageUsed[i].appId==list.storage[i].appId){
-                  matchedIndex=i;
-                  break;
-                }
-            }
-            if(matchedIndex==0 || matchedIndex>0){
-              $scope.storageUsed[matchedIndex]=percentageObj;
-            }
-          }else{
-            $scope.storageUsed.push(percentageObj);
-          } 
-
-          $scope.storageLoading[list.storage[i].appId]=false;
-      }  
+      
 
     },function(error){
       //Load and errors
@@ -853,29 +812,11 @@ app.controller('appsController',
 
     analyticsService.apiCount(appObj.appId).then(function(respObj){
 
-        var percentageObj=calculatePercentage(respObj,"api");
-        var alreadyInserted=null;
-
-        if($scope.apiCallsUsed && $scope.apiCallsUsed.length>0){
-          alreadyInserted=_.first(_.where($scope.apiCallsUsed, {appId: respObj.appId}));
-        }
+        var percentageObj=calculatePercentage(respObj,"api");     
         
-        if(alreadyInserted){
-          var matchedIndex=null;
-          for(var i=0;i<$scope.apiCallsUsed.length;++i){
-              if($scope.apiCallsUsed[i].appId==respObj.appId){
-                matchedIndex=i;
-                break;
-              }
-          }
-          if(matchedIndex==0 || matchedIndex>0){
-            $scope.apiCallsUsed[matchedIndex]=percentageObj;
-          }
-        }else{
-          $scope.apiCallsUsed.push(percentageObj);
-        }
-        
+        $scope.apiCallsUsed[respObj.appId]=percentageObj;
         $scope.apiCallsLoading[respObj.appId]=false;
+
     },function(error){ 
         $scope.apiCallsLoading[error.appId]=false;
         $scope.apiCallsError[error.appId]=true;             
@@ -887,29 +828,11 @@ app.controller('appsController',
      $scope.storageLoading[appObj.appId]=true;
      analyticsService.storageCount(appObj.appId).then(function(respObj){
 
-        var percentageObj=calculatePercentage(respObj,"storage");
-        var alreadyInserted=null;
+        var percentageObj=calculatePercentage(respObj,"storage");              
 
-        if($scope.storageUsed && $scope.storageUsed.length>0){
-          alreadyInserted=_.first(_.where($scope.storageUsed, {appId: respObj.appId}));
-        }
-        
-        if(alreadyInserted){
-          var matchedIndex=null;
-          for(var i=0;i<$scope.storageUsed.length;++i){
-              if($scope.storageUsed[i].appId==respObj.appId){
-                matchedIndex=i;
-                break;
-              }
-          }
-          if(matchedIndex==0 || matchedIndex>0){
-            $scope.storageUsed[matchedIndex]=percentageObj;
-          }
-        }else{
-          $scope.storageUsed.push(percentageObj);
-        }        
-
+        $scope.storageUsed[respObj.appId]=percentageObj;
         $scope.storageLoading[respObj.appId]=false;
+
      },function(error){
         $scope.storageLoading[error.appId]=false;
         $scope.storageError[error.appId]=true;              
