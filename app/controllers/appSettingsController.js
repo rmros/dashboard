@@ -28,7 +28,8 @@ appSettingsService){
     category:"general",
     settings:{
       appName:null,
-      appInProduction:false
+      appInProduction:false,
+      appIcon:null
     }
   };
 
@@ -142,33 +143,52 @@ appSettingsService){
     }
   };
 
-  $scope.initAddAppleCertificate=function(){
+  $scope.initAddAppIcon=function(){
     $scope.editableFile=null;
-    $("#md-applefileviewer").modal();
+    $("#md-appsettingsfileviewer").modal();
   };
 
-  $scope.saveFile=function(appleCertificate){
-    if(appleCertificate){
-      var names=appleCertificate.name.split(".");
-      if(names[1]=="p12"){
-        $("#md-applefileviewer").modal("hide");
+  $scope.removeAppIcon=function(){
+    $scope.generalSettings.settings.appIcon=null;
+  };
 
-        appSettingsService.upsertAppleCertificate($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,appleCertificate)
-        .then(function(resp){
+  $scope.initAddAppleCertificate=function(){
+    $scope.editableFile=null;
+    $("#md-appsettingsfileviewer").modal();
+  };
 
-          if($scope.pushSettings.settings.apple.certificates.length==0){
-            $scope.pushSettings.settings.apple.certificates.push(resp);
-          }else if($scope.pushSettings.settings.apple.certificates.length>0){
-            $scope.pushSettings.settings.apple.certificates[0]=resp;
-          }
+  $scope.saveFile=function(file){
+    if(file){
+      var names=file.name.split(".");
 
-        },function(error){
-          errorNotify("Error on saving apple certificate, try again..");
-        });
-        
-      }else{
-        errorNotify("Invalid .p12 file");
-      } 
+      //App Icon
+      if($scope.settingsMenu.general){
+
+      }
+
+      //Apple Certificate
+      if($scope.settingsMenu.push){
+        if(names[1]=="p12"){
+          $("#md-appsettingsfileviewer").modal("hide");
+
+          appSettingsService.upsertAppleCertificate($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,file)
+          .then(function(resp){
+
+            if($scope.pushSettings.settings.apple.certificates.length==0){
+              $scope.pushSettings.settings.apple.certificates.push(resp);
+            }else if($scope.pushSettings.settings.apple.certificates.length>0){
+              $scope.pushSettings.settings.apple.certificates[0]=resp;
+            }
+
+          },function(error){
+            errorNotify("Error on saving apple certificate, try again..");
+          });
+          
+        }else{
+          errorNotify("Invalid .p12 file");
+        }
+      }
+
     }    
   };
 

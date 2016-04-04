@@ -99,19 +99,6 @@ app.controller('tableDesignerController',
         $scope.newTableType = "custom";
         $scope.selectedTableType=_.first(_.where($scope.tableTypes, {type:'custom'}));
         $scope.tableError=null;
-
-        /*var tableName="Custom";
-        var incrementor=0;
-        (function iterator(i) {
-              $scope.checkErrorsForCreate(tableName,$rootScope.currentProject.tables,"table");
-              if($scope.tableErrorForCreate){
-                  ++incrementor;
-                  tableName="Custom"+incrementor;
-                  iterator(i+1);
-              }
-        })(0);
-        $scope.newTableName = tableName;*/        
-
         
         $scope.addTablePopup=true;
         $scope.newTableName=null;

@@ -27,12 +27,21 @@
               </div>
             </div>
 
-            <div  ng-click="selectSettings('push')" ng-class="{activeAppSettingsMenu:settingsMenu.push,hoverAppSettingsMenu:settingsMenuHover.push}" ng-mouseover="menuHover('push')" ng-mouseleave="menuLeave('push')" class="eachSetMenu flex-general-row-wrapper">
+            <div ng-click="selectSettings('push')" ng-class="{activeAppSettingsMenu:settingsMenu.push,hoverAppSettingsMenu:settingsMenuHover.push}" ng-mouseover="menuHover('push')" ng-mouseleave="menuLeave('push')" class="eachSetMenu flex-general-row-wrapper">
               <div class="flex-general-column-wrapper-center" style="height: 100%;width:24px;">                
                 <i class="icon ion-ios-bell" style="font-size: 24px;"></i>
               </div>
               <div class="solo-vertical-center" style="height: 100%;margin-left: 3px;">
                 <span style="font-size: 18px;">Push Notifications</span>
+              </div>
+            </div>
+
+            <div ng-click="selectSettings('auth')" ng-class="{activeAppSettingsMenu:settingsMenu.auth,hoverAppSettingsMenu:settingsMenuHover.auth}" ng-mouseover="menuHover('auth')" ng-mouseleave="menuLeave('auth')" class="eachSetMenu flex-general-row-wrapper">
+              <div class="flex-general-column-wrapper-center" style="height: 100%;width:24px;">                
+                <i class="icon ion-ios-bell" style="font-size: 24px;"></i>
+              </div>
+              <div class="solo-vertical-center" style="height: 100%;margin-left: 3px;">
+                <span style="font-size: 18px;">Authentication</span>
               </div>
             </div>
             <!--/Menu Items-->            
@@ -99,6 +108,51 @@
                     <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
                       <switch ng-model="generalSettings.settings.appInProduction" class="green appprod-switch"></switch>
                     </div>
+                  </div>
+
+                  <div class="actual-fields cf" style="border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED; border-bottom: 1px solid #EDEDED;">
+                    <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                      <div style="width: 100%;">
+                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">App Icon</span>
+                      </div>
+
+                      <div style="width: 100%;margin-top: 3px;">
+                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Your app icon</span>
+                      </div>
+
+                    </div>
+
+                    <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+
+                        <!--Add Icon-->
+                        <div ng-if="!generalSettings.settings.appIcon"  style="width:100%;height: 100%;cursor: pointer;" ng-click="initAddAppIcon()" class="flex-general-column-wrapper-center">
+
+                          <div class="flex-general-row-wrapper" style="">
+                            <p style="font-size: 18px;font-weight: 700;color:#9E9E9E;">+</p>
+                            <p style="font-size: 18px;font-weight: 500;color:#9E9E9E;">Add Icon</p>
+                          </div>                         
+
+                        </div>
+                        <!--Add Icon-->
+
+                        <!--Delete Icon-->
+                        <div ng-if="generalSettings.settings.appIcon" style="width:100%;height: 100%;" class="solo-vertical-center">                         
+
+                          <div  class="flex-general-row-wrapper" style="">
+                            <div style="">
+                              <img src="assets/images/icon.png" style="width:40px;height: 40px;">
+                            </div>
+                            <div class="solo-vertical-center" ng-click="removeAppIcon()" style="height: 44px;cursor: pointer;">                              
+                              <p style="font-size: 18px;font-weight: 500;color:#C41919;">&nbsp;Remove</p>
+                            </div>
+                          </div>
+
+                        </div>
+                        <!--Delete Icon-->                     
+
+                    </div>
+
                   </div>            
                   
                   <div class="flex-general-column-wrapper-center" style="width: 94%;margin-top: 35px;">        
@@ -440,7 +494,7 @@
 <!--/Slack chat-->
 
 <!--File Directive -->
-<div class="modal fade colored-header danger" id="md-applefileviewer" tabindex="-1" role="dialog">
+<div class="modal fade colored-header danger" id="md-appsettingsfileviewer" tabindex="-1" role="dialog">
   <dashboard-file filetype="fileAllowedTypes" edit="editableFile" delete="deleteFile()" save="saveFile(fileObj)"></dashboard-file>
 </div> 
 <!--/File Directive -->
