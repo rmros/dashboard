@@ -38,7 +38,7 @@
 
             <div ng-click="selectSettings('auth')" ng-class="{activeAppSettingsMenu:settingsMenu.auth,hoverAppSettingsMenu:settingsMenuHover.auth}" ng-mouseover="menuHover('auth')" ng-mouseleave="menuLeave('auth')" class="eachSetMenu flex-general-row-wrapper">
               <div class="flex-general-column-wrapper-center" style="height: 100%;width:24px;">                
-                <i class="icon ion-ios-bell" style="font-size: 24px;"></i>
+                <i class="icon ion-person" style="font-size: 24px;"></i>
               </div>
               <div class="solo-vertical-center" style="height: 100%;margin-left: 3px;">
                 <span style="font-size: 18px;">Authentication</span>
@@ -92,25 +92,7 @@
                     </div>
                   </div>
 
-                  <div class="actual-fields cf" style="border: 1px solid #EDEDED;">
-                    <div class="pull-left" style="height:95px;width:60%;padding:15px;">
-
-                      <div style="width: 100%;">
-                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">App In Production</span>
-                      </div>
-
-                      <div style="width: 100%;margin-top: 3px;">
-                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Is your app in production?</span>
-                      </div>
-
-                    </div>
-
-                    <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                      <switch ng-model="generalSettings.settings.appInProduction" class="green appprod-switch"></switch>
-                    </div>
-                  </div>
-
-                  <div class="actual-fields cf" style="border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED; border-bottom: 1px solid #EDEDED;">
+                  <div class="actual-fields cf" style="border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED; border-top: 1px solid #EDEDED;">
                     <div class="pull-left" style="height:95px;width:60%;padding:15px;">
 
                       <div style="width: 100%;">
@@ -141,7 +123,7 @@
 
                           <div  class="flex-general-row-wrapper" style="">
                             <div style="">
-                              <img src="assets/images/icon.png" style="width:40px;height: 40px;">
+                              <img ng-src="{{generalSettings.settings.appIcon}}" style="width:40px;height: 40px;">
                             </div>
                             <div class="solo-vertical-center" ng-click="removeAppIcon()" style="height: 44px;cursor: pointer;">                              
                               <p style="font-size: 18px;font-weight: 500;color:#C41919;">&nbsp;Remove</p>
@@ -153,7 +135,26 @@
 
                     </div>
 
-                  </div>            
+                  </div>
+
+                  <div class="actual-fields cf" style="border: 1px solid #EDEDED;">
+                    <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                      <div style="width: 100%;">
+                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">App In Production</span>
+                      </div>
+
+                      <div style="width: 100%;margin-top: 3px;">
+                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Is your app in production?</span>
+                      </div>
+
+                    </div>
+
+                    <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                      <switch ng-model="generalSettings.settings.appInProduction" class="green appprod-switch"></switch>
+                    </div>
+                  </div>
+                              
                   
                   <div class="flex-general-column-wrapper-center" style="width: 94%;margin-top: 35px;">        
 
@@ -475,6 +476,1820 @@
                 </div>
               </div>
               <!--Dynamically push-->
+
+              <!--Dynamically Authentication-->
+              <div ng-if="settingsMenu.auth" class="appeditablefields-auth">
+
+                <div style="height:30px;" class="flex-general-column-wrapper-center">
+                  <span style="color:#549afc;font-size:24px;font-weight:bold;font-family: 'Signika Negative', sans-serif;">Authentication Settings</span>
+                </div>                
+
+                <div class="flex-general-column-wrapper-center" style="width: 94%;margin-top: 35px;">        
+
+                  <div style="width:94%;margin-top: 25px;" class="flex-general-column-wrapper-center">
+                    <div class="width:100%;">
+                      <span style="font-size: 18px;font-weight: bold;color:#549afc;">
+                        <i class="fa fa-bars" style="margin-right: 4px;"></i>
+                        Custom Authentication
+                      </span>
+                    </div>                                                      
+                  </div>
+
+
+                  <div class="actual-fields cf" style="border-top: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;margin-top: 15px;">
+                    <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                      <div style="width: 100%;">
+                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F"> Allowed Callback URL</span>
+                      </div>
+
+                      <div style="width: 100%;margin-top: 3px;">
+                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">After the user authenticates we will only call back to this URL.</span>
+                      </div>
+
+                    </div>
+
+                    <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                      <input type="text" ng-model="authSettings.settings.custom.callbackURL" class="default-inputfield" placeholder="Enter Security Identifier" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                    </div>
+                  </div>
+
+                  <div class="actual-fields cf" style="border-top: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                    <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                      <div style="width: 100%;">
+                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Allowed Logout URL</span>
+                      </div>
+
+                      <div style="width: 100%;margin-top: 3px;">
+                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">A URL that are valid to redirect to after logout.</span>
+                      </div>
+
+                    </div>
+
+                    <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                      <input type="text" class="default-inputfield" ng-model="authSettings.settings.custom.logOutURL" placeholder="Enter Client Secret" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                    </div>
+                  </div>
+
+                  <div class="actual-fields cf" style="border: 1px solid #EDEDED;">
+                    <div class="pull-left" style="height:110px;width:60%;padding:15px;">
+
+                      <div style="width: 100%;">
+                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Allowed Origins (CORS)</span>
+                      </div>
+
+                      <div style="width: 100%;margin-top: 3px;">
+                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Allowed Origins are URL that will be allowed to make requests from JavaScript (typically used with CORS). By default, your callback URL will be allowed. </span>
+                      </div>
+
+                    </div>
+
+                    <div class="pull-right solo-vertical-center" style="height: 110px;width:39%;background-color: #F6FAFB;padding:15px;">
+                      <input type="text" class="default-inputfield" ng-model="authSettings.settings.custom.corsURL" placeholder="Enter Client Secret" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                    </div>
+                  </div>
+
+                  <div style="width:94%;margin-top: 40px;" class="flex-general-column-wrapper-center">
+                    <div class="width:100%;">
+                      <span style="font-size: 18px;font-weight: bold;color:#549afc;">
+                        <i class="fa fa-users" style="margin-right: 4px;"></i>
+                        Social Authentication
+                      </span>
+                    </div>                                                      
+                  </div>   
+
+                  <!--Facebook-->
+                  <div class="actual-fields cf" style="border: 1px solid #EDEDED;margin-top: 25px;">
+                    <div class="pull-left solo-vertical-center" style="height:95px;width:60%;padding:15px;">                     
+                      <img src="assets/images/facebook.png" style="height: 35px;">
+                    </div>
+
+                    <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                      <switch ng-model="authSettings.settings.facebook.enabled" class="green appprod-switch"></switch>
+                    </div>
+                  </div>
+                 
+                  <div ng-if="authSettings.settings.facebook.enabled" style="width:94%">
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">App ID</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                        <input type="text" ng-model="authSettings.settings.facebook.appId" class="default-inputfield" placeholder="Enter App ID" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      </div>
+                    </div>
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">App Secret</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                        <input type="text" ng-model="authSettings.settings.facebook.appSecret" class="default-inputfield" placeholder="Enter App Secret" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      </div>
+                    </div>
+
+                    <!--Callback URL-->
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+
+                      <div class="pull-left" style="height:110px;width:99.98%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Callback URL</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 6px;">
+                          <span style="font-size: 14px;line-height:12%;color:#3789fc;">{{::fbCallbackURL}}</span>
+                        </div>
+
+                      </div>
+                      
+                    </div> 
+                    <!--Callback URL-->
+
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:auto;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Attributes</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right" style="height: auto;width:39%;background-color: #F6FAFB;padding:15px;">
+
+                        <div style="width: 100%">
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.email" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Email</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.birthday" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Birthday</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.website" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Website</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.hometown" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Home town</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.location" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Location</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.work" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Work History</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.education" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Education History</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.about" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>About me</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.name" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Name</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.bio" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Bio</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!--Additional fields-->
+                        <div style="height: 36px;" class="solo-vertical-center">
+                          <span ng-if="!facebook.moreAttributes" ng-click="toggleFbAttributes(true)" style="color:gray;cursor: pointer;">Show more..</span>
+                          <span ng-if="facebook.moreAttributes" ng-click="toggleFbAttributes(false)" style="color:gray;cursor: pointer;">Hide</span>
+                        </div>
+
+                        <div ng-if="facebook.moreAttributes">
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.id" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Id</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.age_range" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Age_range</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.context" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>context</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.cover" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>cover</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.devices" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>devices</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.education" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>education</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.favorite_athletes" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>favorite_athletes</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.favorite_teams" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>favorite_teams</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.first_name" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>first_name</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.inspirational_people" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>inspirational_people</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.install_type" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>install_type</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.installed" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>installed</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.interested_in" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>interested_in</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.is_shared_login" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>is_shared_login</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.is_verified" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>is_verified</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.languages" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>languages</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.last_name" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>last_name</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.link" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>link</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.locale" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>locale</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.location" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>location</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.meeting_for" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>meeting_for</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.middle_name" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>middle_name</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.name_format" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>name_format</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.payment_pricepoint" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>payment_pricepoints</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.political" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>political</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.public_key" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>public_key</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.quotes" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>quotes</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.relationship_status" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>relationship_status</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.religion" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>religion</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.security_settings" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>security_settings</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.shared_login_upgrade_required_by" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>shared_login_upgrade_required_by</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.significant_other" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>significant_other</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.sports" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>sports</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.test_group" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>test_group</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.third_party_id" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>third_party_id</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.timezone" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>timezone</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.token_for_business" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>token_for_business</span>
+                            </div>
+                          </div>
+                          
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.updated_time" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>updated_time</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.verified" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>verified</span>
+                            </div>
+                          </div>
+                          
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.video_upload_limits" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>video_upload_limits</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.attributes.viewer_can_send_gift" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>viewer_can_send_gift</span>
+                            </div>
+                          </div>                      
+                        
+
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:auto;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Permission</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right" style="height: auto;width:39%;background-color: #F6FAFB;padding:15px;">
+
+                        <div style="width: 100%">
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input  ng-model="authSettings.settings.facebook.permissions.public_profile.enabled" disabled type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>public_profile</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input  ng-model="authSettings.settings.facebook.permissions.email.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>email</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_friends.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_friends</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_about_me.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_about_me</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_actions_books.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_actions.books</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_actions.fitness.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_actions.fitness</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_actions.music.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_actions.music</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_actions.news.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_actions.news</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_actions.video.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_actions.video</span>
+                            </div>
+                          </div>
+                          
+                        </div>
+
+                        <!--Additional fields-->
+                        <div style="height: 36px;" class="solo-vertical-center">
+                          <span ng-if="!facebook.morePermissions" ng-click="toggleFbPermissions(true)" style="color:gray;cursor: pointer;">Show more..</span>
+                          <span ng-if="facebook.morePermissions" ng-click="toggleFbPermissions(false)" style="color:gray;cursor: pointer;">Hide</span>
+                        </div>
+
+                        <div ng-if="facebook.morePermissions">
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_birthday.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_birthday</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_education_history.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_education_history</span>
+                            </div>
+                          </div><div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_events.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_events</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_games_activity.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_games_activity</span>
+                            </div>
+                          </div><div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_hometown.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_hometown</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_likes.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_likes</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_location.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_location</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_managed_groups.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_managed_groups</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_photos.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_photos</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_posts.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_posts</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_relationships.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_relationships</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_relationship_details.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_relationship_details</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_religion_politics.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_religion_politics</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_tagged_places.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_tagged_places</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_videos.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_videos</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_website.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_website</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_work_history.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>user_work_history</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.read_custom_friendlists.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>read_custom_friendlists</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.read_insights.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>read_insights</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.read_audience_network_insights.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>read_audience_network_insights</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.read_page_mailboxes.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>read_page_mailboxes</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.manage_pages.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>manage_pages</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.publish_pages.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>publish_pages</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.publish_actions.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>publish_actions</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.rsvp_event.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>rsvp_event</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.pages_show_list.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>pages_show_list</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.pages_manage_cta.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>pages_manage_cta</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.pages_manage_instant_articles.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>pages_manage_instant_articles</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.ads_read.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>ads_read</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.ads_management.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>ads_management</span>
+                            </div>
+                          </div>
+
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+                  <!--/Facebook--> 
+
+
+                  <!--Google-->
+                  <div class="actual-fields cf" style="border: 1px solid #EDEDED;margin-top: 25px;">
+                    <div class="pull-left solo-vertical-center" style="height:95px;width:60%;padding:15px;">                     
+                      <img src="assets/images/google.png" style="height: 45px;">
+                    </div>
+
+                    <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                      <switch ng-model="authSettings.settings.google.enabled" class="green appprod-switch"></switch>
+                    </div>
+                  </div>
+                 
+                  <div ng-if="authSettings.settings.google.enabled" style="width:94%">
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Client ID</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                        <input type="text" ng-model="authSettings.settings.google.appId" class="default-inputfield" placeholder="Enter App ID" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      </div>
+                    </div>
+
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Client secret</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                        <input type="text" ng-model="authSettings.settings.google.appSecret" class="default-inputfield" placeholder="Enter App Secret" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      </div>
+                    </div>
+
+                    <!--Callback URL-->
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+
+                      <div class="pull-left" style="height:110px;width:99.98%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Callback URL</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 6px;">
+                          <span style="font-size: 14px;line-height:12%;color:#3789fc;">{{::googleCallbackURL}}</span>
+                        </div>
+
+                      </div>
+                      
+                    </div> 
+                    <!--Callback URL-->
+
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:auto;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Attributes</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right" style="height: auto;width:39%;background-color: #F6FAFB;padding:15px;">
+
+                        <div style="width: 100%">
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.google.attributes.userinfoEmail.enabled" disabled type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Basic profile</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.google.attributes.userinfoProfile.enabled" disabled type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Extended profile</span>
+                            </div>
+                          </div>
+
+                        </div>                        
+
+                      </div>
+                    </div>
+
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:auto;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Permission</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right" style="height: auto;width:39%;background-color: #F6FAFB;padding:15px;">
+
+                        <div style="width: 100%">
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input  ng-model="authSettings.settings.google.permissions.contacts.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Contacts</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input  ng-model="authSettings.settings.google.permissions.blogger.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Blogger</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.google.permissions.calendar.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Calender</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.google.permissions.gmail.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Gmail</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.google.permissions.googlePlus.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Google+</span>
+                            </div>
+                          </div>                          
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.google.permissions.youtube.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Youtube</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.google.permissions.books.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Books</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.google.permissions.drive.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Drive</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.google.permissions.coordinates.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Coordinates</span>
+                            </div>
+                          </div>
+                          
+                        </div>
+
+                        <!--Additional fields-->
+                        <div style="height: 36px;" class="solo-vertical-center">
+                          <span ng-if="!google.morePermissions" ng-click="toggleGooglePermissions(true)" style="color:gray;cursor: pointer;">Show more..</span>
+                          <span ng-if="google.morePermissions" ng-click="toggleGooglePermissions(false)" style="color:gray;cursor: pointer;">Hide</span>
+                        </div>
+
+                        <div ng-if="google.morePermissions">                          
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.google.permissions.picasa.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Picasa</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.google.permissions.spreadsheets.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Spreadsheets</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.google.permissions.webmasters.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Webmasters</span>
+                            </div>
+                          </div><div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.google.permissions.tasks.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Tasks</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.google.permissions.analytics.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>Analytics</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.google.permissions.UrlShortener.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>URL Shortener</span>
+                            </div>
+                          </div>                          
+
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                  <!--/Google-->
+
+                  <!--Twitter-->
+                  <div class="actual-fields cf" style="border: 1px solid #EDEDED;margin-top: 25px;">
+                    <div class="pull-left solo-vertical-center" style="height:95px;width:60%;padding:15px;">                     
+                      <img src="assets/images/twitter.png" style="height: 30px;">
+                    </div>
+
+                    <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                      <switch ng-model="authSettings.settings.twitter.enabled" class="green appprod-switch"></switch>
+                    </div>
+                  </div>
+                 
+                  <div ng-if="authSettings.settings.twitter.enabled" style="width:94%">
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Consumer Key</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                        <input type="text" ng-model="authSettings.settings.twitter.appId" class="default-inputfield" placeholder="Enter Consumer Key" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      </div>
+                    </div>
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Consumer Secret</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                        <input type="text" ng-model="authSettings.settings.twitter.appSecret" class="default-inputfield" placeholder="Enter Consumer Secret" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      </div>
+                    </div>
+
+                    <!--Callback URL-->
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+
+                      <div class="pull-left" style="height:110px;width:99.98%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Callback URL</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 6px;">
+                          <span style="font-size: 14px;line-height:12%;color:#3789fc;">{{::twitterCallbackURL}}</span>
+                        </div>
+
+                      </div>
+                      
+                    </div> 
+                    <!--Callback URL-->
+
+                  </div>
+                  <!--/Twitter--> 
+
+
+                  <!--LinkedIN-->
+                  <div class="actual-fields cf" style="border: 1px solid #EDEDED;margin-top: 25px;">
+                    <div class="pull-left solo-vertical-center" style="height:95px;width:60%;padding:15px;">                     
+                      <img src="assets/images/linkedin.png" style="height: 42px;">
+                    </div>
+
+                    <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                      <switch ng-model="authSettings.settings.linkedIn.enabled" class="green appprod-switch"></switch>
+                    </div>
+                  </div>
+                 
+                  <div ng-if="authSettings.settings.linkedIn.enabled" style="width:94%">
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Client ID</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                        <input type="text" ng-model="authSettings.settings.linkedIn.appId" class="default-inputfield" placeholder="Enter App ID" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      </div>
+                    </div> 
+
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Client Secret</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                        <input type="text" ng-model="authSettings.settings.linkedIn.appSecret" class="default-inputfield" placeholder="Enter App Secret" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      </div>
+                    </div>
+
+                    <!--Callback URL-->
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+
+                      <div class="pull-left" style="height:110px;width:99.98%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Callback URL</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 6px;">
+                          <span style="font-size: 14px;line-height:12%;color:#3789fc;">{{::linkedInCallbackURL}}</span>
+                        </div>
+
+                      </div>
+                      
+                    </div> 
+                    <!--Callback URL-->
+
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:auto;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Attributes</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right" style="height: auto;width:39%;background-color: #F6FAFB;padding:15px;">
+
+                        <div style="width: 100%">
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.linkedIn.permissions.r_basicprofile" disabled type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>r_basicprofile</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.linkedIn.permissions.r_emailaddress" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>r_emailaddress</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.linkedIn.permissions.rw_company_admin" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>rw_company_admin</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.linkedIn.permissions.w_share" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>w_share</span>
+                            </div>
+                          </div>                          
+
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+                  <!--/LinkedIN-->
+
+
+                  <!--Github-->
+                  <div class="actual-fields cf" style="border: 1px solid #EDEDED;margin-top: 25px;">
+                    <div class="pull-left solo-vertical-center" style="height:95px;width:60%;padding:15px;">                     
+                      <img src="assets/images/github.png" style="height: 32px;">
+                    </div>
+
+                    <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                      <switch ng-model="authSettings.settings.github.enabled" class="green appprod-switch"></switch>
+                    </div>
+                  </div>
+                 
+                  <div ng-if="authSettings.settings.github.enabled" style="width:94%">
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Client ID</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                        <input type="text" ng-model="authSettings.settings.github.appId" class="default-inputfield" placeholder="Enter App ID" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      </div>
+                    </div> 
+
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Client Secret</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                        <input type="text" ng-model="authSettings.settings.github.appSecret" class="default-inputfield" placeholder="Enter App Secret" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      </div>
+                    </div>
+
+                    <!--Callback URL-->
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+
+                      <div class="pull-left" style="height:110px;width:99.98%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Callback URL</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 6px;">
+                          <span style="font-size: 14px;line-height:12%;color:#3789fc;">{{::githubCallbackURL}}</span>
+                        </div>
+
+                      </div>
+                      
+                    </div> 
+                    <!--Callback URL-->                   
+
+                    <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:auto;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Permission</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right" style="height: auto;width:39%;background-color: #F6FAFB;padding:15px;">
+
+                        <div style="width: 100%">
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input  ng-model="authSettings.settings.github.permissions.userFollow.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>follow</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input  ng-model="authSettings.settings.github.permissions.public_repo.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>public_repo</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input  ng-model="authSettings.settings.github.permissions.repo.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>repo</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.github.permissions.repo_deployment.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>repo_deployment</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.github.permissions.repoStatus.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>repo:status</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.github.permissions.delete_repo.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>delete_repo</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.github.permissions.notifications.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>notifications</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.github.permissions.gist.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>gist</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.github.permissions.readRepoHook.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>read:repo_hook</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.github.permissions.writeRepoHook.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>write:repo_hook</span>
+                            </div>
+                          </div>
+                          
+                        </div>
+
+                        <!--Additional fields-->
+                        <div style="height: 36px;" class="solo-vertical-center">
+                          <span ng-if="!github.morePermissions" ng-click="toggleGithubPermissions(true)" style="color:gray;cursor: pointer;">Show more..</span>
+                          <span ng-if="github.morePermissions" ng-click="toggleGithubPermissions(false)" style="color:gray;cursor: pointer;">Hide</span>
+                        </div>
+
+                        <div ng-if="github.morePermissions">
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.github.permissions.adminRepoHook.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>admin:repo_hook</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.github.permissions.adminOrgHook.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>admin:org_hook</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.github.permissions.readOrg.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>read:org</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.github.permissions.writeOrg.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>write:org</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.github.permissions.adminOrg.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>admin:org</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.github.permissions.readPublicKey.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>read:public_key</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.github.permissions.writePublicKey.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>write:public_key</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.github.permissions.adminPublicKey.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>admin:public_key</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.github.permissions.readGpgKey.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>read:gpg_key</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.writeGpgKey.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>write:gpg_key</span>
+                            </div>
+                          </div>
+
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.facebook.permissions.adminGpgKey.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                            </div>
+                            <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
+                              <span>admin:gpg_key</span>
+                            </div>
+                          </div>                     
+
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                  <!--/Github-->        
+
+                  <!--Save-->
+                  <div ng-show="!spinners[authSettings.category]" style="margin-left:3px;width: 140px;margin-top: 25px;">                    
+                    <button  ng-click="updateSettings(authSettings.category)" class="default-inputfield" style="width:100%;height: 37px;background: #549afc;color:white;font-size: 18px;border-radius: 3px;">
+                    Save
+                    </button>
+                  </div>
+
+                  <!--While Saving..-->
+                  <div ng-show="spinners[authSettings.category]" style="margin-left:3px;width: 170px;">               
+                    <button  class="default-inputfield" style="width:100%;height: 37px;background: #549afc;color:white;font-size: 18px;border-radius: 3px;">&nbsp;
+                    <i class="fa fa-spinner fa-spin"></i>
+                    Saving..
+                    </button>
+                  </div>
+
+                </div>
+              
+              </div>
+              <!--Dynamically Authentication-->
+
             </div>
           </div>
         </div> 
@@ -498,3 +2313,4 @@
   <dashboard-file filetype="fileAllowedTypes" edit="editableFile" delete="deleteFile()" save="saveFile(fileObj)"></dashboard-file>
 </div> 
 <!--/File Directive -->
+

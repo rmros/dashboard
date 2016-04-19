@@ -782,14 +782,19 @@ app.controller('appsController',
       
       for(var i=0;i<list.api.length;++i){
         //For API
-        var apiPercentageObj=calculatePercentage(list.api[i],"api");         
-        $scope.apiCallsUsed[list.api[i].appId]=apiPercentageObj;
-        $scope.apiCallsLoading[list.api[i].appId]=false;
+        if(list && list.api[i]){
+          var apiPercentageObj=calculatePercentage(list.api[i],"api");         
+          $scope.apiCallsUsed[list.api[i].appId]=apiPercentageObj;
+          $scope.apiCallsLoading[list.api[i].appId]=false;
+        }
+        
 
         //For Storage
-        var storagePercentageObj=calculatePercentage(list.storage[i],"storage"); 
-        $scope.storageUsed[list.storage[i].appId]=storagePercentageObj;
-        $scope.storageLoading[list.storage[i].appId]=false;
+        if(list && list.storage[i]){
+          var storagePercentageObj=calculatePercentage(list.storage[i],"storage"); 
+          $scope.storageUsed[list.storage[i].appId]=storagePercentageObj;
+          $scope.storageLoading[list.storage[i].appId]=false;
+        }
       }
       
 

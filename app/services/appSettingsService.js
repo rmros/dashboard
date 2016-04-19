@@ -52,11 +52,11 @@ app.factory('appSettingsService', ['$q','$http','$rootScope',function ($q,$http,
       return  q.promise;
     };
 
-    global.upsertAppleCertificate = function(appId,masterKey,fileObj){
+    global.upsertAppSettingFile = function(appId,masterKey,fileObj,category){
       var q=$q.defer();
       
       var data = new FormData();        
-      data.append('appleCertificate', fileObj);        
+      data.append('file', fileObj);        
       data.append('key', masterKey);        
 
       var xhttp = new XMLHttpRequest();
@@ -69,7 +69,7 @@ app.factory('appSettingsService', ['$q','$http','$rootScope',function ($q,$http,
           q.reject(xhttp.responseText);
         }
       };
-      xhttp.open("PUT", SERVER_URL+'/push/'+appId+'/certificates/apple', true);        
+      xhttp.open("PUT", SERVER_URL+'/settings/'+appId+'/file/'+category, true);        
       xhttp.send(data);
 
       return  q.promise;
