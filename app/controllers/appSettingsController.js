@@ -443,25 +443,25 @@ appSettingsService){
     }   
 
     if(settings.facebook.enabled){
-      if(!settings.facebook.appId || !settings.facebook.appId){
+      if(!settings.facebook.appId || !settings.facebook.appSecret){
         return "Facebook app Id and app Secret are required.";
       }
     }
 
     if(settings.google.enabled){
-      if(!settings.google.appId || !settings.google.appId){
+      if(!settings.google.appId || !settings.google.appSecret){
         return "Google app Id and app Secret are required.";
       }
     }
 
     if(settings.twitter.enabled){
-      if(!settings.twitter.consumerKey || !settings.twitter.consumerSecret){
+      if(!settings.twitter.appId || !settings.twitter.appSecret){
         return "Twitter consumer Key and consumer Secret are required.";
       }
     }
 
     if(settings.linkedIn.enabled){
-      if(!settings.linkedIn.consumerKey || !settings.linkedIn.consumerSecret){
+      if(!settings.linkedIn.appId || !settings.linkedIn.appSecret){
         return "LinkedIN consumer Key and consumer Secret are required.";
       }
     }

@@ -11,12 +11,10 @@ CB.version = "1.0.0";
 CB._isNode = false;
 CB.Socket = null;
 
-CB.serverUrl = 'https://api.cloudboost.io'; // server url.
-
 CB.io = null; //socket.io library is saved here.
 
+CB.apiUrl = 'https://api.cloudboost.io';
 
-CB.apiUrl = CB.serverUrl;
 
 CB.appId = CB.appId || null;
 CB.appKey = CB.appKey || null;
@@ -1011,7 +1009,7 @@ CB._defaultColumns = function(type) {
     }else if (type === "user"){
         var username = new CB.Column('username');
         username.dataType = 'Text';
-        username.required = true;
+        username.required = false;
         username.unique = true;
         username.document.isDeletable = false;
         username.document.isEditable = false;
@@ -1024,7 +1022,7 @@ CB._defaultColumns = function(type) {
 
         var password = new CB.Column('password');
         password.dataType = 'EncryptedText';
-        password.required = true;
+        password.required = false;
         password.document.isDeletable = false;
         password.document.isEditable = false;
 
@@ -1036,10 +1034,18 @@ CB._defaultColumns = function(type) {
         roles.document.isDeletable = false;
         roles.document.isEditable = false;
 
+        var socialAuth = new CB.Column('socialAuth');
+        socialAuth.dataType = 'List';
+        socialAuth.relatedTo = 'Object';
+        socialAuth.required = false;
+        socialAuth.document.isDeletable = false;
+        socialAuth.document.isEditable = false;
+
         col.push(username);
         col.push(roles);
         col.push(password);
         col.push(email);
+        col.push(socialAuth);
         return col;
     }else if(type === "role") {
         var name = new CB.Column('name');
@@ -8499,9 +8505,7 @@ CB.CloudApp.init = function(serverUrl, applicationId, applicationKey, opts) { //
         applicationKey=applicationId;
         applicationId=serverUrl;
     }else {        
-        CB.serverUrl=serverUrl;
-        CB.apiUrl = serverUrl;
-        CB.socketIoUrl=serverUrl;      
+        CB.apiUrl = serverUrl;             
     }
 
     if(typeof applicationKey === "object"){
@@ -8525,7 +8529,7 @@ CB.CloudApp.init = function(serverUrl, applicationId, applicationKey, opts) { //
             CB.io = io;
         }
 
-        CB.Socket = CB.io(CB.socketIoUrl);        
+        CB.Socket = CB.io(CB.apiUrl);        
     } 
     CB.CloudApp._isConnected = true;  
 };
@@ -11255,7 +11259,7 @@ CB.CloudFile.prototype.save = function(callback) {
         params.append("fileToUpload", this.fileObj);
         params.append("key", CB.appKey);
         params.append("fileObj",JSON.stringify(CB.toJSON(thisObj)));
-        var url = CB.serverUrl + '/file/' + CB.appId;
+        var url = CB.apiUrl + '/file/' + CB.appId;
 
         var uploadProgressCallback = null;
         
@@ -11284,7 +11288,7 @@ CB.CloudFile.prototype.save = function(callback) {
             fileObj:CB.toJSON(this),
             key: CB.appKey
         });
-        url = CB.serverUrl + '/file/' + CB.appId;
+        url = CB.apiUrl + '/file/' + CB.appId;
         var uploadProgressCallback = null;
 
         if(callback && callback.uploadProgress){
@@ -11337,7 +11341,7 @@ CB.CloudFile.prototype.delete = function(callback) {
         key: CB.appKey,
         method:"PUT"
     });
-    var url = CB.serverUrl+'/file/' + CB.appId + '/' + this.document._id ;
+    var url = CB.apiUrl+'/file/' + CB.appId + '/' + this.document._id ;
 
     CB._request('PUT',url,params).then(function(response){
         thisObj.url = null;
@@ -13285,9 +13289,9 @@ CB.CloudCache.deleteAll = function(callback){
 };
 /*CloudBoost Push Notifications*/
 
-CB.Push={};
+CB.CloudPush={};
 
-CB.Push.send = function(data,query,callback) {
+CB.CloudPush.send = function(data,query,callback) {
 	
 	var tableName="Device";	
 
