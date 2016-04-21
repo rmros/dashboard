@@ -42,20 +42,7 @@ app.controller('appsController',
   $scope.searchedUsers=[];
   $scope.requestInviteEmail;
   $scope.developers=[];
-  $scope.invitees=[];
-
-  //App Usages
-  $scope.apiCallsUsed={};
-  $scope.storageUsed={};
-
-  //App Loadings
-  $scope.apiCallsLoading={};
-  $scope.storageLoading={}; 
-
-  //App Errors  
-  $scope.apiCallsError={};
-  $scope.storageError={};
-  
+  $scope.invitees=[];  
 
   $scope.openBillingPlan=false;
   $scope.cardDetailsStep1=true;
@@ -76,9 +63,6 @@ app.controller('appsController',
       country:null
     }
   };
-
-  /*Collapse sidebar*/           
-  toggleSideBar();
   
   $scope.init=function(){
     //Hiding the Menu
@@ -103,11 +87,11 @@ app.controller('appsController',
   $scope.deleteAppModal=function(project, index){
       $scope.projectToBeDeleted=project;
       $scope.appIndex=index;
-      $scope.projectToBeDeletedIndex=$scope.projectListObj.indexOf($scope.projectToBeDeleted);
+      $scope.projectToBeDeletedIndex=$rootScope.projectListObj.indexOf($scope.projectToBeDeleted);
       $scope.confirmAppName=null;
       $('#deleteappmodal').modal();
 
-      $scope.newList=angular.copy($scope.projectListObj); 
+      $scope.newList=angular.copy($rootScope.projectListObj); 
       $scope.newList.splice($scope.projectToBeDeletedIndex,1); 
   };
 
@@ -127,7 +111,7 @@ app.controller('appsController',
             $scope.deleteSpinner=false;            
 
             //project is deleted.
-            $scope.projectListObj=$scope.newList;           
+            $rootScope.projectListObj=$scope.newList;           
             //$scope.showProject[$scope.appIndex]=false;
             successNotify('The project is successfully deleted.');
 
@@ -200,14 +184,14 @@ app.controller('appsController',
               $scope.showSaveBtn = true;
               $scope.yourAppIsReady=false; 
 
-              if($scope.projectListObj.length==0){
-                $scope.projectListObj=[];            
+              if($rootScope.projectListObj.length==0){
+                $rootScope.projectListObj=[];            
               }
-              $scope.projectListObj.push(data);
+              $rootScope.projectListObj.push(data);
 
               //Get Usage Details
-              $scope.loadApiCountByAppId(data);
-              $scope.loadStorageCountByAppId(data);
+              $rootScope.loadApiCountByAppId(data);
+              $rootScope.loadStorageCountByAppId(data);
 
             }, 1600);
                        
@@ -234,7 +218,7 @@ app.controller('appsController',
             errorNotify('Error in creating App. Try again');
 
             //delete the app
-            //$scope.projectListObj.splice($scope.projectListObj.indexOf(project),1);
+            //$rootScope.projectListObj.splice($rootScope.projectListObj.indexOf(project),1);
             //projectService.deleteProject(project.appId);                
           });                         
                        
@@ -258,13 +242,13 @@ app.controller('appsController',
 
       $scope.isLoading[index] = true;
 
-      var originalAppIndex=$scope.projectListObj.indexOf(appObj);        
+      var originalAppIndex=$rootScope.projectListObj.indexOf(appObj);        
       projectService.editProject(appObj.appId,newName)     
       .then(function(data){
         $scope.isLoading[index] = false;
         $scope.toggleAppEdit(index);
 
-        $scope.projectListObj[originalAppIndex]=data;           
+        $rootScope.projectListObj[originalAppIndex]=data;           
         successNotify('The project is successfully modified.');
       },function(error){
         $scope.isLoading[index] = false;
@@ -279,10 +263,7 @@ app.controller('appsController',
   $scope.goToTableDesigner=function(projectObj){
     //Setting Current Project
      $rootScope.currentProject=projectObj;
-
-     /*Collapse sidebar*/           
-      //toggleSideBar();
-
+     
     //Update Beacon
     if($scope.beacon && !$scope.beacon.tableDesignerLink){
       $scope.beacon.tableDesignerLink=true;
@@ -362,9 +343,9 @@ app.controller('appsController',
       .then(function(data){     
         $scope.confirmAppName=null;
         if(requestedUser._id==$rootScope.user._id){
-          var appIndex=$scope.projectListObj.indexOf($scope.selectedProject); 
+          var appIndex=$rootScope.projectListObj.indexOf($scope.selectedProject); 
           if(appIndex==0 || appIndex>0){
-            $scope.projectListObj.splice(appIndex,1);
+            $rootScope.projectListObj.splice(appIndex,1);
           }
         }                  
 
@@ -384,7 +365,7 @@ app.controller('appsController',
         //Find Atleast one admin
         var atleastOneAdmin=_.find($scope.selectedProject.developers, function(eachObj){ 
           if(eachObj.role=="Admin"){ 
-            return;          
+            return true;          
           }
         });
 
@@ -483,9 +464,9 @@ app.controller('appsController',
     projectService.changeAppMasterKey(appId)         
     .then(function(data){
       if(data){
-        var index=$scope.projectListObj.indexOf($scope.selectedProject);
+        var index=$rootScope.projectListObj.indexOf($scope.selectedProject);
         $scope.selectedProject.keys.master=data;
-        $scope.projectListObj[index]=$scope.selectedProject;
+        $rootScope.projectListObj[index]=$scope.selectedProject;
       }   
       $scope.masterKeyChanging=false;                        
     },function(error){
@@ -500,9 +481,9 @@ app.controller('appsController',
     projectService.changeAppClientKey(appId)         
     .then(function(data){
       if(data){
-        var index=$scope.projectListObj.indexOf($scope.selectedProject);
+        var index=$rootScope.projectListObj.indexOf($scope.selectedProject);
         $scope.selectedProject.keys.js=data;
-        $scope.projectListObj[index]=$scope.selectedProject;
+        $rootScope.projectListObj[index]=$scope.selectedProject;
       }   
       $scope.clientKeyChanging=false;                        
     },function(error){
@@ -628,8 +609,8 @@ app.controller('appsController',
       $scope.addCardSpinner=true;
       paymentService.createSale($scope.upgradePlanApp.appId,$scope.cardDetails,$scope.requestedPlan.id)
       .then(function(data){
-        var index=$scope.projectListObj.indexOf($scope.upgradePlanApp);
-        $scope.projectListObj[index].planId=data.data.planId;
+        var index=$rootScope.projectListObj.indexOf($scope.upgradePlanApp);
+        $rootScope.projectListObj[index].planId=data.data.planId;
 
         $scope.cardDetails={    
           number:null,
@@ -654,8 +635,8 @@ app.controller('appsController',
         successNotify("Successfully you upgraded the Plan!");
 
         //Get Usage Details
-        $scope.loadApiCountByAppId($scope.projectListObj[index]);
-        $scope.loadStorageCountByAppId($scope.projectListObj[index]);
+        $rootScope.loadApiCountByAppId($rootScope.projectListObj[index]);
+        $rootScope.loadStorageCountByAppId($rootScope.projectListObj[index]);
 
       },function(error){
         $scope.addCardSpinner=false;
@@ -682,8 +663,8 @@ app.controller('appsController',
     $scope.cancelRecurringSpinner=true;
     paymentService.cancelRecurring($scope.upgradePlanApp.appId)         
     .then(function(data){
-        var index=$scope.projectListObj.indexOf($scope.upgradePlanApp);
-        $scope.projectListObj[index].planId=1;
+        var index=$rootScope.projectListObj.indexOf($scope.upgradePlanApp);
+        $rootScope.projectListObj[index].planId=1;
         $scope.cancelRecurringSpinner=false; 
 
         $("#upgradeModal").modal("hide"); 
@@ -696,8 +677,8 @@ app.controller('appsController',
         $scope.cardNeedFreePlan=false;
 
         //Get Usage Details
-        $scope.loadApiCountByAppId($scope.projectListObj[index]);
-        $scope.loadStorageCountByAppId($scope.projectListObj[index]);
+        $rootScope.loadApiCountByAppId($rootScope.projectListObj[index]);
+        $rootScope.loadStorageCountByAppId($rootScope.projectListObj[index]);
 
     },function(error){
       $scope.cancelRecurringSpinner=false; 
@@ -751,11 +732,11 @@ app.controller('appsController',
     projectService.projectList()         
     .then(function(data){
       $rootScope.dataLoading=false; 
-      $scope.projectListObj=data;
+      $rootScope.projectListObj=data;
 
-      if($scope.projectListObj && $scope.projectListObj.length>0){
-        var appIdArray=_.pluck($scope.projectListObj, 'appId');
-        getAppUsageDetails(appIdArray);
+      if($rootScope.projectListObj && $rootScope.projectListObj.length>0){
+        var appIdArray=_.pluck($rootScope.projectListObj, 'appId');
+        $rootScope.getAppUsageDetails(appIdArray);
       }      
 
       //getBeacon
@@ -765,175 +746,7 @@ app.controller('appsController',
       $scope.loadingError='Cannot connect to server. Please try again.';
     });
     //listing ends
-  }
-
-  function getAppUsageDetails(appIdArray){
-    //Load and errors
-    for(var i=0;i<appIdArray.length;++i){
-      $scope.apiCallsError[appIdArray[i]]=false; 
-      $scope.apiCallsLoading[appIdArray[i]]=true;
-
-      $scope.storageError[appIdArray[i]]=false; 
-      $scope.storageLoading[appIdArray[i]]=true;
-    }
-
-    analyticsService.bulkApiStorageDetails(appIdArray).then(function(list){
-
-      
-      for(var i=0;i<list.api.length;++i){
-        //For API
-        if(list && list.api[i]){
-          var apiPercentageObj=calculatePercentage(list.api[i],"api");         
-          $scope.apiCallsUsed[list.api[i].appId]=apiPercentageObj;
-          $scope.apiCallsLoading[list.api[i].appId]=false;
-        }
-        
-
-        //For Storage
-        if(list && list.storage[i]){
-          var storagePercentageObj=calculatePercentage(list.storage[i],"storage"); 
-          $scope.storageUsed[list.storage[i].appId]=storagePercentageObj;
-          $scope.storageLoading[list.storage[i].appId]=false;
-        }
-      }
-      
-
-    },function(error){
-      //Load and errors
-      for(var i=0;i<appIdArray.length;++i){
-        $scope.apiCallsError[appIdArray[i]]=true; 
-        $scope.apiCallsLoading[appIdArray[i]]=false;
-
-        $scope.storageError[appIdArray[i]]=true; 
-        $scope.storageLoading[appIdArray[i]]=false;
-      }
-    });     
-  }
-
-
-  $scope.loadApiCountByAppId=function(appObj){
-    $scope.apiCallsError[appObj.appId]=false; 
-    $scope.apiCallsLoading[appObj.appId]=true;
-
-    analyticsService.apiCount(appObj.appId).then(function(respObj){
-
-        var percentageObj=calculatePercentage(respObj,"api");     
-        
-        $scope.apiCallsUsed[respObj.appId]=percentageObj;
-        $scope.apiCallsLoading[respObj.appId]=false;
-
-    },function(error){ 
-        $scope.apiCallsLoading[error.appId]=false;
-        $scope.apiCallsError[error.appId]=true;             
-    });
-  };
-
-  $scope.loadStorageCountByAppId=function(appObj){
-     $scope.storageError[appObj.appId]=false; 
-     $scope.storageLoading[appObj.appId]=true;
-     analyticsService.storageCount(appObj.appId).then(function(respObj){
-
-        var percentageObj=calculatePercentage(respObj,"storage");              
-
-        $scope.storageUsed[respObj.appId]=percentageObj;
-        $scope.storageLoading[respObj.appId]=false;
-
-     },function(error){
-        $scope.storageLoading[error.appId]=false;
-        $scope.storageError[error.appId]=true;              
-     });
-  };
-
-  function calculatePercentage(respObj,featureName){
-    var appPlan=null;
-    var app=_.first(_.where($scope.projectListObj, {appId: respObj.appId}));
-    if(!app.planId || app.planId==1){
-      appPlan=1;
-    }else if(app.planId){
-      appPlan=app.planId;
-    }
-
-    var appPlan=_.first(_.where($scope.pricingPlans, {id: appPlan}));
-    var databaseUsage=_.first(_.where(appPlan.usage, {category: "DATABASE"}));
-
-    var planApiLimit=_.first(_.where(databaseUsage.features, {name: "API Calls"}));
-    var apiLimit=planApiLimit.limit.value;
-    var apiLabel=planApiLimit.limit.label;
-    var apiColor="#4aa3df";
-
-    var planStorageLimit=_.first(_.where(databaseUsage.features, {name: "Storage"})); 
-    var storageLimit=planStorageLimit.limit.value; 
-    var storageLabel=planStorageLimit.limit.label;
-    var storageColor="#4aa3df";  
-    
-
-    if(featureName=="api" && respObj && respObj.monthlyApiCount){
-      var used=respObj.monthlyApiCount;      
-      var percentageUsed=used*(100/apiLimit);
-              
-      if(percentageUsed>0 && percentageUsed<1){
-        percentageUsed=1;
-      }      
-      if(percentageUsed>100){
-        percentageUsed=100;
-      }      
-      if(percentageUsed>80){
-        apiColor="#C90606";
-      }
-
-      percentageUsed=Math.floor(percentageUsed);
-      var resp={
-        appId:respObj.appId,
-        percentage:percentageUsed+"%",
-        originalCount:respObj.monthlyApiCount,
-        limit:apiLabel,
-        color:apiColor
-      };
-    }else if(featureName=="api"){
-      var percentageUsed=0;
-      var resp={
-        appId:respObj.appId,
-        percentage:percentageUsed+"%",
-        originalCount:0,
-        limit:apiLabel,
-        color:apiColor
-      };
-    }
-
-    if(featureName=="storage" && respObj && respObj.size){
-      var used=(respObj.size/1000);//Convert to GBs
-      var limit=storageLimit;//(already in GBs)
-      var percentageUsed=used*(100/limit);      
-      if(percentageUsed>0 && percentageUsed<1){
-        percentageUsed=1;
-      }
-      if(percentageUsed>100){
-        percentageUsed=100;
-      }
-      if(percentageUsed>80){
-        storageColor="#C90606";
-      }
-      percentageUsed=Math.floor(percentageUsed);
-      var resp={
-        appId:respObj.appId,
-        percentage:percentageUsed+"%",
-        originalSize:used,
-        limit:storageLabel,
-        color:storageColor
-      };
-    }else if(featureName=="storage"){
-      var percentageUsed=0;
-      var resp={
-        appId:respObj.appId,
-        percentage:percentageUsed+"%",
-        originalSize:0,
-        limit:storageLabel,
-        color:storageColor
-      };
-    }    
-    
-    return resp;
-  }
+  }  
 
   function getPlanById(planId){
     return _.first(_.where(pricingPlans, {id: planId}));
@@ -975,16 +788,6 @@ app.controller('appsController',
     return q.promise;
   }
 
-  function toggleSideBar(_this){
-    var b = $("#sidebar-collapse")[0];
-    var w = $("#cl-wrapper");
-    var s = $(".cl-sidebar");
-   
-    $(".fa",b).removeClass("fa-angle-left").addClass("fa-angle-right");
-    w.addClass("sb-collapsed");
-    $.cookie('FLATDREAM_sidebar','closed',{expires:365, path:'/'});         
-    //updateHeight();
-  }
 
   function validateCardMainDetails(cardDetails){
     var errorMsg=null;
@@ -1111,19 +914,11 @@ app.controller('appsController',
         addCircleToCreateApp(x);
         x++;
     }, 1200);
-  }
-
-  $scope.$on('addApp', function(event, args) {
-      var requestApp = args.app;
-      $scope.projectListObj.push(requestApp);
-      //Get Usage Details
-      $scope.loadApiCountByAppId(requestApp);
-      $scope.loadStorageCountByAppId(requestApp);      
-  });
+  }  
 
   $scope.$on('openUpgradeModal', function(event, args) {
     var requestAppId = args.appId;
-    var appObj=_.first(_.where($scope.projectListObj, {appId: requestAppId}));
+    var appObj=_.first(_.where($rootScope.projectListObj, {appId: requestAppId}));
     $scope.initUpgradePlan(appObj);            
   });
 
