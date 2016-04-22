@@ -88,3 +88,21 @@ app.directive('errortooltip', function(){
         }
     };
 });
+
+app.directive('htmltooltip', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){       
+            $(element)
+            .darkTooltip({                
+                gravity:'west',                
+                theme:'custm',
+                opacity:1               
+            });
+        }
+    };
+});
+
+
+
+

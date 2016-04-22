@@ -901,10 +901,10 @@ input::-webkit-input-speech-button {
 }
 /*Vertical Navigation*/
 .cl-sidebar {
-  background: #272930;
+  background: #283544;
   position: absolute;
   width: 280px;
-  z-index: 2;
+  z-index: 2;   
 }
 .cl-sidebar .cl-toggle {
   display: none;
@@ -1001,8 +1001,7 @@ input::-webkit-input-speech-button {
 .cl-vnavigation > .parent.open > a:before {
   transform: rotate(90deg);
 }
-.cl-vnavigation li a {
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
+.cl-vnavigation li a {  
   display: block;
   padding: 14px 25px;
   color: rgba(255, 255, 255, 0.6);
@@ -1025,12 +1024,10 @@ input::-webkit-input-speech-button {
 .sub-menu li a:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
-.cl-vnavigation li a:hover {
-  background-color: #22242b;
-}
+
 /*Collapsed Sidebar*/
 .sb-collapsed .cl-sidebar {
-  width: 70px;
+  width: 70px;  
 }
 .sb-collapsed .sidebar-logo {
   padding: 4px 0 5px;
@@ -1282,7 +1279,7 @@ body.animated #cl-wrapper {
   display: table-cell;
   position: relative;
   vertical-align: top;
-  padding-bottom: 200px;
+  padding-bottom: 200px;    
 }
 #pcont {
   display: table-cell;
@@ -8093,12 +8090,8 @@ ul.timeline li > .date {
   background-color: gray !important;
 }
 
-.menu-active{ 
-  background-color: black !important;
-}
-.menu-active a{
-  color:white !important;
-  background-color: black !important;
+.simplemenu-active a{
+  color:white !important;  
 }
 
 .settings-form{
@@ -8470,7 +8463,7 @@ ul.timeline li > .date {
 }
 .profile-main-sidemenu{
   position: absolute;
-  bottom: 0;  
+  bottom: 0;   
 }
 .mainmenu-subcat-heading{
   width:100%;  
@@ -8680,4 +8673,41 @@ ul.timeline li > .date {
     transform-origin: 50% calc(50% - .5px);
 }
 
+.newsidebar-menu{
+  background-color: #394757;
+}
+.newsidebar-menu i{
+  color:#1C2530;
+}
+.menutable-active{
+  background-color:green;
+}
+.menucache-active{
+  background-color:red;
+}
+.menuqueues-active{
+  background-color:yellow;
+}
+.menuanalytics-active{
+  background-color:orange;
+}
+.menusettings-active{
+  background-color:pink;
+}
 
+.newsidebar-splmenu{
+  opacity: 0.6;
+}
+.menuspl-active{
+  opacity: 1;
+}
+.eachsplmenu-profile{
+  cursor: pointer;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 10px;
+  padding-bottom: 8px; 
+}
+.eachsplmenu-profile:hover{
+  background-color: #3F4E61;
+}
