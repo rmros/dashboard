@@ -87,8 +87,8 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
         <div class="content">
           <a href="#/">
           <!--SideBar Logo-->
-          <div style="height: 65px;border:1px solid red;">
-            <img src="">
+          <div style="height: 65px;" class="flex-general-column-wrapper-center">
+            <img src="assets/images/cblogomenu.png" style="height: 35px;width: 50px;">
           </div>
           <!--/SideBar Logo--> 
           </a>          
@@ -230,8 +230,7 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
                 <!--/Tooltip-body-->
                 <a  href="#/{{currentProject.appId}}/analytics" style="margin-top: -18px;">
                   <div  ng-class="{'menuanalytics-active':page=='analytics'}" style="height: 35px;width: 35px;border-radius: 25px;" class="flex-general-column-wrapper-center newsidebar-menu">
-                    <img ng-if="page!='analytics'" src="assets/images/grychart.png" style="height:16px;width:16px;">
-                    <img ng-if="page=='analytics'" src="assets/images/whitechart.png" style="height:16px;width:16px;">
+                    <img src="assets/images/grychart.png" style="height:16px;width:16px;">           
                   </div>
                 </a>
               </li> 
@@ -271,73 +270,70 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
       <!--Special Menu-->
       <div class="text-right profile-main-sidemenu">                
         <ul class="cl-vnavigation">         
-          <li  htmltooltip data-tooltip="#profile-tooltip-html" ng-mouseenter="splmenu=true"  ng-mouseleave="splmenu=false">
-              <!--Tooltip-body-->
-              <div id ="profile-tooltip-html" style="display:none;">
-                <div style="width:250px;height: 150px;" ng-mouseenter="splmenu=true"  ng-mouseleave="splmenu=false">
-
-                  <!--Each Menu-->
-                  <div class="eachsplmenu-profile" style="margin-top: 10px; ">
-                    <a href="#/profile" style="color:white;">
-                      <div class="flex-general-row-wrapper">
-                        <div style="height: 20px;width: 20px;">
-                          <span>
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                          </span>
-                        </div>
-                        <div>
-                          <span style="font-weight: 700;">Profile</span>
-                        </div>
-                        
-                      </div>
-                      <div class="flex-general-row-wrapper">
-                        <div style="height: 20px;width: 20px;">
-                          <span></span>
-                        </div>
-                        <div>
-                          <span style="color:#81909E;font-size: 12px;">Your profile settings</span>
-                        </div>
-                      </div>
-                    </a>
-                  </div>
-                  <!--Each Menu-->
-
-                  <!--Each Menu-->
-                  <div class="eachsplmenu-profile">
-                    
-                    <div class="flex-general-row-wrapper" ng-click="logOut()">
-                      <div style="height: 20px;width: 20px;">
-                        <span>
-                          <i class="fa fa-times" aria-hidden="true"></i>
-                        </span>
-                      </div>
-                      <div>
-                        <span style="font-weight: 700;">Log out</span>
-                      </div>
-                      
-                    </div>
-                    <div class="flex-general-row-wrapper">
-                      <div style="height: 20px;width: 20px;">
-                        <span></span>
-                      </div>
-                      <div>
-                        <span style="color:#81909E;font-size: 12px;"></span>
-                      </div>
-                    </div>
-                    
-                  </div>
-                  <!--Each Menu-->                  
-
-                </div>              
-              </div>
-              <!--/Tooltip-body-->
+          <li  abcd  ng-mouseenter="splmenu=true"  ng-mouseleave="splmenu=false" style="position: relative;">
 
               <a href="#/profile" style="margin-top: -18px;">
                 <div  ng-class="{'menuspl-active':splmenu}" style="height: 35px;width: 35px;border-radius: 3px;overflow: hidden;" class="flex-general-column-wrapper-center newsidebar-splmenu">                  
                   <img ng-show="!profilePic" src="assets/images/anonymous.jpg" style="height: 35px;width: 35px;">
                   <img ng-show="profilePic" ng-src="{{profilePic.document.url}}" style="height: 35px;width: 35px;">
                 </div>  
-              </a>           
+              </a> 
+
+              <!--Spl Menu-->
+              <div ng-show="splmenu" style="height: 100px;width: 180px; border-radius:4px; border:1px solid #495B70;background-color:#495B70;position: absolute;bottom:9px;left:99.6%;">
+                <div style="width: 100%; height: 100%; position: relative;">
+                  <!--Left arrow-->
+                  <div id="triangle-left" style="position: absolute;bottom: 27px;left: -10px;">
+                  </div>
+                  <!--Left arrow-->
+
+                  <!--Menu list-->
+                    <!--Each Menu-->                   
+                    <div class="eachsplmenu-profile" ng-click="goToProfile()" style="margin-top: 10px;">                    
+                      
+                        <div class="flex-general-row-wrapper">
+                          <div style="height: 20px;width: 20px;" class="flex-general-column-wrapper-center">
+                            <span>
+                              <i class="fa fa-user" aria-hidden="true" style="color:white;"></i>
+                            </span>
+                          </div>
+                          <div style="margin-left: 5px;margin-top: 2px;">
+                            <span style="font-weight: 700;font-size: 14px;color:white">Profile</span>
+                          </div>                          
+                        </div>
+
+                        <div class="flex-general-row-wrapper" style="">
+                          <div style="height: 20px;width: 20px;">
+                            <span></span>
+                          </div>
+                          <div style="margin-left: 5px;">
+                            <span style="color:#81909E;font-size: 12px;">Your profile settings</span>
+                          </div>
+                        </div> 
+                                         
+                    </div>
+                    <!--Each Menu-->
+
+                    <!--Each Menu-->                   
+                    <div class="eachsplmenu-profile" ng-click="logOut()">                    
+
+                        <div class="flex-general-row-wrapper" style="">
+                          <div style="height: 20px;width: 20px;" class="flex-general-column-wrapper-center">
+                            <span>
+                              <i class="fa fa-times" aria-hidden="true" style="color:white;"></i>
+                            </span>
+                          </div>
+                          <div style="margin-left: 5px;margin-top: 2px;">
+                            <span style="font-weight: 700;color:white;font-size: 14px;">Log out</span>
+                          </div>                          
+                        </div>                      
+                                           
+                    </div>
+                    <!--Each Menu-->
+                  <!--/Menu list-->
+                </div>
+              </div>
+              <!--/Spl Menu-->          
           </li>          
         </ul>
       </div>

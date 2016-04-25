@@ -43,7 +43,7 @@ app.controller('indexController',
     $scope.declineInvitationSpinner=[];  
     $scope.okGotItSpinner=[];
     getUserInfo();
-    isHosted(); 
+    isHosted();     
 
     $rootScope.projectListObj=[];
 
@@ -647,10 +647,9 @@ app.controller('indexController',
     });      
   };
 
-  $scope.toggleSideMenu=function(){     
-    /*Collapse sidebar*/
-    toggleSideBar();         
-  };
+  $rootScope.goToProfile=function(){
+    window.location.href="#/profile";
+  };  
 
   $scope.renderHtml = function (htmlCode) {
     return $sce.trustAsHtml(htmlCode);
@@ -717,6 +716,7 @@ app.controller('indexController',
     $.cookie('FLATDREAM_sidebar','closed',{expires:365, path:'/'});         
     //updateHeight();
   } 
+  toggleSideBar();
 
   function getImgSize(imgSrc) {
       var newImg = new Image();

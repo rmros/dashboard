@@ -8702,12 +8702,20 @@ ul.timeline li > .date {
   opacity: 1;
 }
 .eachsplmenu-profile{
-  cursor: pointer;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 10px;
-  padding-bottom: 8px; 
+  cursor: pointer;  
+  padding-top: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 3px;  
 }
 .eachsplmenu-profile:hover{
   background-color: #3F4E61;
+}
+
+#triangle-left {
+  width: 0; 
+  height: 0; 
+  border-top: 6px solid transparent; 
+  border-right: 9px solid #495B70; 
+  border-bottom: 6px solid transparent; 
 }

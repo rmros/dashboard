@@ -89,6 +89,7 @@ app.directive('errortooltip', function(){
     };
 });
 
+
 app.directive('htmltooltip', function(){
     return {
         restrict: 'A',
