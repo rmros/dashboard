@@ -1831,8 +1831,10 @@ function rowWarningMode(index,row,columnName){
 
   if(countColumns==1){
     $scope.rowInfo="This row is not saved because "+colNames+" is required.";
+    $scope.$digest();
   }else if(countColumns>1){
     $scope.rowInfo="This row is not saved because "+colNames+" are required.";
+    $scope.$digest();
   }
   
 

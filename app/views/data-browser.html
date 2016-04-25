@@ -607,7 +607,7 @@
 
               <td ng-repeat="column in currentProject.currentTable.columns" ng-if="column.document.dataType=='Id'" class="dataTd"  style="border-right:1px solid #4892F9;">                 
                 <!--Id-->             
-                <div ng-if="column.document.dataType=='Id'" class="tdDiv cf solo-vertical-center" style="min-width: 175px; cursor:default;">         
+                <div ng-if="column.document.dataType=='Id'" class="tdDiv cf solo-vertical-center" style="min-width: 175px;max-width: 175px; cursor:default;">         
                   <div class="real-content pull-left">
                     {{fixedEachRow.get(column.name)}}                 
                   </div>            
@@ -1018,7 +1018,7 @@
               <td ng-repeat="column in currentProject.currentTable.columns" ng-if="hideColumn[$index]"  class="dataTd">   
                 
                 <!--Id-->             
-                <div ng-if="column.document.dataType=='Id'" class="tdDiv cf solo-vertical-center" style="min-width: 175px; cursor:default;">         
+                <div ng-if="column.document.dataType=='Id'" class="tdDiv cf solo-vertical-center" style="min-width: 175px;max-width: 175px; cursor:default;">         
                   <div class="real-content pull-left">
                     {{eachRow.get(column.name)}}                 
                   </div>            
@@ -1026,7 +1026,7 @@
                 <!--/Id-->          
 
                 <!--Boolean-->
-                <div ng-if="column.document.dataType=='Boolean'"  class="tdDiv boolean-div cf" style="min-width: 165px">     
+                <div ng-if="column.document.dataType=='Boolean'"  class="tdDiv boolean-div cf" style="min-width: 165px;max-width: 165px;">     
                   <div class="real-content-center flex-general-row-wrapper-center"> 
                                         
                       <div class="flex-general-column-wrapper-center" ng-click="setAndSaveBoolean(eachRow,column)" style="height:20px;width:20px;border:1px solid #BCBCBC;cursor: pointer;">
@@ -1040,7 +1040,7 @@
                 <!--/Boolean-->
 
                 <!--DateTime-->
-                <div ng-if="column.document.dataType=='DateTime'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv cf solo-vertical-center" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                <div ng-if="column.document.dataType=='DateTime'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv cf solo-vertical-center" style="min-width: 260px;max-width: 260px;" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
                     <span class="timeSpan" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">                      
@@ -1057,7 +1057,7 @@
                 <!--/DateTime-->
 
                 <!--ACL-->
-                <div ng-if="column.document.dataType=='ACL'" class="tdDiv cf " style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='ACL'" class="tdDiv cf " style="min-width: 260px;max-width: 260px;"> 
                 <!-- ng-click="showCommonTypes(eachRow,column); $event.stopPropagation()"-->
                   <div class="real-content-acl pull-left"> 
                     <div class="objectSpan-acl solo-vertical-center">
@@ -1206,7 +1206,7 @@
                 <!--/ACL-->
 
                 <!--JsonObject-->
-                <div ng-if="column.document.dataType=='Object'" class="tdDiv cf" style="min-width: 260px"> 
+                <div ng-if="column.document.dataType=='Object'" class="tdDiv cf" style="min-width: 260px;max-width: 260px;"> 
                   <!--ng-click="showCommonTypes(eachRow,column); $event.stopPropagation()"-->
 
                   <div class="real-content pull-left solo-vertical-center" style="margin-top: 3px;"> 
@@ -1227,7 +1227,7 @@
                 <!--/JsonObject-->
 
                 <!--Text-->
-                <div ng-if="column.document.dataType=='Text'" class="tdDiv-fields cf solo-vertical-center" ng-click="invokeFields(eachRow,column,$event)" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                <div ng-if="column.document.dataType=='Text'" class="tdDiv-fields cf solo-vertical-center" ng-click="invokeFields(eachRow,column,$event)" style="min-width: 260px;max-width: 260px;" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">              
                     {{eachRow.get(column.name)}}                                
@@ -1241,7 +1241,7 @@
                 <!--/Text-->
 
                 <!--Encrypted Text-->
-                <div ng-if="column.document.dataType=='EncryptedText'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                <div ng-if="column.document.dataType=='EncryptedText'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf" style="min-width: 260px;max-width: 260px;" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left solo-vertical-center" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}" style="height:100%;"> 
                       <span style="font-weight:700;color:#CCCCCC;" ng-if="eachRow.get(column.name)" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">hidden</span>                    
@@ -1263,7 +1263,7 @@
                 <!--/Encrypted Text-->
 
                 <!--Email-->
-                <div ng-if="column.document.dataType=='Email'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf solo-vertical-center" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                <div ng-if="column.document.dataType=='Email'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf solo-vertical-center" style="min-width: 260px;max-width: 260px;" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
                     <a class="emailSpan" ng-href="mailto:{{eachRow.get(column.name) }}" target="_blank" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">
@@ -1279,7 +1279,7 @@
                 <!--/Email-->
 
                 <!--URL-->
-                <div ng-if="column.document.dataType=='URL'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf solo-vertical-center" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                <div ng-if="column.document.dataType=='URL'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf solo-vertical-center" style="min-width: 260px;max-width: 260px;" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
                     <a class="emailSpan" ng-href="{{eachRow.get(column.name) }}" target="_blank" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">
@@ -1295,7 +1295,7 @@
                 <!--/URL-->
 
                 <!--Number-->
-                <div ng-if="column.document.dataType=='Number'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf solo-vertical-center" style="min-width: 260px" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
+                <div ng-if="column.document.dataType=='Number'" ng-click="invokeFields(eachRow,column,$event)" class="tdDiv-fields cf solo-vertical-center" style="min-width: 260px;max-width: 260px;" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}"> 
 
                   <div ng-show="!showInputForEdit[$parent.$parent.$parent.$index][column.name]" class="real-content pull-left" data-identity="{{$parent.$parent.$parent.$index}}{{column.name}}">                    
                       {{eachRow.get(column.name)}}                                   
@@ -1309,7 +1309,7 @@
                 <!--/Number-->
                
                 <!--File-->
-                <div ng-if="column.document.dataType=='File'" class="tdDivFile cf" style="min-width: 190px"> 
+                <div ng-if="column.document.dataType=='File'" class="tdDivFile cf" style="min-width: 190px;max-width: 190px;"> 
 
                   <div class="real-content-file pull-left">
                     <div class="flex-general-row-wrapper-center"> 
@@ -1350,7 +1350,7 @@
                 <!--/File-->
 
                 <!--Relation-->
-                <div ng-if="column.document.dataType=='Relation'"  class="tdDiv cf" style="min-width: 240px"> 
+                <div ng-if="column.document.dataType=='Relation'"  class="tdDiv cf" style="min-width: 240px;max-width: 240px;"> 
 
                   <div class="real-content pull-left solo-vertical-center" style="margin-top: 2px;"> 
                     <div ng-click="viewRelationData(eachRow,column,null)" ng-if="eachRow.document[column.name]" class="relation-id-wrapper cf">
@@ -1396,7 +1396,7 @@
                 <!--/Geo Point-->
 
                 <!--List-->
-                <div ng-if="column.document.dataType=='List'" class="tdDiv cf" style="min-width:325px"> 
+                <div ng-if="column.document.dataType=='List'" class="tdDiv cf" style="min-width:325px;max-width:325px;"> 
 
                   <div class="real-content-list-text pull-left"> 
                       <!--TextText,Email,Number,URL--> 
@@ -1547,7 +1547,7 @@
                 
 
                 <!--Others-->
-                <div ng-if="column.document.dataType!='Id' && column.document.dataType!='Boolean' && column.document.dataType!='DateTime' && column.document.dataType!='ACL' && column.document.dataType!='Text' && column.document.dataType!='EncryptedText' && column.document.dataType!='Email' && column.document.dataType!='URL' && column.document.dataType!='Number' && column.document.dataType!='Object' && column.document.dataType!='File' && column.document.dataType!='Relation' && column.document.dataType!='List' && column.document.dataType!='GeoPoint'" class="tdDiv cf" style="min-width: 210px"> 
+                <div ng-if="column.document.dataType!='Id' && column.document.dataType!='Boolean' && column.document.dataType!='DateTime' && column.document.dataType!='ACL' && column.document.dataType!='Text' && column.document.dataType!='EncryptedText' && column.document.dataType!='Email' && column.document.dataType!='URL' && column.document.dataType!='Number' && column.document.dataType!='Object' && column.document.dataType!='File' && column.document.dataType!='Relation' && column.document.dataType!='List' && column.document.dataType!='GeoPoint'" class="tdDiv cf" style="min-width: 210px;max-width: 210px;"> 
 
                   <div class="real-content pull-left">  
                     {{eachRow.get(column.name)}}              
