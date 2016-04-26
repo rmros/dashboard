@@ -88,7 +88,7 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
           <a href="#/">
           <!--SideBar Logo-->
           <div style="height: 65px;" class="flex-general-column-wrapper-center">
-            <img src="assets/images/cblogomenu.png" style="height: 35px;width: 50px;">
+            <img src="assets/images/CbLogoIcon.png" style="height: 38px;width: 38px;">
           </div>
           <!--/SideBar Logo--> 
           </a>          
@@ -98,13 +98,13 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
             <li  ng-class="{'simplemenu-active':page=='admin'}"  htmltooltip data-tooltip="#admin-tooltip-html">
               <!--Tooltip-body-->
               <div id ="admin-tooltip-html" style="display:none;">
-                <div style="width:150px;padding-left: 15px;padding-right: 15px;padding-top: 8px;padding-bottom: 8px;">
+                <div style="width:220px;padding-left: 15px;padding-right: 15px;padding-top: 8px;padding-bottom: 8px;">
                   <div>
                     <span style="font-weight: 700;">Admin</span>
                   </div>
 
                   <div>
-                    <span style="color:#81909E;font-size: 12px;">Manage your server</span>
+                    <span style="color:#81909E;font-size: 12px;">Manage your CloudBoost Cluster</span>
                   </div>
                 </div>              
               </div>
@@ -128,7 +128,7 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
                   </div>
 
                   <div>
-                    <span style="color:#81909E;font-size: 12px;">Manage your apps</span>
+                    <span style="color:#81909E;font-size: 12px;">Manage your Apps</span>
                   </div>
                 </div>              
               </div>
@@ -154,20 +154,20 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
               <li htmltooltip data-tooltip="#tables-tooltip-html">
                 <!--Tooltip-body-->
                 <div id ="tables-tooltip-html" style="display:none;">
-                  <div style="width:160px;padding-left: 15px;padding-right: 15px;padding-top: 8px;padding-bottom: 8px;">
+                  <div style="width:230px;padding-left: 15px;padding-right: 15px;padding-top: 8px;padding-bottom: 8px;">
                     <div>
                       <span style="font-weight: 700;">Tables</span>
                     </div>
 
                     <div>
-                      <span style="color:#81909E;font-size: 12px;">Manage your tables</span>
+                      <span style="color:#81909E;font-size: 12px;">Store any kind of data with tables</span>
                     </div>
                   </div>              
                 </div>
                 <!--/Tooltip-body-->
                 <a href="#/{{currentProject.appId}}/table"  ng-click="toggleSideMenu()" style="margin-top: -18px;">
                   <div  ng-class="{'menutable-active':page=='tableDesigner'}" style="height: 35px;width: 35px;border-radius: 25px;" class="flex-general-column-wrapper-center newsidebar-menu">
-                    <i class="fa fa-table"></i>                  
+                    <i class="fa fa-table" style="margin-top:2px;"></i>                  
                   </div>
                 </a>   
               </li> 
@@ -175,13 +175,13 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
               <li data-toggle="tooltip" htmltooltip data-tooltip="#cache-tooltip-html">
                 <!--Tooltip-body-->
                 <div id ="cache-tooltip-html" style="display:none;">
-                  <div style="width:160px;padding-left: 15px;padding-right: 15px;padding-top: 8px;padding-bottom: 8px;">
+                  <div style="width:200px;padding-left: 15px;padding-right: 15px;padding-top: 8px;padding-bottom: 8px;">
                     <div>
                       <span style="font-weight: 700;">Cache</span>
                     </div>
 
                     <div>
-                      <span style="color:#81909E;font-size: 12px;">Manage your cache</span>
+                      <span style="color:#81909E;font-size: 12px;">Make your apps faster with cache</span>
                     </div>
                   </div>              
                 </div>
@@ -196,13 +196,13 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
               <li  htmltooltip data-tooltip="#queues-tooltip-html">
                 <!--Tooltip-body-->
                 <div id ="queues-tooltip-html" style="display:none;">
-                  <div style="width:160px;padding-left: 15px;padding-right: 15px;padding-top: 8px;padding-bottom: 8px;">
+                  <div style="width:190px;padding-left: 15px;padding-right: 15px;padding-top: 8px;padding-bottom: 8px;">
                     <div>
                       <span style="font-weight: 700;">Queues</span>
                     </div>
 
                     <div>
-                      <span style="color:#81909E;font-size: 12px;">Manage your queues</span>
+                      <span style="color:#81909E;font-size: 12px;">Connect micro services with queues</span>
                     </div>
                   </div>              
                 </div>
@@ -217,20 +217,20 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
               <li  ng-show="currentProject" htmltooltip data-tooltip="#analytics-tooltip-html">
                 <!--Tooltip-body-->
                 <div id ="analytics-tooltip-html" style="display:none;">
-                  <div style="width:160px;padding-left: 15px;padding-right: 15px;padding-top: 8px;padding-bottom: 8px;">
+                  <div style="width:230px;padding-left: 15px;padding-right: 15px;padding-top: 8px;padding-bottom: 8px;">
                     <div>
                       <span style="font-weight: 700;">Analytics</span>
                     </div>
 
                     <div>
-                      <span style="color:#81909E;font-size: 12px;">Manage your analytics</span>
+                      <span style="color:#81909E;font-size: 12px;">See your CloudBoost usage and analytics</span>
                     </div>
                   </div>              
                 </div>
                 <!--/Tooltip-body-->
                 <a  href="#/{{currentProject.appId}}/analytics" style="margin-top: -18px;">
                   <div  ng-class="{'menuanalytics-active':page=='analytics'}" style="height: 35px;width: 35px;border-radius: 25px;" class="flex-general-column-wrapper-center newsidebar-menu">
-                    <img src="assets/images/grychart.png" style="height:16px;width:16px;">           
+                    <i class="icon ion-stats-bars" style="font-size: 20px !important;"></i>          
                   </div>
                 </a>
               </li> 
@@ -238,20 +238,20 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
               <li  htmltooltip data-tooltip="#settings-tooltip-html">
                 <!--Tooltip-body-->
                 <div id ="settings-tooltip-html" style="display:none;">
-                  <div style="width:180px;padding-left: 15px;padding-right: 15px;padding-top: 8px;padding-bottom: 8px;">
+                  <div style="width:230px;padding-left: 15px;padding-right: 15px;padding-top: 8px;padding-bottom: 8px;">
                     <div>
                       <span style="font-weight: 700;">Settings</span>
                     </div>
 
                     <div>
-                      <span style="color:#81909E;font-size: 12px;">Manage your app settings</span>
+                      <span style="color:#81909E;font-size: 12px;">Configure push notifications, emails, authentication and more.</span>
                     </div>
                   </div>              
                 </div>
                 <!--/Tooltip-body-->
                 <a  href="#/{{currentProject.appId}}/settings" style="margin-top: -18px;">
                   <div  ng-class="{'menusettings-active':page=='appsettings'}" style="height: 35px;width: 35px;border-radius: 25px;" class="flex-general-column-wrapper-center newsidebar-menu">
-                    <i class="fa fa-cog" style="color:#1C2530;"></i>
+                    <i class="icon ion-gear-a" style="color:#1C2530;font-size: 20px !important;"></i>
                   </div>
                 </a>
               </li>
@@ -274,7 +274,7 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
 
               <a href="#/profile" style="margin-top: -18px;">
                 <div  ng-class="{'menuspl-active':splmenu}" style="height: 35px;width: 35px;border-radius: 3px;overflow: hidden;" class="flex-general-column-wrapper-center newsidebar-splmenu">                  
-                  <img ng-show="!profilePic" src="assets/images/anonymous.jpg" style="height: 35px;width: 35px;">
+                  <img ng-show="!profilePic" src="assets/images/def2.png" style="height: 35px;width: 35px;">
                   <img ng-show="profilePic" ng-src="{{profilePic.document.url}}" style="height: 35px;width: 35px;">
                 </div>  
               </a> 
@@ -475,30 +475,7 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
             <!--/Notification List-->
           </li>
           <!--/Notification BLOCK-->
-
-          <!--Profile-->
-          <li class="dropdown profile_menu">
-            <a class="dropdown-toggle alto-menu" data-toggle="dropdown">
-              <div  class="cf flex-general-row-wrapper profile-avatar-toggle">
-                <!--Default-->
-                <div class="">
-                  <div class="avatar-wrap flex-general-column-wrapper-center cf" style="">
-                    <img ng-show="!profilePic" src="assets/images/anonymous.jpg">
-                    <img ng-show="profilePic" class="profile-avatar" ng-src="{{profilePic.document.url}}">
-                  </div>
-                </div>
-
-                <div class="" style="margin-left:3px;">
-                  <span class="alto-menu-item">{{userFullname}}</span> <b class="caret" style="color:rgb(138, 135, 135);"></b>
-                </div>
-              </div>
-            </a>
-            <ul class="dropdown-menu">          
-              <li><a ng-click="logOut()">Sign Out</a></li>
-              <li><a href="#/profile">Profile</a></li>
-            </ul>
-          </li>
-          <!--/Profile-->
+         
         </ul>
 
         <ul class="nav navbar-nav not-nav">
