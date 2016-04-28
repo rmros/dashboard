@@ -10,6 +10,13 @@ app.factory('cacheService', ['$q','$http','$rootScope',function ($q,$http,$rootS
             success : function(cache){
                 //cache is an empty the object of the CB.CloudCache instance.
                 q.resolve(cache);
+
+                if(!__isDevelopment){
+                  /****Tracking*********/              
+                   mixpanel.track('Create Cache', {"App id": $rootScope.currentProject.appId,"Cache Name": name});
+                  /****End of Tracking*****/
+                }
+
             }, error : function(error){
                 q.reject(error);
             }

@@ -61,11 +61,13 @@ appSettingsService){
   $scope.authSettings={
     category:"auth",
     settings:{
-      custom:{
+      general:{
         enabled:true,
         callbackURL: null,
-        logOutURL:null,
-        corsURL:null
+        primaryColor:"#549afc"      
+      },
+      custom:{
+        enabled:true             
       },
       facebook:{
         enabled:false,
@@ -180,6 +182,7 @@ appSettingsService){
 
 
     //Add Callback URL with appId
+    $scope.loginPageURL=SERVER_URL+"/page/"+id+"/authentication";
     $scope.fbCallbackURL=SERVER_URL+"/auth/"+id+"/facebook/callback";
     $scope.googleCallbackURL=SERVER_URL+"/auth/"+id+"/google/callback";
     $scope.twitterCallbackURL=SERVER_URL+"/auth/"+id+"/twitter/callback";
@@ -203,6 +206,13 @@ appSettingsService){
       settingsObj=$scope.emailSettings.settings;
       if(settingsObj.mandrillApiKey && settingsObj.email && settingsObj.from){
         validate=true;
+
+        if(!__isDevelopment){
+          /****Tracking*********/              
+           mixpanel.track('Save Email Settings', {"App id": $rootScope.currentProject.appId});
+          /****End of Tracking*****/
+        }
+
       }else{
         validate=false;
         validateMsg="All Mandrill API Key,From Email,From Name are required";
@@ -211,7 +221,13 @@ appSettingsService){
     if(categoryName=="push"){
       settingsObj=$scope.pushSettings.settings; 
       validate=true;
-      validateMsg=null;     
+      validateMsg=null;
+
+      if(!__isDevelopment){
+        /****Tracking*********/              
+         mixpanel.track('Save Push Settings', {"App id": $rootScope.currentProject.appId});
+        /****End of Tracking*****/
+      }     
     }
 
     if(categoryName=="auth"){
@@ -221,7 +237,13 @@ appSettingsService){
       validateMsg=_validateSocialFields(settingsObj);
       if(validateMsg){
         validate=false;
-      }     
+      } 
+
+      if(!__isDevelopment){
+        /****Tracking*********/              
+         mixpanel.track('Save Auth Settings', {"App id": $rootScope.currentProject.appId});
+        /****End of Tracking*****/
+      }    
            
     }
     
@@ -238,9 +260,7 @@ appSettingsService){
     }else{
       WarningNotify(validateMsg);
     }
-  };
-
-  
+  };  
 
   $scope.initAddAppIcon=function(){
     $scope.editableFile=null;
@@ -262,7 +282,7 @@ appSettingsService){
 
       //App Icon
       if($scope.settingsMenu.general){
-        if(names[1]!="png"){
+        //if(names[1]!="png"){
           $("#md-appsettingsfileviewer").modal("hide");
 
           appSettingsService.upsertAppSettingFile($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,file,"general")
@@ -272,9 +292,9 @@ appSettingsService){
             errorNotify("Error on saving app icon, try again..");
           });
           
-        }else{
-          errorNotify("only .png are allowed.");
-        }
+        //}else{
+        //  errorNotify("only .png are allowed.");
+        //}
       }
 
       //Apple Certificate
@@ -437,10 +457,17 @@ appSettingsService){
   } 
 
   function _validateSocialFields(settings){
-    
-    if(!settings.custom.callbackURL || !settings.custom.logOutURL || !settings.custom.corsURL){
-      return "callbackURL, logOutURL and corsURL are required.";
+    if(!settings.custom.enabled && !settings.facebook.enabled && !settings.google.enabled && !settings.twitter.enabled && !settings.linkedIn.enabled && !settings.github.enabled){
+      return "Enable atleast one authentication.";
+    }
+
+    if(!settings.general.callbackURL){
+      return "Your app callbackURL is required.";
     }   
+
+    if(!validateURL(settings.general.callbackURL)){
+      return "App callbackURL is invalid.";
+    }
 
     if(settings.facebook.enabled){
       if(!settings.facebook.appId || !settings.facebook.appSecret){
@@ -474,6 +501,15 @@ appSettingsService){
 
     return null;
   } 
+
+  function validateURL(url){
+    var re = /^(((ht|f){1}(tp:[/][/]){1})|((www.){1}))[-a-zA-Z0-9@:%_\+.~#?&//=]+$/;
+    if (!re.test(url)) {         
+      return false;
+    }
+
+    return true;
+  }
 
   function _setDefaultTemplate(){ 
     var q=$q.defer();

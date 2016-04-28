@@ -21,7 +21,9 @@ app.factory('paymentService', ['$q','$http','$rootScope',function ($q,$http,$roo
 		    .then(function(data){
 
 		    	if(!data){
-		    		q.reject("Create Token failed,try again..");		    		
+		    		var tokenFailedQ=$q.defer();
+		    		tokenFailedQ.reject("Create Token failed,try again..");
+		    		return  tokenFailedQ.promise;		    		
 		    	}else{
 
 		    		var reqObj={			    		
