@@ -17,7 +17,8 @@ var app=angular.module('CloudBoostDashboard',
     'ngContextMenu', 
     'ngSanitize', 
     'nvd3',     
-    'textAngular'  
+    'textAngular',
+    'color.picker'  
     ]);
 
 app.value('THROTTLE_MILLISECONDS', 1250);

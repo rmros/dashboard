@@ -50,9 +50,11 @@ app.factory('tableService',
         .then(function(status){
           q.resolve(status);
 
-          /****Tracking*********/            
-           mixpanel.track('Delete Table', { "Table name": table.name,"appId": $rootScope.currentProject.appId});
-          /****End of Tracking*****/
+           if(!__isDevelopment){
+            /****Tracking*********/            
+             mixpanel.track('Delete Table', { "Table name": table.name,"appId": $rootScope.currentProject.appId});
+            /****End of Tracking*****/
+           }
         },function(){
           q.reject(status);
         });

@@ -7,7 +7,14 @@ app.factory('queueService', ['$q','$http','$rootScope',function ($q,$http,$rootS
       var queue = new CB.CloudQueue(name);
       queue.create({
           success : function(queueObject){
-            q.resolve(queueObject);            
+            q.resolve(queueObject); 
+
+            if(!__isDevelopment){
+              /****Tracking*********/            
+               mixpanel.track('Create queues', {"appId": $rootScope.currentProject.appId});
+              /****End of Tracking*****/
+            }
+
           }, error : function(error){
             q.reject(error);
           }

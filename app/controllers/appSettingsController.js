@@ -61,11 +61,13 @@ appSettingsService){
   $scope.authSettings={
     category:"auth",
     settings:{
-      custom:{
+      general:{
         enabled:true,
         callbackURL: null,
-        logOutURL:null,
-        corsURL:null
+        primaryColor: "#549afc"        
+      },
+      custom:{
+        enabled:true               
       },
       facebook:{
         enabled:false,
@@ -180,6 +182,7 @@ appSettingsService){
 
 
     //Add Callback URL with appId
+    $scope.loginPageURL=SERVER_URL+"/page/"+id+"/authentication";
     $scope.fbCallbackURL=SERVER_URL+"/auth/"+id+"/facebook/callback";
     $scope.googleCallbackURL=SERVER_URL+"/auth/"+id+"/google/callback";
     $scope.twitterCallbackURL=SERVER_URL+"/auth/"+id+"/twitter/callback";
@@ -203,6 +206,11 @@ appSettingsService){
       settingsObj=$scope.emailSettings.settings;
       if(settingsObj.mandrillApiKey && settingsObj.email && settingsObj.from){
         validate=true;
+        if(!__isDevelopment){
+          /****Tracking*********/            
+           mixpanel.track('Save Email Settings', {"appId": $rootScope.currentProject.appId});
+          /****End of Tracking*****/
+        }
       }else{
         validate=false;
         validateMsg="All Mandrill API Key,From Email,From Name are required";
@@ -211,7 +219,10 @@ appSettingsService){
     if(categoryName=="push"){
       settingsObj=$scope.pushSettings.settings; 
       validate=true;
-      validateMsg=null;     
+      validateMsg=null; 
+      /****Tracking*********/            
+       mixpanel.track('Save Push Settings', {"appId": $rootScope.currentProject.appId});
+      /****End of Tracking*****/    
     }
 
     if(categoryName=="auth"){
@@ -221,6 +232,10 @@ appSettingsService){
       validateMsg=_validateSocialFields(settingsObj);
       if(validateMsg){
         validate=false;
+      }else{
+        /****Tracking*********/            
+         mixpanel.track('Save Auth Settings', {"appId": $rootScope.currentProject.appId});
+        /****End of Tracking*****/ 
       }     
            
     }
@@ -262,7 +277,7 @@ appSettingsService){
 
       //App Icon
       if($scope.settingsMenu.general){
-        if(names[1]!="png"){
+        //if(names[1]!="png"){
           $("#md-appsettingsfileviewer").modal("hide");
 
           appSettingsService.upsertAppSettingFile($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,file,"general")
@@ -272,9 +287,9 @@ appSettingsService){
             errorNotify("Error on saving app icon, try again..");
           });
           
-        }else{
-          errorNotify("only .png are allowed.");
-        }
+        //}else{
+         // errorNotify("only .png are allowed.");
+        //}
       }
 
       //Apple Certificate
@@ -438,9 +453,17 @@ appSettingsService){
 
   function _validateSocialFields(settings){
     
-    if(!settings.custom.callbackURL || !settings.custom.logOutURL || !settings.custom.corsURL){
-      return "callbackURL, logOutURL and corsURL are required.";
-    }   
+    if(!settings.custom.enabled && !settings.facebook.enabled && !settings.google.enabled && !settings.twitter.enabled && !settings.linkedIn.enabled && !settings.github.enable){
+      return "Enable atleast one authentication.";
+    }
+
+    if(!settings.general.callbackURL){
+      return "Your App callbackURL is required.";
+    }  
+
+    if(settings.general.callbackURL && !_validateUrl(settings.general.callbackURL)){
+      return "App callbackURL is Invalid.";
+    } 
 
     if(settings.facebook.enabled){
       if(!settings.facebook.appId || !settings.facebook.appSecret){
@@ -474,6 +497,12 @@ appSettingsService){
 
     return null;
   } 
+
+  function _validateUrl(url){
+
+    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    return regexp.test(url);
+  }
 
   function _setDefaultTemplate(){ 
     var q=$q.defer();

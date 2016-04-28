@@ -486,17 +486,39 @@
 
                 <div class="flex-general-column-wrapper-center" style="width: 94%;margin-top: 35px;">        
 
-                  <div style="width:94%;margin-top: 25px;" class="flex-general-column-wrapper-center">
+                  <div style="width:94%;" class="flex-general-column-wrapper-center">
                     <div class="width:100%;">
                       <span style="font-size: 18px;font-weight: bold;color:#549afc;">
-                        <i class="fa fa-bars" style="margin-right: 4px;"></i>
-                        Custom Authentication
+                        <i class="ion ion-gear-b" style="margin-right: 4px;font-size: 20px;"></i>
+                        General Settings
                       </span>
                     </div>                                                      
                   </div>
 
 
-                  <div class="actual-fields cf" style="border-top: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;margin-top: 15px;">
+                  <!--Callback URL-->
+                  <div class=" cf" style="width:94%; border: 1px solid #EDEDED;">
+
+                    <div class="pull-left" style="height:110px;width:99.98%;padding:15px;">
+
+                      <div style="width: 100%;">
+                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Callback URL</span>
+                      </div>
+
+                      <div style="width: 100%;margin-top: 3px;">
+                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is listed under the "Authentication" section of the Google API console.</span>
+                      </div>
+
+                      <div style="width: 100%;margin-top: 6px;">
+                        <a ng-href="{{::loginPageURL}}" target="_blank" style="font-size: 14px;line-height:12%;color:#3789fc;">{{::loginPageURL}}</a>
+                      </div>
+
+                    </div>
+                    
+                  </div> 
+                  <!--Callback URL-->
+
+                  <div class="actual-fields cf" style="border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
                     <div class="pull-left" style="height:95px;width:60%;padding:15px;">
 
                       <div style="width: 100%;">
@@ -510,45 +532,59 @@
                     </div>
 
                     <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                      <input type="text" ng-model="authSettings.settings.custom.callbackURL" class="default-inputfield" placeholder="Enter Security Identifier" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      <input type="text" ng-model="authSettings.settings.general.callbackURL" class="default-inputfield" placeholder="Enter App Callback URL" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                     </div>
                   </div>
 
-                  <div class="actual-fields cf" style="border-top: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                  <div class="actual-fields cf" style="border: 1px solid #EDEDED;">
                     <div class="pull-left" style="height:95px;width:60%;padding:15px;">
 
                       <div style="width: 100%;">
-                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Allowed Logout URL</span>
+                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Primary Color for your Login Page</span>
                       </div>
 
                       <div style="width: 100%;margin-top: 3px;">
-                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">A URL that are valid to redirect to after logout.</span>
+                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">After the user authenticates we will only call back to this URL.</span>
                       </div>
 
                     </div>
 
                     <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                      <input type="text" class="default-inputfield" ng-model="authSettings.settings.custom.logOutURL" placeholder="Enter Client Secret" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      <color-picker ng-model="authSettings.settings.general.primaryColor" color-picker-format="'hex'" style="margin-top: 10px;"></color-picker>
                     </div>
                   </div>
 
-                  <div class="actual-fields cf" style="border: 1px solid #EDEDED;">
-                    <div class="pull-left" style="height:110px;width:60%;padding:15px;">
+
+
+                  <!---Custom settings-->
+                  <div style="width:94%;margin-top: 45px;" class="flex-general-column-wrapper-center">
+                    <div class="width:100%;">
+                      <span style="font-size: 18px;font-weight: bold;color:#549afc;">
+                        <i class="fa fa-bars" style="margin-right: 4px;"></i>
+                        Custom Authentication
+                      </span>
+                    </div>                                                      
+                  </div>
+
+
+                  <div class="actual-fields cf" style="border: 1px solid #EDEDED;margin-top: 15px;">
+                    <div class="pull-left" style="height:95px;width:60%;padding:15px;">
 
                       <div style="width: 100%;">
-                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Allowed Origins (CORS)</span>
+                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F"> Allowed Callback URL</span>
                       </div>
 
                       <div style="width: 100%;margin-top: 3px;">
-                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Allowed Origins are URL that will be allowed to make requests from JavaScript (typically used with CORS). By default, your callback URL will be allowed. </span>
+                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">After the user authenticates we will only call back to this URL.</span>
                       </div>
 
                     </div>
 
-                    <div class="pull-right solo-vertical-center" style="height: 110px;width:39%;background-color: #F6FAFB;padding:15px;">
-                      <input type="text" class="default-inputfield" ng-model="authSettings.settings.custom.corsURL" placeholder="Enter Client Secret" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                    <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                      <switch ng-model="authSettings.settings.custom.enabled" class="green appprod-switch"></switch>
                     </div>
-                  </div>
+                  </div>  
+
 
                   <div style="width:94%;margin-top: 40px;" class="flex-general-column-wrapper-center">
                     <div class="width:100%;">
