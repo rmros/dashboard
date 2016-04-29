@@ -13717,9 +13717,9 @@ CB.CloudUser.authenticateWithProvider = function(dataJson, callback) {
         throw "accessSecret is required for provider twitter.";
     }
 
-    if(dataJson.provider.toLowerCase()==="google" && !dataJson.refreshToken) {
-        throw "refreshToken is required for provider google.";
-    }      
+    //if(dataJson.provider.toLowerCase()==="google" && !dataJson.refreshToken) {
+    //throw "refreshToken is required for provider google.";
+    //}      
   
     var params=JSON.stringify({ 
         provider: dataJson.provider,
