@@ -10,8 +10,10 @@ app.factory('queueService', ['$q','$http','$rootScope',function ($q,$http,$rootS
             q.resolve(queueObject); 
 
             if(!__isDevelopment){
+
               /****Tracking*********/              
                mixpanel.track('Create Queue', {"App id": $rootScope.currentProject.appId,"Queue Name": name});
+
               /****End of Tracking*****/
             }
 

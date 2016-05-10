@@ -1,0 +1,90 @@
+
+<div class="push-browser-parent" ng-init="init()">
+
+  <div class="flex-general-column-wrapper-center" style="width: 100%; height: 100%;">
+    <div class="push-box">
+      <div style="width: 100%;margin-top: 35px;" class="solo-horizontal-center">
+        <span style="color:#4F4F4F;font-size: 20px;font-weight: 700;">Send Push Notifications</span>
+      </div>
+
+      <div style="margin-top: 15px;padding: 35px;">
+
+        <!--Each Field-->
+        <div style="width: 100%;" class="flex-general-row-wrapper">
+
+          <div style="width: 40%;">
+            <span style="color:#4F4F4F;font-size: 16px;">Title</span>
+          </div>
+
+          <div style="width: 60%;">
+            <input ng-model="pushData.title" type="text" class="default-inputfield" style="width: 100%; height: 25px; border: 1px solid #C4C2C2;">
+          </div>
+
+        </div>
+        <!--/Each Field-->
+
+        <!--Each Field-->
+        <!--<div style="width: 100%;margin-top: 25px;" class="flex-general-row-wrapper">
+
+          <div style="width: 40%;">
+            <span style="color:#4F4F4F;font-size: 16px;">Icon</span>
+          </div>
+
+          <div style="width: 60%;">
+            <input ng-model="pushData.icon" type="text" class="default-inputfield" style="width: 100%; height: 25px; border: 1px solid #C4C2C2;">
+          </div>
+
+        </div>-->
+        <!--/Each Field-->
+
+        <!--Each Field-->
+        <div style="width: 100%;margin-top: 25px;" class="flex-general-row-wrapper">
+
+          <div style="width: 40%;">
+            <span style="color:#4F4F4F;font-size: 16px;">Message</span>
+            <span style="color:#4F4F4F;font-size: 15px;">(required)</span>
+          </div>
+
+          <div style="width: 60%;">
+            <textarea ng-model="pushData.message" class="default-inputfield" rows="4"  style="width: 100%; border: 1px solid #C4C2C2;"></textarea> 
+          </div>
+
+        </div>
+        <!--/Each Field-->
+
+        <!--Each Field-->
+        <div style="width: 100%;margin-top: 25px;" class="flex-general-row-wrapper">
+
+          <div style="width: 40%;">
+            
+          </div>
+
+          <div style="width: 60%;">
+
+            <button ng-show="!sendPushSpinner" ng-click="sendPush()" class="default-inputfield" style="width: 100px;height: 30px;font-size:14px; background-color: #549afc; color:white;">Send</button>
+
+            <!--While Sending-->
+            <button  ng-show="sendPushSpinner" class="default-inputfield" style="width: 100px;height: 30px;font-size:14px; background-color: #549afc; color:white;">
+              <i class="fa fa-spinner fa-spin"></i>&nbsp;Sending..
+            </button>
+          </div>
+
+        </div>
+        <!--/Each Field-->
+
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!--Slack chat-->
+<a href="http://slack.cloudboost.io" target="_blank">
+  <div class="intercomm flex-general-column-wrapper-center">    
+    <i class="icon ion-ios-chatboxes" style="font-size:26px !important; color:white;margin-top:3px;"></i>
+  </div> 
+</a>
+<!--/Slack chat-->
+

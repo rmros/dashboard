@@ -64,10 +64,10 @@ appSettingsService){
       general:{
         enabled:true,
         callbackURL: null,
-        primaryColor:"#549afc"      
+        primaryColor: "#549afc"        
       },
       custom:{
-        enabled:true             
+        enabled:true
       },
       facebook:{
         enabled:false,
@@ -208,8 +208,8 @@ appSettingsService){
         validate=true;
 
         if(!__isDevelopment){
-          /****Tracking*********/              
-           mixpanel.track('Save Email Settings', {"App id": $rootScope.currentProject.appId});
+          /****Tracking*********/            
+           mixpanel.track('Save Email Settings', {"appId": $rootScope.currentProject.appId});
           /****End of Tracking*****/
         }
 
@@ -222,12 +222,12 @@ appSettingsService){
       settingsObj=$scope.pushSettings.settings; 
       validate=true;
       validateMsg=null;
-
       if(!__isDevelopment){
         /****Tracking*********/              
          mixpanel.track('Save Push Settings', {"App id": $rootScope.currentProject.appId});
         /****End of Tracking*****/
       }     
+
     }
 
     if(categoryName=="auth"){
@@ -237,14 +237,11 @@ appSettingsService){
       validateMsg=_validateSocialFields(settingsObj);
       if(validateMsg){
         validate=false;
-      } 
-
-      if(!__isDevelopment){
-        /****Tracking*********/              
-         mixpanel.track('Save Auth Settings', {"App id": $rootScope.currentProject.appId});
-        /****End of Tracking*****/
-      }    
-           
+      }else{
+        /****Tracking*********/            
+         mixpanel.track('Save Auth Settings', {"appId": $rootScope.currentProject.appId});
+        /****End of Tracking*****/ 
+      }           
     }
     
     if(validate){
@@ -457,13 +454,22 @@ appSettingsService){
   } 
 
   function _validateSocialFields(settings){
-    if(!settings.custom.enabled && !settings.facebook.enabled && !settings.google.enabled && !settings.twitter.enabled && !settings.linkedIn.enabled && !settings.github.enabled){
+
+    
+    if(!settings.custom.enabled && !settings.facebook.enabled && !settings.google.enabled && !settings.twitter.enabled && !settings.linkedIn.enabled && !settings.github.enable){
+
       return "Enable atleast one authentication.";
     }
 
     if(!settings.general.callbackURL){
-      return "Your app callbackURL is required.";
-    }   
+
+      return "Your App callbackURL is required.";
+    }  
+
+    if(settings.general.callbackURL && !_validateUrl(settings.general.callbackURL)){
+      return "App callbackURL is Invalid.";
+    } 
+
 
     if(!validateURL(settings.general.callbackURL)){
       return "App callbackURL is invalid.";
@@ -502,13 +508,12 @@ appSettingsService){
     return null;
   } 
 
-  function validateURL(url){
-    var re = /^(((ht|f){1}(tp:[/][/]){1})|((www.){1}))[-a-zA-Z0-9@:%_\+.~#?&//=]+$/;
-    if (!re.test(url)) {         
-      return false;
-    }
 
-    return true;
+  function _validateUrl(url){
+
+    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    return regexp.test(url);
+
   }
 
   function _setDefaultTemplate(){ 

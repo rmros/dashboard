@@ -68,6 +68,12 @@ app.config([
         controller: 'fileBrowserController'
     });
 
+    $stateProvider.state('push', {
+        url: '/:appId/push',
+        templateUrl: 'app/views/push-browser.html',
+        controller: 'pushBrowserController'
+    });
+
     $stateProvider.state('settings', {
         url: '/:appId/settings',
         templateUrl: 'app/views/app-settings.html',
