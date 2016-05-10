@@ -457,12 +457,10 @@ appSettingsService){
 
     
     if(!settings.custom.enabled && !settings.facebook.enabled && !settings.google.enabled && !settings.twitter.enabled && !settings.linkedIn.enabled && !settings.github.enable){
-
       return "Enable atleast one authentication.";
     }
 
     if(!settings.general.callbackURL){
-
       return "Your App callbackURL is required.";
     }  
 
