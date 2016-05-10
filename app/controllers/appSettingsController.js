@@ -471,7 +471,7 @@ appSettingsService){
     } 
 
 
-    if(!validateURL(settings.general.callbackURL)){
+    if(!_validateUrl(settings.general.callbackURL)){
       return "App callbackURL is invalid.";
     }
 
