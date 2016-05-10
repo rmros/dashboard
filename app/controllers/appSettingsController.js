@@ -279,7 +279,7 @@ appSettingsService){
 
       //App Icon
       if($scope.settingsMenu.general){
-        //if(names[1]!="png"){
+        if(names[1]!="png"){
           $("#md-appsettingsfileviewer").modal("hide");
 
           appSettingsService.upsertAppSettingFile($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,file,"general")
@@ -289,9 +289,9 @@ appSettingsService){
             errorNotify("Error on saving app icon, try again..");
           });
           
-        //}else{
-        //  errorNotify("only .png are allowed.");
-        //}
+        }else{
+          errorNotify("only .png are allowed.");
+        }
       }
 
       //Apple Certificate
