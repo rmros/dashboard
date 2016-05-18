@@ -18,7 +18,9 @@ var app=angular.module('CloudBoostDashboard',
     'ngSanitize', 
     'nvd3',     
     'textAngular',
-    'color.picker'  
+    'color.picker',
+    'hljs',
+    'ui.codemirror'  
     ]);
 
 app.value('THROTTLE_MILLISECONDS', 1250);
@@ -37,7 +39,14 @@ app.config(function($provide) {
     ];
     return taOptions;
   }]);
-})
+});
+
+app.config(function (hljsServiceProvider) {
+  hljsServiceProvider.setOptions({
+    // replace tab with 2 spaces
+    tabReplace: '  '
+  });
+});
 
 /***************************************************Connecting URLs*********************************************************/
 var __isDevelopment = false;

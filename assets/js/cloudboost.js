@@ -1041,11 +1041,18 @@ CB._defaultColumns = function(type) {
         socialAuth.document.isDeletable = false;
         socialAuth.document.isEditable = false;
 
+        var verified = new CB.Column('verified');
+        verified.dataType = 'Boolean';        
+        verified.required = false;
+        verified.document.isDeletable = false;
+        verified.document.isEditable = false;         
+
         col.push(username);
         col.push(roles);
         col.push(password);
         col.push(email);
         col.push(socialAuth);
+        col.push(verified);
         return col;
     }else if(type === "role") {
         var name = new CB.Column('name');
@@ -1254,6 +1261,88 @@ if(typeof(location) !== 'undefined' && location.search){
     if(cbtoken && cbtoken!==""){
         localStorage.setItem('sessionID', cbtoken);
     }    
+}
+
+//Description : returns browser name 
+//Params : null       
+//Returns : browser name. 
+CB._getThisBrowserName= function(){
+
+  // check if library is used as a Node.js module
+  if(typeof window !== 'undefined') {
+
+      // store navigator properties to use later
+      var userAgent = 'navigator' in window && 'userAgent' in navigator && navigator.userAgent.toLowerCase() || '';
+      var vendor = 'navigator' in window && 'vendor' in navigator && navigator.vendor.toLowerCase() || '';
+      var appVersion = 'navigator' in window && 'appVersion' in navigator && navigator.appVersion.toLowerCase() || '';
+
+      var is={};
+
+      // is current browser chrome?
+      is.chrome = function() {
+          return /chrome|chromium/i.test(userAgent) && /google inc/.test(vendor);
+      };
+     
+      // is current browser firefox?
+      is.firefox = function() {
+          return /firefox/i.test(userAgent);
+      };
+     
+      // is current browser edge?
+      is.edge = function() {
+          return /edge/i.test(userAgent);
+      };
+      
+      // is current browser internet explorer?
+      // parameter is optional
+      is.ie = function(version) {
+          if(!version) {
+              return /msie/i.test(userAgent) || "ActiveXObject" in window;
+          }
+          if(version >= 11) {
+              return "ActiveXObject" in window;
+          }
+          return new RegExp('msie ' + version).test(userAgent);
+      };
+      
+      // is current browser opera?
+      is.opera = function() {
+          return /^Opera\//.test(userAgent) || // Opera 12 and older versions
+              /\x20OPR\//.test(userAgent); // Opera 15+
+      };
+     
+      // is current browser safari?
+      is.safari = function() {
+          return /safari/i.test(userAgent) && /apple computer/i.test(vendor);
+      };
+
+      if(is.chrome()){
+        return "chrome";
+      }
+
+      if(is.firefox()){
+        return "firefox";
+      }
+
+      if(is.edge()){
+        return "edge";
+      }
+
+      if(is.ie()){
+        return "ie";
+      }
+
+      if(is.opera()){
+        return "opera";
+      }
+
+      if(is.safari()){
+        return "safari";
+      }
+
+      return "unidentified";
+
+  } 
 }
 
 if(!CB._isNode) {
@@ -9939,7 +10028,7 @@ CB.CloudQuery.prototype.startsWith = function(columnName, value) {
 }
 
 
-CB.CloudQuery.prototype.regex = function(columnName, value) {
+CB.CloudQuery.prototype.regex = function(columnName, value, isCaseInsensitive) {
     if (columnName === 'id' )
         columnName = '_' + columnName;
 
@@ -9948,11 +10037,15 @@ CB.CloudQuery.prototype.regex = function(columnName, value) {
     } 
 
     this.query[columnName]["$regex"] = value;
+
+    if(isCaseInsensitive){
+        this.query[columnName]["$options"] = "i";
+    }
     
     return this;
 }
 
-CB.CloudQuery.prototype.substring = function(columnName, value) {
+CB.CloudQuery.prototype.substring = function(columnName, value, isCaseInsensitive) {
 
       if(typeof columnName === "string"){
         columnName = [columnName];
@@ -9966,17 +10059,27 @@ CB.CloudQuery.prototype.substring = function(columnName, value) {
                 var obj = {};
                 obj[columnName[j]] = {};
                 obj[columnName[j]]["$regex"] = ".*"+value[i]+".*";
+
+                if(isCaseInsensitive){
+                    obj[columnName[j]]["$options"] = "i";                   
+                }
+
                 this.query["$or"].push(obj);
             }
           }else{
-             if(columnName.length===1){
-                this.regex(columnName[j],".*"+value+".*");
+            if(columnName.length===1){
+                this.regex(columnName[j],".*"+value+".*",isCaseInsensitive);
             }else{
                 if(!this.query["$or"])
                     this.query["$or"] = [];
                 var obj = {};
                 obj[columnName[j]] = {};
                 obj[columnName[j]]["$regex"] = ".*"+value+".*";
+
+                if(isCaseInsensitive){                    
+                    obj[columnName[j]]["$options"] = "i";
+                }
+
                 this.query["$or"].push(obj);
             }
           }
@@ -13352,17 +13455,17 @@ CB.CloudPush.send = function(data,query,callback) {
     if(!query){
         var pushQuery = new CB.CloudQuery(tableName);
     }
-	
+
     var params=JSON.stringify({
-        query    : pushQuery.query,        
-        sort     : pushQuery.sort,
-        limit    : pushQuery.limit,
-        skip     : pushQuery.skip,
-        key      : CB.appKey,        
-        data     : data,
+        query      : pushQuery.query,        
+        sort       : pushQuery.sort,
+        limit      : pushQuery.limit,
+        skip       : pushQuery.skip,
+        key        : CB.appKey,        
+        data       : data
     });  
 
-    url = CB.apiUrl + "/push/" + CB.appId + '/send';
+    var url = CB.apiUrl + "/push/" + CB.appId + '/send';
 
     CB._request('POST',url,params).then(function(response){
         var object = JSON.parse(response);
@@ -13389,6 +13492,331 @@ CB.CloudPush.send = function(data,query,callback) {
         return def;
     }
 };    
+
+
+
+CB.CloudPush.enableWebNotifications = function(callback) {
+
+    var def;
+    if (!callback) {
+        def = new CB.Promise();
+    }
+
+    //Check document
+    if(typeof(document) !== 'undefined'){
+
+        CB.CloudPush._requestBrowserNotifications().then(function(response){
+
+            if('serviceWorker' in navigator) {
+                return navigator.serviceWorker.register('serviceWorker.js',{scope: './'});
+            }else { 
+                var noServerDef = new CB.Promise(); 
+                noServerDef.reject('Service workers aren\'t supported in this browser.');  
+                return noServerDef;
+            }
+
+        }).then(function(registration){
+
+            if (!(registration.showNotification)) { 
+                var noServerDef = new CB.Promise(); 
+                noServerDef.reject('Notifications aren\'t supported on service workers.');  
+                return noServerDef;                   
+            }else{
+                return CB.CloudPush._subscribe();
+            }
+
+        }).then(function(subscription){
+
+            //PublicKey for secure connection with server
+            var browserKey = subscription.getKey ? subscription.getKey('p256dh') : '';
+            browserKey=browserKey ? btoa(String.fromCharCode.apply(null, new Uint8Array(browserKey))) : '';  
+
+            //AuthKey for secure connection with server
+            var authKey = subscription.getKey ? subscription.getKey('auth') : '';
+            authKey=authKey ? btoa(String.fromCharCode.apply(null, new Uint8Array(authKey))) : '';
+                     
+
+            CB.CloudPush._addDevice(CB._getThisBrowserName(), subscription.endpoint, browserKey, authKey, {
+                success : function(obj){
+                    if (callback) {
+                        callback.success();
+                    } else {
+                        def.resolve();
+                    }
+                },error : function(error){
+                    if(callback){
+                        callback.error(error);
+                    }else {
+                        def.reject(error);
+                    }
+                }
+            });        
+
+        },function(error){
+            if(callback){
+                callback.error(error);
+            }else {
+                def.reject(error);
+            }
+        });
+
+    }else{
+        if(callback){
+            callback.error("Browser document not found");
+        }else {
+            def.reject("Browser document not found");
+        }
+    } 
+
+    if (!callback) {
+        return def;
+    }   
+};
+
+
+CB.CloudPush.disableWebNotifications = function(callback) {
+
+    var def;
+    if (!callback) {
+        def = new CB.Promise();
+    }
+
+    //Check document
+    if(typeof(document) !== 'undefined'){
+
+        CB.CloudPush._getSubscription().then(function(subscription){   
+
+            //No subscription 
+            if(!subscription){
+                if (callback) {
+                    callback.success();
+                } else {
+                    def.resolve();
+                } 
+            }
+
+            if(subscription){
+                var promises=[];
+
+                //We have a subcription, so call unsubscribe on it
+                promises.push(subscription.unsubscribe());
+                //Remove Device Objects
+                promises.push(CB.CloudPush._deleteDevice(CB._getThisBrowserName(), subscription.endpoint));        
+
+                CB.Promise.all(promises).then(function(successful) {
+                    if (callback) {
+                        callback.success();
+                    } else {
+                        def.resolve();
+                    }
+                },function(error) {                     
+                    if (callback) {
+                        callback.error(error);
+                    } else {
+                        def.reject(error);
+                    }                  
+                });
+            }
+
+        },function(error){
+            if(callback){
+                callback.error(error);
+            }else {
+                def.reject(error);
+            }
+        });
+
+    }else{
+        if(callback){
+            callback.error("Browser document not found");
+        }else {
+            def.reject("Browser document not found");
+        }
+    } 
+
+    if (!callback) {
+        return def;
+    }   
+};
+
+
+CB.CloudPush._subscribe = function (){
+
+    var def = new CB.Promise();
+
+    // Check if push messaging is supported  
+    if (!('PushManager' in window)) {  
+        return def.reject('Push messaging isn\'t supported.');         
+    }
+
+    navigator.serviceWorker.ready.then(function(reg) {
+
+        reg.pushManager.getSubscription().then(function(subscription) { 
+
+            if (!subscription) {  
+                reg.pushManager.subscribe({userVisibleOnly: true}).then(function(subscription) {                
+                    def.resolve(subscription);
+                }).catch(function(err) {                                
+                    def.reject(err);               
+                });
+            }else{
+                def.resolve(subscription);
+            }     
+      
+        }).catch(function(err) {  
+            def.reject(err);  
+        });   
+
+    },function(error){
+        def.reject(error);
+    });
+
+    return def;
+};
+
+
+CB.CloudPush._getSubscription = function(){
+
+    var def = new CB.Promise();
+    
+    navigator.serviceWorker.ready.then(function(reg) {
+
+        reg.pushManager.getSubscription().then(function(subscription) { 
+
+            if (!subscription) {  
+                def.resolve(null);
+            }else{
+                def.resolve(subscription);
+            }     
+      
+        }).catch(function(err) {  
+            def.reject(err);  
+        });   
+
+    },function(error){
+        def.reject(error);
+    });
+
+    return def;
+};
+ 
+
+CB.CloudPush._requestBrowserNotifications = function() {
+
+    var def = new CB.Promise();
+
+    if (!("Notification" in window)) {        
+        def.reject("This browser does not support system notifications");
+    }else if (Notification.permission === "granted") {  
+
+        def.resolve("Permission granted");
+
+    }else if (Notification.permission !== 'denied') { 
+
+        Notification.requestPermission(function (permission) {   
+
+          if(permission === "granted") {  
+            def.resolve("Permission granted");      
+          }
+
+          if(permission === "denied"){
+            def.reject("Permission denied");
+          }
+
+        });
+    }
+
+    return def;
+};
+
+//save the device document to the db
+CB.CloudPush._addDevice = function(deviceOS, endPoint, browserKey, authKey, callback) { 
+    
+    var def;
+    CB._validate();
+
+    //Set Fields
+    var thisObj = new CB.CloudObject('Device');
+    thisObj.set('deviceOS', deviceOS);
+    thisObj.set('deviceToken', endPoint);
+    thisObj.set('metadata', {browserKey:browserKey,authKey:authKey});
+    
+    if (!callback) {
+        def = new CB.Promise();
+    }    
+   
+    var xmlhttp = CB._loadXml();
+    var params=JSON.stringify({
+        document: CB.toJSON(thisObj),
+        key: CB.appKey
+    });
+
+    var url = CB.apiUrl + "/push/" + CB.appId;
+    CB._request('PUT',url,params).then(function(response){
+        thisObj = CB.fromJSON(JSON.parse(response),thisObj);
+        if (callback) {
+            callback.success(thisObj);
+        } else {
+            def.resolve(thisObj);
+        }
+    },function(err){
+        if(callback){
+            callback.error(err);
+        }else {
+            def.reject(err);
+        }
+    });
+  
+    if (!callback) {
+        return def;
+    }
+};
+
+
+CB.CloudPush._deleteDevice = function(deviceOS, endPoint, callback) { //delete an object matching the objectId
+    if (!CB.appId) {
+        throw "CB.appId is null.";
+    }     
+   
+    var def;
+    if (!callback) {
+        def = new CB.Promise();
+    }
+
+    var data={
+        deviceOS:deviceOS,
+        deviceToken:endPoint
+    };
+
+    var params=JSON.stringify({
+        key: CB.appKey,
+        document: data,
+        method:"DELETE"
+    });
+    
+    var url = CB.apiUrl + "/push/" + CB.appId;
+
+    CB._request('PUT',url,params).then(function(response){
+        if (callback) {
+            callback.success(response);
+        } else {
+            def.resolve(response);
+        }
+    },function(err){
+        if(callback){
+            callback.error(err);
+        }else {
+            def.reject(err);
+        }
+    });
+
+    if (!callback) {
+        return def;
+    }
+};
+
+
+
 /*
  CloudUser
  */
@@ -13715,17 +14143,12 @@ CB.CloudUser.authenticateWithProvider = function(dataJson, callback) {
 
     if(dataJson.provider.toLowerCase()==="twiter" && !dataJson.accessSecret) {
         throw "accessSecret is required for provider twitter.";
-    }
-
-    //if(dataJson.provider.toLowerCase()==="google" && !dataJson.refreshToken) {
-    //throw "refreshToken is required for provider google.";
-    //}      
+    }         
   
     var params=JSON.stringify({ 
         provider: dataJson.provider,
         accessToken: dataJson.accessToken, 
-        accessSecret: dataJson.accessSecret, 
-        refreshToken: dataJson.refreshToken,    
+        accessSecret: dataJson.accessSecret,           
         key: CB.appKey
     });
 

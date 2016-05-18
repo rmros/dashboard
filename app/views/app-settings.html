@@ -187,7 +187,32 @@
 
                 <div style="margin-top: 20px;height: auto;width: 100%;" class="flex-general-column-wrapper-center">
 
-                  <div class="actual-fields cf" style="border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED; border-top: 1px solid #EDEDED;">
+                  <!--switcher-->
+                  <div class="actual-fields cf" style="border: 1px solid #EDEDED;">
+                    <div class="pull-left flex-general-column-wrapper-center" style="height:95px;width:100%;padding:15px;">
+
+                      <div style="width: 100%;" class="flex-general-column-wrapper-center">
+                        <div class="flex-general-row-wrapper">
+
+                            <div class="flex-general-row-wrapper">
+                              <div><input type="radio" ng-model="emailSettings.settings.mandrill.enabled" ng-value="true" ng-change="toggleEmailConfig('mandrill')" style="margin-top: -0.5px;height: 18px;width: 18px;cursor: pointer;"></div>
+                              <div style="font-size: 14px;">Mandrill</div>
+                            </div>
+
+                            <div class="flex-general-row-wrapper" style="margin-left: 8px;">
+                              <div>
+                              <input type="radio" ng-model="emailSettings.settings.mailgun.enabled" ng-value="true" ng-change="toggleEmailConfig('mailgun')" style="margin-top: -0.5px;height: 18px;width: 18px;cursor: pointer;"></div>
+                              <div style="font-size: 14px;">Mailgun</div>
+                            </div>
+
+                        </div>                       
+                      </div>                    
+
+                    </div>
+                  </div>
+                  <!--/switcher-->
+
+                  <div ng-if="emailSettings.settings.mandrill.enabled" class="actual-fields cf" style="border: 1px solid #EDEDED;">
                     <div class="pull-left" style="height:95px;width:60%;padding:15px;">
 
                       <div style="width: 100%;">
@@ -203,81 +228,56 @@
                     </div>
 
                     <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                      <input type="text" ng-model="emailSettings.settings.mandrillApiKey" class="default-inputfield" placeholder="Enter Mandrill API Key" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      <input type="text" ng-model="emailSettings.settings.mandrill.apiKey" class="default-inputfield" placeholder="Enter Mandrill API Key" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                     </div>
-                  </div>
+                  </div> 
 
-                  <div class="actual-fields cf" style="border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED; border-top: 1px solid #EDEDED;">
-                    <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+                  <!--Toggle Template-->
+                  <div ng-if="emailSettings.settings.mailgun.enabled" style="width:94%;">
+                    <!--Each section-->
+                    <div class=" cf" style="border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:95px;width:60%;padding:15px;">
 
-                      <div style="width: 100%;">
-                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">From Email</span>
-                      </div>
-
-                      <div style="width: 100%;margin-top: 3px;">
-                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Email address which you want an email to be sent from.</span>
-                      </div>
-
-                    </div>
-
-                    <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                      <input type="text" ng-model="emailSettings.settings.email" class="default-inputfield" placeholder="Enter From Email" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
-                    </div>
-                  </div>
-                 
-
-                  <div class="actual-fields cf" style="border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED; border-top: 1px solid #EDEDED;">
-                    <div class="pull-left" style="height:95px;width:60%;padding:15px;">
-
-                      <div style="width: 100%;">
-                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">From Name</span>
-                      </div>
-
-                      <div style="width: 100%;margin-top: 3px;">
-                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Name you want an email to be sent from.</span>
-                      </div>
-
-                    </div>
-
-                    <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                      <input type="text" ng-model="emailSettings.settings.from" class="default-inputfield" placeholder="Enter From Name" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
-                    </div>
-                  </div>
-
-                  <div class="actual-fields cf" style="border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED; border-top: 1px solid #EDEDED;">
-                    <div class="pull-left" style="height:105px;width:100%;padding:15px;">
-
-                      <div style="width: 100%;">
-                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Reset Password Email Template</span>
-                      </div>
-
-                      <div style="width: 100%;margin-top: 3px;">
-                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is where you can change your reset password email template.</span>
-                      </div>
-                      <div style="width: 100%;margin-top: 9px;">
-                        <div style="font-size: 14px;line-height:12%;color:#B2B2B2;">
-                          You can add <span style="font-weight: bold;">*|NAME|*</span> for user name and with <span style="font-weight: bold;">&lt;a href="*|LINK|*" &gt;Reset Password&lt;/a&gt;</span>
-                        </div>                        
-                      </div>
-                      <div style="width: 100%;margin-top: 18px;">                    
-                        <div style="font-size: 14px;line-height:12%;color:#B2B2B2;">
-                         for password reset link in your email template
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Mailgun API Key</span>
                         </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Email address which you want an email to be sent from.</span>
+                        </div>
+
                       </div>
 
+                      <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                        <input type="text" ng-model="emailSettings.settings.mailgun.apiKey" class="default-inputfield" placeholder="Enter From Email" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      </div>
                     </div>
-                    
+                    <!--/Each section-->
+                   
+
+                    <!--Each section-->
+                    <div class="cf" style="border: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Mailgun Domain</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Name you want an email to be sent from.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                        <input type="text" ng-model="emailSettings.settings.mailgun.domain" class="default-inputfield" placeholder="Enter From Name" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      </div>
+                    </div>
+                    <!--/Each section-->    
+                                         
+
                   </div>
-
-                  <!--HTML Editor-->
-                  <div class="actual-fields cf" style="border:1px solid #EDEDED;">
-                    <div style="height: auto;">                     
-
-                      <text-angular ng-model="emailSettings.settings.template"></text-angular>
-
-                    </div>                  
-                  </div>
-                  <!--/HTML Editor-->                
+                  <!--/Toggle Template-->                             
                   
                   <div class="flex-general-column-wrapper-center" style="width: 94%;margin-top: 35px;">     
 
@@ -560,10 +560,11 @@
                       <color-picker ng-model="authSettings.settings.general.primaryColor" color-picker-format="'hex'" style="margin-top: 10px;"></color-picker>
 
                     </div>
-                  </div>
+                  </div>                
+
 
                   <!---Custom settings-->
-                  <div style="width:94%;margin-top: 45px;" class="flex-general-column-wrapper-center">
+                  <div style="width:94%;margin-top: 55px;" class="flex-general-column-wrapper-center">
                     <div class="width:100%;">
                       <span style="font-size: 18px;font-weight: bold;color:#549afc;">
                         <i class="fa fa-bars" style="margin-right: 4px;"></i>
@@ -590,7 +591,288 @@
                     <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
                       <switch ng-model="authSettings.settings.custom.enabled" class="green appprod-switch"></switch>
                     </div>
-                  </div>  
+                  </div>                   
+
+                  <!--Each section-->
+                  <div ng-if="authSettings.settings.custom.enabled" class="actual-fields cf" style="border: 1px solid #EDEDED; margin-top: 18px;">
+                    <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                      <div style="width: 100%;">
+
+                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Enable Send Sign up Email</span>
+                      </div>
+
+                      <div style="width: 100%;margin-top: 3px;">
+                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Enable this option to have username and password authentication for your app.</span>
+
+                      </div>
+
+                    </div>
+
+                    <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                      <switch ng-model="authSettings.settings.signupEmail.enabled" class="green appprod-switch"></switch>
+                    </div>
+                  </div>
+                  <!--/Each section-->
+
+                  <!--Toggle Template-->
+                  <div ng-if="authSettings.settings.signupEmail.enabled" style="width:94%;">
+
+                    <!--Each section-->
+                    <div class="cf" style="border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-bottom: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Prevent logins if not verified</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Enable this option to have username and password authentication for your app.</span>
+
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                          <div style="width: 100%">
+                            <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                              <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                                <input ng-model="authSettings.settings.signupEmail.allowNotVerifiedLogins" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              </div>                            
+                            </div>
+                          </div>  
+                      </div>
+                    </div>
+                    <!--/Each section-->
+
+                    <!--Each section-->
+                    <div class=" cf" style="border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">From Email</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Email address which you want an email to be sent from.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                        <input type="text" ng-model="authSettings.settings.signupEmail.email" class="default-inputfield" placeholder="Enter From Email" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      </div>
+                    </div>
+                    <!--/Each section-->
+                   
+
+                    <!--Each section-->
+                    <div class="cf" style="border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED; border-top: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">From Name</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Name you want an email to be sent from.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                        <input type="text" ng-model="authSettings.settings.signupEmail.from" class="default-inputfield" placeholder="Enter From Name" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      </div>
+                    </div>
+                    <!--/Each section-->
+                  
+                    <!--Each section-->
+                    <div class="cf" style="border-top: 1px solid #EDEDED;border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED; border-bottom: 1px solid #EDEDED;border-radius: 2px">
+                      <div class="pull-left" style="height:110px;width:100%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">SignUp Email Template</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is where you can change your reset password email template.</span>
+                        </div>                       
+
+                      </div>
+                      
+                    </div>
+                    <!--/Each section-->  
+
+                    <!--Html Template-->
+                    <div class="cf" style="border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED; border-bottom: 1px solid #EDEDED;border-radius: 2px; background-color: #f9f9f9">
+
+                      <div class="pull-left" style="height:auto;width:100%;padding:15px;">
+
+                        <div style="width: 100%;">                          
+
+                          <div style="width: 100%;border-bottom:1px solid #EDEDED;" class="flex-general-row-wrapper">
+                            <div ng-click="toggleSignupEmail('html')" style="font-size: 14px;padding-bottom: 11px;" ng-style="signupHtml.htmlMode.css">
+                              HTML
+                            </div>
+                            <div ng-click="toggleSignupEmail('preview')" style="margin-left: 10px;cursor: pointer;font-size: 14px;padding-bottom: 11px;" ng-style="signupHtml.previewMode.css">
+                              Preview
+                            </div>
+                          </div>
+
+                          <!--html && Preview-->
+                          <div style="width: 100%;margin-top: 15px;">
+                            <!--Html Code editor-->
+                            <div ng-show="signupHtml.htmlMode.enabled">
+                              <div ui-codemirror="templateEditorOptions" ng-model="authSettings.settings.signupEmail.template"></div>
+                            </div>
+                            <!--Html Code editor-->
+
+                            <!--Html Code Preview-->
+                            <div ng-show="signupHtml.previewMode.enabled">
+                              <iframe srcdoc="{{authSettings.settings.signupEmail.template}}" frameborder="0" height="500" width="100%"  style="background-color: #eef0f3;padding:15px;"></iframe> 
+                            </div>
+                            <!--Html Code Preview-->
+                          </div>
+                          <!--html && Preview-->
+
+                        </div>                                               
+
+                      </div>
+                      
+                    </div>
+                    <!--/Html Template--> 
+
+                  </div>
+                  <!--/Toggle Template-->
+                  <!---/Sign up Email settings-->
+                  
+
+                  <!--Each section-->
+                  <div ng-if="authSettings.settings.custom.enabled" class="actual-fields cf" style="border: 1px solid #EDEDED;margin-top: 18px;">
+                    <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                      <div style="width: 100%;">
+
+                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Enable Reset Email</span>
+                      </div>
+
+                      <div style="width: 100%;margin-top: 3px;">
+                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Enable this option to have username and password authentication for your app.</span>
+
+                      </div>
+
+                    </div>
+
+                    <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                      <switch ng-model="authSettings.settings.resetPasswordEmail.enabled" class="green appprod-switch"></switch>
+                    </div>
+                  </div>
+                  <!--/Each section-->
+
+                  <!--Toggle Template-->
+                  <div ng-if="authSettings.settings.resetPasswordEmail.enabled" style="width:94%;">                
+                  
+                     <!--Each section-->
+                    <div class=" cf" style="border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">From Email</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Email address which you want an email to be sent from.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                        <input type="text" ng-model="authSettings.settings.resetPasswordEmail.email" class="default-inputfield" placeholder="Enter From Email" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      </div>
+                    </div>
+                    <!--/Each section-->
+                   
+
+                    <!--Each section-->
+                    <div class="cf" style="border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED; border-top: 1px solid #EDEDED;">
+                      <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">From Name</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Name you want an email to be sent from.</span>
+                        </div>
+
+                      </div>
+
+                      <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                        <input type="text" ng-model="authSettings.settings.resetPasswordEmail.from" class="default-inputfield" placeholder="Enter From Name" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      </div>
+                    </div>
+                    <!--/Each section-->
+
+                    <!--Each section-->
+                    <div class="cf" style="border-top: 1px solid #EDEDED;border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED; border-bottom: 1px solid #EDEDED;border-radius: 2px">
+                      <div class="pull-left" style="height:110px;width:100%;padding:15px;">
+
+                        <div style="width: 100%;">
+                          <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Reset Password Email Template</span>
+                        </div>
+
+                        <div style="width: 100%;margin-top: 3px;">
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is where you can change your reset password email template.</span>
+                        </div>                     
+
+                      </div>
+                      
+                    </div>
+                    <!--/Each section--> 
+
+                    <!--Html Template-->
+                    <div class="cf" style="border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED; border-bottom: 1px solid #EDEDED;border-radius: 2px; background-color: #f9f9f9">
+
+                      <div class="pull-left" style="height:auto;width:100%;padding:15px;">
+
+                        <div style="width: 100%;">                          
+
+                          <div style="width: 100%;border-bottom:1px solid #EDEDED;" class="flex-general-row-wrapper">
+                            <div ng-click="toggleResetPswdEmail('html')" style="font-size: 14px;padding-bottom: 11px;" ng-style="resetPswdHtml.htmlMode.css">
+                              HTML
+                            </div>
+                            <div ng-click="toggleResetPswdEmail('preview')" style="margin-left: 10px;cursor: pointer;font-size: 14px;padding-bottom: 11px;" ng-style="resetPswdHtml.previewMode.css">
+                              Preview
+                            </div>
+                          </div>
+
+                          <!--html && Preview-->
+                          <div style="width: 100%;margin-top: 15px;">
+                            <!--Html Code editor-->
+                            <div ng-show="resetPswdHtml.htmlMode.enabled">
+                              <div ui-codemirror="templateEditorOptions" ng-model="authSettings.settings.resetPasswordEmail.template"></div>
+                            </div>
+                            <!--Html Code editor-->
+
+                            <!--Html Code Preview-->
+                            <div ng-show="resetPswdHtml.previewMode.enabled">
+                              <iframe srcdoc="{{authSettings.settings.resetPasswordEmail.template}}" frameborder="0" height="500" width="100%"  style="background-color: #eef0f3;padding:15px;"></iframe> 
+                            </div>
+                            <!--Html Code Preview-->
+                          </div>
+                          <!--html && Preview-->
+
+                        </div>                                               
+
+                      </div>
+                      
+                    </div>
+                    <!--/Html Template-->
+
+                  </div>
+                  <!--/Toggle Template-->
+                  <!---/Sign up Email settings--> 
 
 
 
