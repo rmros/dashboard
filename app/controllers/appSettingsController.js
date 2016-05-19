@@ -44,7 +44,10 @@ appSettingsService){
         apiKey:null,
         domain:null,
         enabled:false
-      }
+      },
+      fromEmail:null,
+      fromName:null
+
     }
   };
 
@@ -77,14 +80,10 @@ appSettingsService){
       signupEmail:{
         enabled:false,
         allowNotVerifiedLogins:false,        
-        email:null,
-        from:null,
         template:""        
       },
       resetPasswordEmail:{
-        enabled:false,                
-        email:null,
-        from:null,
+        enabled:false,       
         template:""        
       },     
       facebook:{
@@ -269,7 +268,7 @@ appSettingsService){
     }
     if(categoryName=="email"){
       settingsObj=$scope.emailSettings.settings;
-      if((settingsObj.mailgun.domain && settingsObj.mailgun.apiKey) || settingsObj.mandrill.apiKey){
+      if(((settingsObj.mailgun.domain && settingsObj.mailgun.apiKey) || settingsObj.mandrill.apiKey) && settingsObj.fromEmail){
         validate=true;
 
         if(settingsObj.mailgun.enabled){
