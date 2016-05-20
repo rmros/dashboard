@@ -562,11 +562,29 @@
 	width: 100%;	
 }
 
-.first-visitto-cache{
+/*.first-visitto-cache{
 	width:100%;
 	background-color:white;
 	height:89.2vh;
+}*/
+
+.first-visitto-cache {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 89.5vh;   
+
+  background-image: url('../images/bg-index.jpg');
+  background-position:  0px 0px;
+  background-size: cover;
+  background-repeat: repeat;
+  background-origin: padding-box;
+  background-clip: border-box;
+  background-attachment: scroll;
+  background-color: #253340;
 }
+
 .first-cache-create-btn{
 	background-color: #549afc;
 	color:white;
