@@ -279,7 +279,7 @@ appSettingsService){
 
       //App Icon
       if($scope.settingsMenu.general){
-        if(names[1]!="png"){
+        if(names[1]=="png"){
           $("#md-appsettingsfileviewer").modal("hide");
 
           appSettingsService.upsertAppSettingFile($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,file,"general")
@@ -290,7 +290,7 @@ appSettingsService){
           });
           
         }else{
-          errorNotify("only .png are allowed.");
+          errorNotify("Only .PNG is allowed");
         }
       }
 
@@ -313,7 +313,7 @@ appSettingsService){
           });
           
         }else{
-          errorNotify("Invalid .p12 file");
+          errorNotify("Only .P12 is allowed");
         }
       }
 
@@ -457,49 +457,44 @@ appSettingsService){
 
     
     if(!settings.custom.enabled && !settings.facebook.enabled && !settings.google.enabled && !settings.twitter.enabled && !settings.linkedIn.enabled && !settings.github.enable){
-      return "Enable atleast one authentication.";
+      return "You need to enable atleast one authentication provider.";
     }
 
     if(!settings.general.callbackURL){
-      return "Your App callbackURL is required.";
+      return "Your app callbackURL is required.";
     }  
 
     if(settings.general.callbackURL && !_validateUrl(settings.general.callbackURL)){
-      return "App callbackURL is Invalid.";
-    } 
-
-
-    if(!_validateUrl(settings.general.callbackURL)){
       return "App callbackURL is invalid.";
-    }
+    }     
 
     if(settings.facebook.enabled){
       if(!settings.facebook.appId || !settings.facebook.appSecret){
-        return "Facebook app Id and app Secret are required.";
+        return "Facebook App ID and App Secret is required.";
       }
     }
 
     if(settings.google.enabled){
       if(!settings.google.appId || !settings.google.appSecret){
-        return "Google app Id and app Secret are required.";
+        return "Google App ID and App Secret is required.";
       }
     }
 
     if(settings.twitter.enabled){
       if(!settings.twitter.appId || !settings.twitter.appSecret){
-        return "Twitter consumer Key and consumer Secret are required.";
+        return "Twitter Consumer Key and Consumer Secret is required.";
       }
     }
 
     if(settings.linkedIn.enabled){
       if(!settings.linkedIn.appId || !settings.linkedIn.appSecret){
-        return "LinkedIN consumer Key and consumer Secret are required.";
+        return "LinkedIn Consumer Key and Consumer Secret is required.";
       }
     }
 
     if(settings.github.enabled){
       if(!settings.github.appId || !settings.github.appSecret){
-        return "GitHub app Id and app Secret are required.";
+        return "GitHub App ID and App Secret is required.";
       }
     }
 
