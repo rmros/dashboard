@@ -254,13 +254,15 @@
                         </div>
 
                         <div style="width: 100%;margin-top: 3px;">
-                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Email address which you want an email to be sent from.</span>
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">
+                        API Key of <a href="https://www.mailgun.com/" target="_blank" style="color:#549afc;">Mailgun email service</a>.
+                        </span>
                         </div>
 
                       </div>
 
                       <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                        <input type="text" ng-model="emailSettings.settings.mailgun.apiKey" class="default-inputfield" placeholder="Enter From Email" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                        <input type="text" ng-model="emailSettings.settings.mailgun.apiKey" class="default-inputfield" placeholder="Enter Mailgun API Key" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                       </div>
                     </div>
                     <!--/Each section-->
@@ -275,13 +277,13 @@
                         </div>
 
                         <div style="width: 100%;margin-top: 3px;">
-                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Name you want an email to be sent from.</span>
+                          <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Domain which is listed under Mail email service</span>
                         </div>
 
                       </div>
 
                       <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                        <input type="text" ng-model="emailSettings.settings.mailgun.domain" class="default-inputfield" placeholder="Enter From Name" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                        <input type="text" ng-model="emailSettings.settings.mailgun.domain" class="default-inputfield" placeholder="Enter Mailgun Domain" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                       </div>
                     </div>
                     <!--/Each section-->    
