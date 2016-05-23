@@ -33,8 +33,10 @@ app.controller('loginController',
         $scope.showSpinner=false;
         if(error && error.message=="Account verification needed"){
           $scope.accountVerified=false;
-        }else{
+        }else if(error && error.message){
           $scope.err=error.message;
+        }else{
+          $scope.err="Something went wrong, try again.";
         }
         
       });

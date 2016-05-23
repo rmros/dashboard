@@ -79,7 +79,7 @@ appSettingsService){
       },
       signupEmail:{
         enabled:false,
-        allowNotVerifiedLogins:false,        
+        allowOnlyVerifiedLogins:false,        
         template:""        
       },
       resetPasswordEmail:{

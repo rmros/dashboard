@@ -14012,15 +14012,22 @@ CB.CloudUser.prototype.signUp = function(callback) {
     });
     url = CB.apiUrl + "/user/" + CB.appId + "/signup" ;
 
-    CB._request('POST',url,params).then(function(response){
-        CB.fromJSON(JSON.parse(response),thisObj);
-        CB.CloudUser.current = thisObj;
-        if (callback) {
-            callback.success(thisObj);
-        } else {
-            def.resolve(thisObj);
+    CB._request('POST',url,params).then(function(user){
+
+        var response=null;
+        if(user){
+            CB.fromJSON(JSON.parse(user),thisObj);
+            CB.CloudUser.current = thisObj;       
+            CB.CloudUser._setCurrentUser(thisObj);
+            response=thisObj;
         }
-        CB.CloudUser._setCurrentUser(thisObj);
+        
+        if (callback) {
+            callback.success(response);
+        } else {
+            def.resolve(response);
+        }
+
     },function(err){
         if(callback){
             callback.error(err);
