@@ -940,8 +940,41 @@
                             </div>
 
                         </div> 
-                        <!---->        
+                        <!---->
                       </div>
+
+                      <!---->
+                      <!--Toggler::Column editable by master key-->
+                      <div  class="flex-add-Bx" style="margin-top:8.5px;">
+                        
+                        <div class="add-Bx">
+                            <div  class="flex-add-Bx">
+                                <div class="add-Bx">
+                                  <label ng-click="toggleColAdvance()" class="addcollabel" style="color:#B7B7B7;cursor: pointer;">Advanced</label>              
+                                </div>                                        
+                            </div>
+                        </div>
+                      </div>
+
+                      <!--Column editable by master key-->
+                      <div  ng-if="enableColAdvance" class="flex-add-Bx" style="margin-top:8.5px;width: 285px;">                       
+                        
+                        <div class="add-Bx">
+
+                            <div  class="flex-add-Bx">
+                                <div class="add-Bx">
+                                  <label class="addcollabel">Editable by MasterKey</label>              
+                                </div>
+                                <div class="add-Bx">                                   
+                                  <checkbox class="btn-default checkBxDflt chckbx-fix" ng-model="newColumnObj.editableByMasterKey" style="border: 1px solid #DBDCDD;"></checkbox>
+                                </div>         
+                            </div>
+
+                        </div>                       
+                        
+                      </div>
+                      <!---->
+
                       <div style="margin-top:8px;" data-ng-show="columnErrorForCreate">
                         <span style="color:red;font-size:13px; word-break:all;">{{columnErrorForCreate}}</span>
                       </div>  

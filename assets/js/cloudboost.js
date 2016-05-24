@@ -11974,7 +11974,7 @@ CB.CloudTable.prototype.save = function(callback){
  Column.js
  */
 
- CB.Column = function(columnName, dataType, required, unique){
+CB.Column = function(columnName, dataType, required, unique){
    this.document = {};
    if(columnName){
      CB._columnNameValidation(columnName);
@@ -11989,21 +11989,27 @@ CB.CloudTable.prototype.save = function(callback){
      this.document.dataType = "Text";
    }
 
-   if(typeof(required) === 'boolean')
+   if(typeof(required) === 'boolean'){
      this.document.required = required;
-   else
+   }
+   else{
      this.document.required = false;
+   }
 
-   if(typeof(unique) === 'boolean')
+   if(typeof(unique) === 'boolean'){
      this.document.unique = unique;
-   else
+   }
+   else{
      this.document.unique = false;
+   }  
+
    this.document.relatedTo = null;
    this.document.relationType = null;
 
    this.document.isDeletable = true;
    this.document.isEditable = true;
    this.document.isRenamable = false;
+   this.document.editableByMasterKey = false;
 
 };
 
@@ -12051,6 +12057,15 @@ Object.defineProperty(CB.Column.prototype,'required',{
     },
     set: function(required) {
         this.document.required = required;
+    }
+});
+
+Object.defineProperty(CB.Column.prototype,'editableByMasterKey',{
+    get: function() {
+        return this.document.editableByMasterKey;
+    },
+    set: function(editableByMasterKey) {
+        this.document.editableByMasterKey = editableByMasterKey;
     }
 });
 
@@ -14015,7 +14030,7 @@ CB.CloudUser.prototype.signUp = function(callback) {
     CB._request('POST',url,params).then(function(user){
 
         var response=null;
-        if(user){
+        if(user && user!=""){
             CB.fromJSON(JSON.parse(user),thisObj);
             CB.CloudUser.current = thisObj;       
             CB.CloudUser._setCurrentUser(thisObj);

@@ -34,6 +34,7 @@ $scope.showColOptions=[];
 $scope.showHiddenColList=false;
 $scope.showFilterList=false;
 $scope.showAddColPopUp=false;
+$scope.enableColAdvance=false;
 $scope.hideColumn=[];
 $scope.editColumn=[];
 $scope.filtersList=[];
@@ -1310,16 +1311,17 @@ $scope.initiateColumnSettings = function() {
   var uniqueId=utilityService.makeId(); 
 
   var newcol = {
-      id:uniqueId,
-      name: newColName,
-      dataType: 'Text',
-      relatedTo: null,
-      relationType: null,
-      required: false,
-      unique: false,
-      isRenamable: true,
-      isEditable: true,
-      isDeletable: true,
+      id                  : uniqueId,
+      name                : newColName,
+      dataType            : 'Text',
+      relatedTo           : null,
+      relationType        : null,
+      required            : false,
+      unique              : false,
+      isRenamable         : true,
+      isEditable          : true,
+      isDeletable         : true,
+      editableByMasterKey : false
   }; 
 
   $scope.newColumnObj=newcol; 
@@ -1339,6 +1341,10 @@ $scope.addColumn = function(valid) {
     if($scope.newColumnObj.relatedTo){
       column.relatedTo=$scope.newColumnObj.relatedTo;
     }
+    if($scope.newColumnObj.editableByMasterKey){
+      column.editableByMasterKey=$scope.newColumnObj.editableByMasterKey;
+    }
+    
     $rootScope.currentProject.currentTable.addColumn(column);
     var index=$rootScope.currentProject.currentTable.columns.indexOf(column);
     //Column visible
@@ -1390,6 +1396,14 @@ $scope.addColumn = function(valid) {
 
 $scope.cancelAddNewCol=function(){
   $scope.showAddColPopUp=false;   
+};
+
+$scope.toggleColAdvance=function(){
+  if($scope.enableColAdvance){
+    $scope.enableColAdvance=false;
+  }else{
+    $scope.enableColAdvance=true;
+  }
 };
 
 $scope.toggleColOptions=function(index){
