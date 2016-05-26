@@ -65,6 +65,10 @@ pushService){
     }
   };
 
+  $scope.editAudience=function() {
+    $("#add-audience-modal").modal();
+  };
+
   //Private Functions
   function loadProject(id){
     

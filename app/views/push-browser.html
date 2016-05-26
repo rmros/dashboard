@@ -1,7 +1,8 @@
 
 <div class="push-browser-parent" ng-init="init()">
 
-  <div class="flex-general-column-wrapper-center" style="width: 100%; height: 100%;">
+  <div class="flex-general-column-wrapper-center" style="width: 100%;margin-top:20px;">
+
     <div style="width: 100%;" class="solo-horizontal-center">
       <span style="color:#169CEE;font-size: 24px;font-weight: 700;">Send Push Notifications</span>
     </div>
@@ -47,28 +48,24 @@
       </div>  
       <!--/Each Field-->  
 
-      <div style="width: 100%;margin-top: 10px; margin-bottom: 10px;">
-        <span style="font-size: 14px;color:#AAAAAA;">Choose your recipients.</span>
+      <div style="width: 100%;margin-top:20px;" class="solo-horizontal-center">
+        <span style="color:#169CEE;font-size: 24px;font-weight: 700;">Choose your recipients</span>
       </div>
+      <div style="width: 100%;margin-bottom:20px;" class="solo-horizontal-center">
+        <span style="color:#4F4F4F;font-size: 14px;">Send to everyone, or use an audience to target the right users.</span>
+      </div>       
 
       <!--Each Field-->
-      <div style="width: 100%;height: 30px; border-color:#C4C2C2;background-color: #66637A;">
+      <div style="width: 100%;height: 100px; border-color:#C4C2C2;background-color: #F7F7F7; border-style: solid; border-width:1px 1px 1px 1px;">
         
         <div style="width: 100%;height: 100%;" class="flex-general-row-wrapper">
 
-          <div style="width: 40%;height: 100%;padding-left: 10px;" class="solo-vertical-center">
-            <span style="color:white;font-size: 16px;font-weight: 500;">Audience</span>
+          <div style="width: 40%;height: 100%;padding: 35px;">
+            <span style="color:#353446;font-size: 16px;font-weight: 700;">Audience</span>
           </div>
 
-          <div  style="width: 40%;height: 100%;padding-left: 5px;"class="solo-vertical-center">
-            <span style="color:white;font-size: 16px;font-weight: 500;"></span>
-          </div>
-
-          <div style="width: 20%;height: 100%;">
-            <button class="default-inputfield" style="height:100%;width:100%;background-color: #24213A; color:white;">
-            <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
-            Add Audience
-            </button>
+          <div class="solo-vertical-center" style="width: 60%;height: 100%;background-color: white;border:1px solid red;padding:15px;">
+            
           </div>
 
         </div>
@@ -77,22 +74,25 @@
       <!--/Each Field--> 
 
       <!--Each Field-->
-      <div style="width: 100%;height: 100px; border-color:#C4C2C2;background-color: #F7F7F7; border-style: solid; border-width:0 1px 1px 1px;">
-        
+      <div style="width: 100%;height: 50px; border-color:#C4C2C2;background-color:white; border-style: solid; border-width:0px 1px 1px 1px;">  
         <div style="width: 100%;height: 100%;" class="flex-general-row-wrapper">
+          <div style="width: 78.5%;height: 100%;padding-left:13px;" class="solo-vertical-center">
+            <div class="pull-left" style="width:100px;">
+              <div style="">
+                <span>AUDIENCE SIZE</span>
+              </div>
 
-          <div style="width: 40%;height: 100%;padding: 35px;">
-            <span style="color:#353446;font-size: 16px;font-weight: 700;">Message</span>
+              <div style="width:80px;" class="solo-horizontal-center">
+                <span>100</span>
+              </div>
+            </div>
           </div>
-
-          <div class="solo-vertical-center" style="width: 60%;height: 100%;background-color: white;padding: 35px;">
-            <input ng-model="pushData.title" type="text" class="default-inputfield" placeholder="Your push message.." style="width: 100%; height: 40px;font-size: 16px;padding-left: 4px;">
+          <div class="solo-vertical-center" style="width: 21.5%;height: 100%;background-color: white;">
+            <button ng-click="editAudience()" class="default-inputfield" style="height:30px;color:white;background-color:#549afc;">Create audience</button>
           </div>
-
-        </div>
-                
+        </div>                
       </div>  
-      <!--/Each Field-->
+      <!--/Each Field-->    
 
     </div>
   </div>
@@ -106,4 +106,145 @@
   </div> 
 </a>
 <!--/Slack chat-->
+
+
+<!--Add Audience Model-->
+<div class="modal fade colored-header danger" id="add-audience-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">    
+
+    <div style="height:80px; width:100%;padding:13px;background-color:#549afc;border-top-left-radius:4px;border-top-right-radius:4px;">
+      <div class="pull-left" style="padding-left:8px;">
+        <div>
+          <span style="font-size:22px;color:white;">Add Audience</span>
+        </div>
+
+        <div>
+          <span style="font-size:14px;color:white;">add adience to you push message</span>
+          <span style="font-size:14px;color:white;font-weight:700;"></span>           
+        </div>
+
+      </div> 
+      <div class="pull-right" class="flex-general-column-wrapper-center" style="padding-right:8px;height:56px;width:56px;border-radius:50px;background-color:#285ba3;">
+        <div class="flex-general-column-wrapper-center" style="height:56px;width:56px;">
+          <i class="icon ion-ios-bell" style="font-size: 28px;color:white;"></i>
+        </div>
+      </div>         
+    </div>
+
+  
+    <div id="custom-modal-body" style="width:100%;"> 
+
+      <!--Each Field-->
+    <div style="width: 100%;border-color:#C4C2C2;background-color:white; border-style: solid; border-width:1px 1px 1px 1px;">
+      
+      <div style="width: 100%;" class="flex-general-row-wrapper">
+
+        <div style="width: 40%;height: 65px;" class="flex-general-column-wrapper-center">
+          <span style="color:#353446;font-size: 16px;font-weight: 700;">Channels</span>
+        </div>
+
+        <div style="position: relative; background-color: #F7F7F7;width: 60%;height: auto;">
+
+          <!--Display/Edit List-->
+          <div class="solo-vertical-center" style="width: 100%;height:auto;min-height:65px; padding:8px;cursor:pointer;border-left:1px solid #C9C9C9;">
+          Array, Hello, Edit,Array, Hello, Edit,Array, Hello, Edit,Array, Hello, Edit,Array, Hello, Edit,Array, Hello, Edit,Array, 
+          </div>
+          <!--Display/Edit List-->
+
+          <!--Show List to select-->
+          <div style="width: 100.4%;height:auto;  position: absolute;z-index:9999;background-color: #F7F7F7;border-top:1px solid #C9C9C9;">
+
+            <!--Each Item-->
+            <div style="width:100%;height:30px;border-style:solid;border-color:#C9C9C9; border-width:0px 1px 1px 1px" class="flex-general-row-wrapper">
+              <div style="width:10%;height:100%;padding:4px 2px 4px 8px">
+                <input type="checkbox" class="default-inputfield" style="border:1px solid red;height:15px;width:15px;">
+              </div>
+              <div  style="width:10%;height:100%;padding:4px 4px 4px 0px;">
+                <span style="margin-top:2px;font-size:14px;">Hello</span>
+              </div>
+            </div>
+            <!--Each Item-->
+
+          </div>
+          <!--/Show List to select-->
+
+          
+        </div>
+
+      </div>
+              
+    </div>  
+    <!--/Each Field-->
+
+    <!--Each Field-->
+    <div style="width: 100%;border-color:#C4C2C2;background-color:white; border-style: solid; border-width:1px 1px 1px 1px;">
+      
+      <div style="width: 100%;" class="flex-general-row-wrapper">
+
+        <div style="width: 40%;height: 65px;" class="flex-general-column-wrapper-center">
+          <span style="color:#353446;font-size: 16px;font-weight: 700;">OS</span>
+        </div>
+
+        <div style="position: relative; background-color: #F7F7F7;width: 60%;height: auto;">
+
+          <!--Display/Edit List-->
+          <div class="solo-vertical-center" style="width: 100%;height:auto;min-height:65px; padding:8px;cursor:pointer;border-left:1px solid #C9C9C9;">
+          Array, Hello, Edit,Array, Hello, Edit,Array, Hello, Edit,Array, Hello, Edit,Array, Hello, Edit,Array, Hello, Edit,Array, 
+          </div>
+          <!--Display/Edit List-->
+
+          <!--Show List to select-->
+          <div style="width: 100.4%;height:auto; position: absolute;z-index:9999;background-color: #F7F7F7;border-top:1px solid #C9C9C9;">
+
+            <!--Each Item-->
+            <div style="width:100%;height:30px;border-style:solid;border-color:#C9C9C9; border-width:0px 1px 1px 1px" class="flex-general-row-wrapper">
+              <div style="width:10%;height:100%;padding:4px 2px 4px 8px">
+                <input type="checkbox" class="default-inputfield" style="border:1px solid red;height:15px;width:15px;">
+              </div>
+              <div  style="width:10%;height:100%;padding:4px 4px 4px 0px;">
+                <span style="margin-top:2px;font-size:14px;">Hello</span>
+              </div>
+            </div>
+            <!--Each Item-->
+
+          </div>
+          <!--/Show List to select-->
+
+          
+        </div>
+
+      </div>
+              
+    </div>  
+    <!--/Each Field-->
+
+    </div>
+   
+
+    <div class="modal-footer" style="">
+      
+      <div style="width:100%;">
+        <div class="pull-left">
+
+          <div style="">
+            <span>AUDIENCE SIZE</span>
+          </div>
+
+          <div style="width:80px;" class="solo-horizontal-center">
+            <span>100</span>
+          </div>
+
+        </div>
+        <div class="pull-right">
+          <button  type="button" class="btn btn-default btn-flat" data-dismiss="modal">Cancel</button>
+          <!--continue btn-->
+          <button type="button" class="btn btn-flat" style="background-color:#549afc; color:white;">Use this audience</button> 
+        </div>
+      </div>
+    </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!--/Add Audience Model-->
 
