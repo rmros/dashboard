@@ -587,9 +587,22 @@ appSettingsService){
           $scope.authSettings=auth[0];
         }
 
-      }      
-      
-      $scope.settingsLoading=false;                               
+        $scope.settingsLoading=false; 
+
+      }else{
+        var promises=[];
+        promises.push(appSettingsService.putSettings($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,"general",$scope.generalSettings.settings));
+        promises.push(appSettingsService.putSettings($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,"email",$scope.emailSettings.settings));
+        promises.push(appSettingsService.putSettings($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,"push",$scope.pushSettings.settings));
+        promises.push(appSettingsService.putSettings($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,"auth",$scope.authSettings.settings));
+
+        $q.all(promises).then(function(settings){
+             $scope.settingsLoading=false;                                    
+        }, function(error){ 
+             $scope.settingsLoading=false;            
+        });
+      }       
+                                    
     }, function(error){ 
       $scope.settingsLoading=false;           
     });
@@ -601,11 +614,7 @@ appSettingsService){
     
     if(!settings.custom.enabled && !settings.facebook.enabled && !settings.google.enabled && !settings.twitter.enabled && !settings.linkedIn.enabled && !settings.github.enable){
       return "You need to enable atleast one authentication provider.";
-    }
-
-    if(!settings.general.callbackURL){
-      return "Your app callbackURL is required.";
-    }  
+    }   
 
     if(settings.general.callbackURL && !_validateUrl(settings.general.callbackURL)){
       return "App callbackURL is invalid.";
