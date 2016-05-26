@@ -102,7 +102,24 @@ app.factory('cloudBoostApiService', ['$q','$http','$rootScope',function ($q,$htt
       }}); 
 
     return  q.promise;           
+  };
+
+  global.queryCountByTableName = function(tableName) {          
+    var q=$q.defer();
+      
+      var query = new CB.CloudQuery(tableName);       
+      query.count({
+        success : function(number){
+          q.resolve(number);
+        }, error : function(error){
+          q.reject(error);
+        }
+      }); 
+
+    return  q.promise;           
   }; 
+
+
 
   global.queryContainedIn = function(tableName,columnName,queryArray){
     var q=$q.defer(); 
