@@ -71,3 +71,129 @@
 
 
 
+/*Auth Login*/
+.login-btn{
+        border-top-left-radius:3px; 
+        border-bottom-left-radius:3px; 
+        width:100px;
+        height:30px;
+        color:#5c666f;
+        background-color: white;
+        border: 1px solid #5c666f;
+    } 
+    .sinup-btn{
+        border-top-right-radius:3px; 
+        border-bottom-right-radius:3px;
+        width:100px;
+        height:30px;
+        color:#5c666f; 
+        background-color: white; 
+        border: 1px solid #5c666f;      
+    }
+    .btn-active{
+        background-color: #5c666f;
+        color:white;
+    }
+    .social-btns{
+        width: 40px;
+        height: 40px;        
+        margin-left: 10px;
+        margin-top: 15px;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    .social-btns:first-child{
+        margin-left:0px;
+    }
+    .input-field{
+        width: 100%;
+        border:1px solid #f1f1f1;
+        margin-top: 10px;
+    }
+    .input-field:first-child{
+        margin-top: 0px;
+    }
+
+    .input-field-error{
+        border:1px solid red;
+        animation: zoominout 0.5s both ease 0.1s;        
+    }
+    
+    .loader-circle{
+        width: 50px;
+        height: 50px;
+        border:2px solid #E0E0E0;
+        border-radius: 25px; 
+        border-top-color:gray;              
+    }
+
+    .advanced {        
+        animation-name: spin; 
+        animation-duration: 1s; /* 1 seconds */
+        animation-iteration-count: infinite; 
+        animation-timing-function: linear;
+    }
+
+    .final-btn{
+        background-color: blue;
+        padding: 15px;
+        cursor: pointer;
+    }
+    .final-btn:hover{
+        background-color: red;       
+    }
+
+    .resetpwd-final-btn{
+        background-color: blue;
+        padding: 15px;
+        cursor: pointer;
+    }
+    .resetpwd-final-btn:hover{
+        background-color: red;       
+    }
+    
+    .facebook{
+        background-color: #4863ae;
+        color:white;
+        font-size: 18px;
+    }
+    .twitter{
+        background-color: #46c0fb;
+        color:white;
+        font-size: 18px;
+    }
+    .github{
+        background-color: #eeeeee;
+        color:black;
+        font-size: 18px;
+    }
+    .google{
+        background-color: #4285f4;
+        color:white;
+        font-size: 18px;
+    }
+
+    .linkedin{
+        background-color: #0177B5;
+        color:white;
+        font-size: 18px;
+    }
+
+    /*KEY FRAMES*/
+    @keyframes zoominout {     
+
+        0% {
+            transform:scale(1,1);
+        }
+        50% {
+            transform:scale(1.1,1.1);
+        }
+        100% {      
+           transform:scale(1,1);
+        }
+    }
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }    
+/*End Auth Login*/

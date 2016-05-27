@@ -210,6 +210,13 @@ appSettingsService){
       theme:'monokai',     
       mode : "text/html"             
   };
+
+  $scope.authPageSimilate={
+    authenticateSpinner:false,
+    authenticateError:null,
+    isLogin:true,
+    forgotPasswordPage:false
+  };
   
   $scope.init= function() {  
 
@@ -219,12 +226,12 @@ appSettingsService){
 
     var promises=[];
     promises.push(_getDefaultTemplate("reset-password"));
-    promises.push(_getDefaultTemplate("sign-up"));
+    promises.push(_getDefaultTemplate("sign-up"));    
 
     $q.all(promises).then(function(list){
 
       $scope.authSettings.settings.resetPasswordEmail.template=list[0];
-      $scope.authSettings.settings.signupEmail.template=list[1];
+      $scope.authSettings.settings.signupEmail.template=list[1];      
 
       if($rootScope.currentProject && $rootScope.currentProject.appId === id){
         //if the same project is already in the rootScope, then dont load it.
@@ -545,6 +552,15 @@ appSettingsService){
     $scope.github.morePermissions=bool;
   };
 
+  $scope.authSimilateAuth=function(authPage){
+    if(authPage=="login"){
+      $scope.authPageSimilate.isLogin=true;
+    }
+    if(authPage=="signup"){
+      $scope.authPageSimilate.isLogin=false;
+    }
+  };
+
 /********************************Private fuctions****************************/
   function loadProject(id){ 
     //$scope.settingsLoading=true;  
@@ -587,7 +603,7 @@ appSettingsService){
           $scope.authSettings=auth[0];
         }
 
-        $scope.settingsLoading=false; 
+        $scope.settingsLoading=false;        
 
       }else{
         var promises=[];
@@ -597,7 +613,7 @@ appSettingsService){
         promises.push(appSettingsService.putSettings($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,"auth",$scope.authSettings.settings));
 
         $q.all(promises).then(function(settings){
-             $scope.settingsLoading=false;                                    
+             $scope.settingsLoading=false;                                               
         }, function(error){ 
              $scope.settingsLoading=false;            
         });
@@ -607,7 +623,8 @@ appSettingsService){
       $scope.settingsLoading=false;           
     });
  
-  } 
+  }   
+
 
   function _validateSocialFields(settings){
 
