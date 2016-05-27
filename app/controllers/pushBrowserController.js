@@ -32,8 +32,9 @@ cloudBoostApiService){
 
   $scope.sendPushSpinner=false; 
 
-  $scope.deviceObject=[];
+
   $scope.deviceOsSelected=[];
+  $scope.holdDeviceOsSelected=[];
   $scope.deviceOSChecked={
     all:true,
     android:true,
@@ -43,8 +44,10 @@ cloudBoostApiService){
     firefox:true,
     edge:true
   }; 
+  addAllOS();
 
   $scope.deviceChannelsSelected=[];
+  $scope.holdeDeviceChannelsSelected=[];
 
   $scope.audienceSize=null;
   
@@ -63,9 +66,46 @@ cloudBoostApiService){
   $scope.sendPush=function(){
     if($scope.pushData.message){
       $scope.sendPushSpinner=true;
-      pushService.sendPush($scope.pushData).then(function(data){
 
-        successNotify("Successfully sent!");
+      //DeviceOS
+      if(!$scope.deviceOSChecked.all && $scope.deviceOsSelected.length>0){      
+      
+        var queryArray=[];
+        for(var i=0;i<$scope.deviceOsSelected.length;++i){
+          var query = new CB.CloudQuery("Device"); 
+          query.equalTo('deviceOS',$scope.deviceOsSelected[i]);
+          queryArray.push(query);        
+        } 
+        if(queryArray.length>0){
+           var currentQuery=CB.CloudQuery.or(queryArray);
+        }         
+      }
+
+      //Channels
+      if(typeof currentQuery!=="undefined" && $scope.deviceChannelsSelected.length>0){     
+        currentQuery.containedIn('channels',$scope.deviceChannelsSelected);
+      }
+
+      //Channels
+      if(typeof currentQuery==="undefined" && $scope.deviceChannelsSelected.length>0){ 
+        var currentQuery = new CB.CloudQuery("Device");    
+        currentQuery.containedIn('channels',$scope.deviceChannelsSelected);
+      } 
+
+      if(typeof currentQuery==="undefined" && $scope.deviceChannelsSelected.length==0){ 
+        var currentQuery = new CB.CloudQuery("Device");       
+      }      
+
+      currentQuery.limit=9999;
+
+      pushService.sendPush($scope.pushData,currentQuery).then(function(data){
+
+        if(data && data.response!=="No Device objects found."){
+          successNotify("Successfully sent!");
+        }else{
+          errorNotify("No Device objects found!");
+        }
+        
         $scope.sendPushSpinner=false;
 
         $scope.pushData={
@@ -75,7 +115,7 @@ cloudBoostApiService){
         };
 
       },function(error){
-        errorNotify(error);
+        errorNotify("Failed to send push message.");
         $scope.sendPushSpinner=false;
       });
     }else{
@@ -89,7 +129,10 @@ cloudBoostApiService){
       if($scope.deviceChannelsSelected.indexOf($scope.newChannel)>-1){
         WarningNotify("This Channel already exist in the list");
       }else{
-        $scope.deviceChannelsSelected.push($scope.newChannel);  
+        $scope.deviceChannelsSelected.push($scope.newChannel); 
+        $scope.newChannel=null;
+        //Count Audience Size
+        countDeviceByQuery(); 
       }          
     }
   };
@@ -98,6 +141,8 @@ cloudBoostApiService){
     var index=$scope.deviceChannelsSelected.indexOf(channel);
     if(index>-1){
       $scope.deviceChannelsSelected.splice(index,1);
+      //Count Audience Size
+      countDeviceByQuery();
     }    
   };
 
@@ -117,6 +162,8 @@ cloudBoostApiService){
         $scope.deviceOsSelected.splice(index,1);
       }
     }
+    //Count Audience Size
+    countDeviceByQuery();
   }; 
 
   $scope.removeOS=function(OS){
@@ -124,6 +171,8 @@ cloudBoostApiService){
     if(index>-1){
       $scope.deviceOsSelected.splice(index,1);
       $scope.deviceOSChecked[OS]=false;
+      //Count Audience Size
+      countDeviceByQuery();
     }  
   }; 
 
@@ -136,7 +185,8 @@ cloudBoostApiService){
        $scope.deviceOSChecked.chrome=true;
        $scope.deviceOSChecked.firefox=true;
        $scope.deviceOSChecked.edge=true;
-       $scope.deviceOsSelected=[];
+       addAllOS();
+       countDeviceByQuery();
        
     }else{
 
@@ -148,6 +198,7 @@ cloudBoostApiService){
        $scope.deviceOSChecked.firefox=false;
        $scope.deviceOSChecked.edge=false;
        $scope.deviceOsSelected=[];
+       $scope.audienceSize=0;
     }
   }
 
@@ -161,8 +212,19 @@ cloudBoostApiService){
    }
   }
 
-  $scope.editAudience=function() {
+  $scope.editAudience=function() {    
+    $scope.holdDeviceOsSelected=angular.copy($scope.deviceOsSelected);    
+    $scope.holdeDeviceChannelsSelected=angular.copy($scope.deviceChannelsSelected);
+    $scope.newChannel=null;
     $("#add-audience-modal").modal();
+  };
+
+  $scope.cancelAudience=function(){
+    $scope.deviceOsSelected=angular.copy($scope.holdDeviceOsSelected);    
+    $scope.deviceChannelsSelected=angular.copy($scope.holdeDeviceChannelsSelected);
+    $("#add-audience-modal").modal("hide");
+    //Count Audience Size
+    countDeviceByQuery();
   };
 
   $scope.openDeviceChannelList=function(){    
@@ -181,6 +243,26 @@ cloudBoostApiService){
     $scope.deviceOSListOpen=false;
   };
 
+  $scope.useAudience=function(){
+    if($scope.deviceOsSelected.length>0){
+      $("#add-audience-modal").modal("hide");
+
+      //Convert To String
+      var tempOS=angular.copy($scope.deviceOsSelected);
+      $scope.selectedOSString=tempOS.toString();
+
+      var tempChannel=angular.copy($scope.deviceChannelsSelected);
+      $scope.selectedChannelString=tempChannel.toString();
+
+      //Count Audience Size
+      countDeviceByQuery();
+
+    }else{
+      WarningNotify("You need to select atleast one  device");
+    }
+    
+  };
+
   //Private Functions
   function loadProject(id){
     
@@ -192,8 +274,7 @@ cloudBoostApiService){
         if(currentProject){
           $rootScope.currentProject=currentProject;
           initCB(); 
-          $rootScope.pageHeaderDisplay=$rootScope.currentProject.name; 
-          getDevices();
+          $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;           
           countDevices();                 
         }                              
       }, function(error){          
@@ -202,19 +283,53 @@ cloudBoostApiService){
     
   }
 
-  function getDevices() {
-    cloudBoostApiService.queryTableByName("Device").then(function(list){
-      $scope.deviceObject=list;
-    },function(error){
-      errorNotify(error);
-    });
-  }
-
   function countDevices() {
     cloudBoostApiService.queryCountByTableName("Device").then(function(number){
       $scope.audienceSize=number;
     },function(error){
       errorNotify(error);
+    });
+  }
+
+  function countDeviceByQuery(){    
+
+    //DeviceOS
+    if(!$scope.deviceOSChecked.all && $scope.deviceOsSelected.length>0){      
+    
+      var queryArray=[];
+      for(var i=0;i<$scope.deviceOsSelected.length;++i){
+        var query = new CB.CloudQuery("Device"); 
+        query.equalTo('deviceOS',$scope.deviceOsSelected[i]);
+        queryArray.push(query);        
+      } 
+      if(queryArray.length>0){
+         var currentQuery=CB.CloudQuery.or(queryArray);
+      }         
+    }
+
+    //Channels
+    if(typeof currentQuery!=="undefined" && $scope.deviceChannelsSelected.length>0){     
+      currentQuery.containedIn('channels',$scope.deviceChannelsSelected);
+    }
+
+    //Channels
+    if(typeof currentQuery==="undefined" && $scope.deviceChannelsSelected.length>0){ 
+      var currentQuery = new CB.CloudQuery("Device");    
+      currentQuery.containedIn('channels',$scope.deviceChannelsSelected);
+    } 
+
+    if(typeof currentQuery==="undefined" && $scope.deviceChannelsSelected.length==0){ 
+      var currentQuery = new CB.CloudQuery("Device");       
+    }    
+    
+    currentQuery.limit=9999;
+    currentQuery.count({
+      success : function(number){
+        $scope.audienceSize=number;
+        $scope.$digest();
+      }, error : function(error){
+        errorNotify(error);
+      }
     });
   }
 
