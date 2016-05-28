@@ -9445,11 +9445,48 @@ CB.CloudQuery = function(tableName) { //constructor for the class CloudQuery
 
 // Logical operations
 CB.CloudQuery.or = function(obj1, obj2) {
-    if (!obj1.tableName === obj2.tableName) {
-        throw "Table names are not same";
+
+    var tableName;
+    var queryArray=[];
+
+    if(Object.prototype.toString.call(obj1)==="[object Array]"){
+        tableName=obj1[0].tableName;
+        for(var i=0;i<obj1.length;++i){
+            if(obj1[i].tableName!=tableName){
+                throw "Table names are not same";
+                break;
+            }
+            if(!obj1[i] instanceof CB.CloudQuery){
+                throw "Array items are not instanceof of CloudQuery";
+                break;
+            }
+            queryArray.push(obj1[i].query);
+        }
     }
-    var obj = new CB.CloudQuery(obj1.tableName);
-    obj.query["$or"] = [obj1.query, obj2.query];
+
+    if(typeof obj2 !== 'undefined' && typeof obj1 !== 'undefined' && Object.prototype.toString.call(obj1)!=="[object Array]"){
+
+        if(Object.prototype.toString.call(obj2)==="[object Array]"){
+            throw "Passed two params should be instanceof of CloudQuery";
+        }
+        if (!obj1.tableName === obj2.tableName) {
+            throw "Table names are not same";
+        }        
+        if(!obj1 instanceof CB.CloudQuery){
+            throw "Data passed is not an instance of CloudQuery";
+        }
+        if(!obj2 instanceof CB.CloudQuery){
+            throw "Data passed is not an instance of CloudQuery";
+        }
+        tableName=obj1.tableName;
+        queryArray.push(obj1.query);
+        queryArray.push(obj2.query);
+    }
+    if(typeof tableName === 'undefined'){
+        throw "Invalid operation";
+    }     
+    var obj = new CB.CloudQuery(tableName);   
+    obj.query["$or"] = queryArray;
     return obj;
 }
 

@@ -993,9 +993,9 @@ $scope.setAndSaveFields=function(){
 
     if($scope.editableColumn.dataType=="Number"){
       var data=$scope.editableField[$scope.editableIndex][$scope.editableColumn.name];
-      var tempData=data;
+      var tempData=angular.copy(data);
       if(data){
-        data=parseInt(data);
+        data=Number(data);        
         if(data.toString()!=tempData){
           validFields=false;
           message="Column "+$scope.editableColumn.name+" is of number type.";
@@ -1036,7 +1036,7 @@ function processSaving(){
       //Number
       if($scope.editableColumn.dataType=="Number"){
         var tempValue=angular.copy($scope.editableField[$scope.editableIndex][$scope.editableColumn.name]);
-        $scope.editableField[$scope.editableIndex][$scope.editableColumn.name]=parseInt($scope.editableField[$scope.editableIndex][$scope.editableColumn.name]);
+        $scope.editableField[$scope.editableIndex][$scope.editableColumn.name]=Number($scope.editableField[$scope.editableIndex][$scope.editableColumn.name]);
         if(isNaN($scope.editableField[$scope.editableIndex][$scope.editableColumn.name])){
           $scope.editableField[$scope.editableIndex][$scope.editableColumn.name]=tempValue;
         }

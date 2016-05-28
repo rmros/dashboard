@@ -41,3 +41,18 @@ app.directive('clickElsewhere', function ($parse, $rootScope) {
         }
     };
 });
+
+app.directive('cbellipsis', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){
+            var ElmContent=$(element).text(); 
+            if(ElmContent.length>260){
+                var trimmedString=ElmContent.substring(0, 260);
+                trimmedString=trimmedString+"...";
+                $(element).text(trimmedString);
+            } 
+
+        }
+    };
+});

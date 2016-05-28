@@ -16,8 +16,7 @@ var app=angular.module('CloudBoostDashboard',
     'truncate',
     'ngContextMenu', 
     'ngSanitize', 
-    'nvd3',     
-    'textAngular',
+    'nvd3',    
     'color.picker',
     'hljs',
     'ui.codemirror'  
@@ -28,18 +27,6 @@ app.value('THROTTLE_MILLISECONDS', 1250);
 app.config(['ngClipProvider', function(ngClipProvider) {
     ngClipProvider.setPath("bower_components/zeroclipboard/dist/ZeroClipboard.swf");
 }]);
-
-app.config(function($provide) {
-  // this demonstrates how to register a new tool and add it to the default toolbar
-  $provide.decorator('taOptions', ['taRegisterTool', '$delegate', function(taRegisterTool, taOptions) { 
-    taOptions.toolbar = [
-      ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'],
-      ['bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo', 'clear'],    
-      ['insertImage','insertLink','html']
-    ];
-    return taOptions;
-  }]);
-});
 
 app.config(function (hljsServiceProvider) {
   hljsServiceProvider.setOptions({
