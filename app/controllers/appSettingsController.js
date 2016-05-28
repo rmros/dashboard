@@ -368,7 +368,7 @@ appSettingsService){
 
       //Apple Certificate
       if($scope.settingsMenu.push){
-        if(names[1]=="p12"){
+        if(names[1]=="pem"){
           $("#md-appsettingsfileviewer").modal("hide");
 
           appSettingsService.upsertAppSettingFile($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,file,"push")
@@ -385,7 +385,7 @@ appSettingsService){
           });
           
         }else{
-          errorNotify("Only .P12 is allowed");
+          errorNotify("Only .PEM is allowed");
         }
       }
 
