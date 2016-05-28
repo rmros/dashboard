@@ -595,11 +595,11 @@
                           </div>
 
                           <!--html && Preview-->
-                          <div style="width: 100%;margin-top: 15px;height:550px;overflow-y:scroll;">
+                          <div style="width: 100%;margin-top: 15px;height:490px;overflow-y:auto;">
                             <div class="flex-general-column-wrapper-center" style="height:100%;position: relative;">
 
                               <!--Login or Sing Up form-->
-                              <div ng-if="authPageSimilate.forgotPasswordPage" id="authenticate-card" class="" style=" width:300px;">
+                              <div ng-if="!authPageSimilate.forgotPasswordPage" id="authenticate-card" class="" style=" width:300px;">
                                   <div class="" style="height:auto;border-radius:2px; border:1px solid #BAB8B8;">
                                       <!--Header-->
                                       <div style="width:100%;height:117px;background-color:#dddddd;padding:15px;">               
@@ -691,7 +691,7 @@
                                                   
                                                   <!---OR-->
                                                   <div style="width: 100%;margin-top: 20px;" class="solo-horizontal-center">          
-                                                      <p ng-if="authSettings.settings.custom.enabled) && (authSettings.settings.facebook.enabled || authSettings.settings.twitter.enabled || authSettings.settings.google.enabled || authSettings.settings.linkedIn.enabled || authSettings.settings.github.enabled" id="authenticate-info" style="color:gray">Or</p>
+                                                      <p ng-if="(authSettings.settings.custom.enabled) && (authSettings.settings.facebook.enabled || authSettings.settings.twitter.enabled || authSettings.settings.google.enabled || authSettings.settings.linkedIn.enabled || authSettings.settings.github.enabled)" id="authenticate-info" style="color:gray">Or</p>
                                                      
                                                   </div> 
 
@@ -757,7 +757,7 @@
 
                                                   <!--Forgot Password-->
                                                   <div id="forget-password-block" style="width: 100%;margin-top: 15px;" class="solo-horizontal-center">
-                                                      <span id="forget-password" style="color:gray;cursor: pointer;">Don't remember your password?</span>
+                                                      <span ng-click="similateToForgotPwd(true)" id="forget-password" style="color:gray;cursor: pointer;">Don't remember your password?</span>
                                                   </div>
                                                  
 
@@ -766,7 +766,7 @@
                                           <!--Body-->
                                           
                                           <!--Button-->
-                                          <div ng-if="!authSettings || (authSettings && authSettings.settings.custom.enabled)" class="final-btn" style="">
+                                          <div ng-if="!authSettings || (authSettings.settings.custom.enabled)" class="final-btn" ng-style="{'background-color':authSettings.settings.general.primaryColor}" colorhover>
                                              <div style="width: 100%;height: 30px;" class="flex-general-column-wrapper-center">
                                                   <span style="color:white;font-size: 34px;">
                                                       <i class="icon ion-log-in"></i>
@@ -782,28 +782,26 @@
                               <!--/Login or Sing Up form--> 
 
                               <!--Forgot Password-->
-                              <div ng-if="authPageSimilate.forgotPasswordPage" id="forgetpassword-card" class="" style="width:340px;">
+                              <div ng-if="authPageSimilate.forgotPasswordPage" id="forgetpassword-card" class="" style="width:300px;">
                                   <div class="" style="height:auto;border-radius:2px; border:1px solid #BAB8B8;">
                                       <!--Header-->
                                       <div style="width:100%;height:117px;background-color:#dddddd;padding:15px;">
 
                                           <div id="goback-btn" style="width: 30px;height: 30px;position: absolute;">
-                                              <div id="goback-to-authenticate-card" class="flex-general-column-wrapper-center" style="width:100%;height:100%; border-radius: 25px;background-color: white;cursor: pointer;">
+                                              <div ng-click="similateToForgotPwd(false)" id="goback-to-authenticate-card" class="flex-general-column-wrapper-center" style="width:100%;height:100%; border-radius: 25px;background-color: white;cursor: pointer;">
                                                   <i class="icon ion-ios-arrow-left" style="color:black;font-size:20px;"></i>
                                                   
                                               </div>
                                           </div>
 
                                           <div style="width:100%;" class="flex-general-column-wrapper-center">
-                                              <% if (generalSettings && generalSettings.appIcon) { %>
-                                                  <div style="width:50px;height:50px;border-radius: 10px;overflow: hidden;">
-                                                      <img src="<%= generalSettings.appIcon %>" style="width:50px;height:50px;">
-                                                  </div>
-                                              <%}else{%>
-                                                  <div style="width:50px;height:50px;border-radius: 10px;overflow: hidden;">
-                                                      <img src="/images/CbLogoIcon.png" style="width:50px;height:50px;">
-                                                  </div>
-                                              <%}%>    
+                                              <div ng-if="generalSettings.settings.appIcon" style="width:50px;height:50px;border-radius: 10px;overflow: hidden;">
+                                                  <img ng-src={{generalSettings.settings.appIcon}} style="width:50px;height:50px;">
+                                              </div>
+                                        
+                                              <div ng-if="!generalSettings.settings.appIcon" style="width:50px;height:50px;border-radius: 10px;overflow: hidden;">
+                                                  <img src="assets/images/CbLogoIcon.png" style="width:50px;height:50px;">
+                                              </div>   
                                           </div>
 
                                           <div style="width:100%;margin-top: -5px;" class="flex-general-column-wrapper-center">
@@ -814,7 +812,7 @@
                                       <!--Header-->
 
                                       <!--Main Body Spinner-->
-                                      <div id="forgetpassword-spinner" style="width: 100%;height: 360px;background-color: white;" class="flex-general-column-wrapper-center">
+                                      <div ng-if="authPageSimilate.forgotPasswordSpinner" id="forgetpassword-spinner" style="width: 100%;height: 360px;background-color: white;" class="flex-general-column-wrapper-center">
                                           <div style="width: 60px;height: 60px;" class="flex-general-column-wrapper-center">
                                               <div id="req-spinner" style="" class="loader-circle advanced flex-general-column-wrapper-center">       
                                               </div>
@@ -828,7 +826,7 @@
                                       <div id="forgetpassword-mainbody">
 
                                           <!--Error Block-->
-                                          <div id="forgetpassword-error" style="background-color: #f04848;padding: 10px;" class="solo-horizontal-center">
+                                          <div ng-if="authPageSimilate.forgotPwdError" id="forgetpassword-error" style="background-color: #f04848;padding: 10px;" class="solo-horizontal-center">
                                               <span style="color:white;">Unknow Error</span>
                                           </div>
                                           <!--Error Block-->
@@ -864,7 +862,7 @@
                                           <!--Body-->
 
                                           <!--Button-->
-                                          <div class="resetpwd-final-btn" style="margin-top: 2px;">
+                                          <div class="resetpwd-final-btn" ng-style="{'background-color':authSettings.settings.general.primaryColor}" colorhover style="margin-top: 2px;">
                                              <div style="width: 100%;height: 30px;" class="flex-general-column-wrapper-center">
                                                   <span style="color:white;font-size: 34px;">
                                                       <i class="icon ion-log-in"></i>

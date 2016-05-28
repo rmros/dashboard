@@ -215,7 +215,9 @@ appSettingsService){
     authenticateSpinner:false,
     authenticateError:null,
     isLogin:true,
-    forgotPasswordPage:false
+    forgotPasswordPage:false,
+    forgotPasswordSpinner:false,
+    forgotPwdError:null
   };
   
   $scope.init= function() {  
@@ -560,6 +562,10 @@ appSettingsService){
       $scope.authPageSimilate.isLogin=false;
     }
   };
+
+  $scope.similateToForgotPwd=function(bool){
+    $scope.authPageSimilate.forgotPasswordPage=bool;
+  }; 
 
 /********************************Private fuctions****************************/
   function loadProject(id){ 
