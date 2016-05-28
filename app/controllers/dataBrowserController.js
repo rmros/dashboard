@@ -350,7 +350,7 @@ $scope.deleteData=function(row,column){
       $scope.setAndSaveFields();
     }
   } 
-}
+};
  
 $scope.setAndSaveJsonObject=function(modifiedJson){  
   $("#md-objectviewer").modal("hide");  
@@ -1537,11 +1537,24 @@ $scope.deleteSelectedRows=function(){
     $scope.commonSaved=true;
     $timeout(function(){ 
       $scope.commonSaved=false; 
-    }, 800);                            
+    }, 800);
+
+    //Update Total
+    if($scope.currentTableData && $scope.currentTableData.length>0){
+      $scope.totalRecords=$scope.currentTableData.length;
+    }else{
+      $scope.totalRecords=0;
+    }                           
   }, function(err){    
     $scope.areSelectAllRows=false;
     $scope.commonSpinner=false;
-    $scope.commonError="Unable to add the column right now"; 
+    $scope.commonError="Unable to add the column right now";
+    //Update Total
+    if($scope.currentTableData && $scope.currentTableData.length>0){
+      $scope.totalRecords=$scope.currentTableData.length;
+    }else{
+      $scope.totalRecords=0;
+    } 
   });
  
 };
