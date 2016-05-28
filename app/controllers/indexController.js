@@ -649,7 +649,11 @@ app.controller('indexController',
 
   $rootScope.goToProfile=function(){
     window.location.href="#/profile";
-  };  
+  };
+
+  $rootScope.goToPage=function(appId,pageName){
+    window.location.href="#/"+appId+"/"+pageName;
+  };   
 
   $scope.renderHtml = function (htmlCode) {
     return $sce.trustAsHtml(htmlCode);

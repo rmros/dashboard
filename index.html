@@ -192,49 +192,7 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
                     <i class="fa fa-table" style="margin-top:2px;"></i>                  
                   </div>
                 </a>   
-              </li> 
-
-              <li data-toggle="tooltip" htmltooltip data-tooltip="#cache-tooltip-html">
-                <!--Tooltip-body-->
-                <div id ="cache-tooltip-html" style="display:none;">
-                  <div style="width:200px;padding-left: 15px;padding-right: 15px;padding-top: 8px;padding-bottom: 8px;">
-                    <div>
-                      <span style="font-weight: 700;">Cache</span>
-                    </div>
-
-                    <div>
-                      <span style="color:#81909E;font-size: 12px;">Make your apps faster with cache</span>
-                    </div>
-                  </div>              
-                </div>
-                <!--/Tooltip-body-->
-                <a  href="#/{{currentProject.appId}}/cache" style="margin-top: -18px;">
-                  <div  ng-class="{'menucache-active':page=='cache'}" style="height: 35px;width: 35px;border-radius: 25px; " class="flex-general-column-wrapper-center newsidebar-menu">
-                    <i class="fa fa-bolt" style="color:#1C2530;"></i>
-                  </div>
-                </a>
-              </li>
-
-              <li  htmltooltip data-tooltip="#queues-tooltip-html">
-                <!--Tooltip-body-->
-                <div id ="queues-tooltip-html" style="display:none;">
-                  <div style="width:190px;padding-left: 15px;padding-right: 15px;padding-top: 8px;padding-bottom: 8px;">
-                    <div>
-                      <span style="font-weight: 700;">Queues</span>
-                    </div>
-
-                    <div>
-                      <span style="color:#81909E;font-size: 12px;">Connect micro services with queues</span>
-                    </div>
-                  </div>              
-                </div>
-                <!--/Tooltip-body-->
-                <a  href="#/{{currentProject.appId}}/queues" style="margin-top: -18px;">
-                  <div  ng-class="{'menuqueues-active':page=='queues'}" style="height: 35px;width: 35px;border-radius: 25px;" class="flex-general-column-wrapper-center newsidebar-menu">
-                    <i class="fa fa-exchange" style="color:#1C2530;"></i>
-                  </div>
-                </a>
-              </li>              
+              </li>                           
 
               <li  ng-show="currentProject" htmltooltip data-tooltip="#analytics-tooltip-html">
                 <!--Tooltip-body-->
@@ -278,6 +236,93 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
                 </a>
               </li>
 
+              <li ng-mouseenter="xtramenu=true"  ng-mouseleave="xtramenu=false">               
+                <a style="margin-top: -18px;">
+                  <div style="height: 35px;width: 35px;border-radius: 25px;" class="flex-general-column-wrapper-center newsidebar-menu">
+                    <i class="icon ion-android-more-horizontal" style="color:#1C2530;font-size: 20px !important;"></i>
+                  </div>
+                </a>
+
+                <!--Extra Menu-->
+                <div ng-show="xtramenu" style="height: 170px;width: 280px; border-radius:4px; border:1px solid #495B70;background-color:#495B70;position: absolute;bottom:9px;left:99.6%;">
+                  <div style="width: 100%; height: 100%; position: relative;">
+                    <!--Left arrow-->
+                    <div id="triangle-left" style="position: absolute;bottom: 27px;left: -10px;">
+                    </div>
+                    <!--Left arrow-->
+
+                    <!--Menu list-->
+                      <!--Each Menu-->                   
+                      <div ng-click="goToPage(currentProject.appId,'cache')" class="eachxtramenu-profile" style="margin-top: 10px;">                    
+                        
+                          <div class="flex-general-row-wrapper">
+                            <div style="height: 35px;width: 35px;border-radius: 25px;" class="flex-general-column-wrapper-center newsidebar-menu" ng-class="{'menucache-active':page=='cache'}">
+                              <span>                                
+                                <i class="fa fa-bolt" style="color:#1C2530;font-size: 20px !important;"></i>
+                              </span>
+                            </div>
+                            <div style="margin-left: 5px;margin-top: 2px;">
+                              <div>
+                              <span style="font-weight: 700;font-size: 14px;color:white">Cache</span>
+                              </div>
+                              <div>
+                                <span style="color:#81909E;font-size: 12px;">Make your apps faster with cache</span>
+                              </div> 
+                            </div> 
+                          </div>                        
+                                           
+                      </div>
+                      <!--Each Menu-->
+
+                      <!--Each Menu-->                   
+                      <div ng-click="goToPage(currentProject.appId,'queues')" class="eachxtramenu-profile" style="margin-top: 10px;">                    
+                        
+                          <div class="flex-general-row-wrapper">
+                            <div style="height: 35px;width: 35px;border-radius: 25px;" class="flex-general-column-wrapper-center newsidebar-menu" ng-class="{'menuqueues-active':page=='queues'}">
+                              <span>
+                                <i class="fa fa-exchange" style="color:#1C2530;font-size: 20px !important;"></i>
+                              </span>
+                            </div>
+                            <div style="margin-left: 5px;margin-top: 2px;">
+                              <div>
+                              <span style="font-weight: 700;font-size: 14px;color:white">Queues</span>
+                              </div>
+                              <div>
+                                <span style="color:#81909E;font-size: 12px;">Connect micro services with queues</span>
+                              </div> 
+                            </div> 
+                          </div>                        
+                                           
+                      </div>
+                      <!--Each Menu-->
+
+                      <!--Each Menu-->                   
+                      <div ng-click="goToPage(currentProject.appId,'push')" class="eachxtramenu-profile" style="margin-top: 10px;">                    
+                        
+                          <div class="flex-general-row-wrapper">
+                            <div style="height: 35px;width: 35px;border-radius: 25px;" class="flex-general-column-wrapper-center newsidebar-menu" ng-class="{'menupush-active':page=='push'}">
+                              <span>
+                                <i class="icon ion-ios-bell" style="color:#1C2530;font-size: 20px !important;"></i>
+                              </span>
+                            </div>
+                            <div style="margin-left: 5px;margin-top: 2px;">
+                              <div>
+                              <span style="font-weight: 700;font-size: 14px;color:white">Push</span>
+                              </div>
+                              <div>
+                                <span style="color:#81909E;font-size: 12px;">Make push notifications</span>
+                              </div> 
+                            </div> 
+                          </div>                        
+                                           
+                      </div>
+                      <!--Each Menu-->
+                    <!--/Menu list-->
+                  </div>
+                </div>
+                <!--/Extra Menu-->
+              </li>
+
             </ul> 
           </div> 
 
@@ -292,7 +337,7 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
       <!--Special Menu-->
       <div class="text-right profile-main-sidemenu">                
         <ul class="cl-vnavigation">         
-          <li  abcd  ng-mouseenter="splmenu=true"  ng-mouseleave="splmenu=false" style="position: relative;">
+          <li ng-mouseenter="splmenu=true"  ng-mouseleave="splmenu=false" style="position: relative;">
 
               <a href="#/profile" style="margin-top: -18px;">
                 <div  ng-class="{'menuspl-active':splmenu}" style="height: 35px;width: 35px;border-radius: 3px;overflow: hidden;" class="flex-general-column-wrapper-center newsidebar-splmenu">                  

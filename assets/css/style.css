@@ -8672,7 +8672,6 @@ ul.timeline li > .date {
     -webkit-transform-origin: 50% calc(50% - .5px);
     transform-origin: 50% calc(50% - .5px);
 }
-
 .newsidebar-menu{
   background-color: #394757;
 }
@@ -8694,6 +8693,9 @@ ul.timeline li > .date {
 .menusettings-active{
   background-color:#5399fc;
 }
+.menupush-active{
+  background-color:#F200CD;
+}
 
 .newsidebar-splmenu{
   opacity: 0.6;
@@ -8710,6 +8712,13 @@ ul.timeline li > .date {
 }
 .eachsplmenu-profile:hover{
   background-color: #3F4E61;
+}
+.eachxtramenu-profile{
+  cursor: pointer;  
+  padding-top: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 3px;  
 }
 
 #triangle-left {

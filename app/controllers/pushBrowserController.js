@@ -21,8 +21,7 @@ cloudBoostApiService){
   var id;
   $rootScope.showAppPanel=true;
   $rootScope.isFullScreen=false;
-  $rootScope.page='Push'; 
-
+  $rootScope.page='push'; 
 
   $scope.pushData={
     title:null,
