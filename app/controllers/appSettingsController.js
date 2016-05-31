@@ -567,6 +567,15 @@ appSettingsService){
     $scope.authPageSimilate.forgotPasswordPage=bool;
   }; 
 
+  $scope.loginUrlClick=function(){
+    $scope.loginUrlClippr=true;
+  };
+  $scope.loginUrlOutsideClick=function(){
+    $scope.loginUrlClippr=false;
+  };
+  
+
+
 /********************************Private fuctions****************************/
   function loadProject(id){ 
     //$scope.settingsLoading=true;  
