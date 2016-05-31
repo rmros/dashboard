@@ -558,7 +558,7 @@
                   <!--Callback URL-->
                   <div class=" cf" style="width:94%; border: 1px solid #EDEDED; margin-top: 10px;">
 
-                    <div class="pull-left" style="height:110px;width:99.98%;padding:15px;">
+                    <div class="pull-left" style="height:75px;width:99.98%;padding:15px;">
 
                       <div style="width: 100%;">
                         <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Your Authentication Page</span>
@@ -567,16 +567,343 @@
                       <div style="width: 100%;margin-top: 3px;">
                         <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is the login and sign up page that you can use for your app.</span>
 
-                      </div>
-
-                      <div style="width: 100%;margin-top: 6px;">
-                        <a ng-href="{{::loginPageURL}}" target="_blank" style="font-size: 14px;line-height:12%;color:#3789fc;">{{::loginPageURL}}</a>
-                      </div>
+                      </div>                     
 
                     </div>
                     
                   </div> 
                   <!--Callback URL-->
+
+                  <!--Toggle Template-->
+                  <div style="width:94%;">                   
+
+                    <!--Html Template-->
+                    <div class="cf" style="border-right: 1px solid #EDEDED; border-bottom: 1px solid #EDEDED;border-radius: 2px; background-color: #f9f9f9;">
+
+                      <div style="width: 100.2%;background-color:white;height:48px;border-width:0px 1px 1px 1px; border-color:#EDEDED; border-style:solid;" class="flex-general-row-wrapper">            
+                        <div  style="width:10%; margin-left: 10px;height:100%;font-size: 14px;" class="solo-vertical-center">
+                          Login URL
+                        </div>
+                        <div  class="solo-vertical-center" style="width:80%;;margin-left: 6px;height:100%;font-size: 14px;padding:6px;">
+                          
+                          <div style="padding-left:7px; width:100%;height:100%;border-radius:2px; border:1px solid #EDEDED;background-color:#EDEAEA;" class="solo-vertical-center">
+                          {{::loginPageURL}}
+                          </div>
+
+                        </div>
+
+                        <div  class="flex-general-column-wrapper-center" style="width:7%;height:100%;cursor: pointer;font-size: 14px;padding:6px;">
+                          
+                          <div class="flex-general-column-wrapper-center cliplogin-url-btn" clip-copy="loginPageURL" click-outside="loginUrlOutsideClick()" ng-click="loginUrlClick()" outside-if-not="cliplogin-url-btn" ng-class="{'login-clipper-clicked':loginUrlClippr}">
+                            <i class="icon ion-ios-copy-outline" style="font-size:19px;"></i>
+                          </div>
+
+                        </div>
+                        
+                      </div>
+
+                      <div class="pull-left" style="height:auto;width:100%;padding:15px;">
+
+                        <div style="width: 100%;">                      
+
+                          <!--html && Preview-->
+                          <div style="width: 100%;margin-top: 15px;height:540px;overflow-y:auto;">
+                            <div class="flex-general-column-wrapper-center" style="height:100%;position: relative;">
+
+                              <!--Login or Sing Up form-->
+                              <div ng-if="!authPageSimilate.forgotPasswordPage" id="authenticate-card" class="" style=" width:300px;">
+                                  <div class="" style="height:auto;border-radius:2px; border:1px solid #BAB8B8;">
+                                      <!--Header-->
+                                      <div style="width:100%;height:117px;background-color:#dddddd;padding:15px;">               
+
+                                          <div style="width:100%;" class="flex-general-column-wrapper-center">
+                                             
+                                            <div ng-if="generalSettings.settings.appIcon" style="width:50px;height:50px;border-radius: 10px;overflow: hidden;">
+                                                <img ng-src={{generalSettings.settings.appIcon}} style="width:50px;height:50px;">
+                                            </div>
+                                      
+                                            <div ng-if="!generalSettings.settings.appIcon" style="width:50px;height:50px;border-radius: 10px;overflow: hidden;">
+                                                <img src="assets/images/CbLogoIcon.png" style="width:50px;height:50px;">
+                                            </div>
+                                                 
+                                          </div>
+
+                                          <div style="width:100%;margin-top: -5px;" class="flex-general-column-wrapper-center">  
+                                            <h3 style="font-weight:500;color:black;" ng-if="generalSettings.settings.appName">{{generalSettings.settings.appName}}</h3>                                      
+                                            <h3 style="font-weight:500;color:black;" ng-if="!generalSettings.settings.appName">App on CloudBoost</h3>                 
+                                          </div>
+
+                                      </div>
+                                      <!--Header-->
+
+                                      <!--Main Body Spinner-->
+                                      <div ng-show="authPageSimilate.authenticateSpinner" id="authenticate-spinner" style="width: 100%;height: 360px;background-color: white;" class="flex-general-column-wrapper-center">
+                                          <div style="width: 60px;height: 60px;" class="flex-general-column-wrapper-center">
+                                              <div style="" class="loader-circle advanced flex-general-column-wrapper-center">                        
+                                              </div>                        
+                                          </div>
+                                      </div>
+                                      <!--Main Body Spinner-->
+
+                                      <!--Main Body Content-->
+                                      <div id="authenticate-mainbody" style="">
+                                          <!--Error Block-->
+                                          <div ng-show="authPageSimilate.authenticateError" id="authenticate-error" style="background-color: #f04848;padding: 10px;" class="solo-horizontal-center">
+                                              <span style="color:white;">{{authPageSimilate.authenticateError}}</span>
+                                          </div>
+                                          <!--Error Block-->
+
+                                          <!--Body-->
+                                          <div style="background-color: white;padding-top: 5px;">
+                                              <!--Login and Sing Up buttons-->                                              
+                                              <div ng-if="authSettings.settings.custom.enabled" class="flex-general-column-wrapper-center" style="margin-top: 20px;">
+                                                  <div class="flex-general-row-wrapper">
+                                                     <div class="width:100%;height:30px;">
+                                                          <button ng-click="authSimilateAuth('login')" class="default-inputfield login-btn" ng-class="{'btn-active':authPageSimilate.isLogin}" style="">LOG IN</button>
+                                                     </div>
+                                                     <div class="width:100%;height:30px;">
+                                                          <button ng-click="authSimilateAuth('signup')" class="default-inputfield sinup-btn" ng-class="{'btn-active':!authPageSimilate.isLogin}" style="">SIGN UP</button>
+                                                     </div>
+                                                     
+                                                  </div>
+                                              </div>
+                                              
+                                              <div style="background-color: white;padding-bottom: 24px;padding-left: 20px;padding-right: 20px;">                           
+
+                                                  <!--Social Connection Buttons-->
+                                                  <div class="flex-general-column-wrapper-center" style="margin-top: 5px;width: 100%;">
+                                                      <div class="solo-horizontal-center" style="width: 98%;">
+                                                          <!--facebook-->                                                        
+                                                          <div ng-if="authSettings.settings.facebook.enabled" id="facebook-login-btn" class="social-btns facebook flex-general-column-wrapper-center">
+                                                              <i class="fa fa-facebook"></i>
+                                                          </div>                                                     
+
+                                                          <!--twitter-->                                                         
+                                                          <div  ng-if="authSettings.settings.twitter.enabled" id="twittr-login-btn" class="social-btns twitter flex-general-column-wrapper-center">
+                                                              <i class="fa fa-twitter"></i>
+                                                          </div>                                                         
+
+                                                          <!--google-->                                                        
+                                                          <div  ng-if="authSettings.settings.google.enabled" id="google-login-btn" class="social-btns google flex-general-column-wrapper-center">
+                                                              <i class="fa fa-google"></i>
+                                                          </div>                                                        
+
+                                                          <!--linkedin-->                                                        
+                                                          <div  ng-if="authSettings.settings.linkedIn.enabled" id="linkedin-login-btn" class="social-btns linkedin flex-general-column-wrapper-center">
+                                                              <i class="fa fa-linkedin" aria-hidden="true"></i>
+                                                          </div>                                                     
+
+                                                          <!--github-->                                                         
+                                                          <div  ng-if="authSettings.settings.github.enabled" id="github-login-btn"  class="social-btns github flex-general-column-wrapper-center">
+                                                              <i class="fa fa-github"></i>
+                                                          </div>                                                     
+                                                       
+                                                      </div>
+                                                  </div>
+                                                  
+                                                  <!---OR-->
+                                                  <div style="width: 100%;margin-top: 20px;" class="solo-horizontal-center">          
+                                                      <p ng-if="(authSettings.settings.custom.enabled) && (authSettings.settings.facebook.enabled || authSettings.settings.twitter.enabled || authSettings.settings.google.enabled || authSettings.settings.linkedIn.enabled || authSettings.settings.github.enabled)" id="authenticate-info" style="color:gray">Or</p>
+                                                     
+                                                  </div> 
+
+                                                  <!--Login Input Fields-->                        
+                                                  <div ng-if="(!authSettings && authPageSimilate.isLogin) || (authPageSimilate.isLogin && authSettings.settings.custom.enabled)" id="login-inputfields" style="width: 100%;margin-top: 8px;" class="solo-horizontal-center">                                        
+                                                      <div style="width: 95%;">
+                                                          <div id="login-username-wrap" class="flex-general-row-wrapper input-field" style="">
+                                                              <div class="flex-general-column-wrapper-center" style="width:13%; height: 35px;background-color:#f1f1f1;">
+                                                                  <i class="icon ion-ios-person" style="color:gray;font-size: 22px;"></i>
+                                                              </div>
+                                                              <div style="width:86.98%; height: 35px;">
+                                                                  <input id="login-username" type="text" placeholder="Username" class="default-inputfield" required style="width: 100%;height: 100%;padding-left: 12px;">
+                                                              </div>
+                                                          </div>
+
+                                                          <div id="login-password-wrap" class="flex-general-row-wrapper input-field" style="">
+                                                              <div class="flex-general-column-wrapper-center" style="width:13%; height: 35px;background-color:#f1f1f1;">
+                                                                  <i class="icon ion-ios-locked-outline" style="color:gray;font-size: 22px;"></i>
+                                                              </div>
+                                                              <div style="width:86.98%; height: 35px;">
+                                                                  <input id="login-password" type="password" placeholder="Password" class="default-inputfield" required style="width: 100%;height: 100%;padding-left: 12px;">
+                                                              </div>
+                                                          </div>
+                                                      </div>                                        
+                                                  </div>
+                                                  <!--/Login Input Fields-->
+                                                 
+
+                                                  <!--Signup Input Fields-->
+                                                  
+                                                  <div ng-if="(!authSettings && !authPageSimilate.isLogin) || (!authPageSimilate.isLogin && authSettings.settings.custom.enabled)" id="signup-inputfields" style="width: 100%;margin-top: 8px;" class="solo-horizontal-center">                                        
+                                                      <div style="width: 95%;">
+                                                          <div id="signup-username-wrap" class="flex-general-row-wrapper input-field" style="">
+                                                              <div class="flex-general-column-wrapper-center" style="width:13%; height: 35px;background-color:#f1f1f1;">
+                                                                  <i class="icon ion-ios-person" style="color:gray;font-size: 22px;"></i>
+                                                              </div>
+                                                              <div style="width:86.98%; height: 35px;">
+                                                                  <input id="signup-username" type="text" placeholder="Enter Username" class="default-inputfield" required style="width: 100%;height: 100%;padding-left: 12px;">
+                                                              </div>
+                                                          </div>                                
+
+                                                          <div id="signup-password-wrap"  class="flex-general-row-wrapper input-field" style="">
+                                                              <div class="flex-general-column-wrapper-center" style="width:13%; height: 35px;background-color:#f1f1f1;">
+                                                                  <i class="icon ion-ios-locked-outline" style="color:gray;font-size: 22px;"></i>
+                                                              </div>
+                                                              <div style="width:86.98%; height: 35px;">
+                                                                  <input id="signup-password" type="password" placeholder="Create a Password" class="default-inputfield" required style="width: 100%;height: 100%;padding-left: 12px;">
+                                                              </div>
+                                                          </div>
+
+                                                          <div id="signup-email-wrap" class="flex-general-row-wrapper input-field" style="">
+                                                              <div class="flex-general-column-wrapper-center" style="width:13%; height: 35px;background-color:#f1f1f1;">
+                                                                  <i class="icon ion-ios-email-outline" style="color:gray;font-size: 22px;"></i>
+                                                              </div>
+                                                              <div style="width:86.98%; height: 35px;">
+                                                                  <input id="signup-email" type="text" placeholder="Enter Email" class="default-inputfield" required style="width: 100%;height: 100%;padding-left: 12px;">
+                                                              </div>
+                                                          </div>
+                                                      </div>                                        
+                                                  </div>
+
+                                                  <!--/Signup Input Fields-->
+
+                                                  <!--Forgot Password-->
+                                                  <div id="forget-password-block" style="width: 100%;margin-top: 15px;" class="solo-horizontal-center">
+                                                      <span ng-click="similateToForgotPwd(true)" id="forget-password" style="color:gray;cursor: pointer;">Don't remember your password?</span>
+                                                  </div>
+                                                 
+
+                                              </div>    
+                                          </div>
+                                          <!--Body-->
+                                          
+                                          <!--Button-->
+                                          <div ng-if="!authSettings || (authSettings.settings.custom.enabled)" class="final-btn" ng-style="{'background-color':authSettings.settings.general.primaryColor}" colorhover>
+                                             <div style="width: 100%;height: 30px;" class="flex-general-column-wrapper-center">
+                                                  <span style="color:white;font-size: 34px;">
+                                                      <i class="icon ion-log-in"></i>
+                                                  </span>
+                                             </div>
+                                          </div>
+                                          <!--Button-->                                          
+
+                                      </div>
+                                      <!--/Main Body Content-->
+                                  </div>
+                              </div>
+                              <!--/Login or Sing Up form--> 
+
+                              <!--Forgot Password-->
+                              <div ng-if="authPageSimilate.forgotPasswordPage" id="forgetpassword-card" class="" style="width:300px;">
+                                  <div class="" style="height:auto;border-radius:2px; border:1px solid #BAB8B8;">
+                                      <!--Header-->
+                                      <div style="width:100%;height:117px;background-color:#dddddd;padding:15px;">
+
+                                          <div id="goback-btn" style="width: 30px;height: 30px;position: absolute;">
+                                              <div ng-click="similateToForgotPwd(false)" id="goback-to-authenticate-card" class="flex-general-column-wrapper-center" style="width:100%;height:100%; border-radius: 25px;background-color: white;cursor: pointer;">
+                                                  <i class="icon ion-ios-arrow-left" style="color:black;font-size:20px;"></i>
+                                                  
+                                              </div>
+                                          </div>
+
+                                          <div style="width:100%;" class="flex-general-column-wrapper-center">
+                                              <div ng-if="generalSettings.settings.appIcon" style="width:50px;height:50px;border-radius: 10px;overflow: hidden;">
+                                                  <img ng-src={{generalSettings.settings.appIcon}} style="width:50px;height:50px;">
+                                              </div>
+                                        
+                                              <div ng-if="!generalSettings.settings.appIcon" style="width:50px;height:50px;border-radius: 10px;overflow: hidden;">
+                                                  <img src="assets/images/CbLogoIcon.png" style="width:50px;height:50px;">
+                                              </div>   
+                                          </div>
+
+                                          <div style="width:100%;margin-top: -5px;" class="flex-general-column-wrapper-center">
+                                             <h3>Password Reset</h3>
+                                          </div>
+
+                                      </div>
+                                      <!--Header-->
+
+                                      <!--Main Body Spinner-->
+                                      <div ng-if="authPageSimilate.forgotPasswordSpinner" id="forgetpassword-spinner" style="width: 100%;height: 360px;background-color: white;" class="flex-general-column-wrapper-center">
+                                          <div style="width: 60px;height: 60px;" class="flex-general-column-wrapper-center">
+                                              <div id="req-spinner" style="" class="loader-circle advanced flex-general-column-wrapper-center">       
+                                              </div>
+                                              <div id="req-response" style="color:gray;" class="flex-general-column-wrapper-center">                   
+                                              </div>                       
+                                          </div>
+                                      </div>
+                                      <!--Main Body Spinner-->
+
+                                      <!--Main Body Content-->
+                                      <div id="forgetpassword-mainbody">
+
+                                          <!--Error Block-->
+                                          <div ng-if="authPageSimilate.forgotPwdError" id="forgetpassword-error" style="background-color: #f04848;padding: 10px;" class="solo-horizontal-center">
+                                              <span style="color:white;">Unknow Error</span>
+                                          </div>
+                                          <!--Error Block-->
+
+                                          <!--Body-->
+                                          <div style="background-color: white;padding: 10px;">
+                                              
+                                              <!--Info-->
+                                              <div style="width: 100%;margin-top: 20px;" class="solo-horizontal-center">
+                                                  <p style="color:gray">
+                                                  Please enter your email address.
+                                                  </p>
+                                                  <p style="color:gray;margin-top: -7px;">
+                                                   We will send you an email to reset your password.
+                                                  </p>
+                                              </div>
+
+                                              <!--Input Fields-->
+                                              <div style="width: 100%;margin-top: 8px;" class="solo-horizontal-center">                                        
+                                                  <div style="width: 95%;">
+                                                      <div id="forgot-email-wrap" class="flex-general-row-wrapper input-field" style="">
+                                                          <div class="flex-general-column-wrapper-center" style="width:13%; height: 35px;background-color:#f1f1f1;">
+                                                              <i class="icon ion-ios-email-outline" style="color:gray;font-size: 22px;"></i>
+                                                          </div>
+                                                          <div style="width:86.98%; height: 35px;">
+                                                              <input id="forgot-email" type="text" placeholder="Enter Email" class="default-inputfield" required style="width: 100%;height: 100%;padding-left: 12px;">
+                                                          </div>
+                                                      </div>                                           
+                                                  </div>                                        
+                                              </div>                                    
+                                              
+                                          </div>
+                                          <!--Body-->
+
+                                          <!--Button-->
+                                          <div class="resetpwd-final-btn" ng-style="{'background-color':authSettings.settings.general.primaryColor}" colorhover style="margin-top: 2px;">
+                                             <div style="width: 100%;height: 30px;" class="flex-general-column-wrapper-center">
+                                                  <span style="color:white;font-size: 34px;">
+                                                      <i class="icon ion-log-in"></i>
+                                                  </span>
+                                             </div>
+                                          </div>
+                                          <!--Button-->
+
+                                      </div>
+                                      <!--/Main Body Content-->
+
+                                  </div>
+                                  
+                              </div>
+                              <!--/Forgot Password-->
+
+                          </div>
+                          </div>
+                          <!--html && Preview-->
+
+                        </div>                                               
+
+                      </div>
+                      
+                    </div>
+                    <!--/Html Template--> 
+
+                  </div>
+                  <!--/Toggle Template-->
 
 
                   <div class="actual-fields cf" style="border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
