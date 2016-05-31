@@ -4,7 +4,7 @@
   <div class="flex-general-column-wrapper-center" style="width: 100%;margin-top:20px;">
 
     <div style="width: 100%;" class="solo-horizontal-center">
-      <span style="color:#169CEE;font-size: 24px;font-weight: 700;">Send Push Notifications</span>
+      <span style="color:#169CEE;font-size: 24px;font-weight: 700;">Create a push compaign</span>
     </div>
     <div style="width: 100%;" class="solo-horizontal-center">
       <span style="color:#4F4F4F;font-size: 14px;">The best campaigns use short and direct messaging.</span>
@@ -22,7 +22,7 @@
           </div>
 
           <div class="solo-vertical-center" style="width: 60%;height: 100%;background-color: white;padding: 35px;">
-            <input ng-model="pushData.title" type="text" class="default-inputfield" placeholder="Your push title.." style="width: 100%; height: 40px;font-size: 16px;padding-left: 4px;">
+            <input ng-model="pushData.title" type="text" class="default-inputfield" placeholder="Your notification title" style="width: 100%; height: 40px;font-size: 16px;padding-left: 4px;">
           </div>
 
         </div>
@@ -40,7 +40,7 @@
           </div>
 
           <div class="solo-vertical-center" style="width: 60%;height: 100%;background-color: white;padding: 35px;">
-            <input ng-model="pushData.message" type="text" class="default-inputfield" placeholder="Your push message.." style="width: 100%; height: 40px;font-size: 16px;padding-left: 4px;">
+            <input ng-model="pushData.message" type="text" class="default-inputfield" placeholder="Your notification message" style="width: 100%; height: 40px;font-size: 16px;padding-left: 4px;">
           </div>
 
         </div>
@@ -49,7 +49,7 @@
       <!--/Each Field-->  
 
       <div style="width: 100%;margin-top:20px;" class="solo-horizontal-center">
-        <span style="color:#169CEE;font-size: 24px;font-weight: 700;">Choose your recipients</span>
+        <span style="color:#169CEE;font-size: 24px;font-weight: 700;">Target your audience</span>
       </div>
       <div style="width: 100%;margin-bottom:20px;" class="solo-horizontal-center">
         <span style="color:#4F4F4F;font-size: 14px;">Send to everyone, or use an audience to target the right users.</span>
@@ -71,9 +71,9 @@
             <div ng-show="deviceChannelsSelected.length==0 && deviceOSChecked.all" style="width:100%;height:40px;margin-top:5px;overflow:hidden;" class="flex-general-row-wrapper">
 
               <div style="width:35%;height:40px;" class="flex-general-row-wrapper">
-                <div>
+                <div style="margin-top:-4.6px;">
                   <span>
-                    <i class="icon ion-home" style="font-size:16px"></i>
+                    <i class="icon ion-ios-people" style="font-size:24px;"></i>
                   </span>
                 </div>
                 <div style="margin-left:5px;">
@@ -93,7 +93,7 @@
               <div style="width:35%;height:40px;" class="flex-general-row-wrapper">
                 <div>
                   <span>
-                    <i class="icon ion-home" style="font-size:16px"></i>
+                    <i class="icon ion-pound" style="font-size:16px"></i>
                   </span>
                 </div>
                 <div style="margin-left:5px;">
@@ -115,7 +115,7 @@
               <div style="width:35%;height:40px;" class="flex-general-row-wrapper">
                 <div>
                   <span>
-                    <i class="icon ion-home" style="font-size:16px"></i>
+                    <i class="icon ion-ipad" style="font-size:16px"></i>
                   </span>
                 </div>
                 <div style="margin-left:5px;">
@@ -147,13 +147,19 @@
                 <span>AUDIENCE SIZE</span>
               </div>
 
-              <div style="width:80px;" class="solo-horizontal-center">
+              <div ng-show="!audienceSizeSpinner" style="width:80px;" class="solo-horizontal-center">
                 <span>{{audienceSize}}</span>
               </div>
+
+              <div ng-show="audienceSizeSpinner" style="width:80px;" class="solo-horizontal-center">
+                <img src="assets/images/ajax-loader.gif" style="margin-top:2.5px;">
+              </div>
+
             </div>
           </div>
           <div class="solo-vertical-center" style="width: 21.5%;height: 100%;background-color: white;">
-            <button ng-click="editAudience()" class="default-inputfield" style="height:30px;color:white;background-color:#549afc;">Create audience</button>
+            <button ng-click="editAudience()" class="default-inputfield" style="font-size:12px;height:30px;color:white;background-color:#549afc;border-radius:3px;"><i class="icon ion-funnel"></i>&nbsp;
+            Select Audience</button>
           </div>
         </div>                
       </div>  
@@ -167,13 +173,12 @@
         
           <div class="solo-vertical-center" style="height: 100%;background-color: white;">
             <!--Send Btn-->
-            <button  ng-show="!sendPushSpinner" ng-click="sendPush()" class="default-inputfield" style="height:30px;color:white;background-color:#549afc;">Send Push Message</button>
+            <button  ng-show="!sendPushSpinner" ng-click="sendPush()" class="default-inputfield" style="width: 170px;;height:37px;color:white;background-color:#549afc;border-radius: 3px;font-size:14px;">Send Compaign</button>
 
             <!--While Sending-->
-            <button ng-show="sendPushSpinner" class="default-inputfield" style="height:30px;color:white;background-color:#549afc;">
-              <i class="fa fa-spinner fa-spin"></i>&nbsp;
-              Sending..
-            </button>
+            <div ng-show="sendPushSpinner" style="width:80px;" class="solo-horizontal-center">
+              <img src="assets/images/ajax-loader.gif" style="margin-top:2.5px;height:14px;">
+            </div>
 
           </div>
 
@@ -208,14 +213,14 @@
         </div>
 
         <div>
-          <span style="font-size:14px;color:white;">add adience to you push message</span>
+          <span style="font-size:14px;color:white;">Target notifications to a specific audience</span>
           <span style="font-size:14px;color:white;font-weight:700;"></span>           
         </div>
 
       </div> 
       <div class="pull-right" class="flex-general-column-wrapper-center" style="padding-right:8px;height:56px;width:56px;border-radius:50px;background-color:#285ba3;">
         <div class="flex-general-column-wrapper-center" style="height:56px;width:56px;">
-          <i class="icon ion-ios-bell" style="font-size: 28px;color:white;"></i>
+          <i class="icon ion-funnel" style="font-size: 28px;color:white;"></i>
         </div>
       </div>         
     </div>
@@ -239,10 +244,10 @@
             <div class="flex-general-row-wrapper">
 
               <!--Each Label-->
-              <div ng-if="deviceChannelsSelected.length==0" class="flex-general-row-wrapper" style="height:20px;background-color:#CCCCCC;padding:4px;margin-left:4px;margin-top:4.4px;">
+              <div ng-if="deviceChannelsSelected.length==0" class="flex-general-row-wrapper" style="height:20px;background-color:#E0DEDE;padding:7px;margin-left:4px;margin-top:4.4px;">
 
                 <div style="height:100%;" class="solo-vertical-center">
-                  <span style="color:black;">All</span>
+                  <span style="color:black;">All Channels</span>
                 </div>
 
                 <div style="height:100%;margin-left:4.5px;" class="solo-vertical-center">
@@ -255,14 +260,14 @@
               <!--/Each Label-->
 
               <!--Each Label-->
-              <div ng-repeat="channel in deviceChannelsSelected"  class="flex-general-row-wrapper" style="height:20px;background-color:#CCCCCC;padding:4px;margin-left:4px;margin-top:4.4px;">
+              <div ng-repeat="channel in deviceChannelsSelected"  class="flex-general-row-wrapper" style="height:20px;background-color:#E0DEDE;padding:7px;margin-left:4px;margin-top:4.4px;">
 
                 <div style="height:100%;" class="solo-vertical-center">
                   <span style="color:black;">{{channel}}</span>
                 </div>
 
                 <div style="height:100%;margin-left:4.5px;" class="solo-vertical-center">
-                  <span style="color:black;" ng-click="removeChannel(channel); $event.stopPropagation()">
+                  <span style="color:#A0A0A0;" ng-click="removeChannel(channel); $event.stopPropagation()">
                     <i class="icon ion-close"></i>
                   </span>
                 </div>
@@ -300,7 +305,7 @@
     <!--/Each Field-->
 
     <!--Each Field-->
-    <div style="width: 100%;border-color:#C4C2C2;background-color:white; border-style: solid; border-width:1px 1px 1px 1px;">
+    <div style="width: 100%;border-color:#C4C2C2;background-color:white; border-style: solid; border-width:0px 1px 1px 1px;">
       
       <div style="width: 100%;" class="flex-general-row-wrapper">
 
@@ -311,14 +316,14 @@
         <div style="position: relative; background-color: #F7F7F7;width: 60%;height: auto;">
 
            <!--Display/Edit List-->
-          <div class="solo-vertical-center os-audience" style="width: 100%;height:auto;min-height:65px; padding:8px;cursor:pointer;border-left:1px solid #C9C9C9;" ng-click="openDeviceOSList()">
+          <div class="solo-vertical-center os-audience" style="width: 100%;height:auto;min-height:65px; padding:8px;cursor:pointer;border-left:1px solid #E0DEDE;" ng-click="openDeviceOSList()">
             <div class="flex-general-row-wrapper">
 
               <!--Each Label-->
-              <div ng-if="deviceOSChecked.all" class="flex-general-row-wrapper" style="height:20px;background-color:#CCCCCC;padding:4px;margin-left:4px;margin-top:4.4px;">
+              <div ng-if="deviceOSChecked.all" class="flex-general-row-wrapper" style="height:20px;background-color:#E0DEDE;padding:7px;margin-left:4px;margin-top:4.4px;">
 
                 <div style="height:100%;" class="solo-vertical-center">
-                  <span style="color:black;">All</span>
+                  <span style="color:black;">All Devices</span>
                 </div>
 
                 <div style="height:100%;margin-left:4.5px;" class="solo-vertical-center">
@@ -330,7 +335,7 @@
               <!--/Each Label-->
 
               <!--Each Label-->
-              <div ng-if="deviceOsSelected.length==0" class="flex-general-row-wrapper" style="height:20px;background-color:#CCCCCC;padding:4px;margin-left:4px;margin-top:4.4px;">
+              <div ng-if="deviceOsSelected.length==0" class="flex-general-row-wrapper" style="height:20px;background-color:#E0DEDE;padding:7px;margin-left:4px;margin-top:4.4px;">
 
                 <div style="height:100%;" class="solo-vertical-center">
                   <span style="color:black;">No Devices</span>
@@ -345,14 +350,14 @@
               <!--/Each Label-->
 
               <!--Each Label-->
-              <div ng-show="!deviceOSChecked.all" ng-repeat="OS in deviceOsSelected" class="flex-general-row-wrapper" style="height:20px;background-color:#CCCCCC;padding:4px;margin-left:4px;margin-top:4.4px;">
+              <div ng-show="!deviceOSChecked.all" ng-repeat="OS in deviceOsSelected" class="flex-general-row-wrapper" style="height:20px;background-color:#E0DEDE;padding:7px;margin-left:4px;margin-top:4.4px;">
 
                 <div style="height:100%;" class="solo-vertical-center">
                   <span style="color:black;">{{OS}}</span>
                 </div>
 
                 <div style="height:100%;margin-left:4.5px;" class="solo-vertical-center">
-                  <span style="color:black;" ng-click="removeOS(OS); $event.stopPropagation()">
+                  <span style="color:#A0A0A0;" ng-click="removeOS(OS); $event.stopPropagation()">
                     <i class="icon ion-close"></i>
                   </span>
                 </div>
@@ -372,8 +377,8 @@
               <div style="width:10%;height:100%;padding:4px 2px 4px 8px">
                 <input type="checkbox" class="default-inputfield" ng-model="deviceOSChecked.all" ng-change="modifyAllOS(deviceOSChecked.all)" style="cursor:pointer;border:1px solid red;height:15px;width:15px;">
               </div>
-              <div  style="width:10%;height:100%;padding:4px 4px 4px 0px;">
-                <span style="margin-top:2px;font-size:14px;">All</span>
+              <div  style="width:30%;height:100%;padding:4px 4px 4px 0px;">
+                <span style="margin-top:2px;font-size:14px;">All Devices</span>
               </div>
             </div>
             <!--Each Item-->
@@ -381,7 +386,7 @@
             <!--Each Item-->
             <div  style="width:100%;height:30px;border-style:solid;border-color:#C9C9C9; border-width:0px 1px 1px 1px" class="flex-general-row-wrapper">
               <div style="width:10%;height:100%;padding:4px 2px 4px 8px">
-                <input type="checkbox" class="default-inputfield" ng-model="deviceOSChecked.android" ng-change="modifyOS(deviceOSChecked.android,'android')" style="cursor:pointer;border:1px solid red;height:15px;width:15px;">
+                <input type="checkbox" class="default-inputfield" ng-model="deviceOSChecked.android" ng-change="modifyOS(deviceOSChecked.android,'Android')" style="cursor:pointer;border:1px solid red;height:15px;width:15px;">
               </div>
               <div  style="width:10%;height:100%;padding:4px 4px 4px 0px;">
                 <span style="margin-top:2px;font-size:14px;">Android</span>
@@ -392,7 +397,7 @@
             <!--Each Item-->
             <div  style="width:100%;height:30px;border-style:solid;border-color:#C9C9C9; border-width:0px 1px 1px 1px" class="flex-general-row-wrapper">
               <div style="width:10%;height:100%;padding:4px 2px 4px 8px">
-                <input type="checkbox" class="default-inputfield" ng-model="deviceOSChecked.ios" ng-change="modifyOS(deviceOSChecked.ios,'ios')" style="cursor:pointer;border:1px solid red;height:15px;width:15px;">
+                <input type="checkbox" class="default-inputfield" ng-model="deviceOSChecked.ios" ng-change="modifyOS(deviceOSChecked.ios,'IOS')" style="cursor:pointer;border:1px solid red;height:15px;width:15px;">
               </div>
               <div  style="width:10%;height:100%;padding:4px 4px 4px 0px;">
                 <span style="margin-top:2px;font-size:14px;">IOS</span>
@@ -403,7 +408,7 @@
             <!--Each Item-->
             <div  style="width:100%;height:30px;border-style:solid;border-color:#C9C9C9; border-width:0px 1px 1px 1px" class="flex-general-row-wrapper">
               <div style="width:10%;height:100%;padding:4px 2px 4px 8px">
-                <input type="checkbox" class="default-inputfield" ng-model="deviceOSChecked.windows" ng-change="modifyOS(deviceOSChecked.windows,'windows')" style="cursor:pointer;border:1px solid red;height:15px;width:15px;">
+                <input type="checkbox" class="default-inputfield" ng-model="deviceOSChecked.windows" ng-change="modifyOS(deviceOSChecked.windows,'Windows')" style="cursor:pointer;border:1px solid red;height:15px;width:15px;">
               </div>
               <div  style="width:10%;height:100%;padding:4px 4px 4px 0px;">
                 <span style="margin-top:2px;font-size:14px;">Windows</span>
@@ -414,7 +419,7 @@
             <!--Each Item-->
             <div  style="width:100%;height:30px;border-style:solid;border-color:#C9C9C9; border-width:0px 1px 1px 1px" class="flex-general-row-wrapper">
               <div style="width:10%;height:100%;padding:4px 2px 4px 8px">
-                <input type="checkbox" class="default-inputfield" ng-model="deviceOSChecked.chrome" ng-change="modifyOS(deviceOSChecked.chrome,'chrome')" style="cursor:pointer;border:1px solid red;height:15px;width:15px;">
+                <input type="checkbox" class="default-inputfield" ng-model="deviceOSChecked.chrome" ng-change="modifyOS(deviceOSChecked.chrome,'Chrome')" style="cursor:pointer;border:1px solid red;height:15px;width:15px;">
               </div>
               <div  style="width:10%;height:100%;padding:4px 4px 4px 0px;">
                 <span style="margin-top:2px;font-size:14px;">Chrome</span>
@@ -425,7 +430,7 @@
             <!--Each Item-->
             <div  style="width:100%;height:30px;border-style:solid;border-color:#C9C9C9; border-width:0px 1px 1px 1px" class="flex-general-row-wrapper">
               <div style="width:10%;height:100%;padding:4px 2px 4px 8px">
-                <input type="checkbox" class="default-inputfield" ng-model="deviceOSChecked.firefox" ng-change="modifyOS(deviceOSChecked.firefox,'firefox')" style="cursor:pointer;border:1px solid red;height:15px;width:15px;">
+                <input type="checkbox" class="default-inputfield" ng-model="deviceOSChecked.firefox" ng-change="modifyOS(deviceOSChecked.firefox,'Firefox')" style="cursor:pointer;border:1px solid red;height:15px;width:15px;">
               </div>
               <div  style="width:10%;height:100%;padding:4px 4px 4px 0px;">
                 <span style="margin-top:2px;font-size:14px;">Firefox</span>
@@ -436,7 +441,7 @@
             <!--Each Item-->
             <div  style="width:100%;height:30px;border-style:solid;border-color:#C9C9C9; border-width:0px 1px 1px 1px" class="flex-general-row-wrapper">
               <div style="width:10%;height:100%;padding:4px 2px 4px 8px">
-                <input type="checkbox" class="default-inputfield" ng-model="deviceOSChecked.edge" ng-change="modifyOS(deviceOSChecked.edge,'edge')" style="cursor:pointer;border:1px solid red;height:15px;width:15px;">
+                <input type="checkbox" class="default-inputfield" ng-model="deviceOSChecked.edge" ng-change="modifyOS(deviceOSChecked.edge,'Edge')" style="cursor:pointer;border:1px solid red;height:15px;width:15px;">
               </div>
               <div  style="width:10%;height:100%;padding:4px 4px 4px 0px;">
                 <span style="margin-top:2px;font-size:14px;">Edge</span>
@@ -467,15 +472,19 @@
             <span>AUDIENCE SIZE</span>
           </div>
 
-          <div style="width:80px;" class="solo-horizontal-center">
+          <div ng-show="!audienceSizeSpinner" style="width:80px;" class="solo-horizontal-center">
             <span>{{audienceSize}}</span>
+          </div>
+
+          <div ng-show="audienceSizeSpinner" style="width:80px;" class="solo-horizontal-center">
+            <img src="assets/images/ajax-loader.gif" style="margin-top:3.5px;">
           </div>
 
         </div>
         <div class="pull-right">
           <button  type="button" class="btn btn-default btn-flat" ng-click="cancelAudience()">Cancel</button>
           <!--continue btn-->
-          <button type="button" ng-click="useAudience()" class="btn btn-flat" style="background-color:#549afc; color:white;">Use this audience</button> 
+          <button type="button" ng-click="useAudience()" class="btn btn-flat" style="background-color:#549afc; color:white;">Select Audience</button> 
         </div>
       </div>
     </div>
