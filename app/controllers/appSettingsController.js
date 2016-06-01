@@ -77,6 +77,10 @@ appSettingsService){
       custom:{
         enabled:true
       },
+      sessions:{
+        enabled:true,
+        sessionLength: 30
+      },
       signupEmail:{
         enabled:false,
         allowOnlyVerifiedLogins:false,        
@@ -650,7 +654,15 @@ appSettingsService){
 
     if(settings.general.callbackURL && !_validateUrl(settings.general.callbackURL)){
       return "App callbackURL is invalid.";
-    }     
+    }
+
+    if(!_validateNumber(settings.sessions.sessionLength)){
+      return "Invalid Session Length, should be a number.";
+    }
+
+    if(Number(settings.sessions.sessionLength)<1 || Number(settings.sessions.sessionLength)>365){
+      return "Session Length should be in between 1 to 365";
+    }
 
     if(settings.facebook.enabled){
       if(!settings.facebook.appId || !settings.facebook.appSecret){
@@ -691,6 +703,19 @@ appSettingsService){
     var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
     return regexp.test(url);
 
+  }
+
+  function _validateNumber(num){
+    if(num && num!=""){
+        var tempData=angular.copy(num);     
+        num=Number(num);        
+        if(num.toString()!=tempData){
+          return false;          
+        }      
+    }else{
+      return false;
+    }     
+    return true;
   }
 
   function _getDefaultTemplate(templateName){ 
