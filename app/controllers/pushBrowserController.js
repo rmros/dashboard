@@ -256,14 +256,38 @@ cloudBoostApiService){
 
       //Convert To String
       var tempOS=angular.copy($scope.deviceOsSelected);
-      tempOS=tempOS.map(function(currentValue){
-        return currentValue+" ";
-      });
 
-      $scope.selectedOSString=tempOS.toString();
+      var stng="";
+      for(var i=0;i<tempOS.length;++i){
+        if(i==0){
+          stng=tempOS[i]+",";
+        }
+        if(i!=0 && (i!=tempOS.length-1)){
+          stng=stng.concat(" "+tempOS[i]+",");
+        }
+        if(i==tempOS.length-1){
+          stng=stng.concat(" "+tempOS[i]);
+        }       
+      }
+
+      $scope.selectedOSString=stng;
 
       var tempChannel=angular.copy($scope.deviceChannelsSelected);
-      $scope.selectedChannelString=tempChannel.toString();
+
+      var stng2="";
+      for(var i=0;i<tempChannel.length;++i){
+        if(i==0){
+          stng2=tempChannel[i]+",";
+        }
+        if(i!=0 && (i!=tempChannel.length-1)){
+          stng2=stng2.concat(" "+tempChannel[i]+",");
+        }
+        if(i==tempChannel.length-1){
+          stng2=stng2.concat(" "+tempChannel[i]);
+        }       
+      }
+
+      $scope.selectedChannelString=stng2;
 
       //Count Audience Size
       countDeviceByQuery();
