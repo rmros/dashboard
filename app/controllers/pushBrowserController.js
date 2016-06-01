@@ -21,8 +21,7 @@ cloudBoostApiService){
   var id;
   $rootScope.showAppPanel=true;
   $rootScope.isFullScreen=false;
-  $rootScope.page='Push'; 
-
+  $rootScope.page='push'; 
 
   $scope.pushData={
     title:null,
@@ -46,6 +45,8 @@ cloudBoostApiService){
   }; 
   addAllOS();
 
+  $scope.audienceSizeSpinner=false;
+
   $scope.deviceChannelsSelected=[];
   $scope.holdeDeviceChannelsSelected=[];
 
@@ -57,7 +58,8 @@ cloudBoostApiService){
     if($rootScope.currentProject && $rootScope.currentProject.appId === id){
       //if the same project is already in the rootScope, then dont load it.
       initCB(); 
-      $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;                        
+      $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;                  
+      countDevices();                       
     }else{
       loadProject(id);              
     }
@@ -70,10 +72,15 @@ cloudBoostApiService){
       //DeviceOS
       if(!$scope.deviceOSChecked.all && $scope.deviceOsSelected.length>0){      
       
+        var selectedOS=angular.copy($scope.deviceOsSelected);
+        selectedOS=selectedOS.map(function(currentValue,index,arr){
+          return currentValue.toLowerCase(); 
+        });
+
         var queryArray=[];
-        for(var i=0;i<$scope.deviceOsSelected.length;++i){
+        for(var i=0;i<selectedOS.length;++i){
           var query = new CB.CloudQuery("Device"); 
-          query.equalTo('deviceOS',$scope.deviceOsSelected[i]);
+          query.equalTo('deviceOS',selectedOS[i]);
           queryArray.push(query);        
         } 
         if(queryArray.length>0){
@@ -103,7 +110,7 @@ cloudBoostApiService){
         if(data && data.response!=="No Device objects found."){
           successNotify("Successfully sent!");
         }else{
-          errorNotify("No Device objects found!");
+          errorNotify("Your audience size is 0");
         }
         
         $scope.sendPushSpinner=false;
@@ -115,11 +122,11 @@ cloudBoostApiService){
         };
 
       },function(error){
-        errorNotify("Failed to send push message.");
+        errorNotify(error);
         $scope.sendPushSpinner=false;
       });
     }else{
-      errorNotify("Message is a required field.");
+      errorNotify("Message is required.");
     }
   };
 
@@ -127,7 +134,7 @@ cloudBoostApiService){
     if($scope.newChannel){    
 
       if($scope.deviceChannelsSelected.indexOf($scope.newChannel)>-1){
-        WarningNotify("This Channel already exist in the list");
+        WarningNotify("This Channel is already in the list.");
       }else{
         $scope.deviceChannelsSelected.push($scope.newChannel); 
         $scope.newChannel=null;
@@ -150,7 +157,7 @@ cloudBoostApiService){
     if(checked){    
 
       if($scope.deviceOsSelected.indexOf(OS)>-1){
-        WarningNotify("This OS already exist in the list");
+        WarningNotify("This OS is already in the list.");
       }else{
         $scope.deviceOsSelected.push(OS);  
       } 
@@ -203,7 +210,7 @@ cloudBoostApiService){
   }
 
   function addAllOS(){
-   var allOS=["android","ios","windows","chrome","firefox","edge"];
+   var allOS=["Android","IOS","Windows","Chrome","Firefox","Edge"];
     for(var i=0;i<allOS.length;++i){
       var index=$scope.deviceOsSelected.indexOf(allOS[i]);
       if(index<0){
@@ -249,10 +256,38 @@ cloudBoostApiService){
 
       //Convert To String
       var tempOS=angular.copy($scope.deviceOsSelected);
-      $scope.selectedOSString=tempOS.toString();
+
+      var stng="";
+      for(var i=0;i<tempOS.length;++i){
+        if(i==0){
+          stng=tempOS[i]+",";
+        }
+        if(i!=0 && (i!=tempOS.length-1)){
+          stng=stng.concat(" "+tempOS[i]+",");
+        }
+        if(i==tempOS.length-1){
+          stng=stng.concat(" "+tempOS[i]);
+        }       
+      }
+
+      $scope.selectedOSString=stng;
 
       var tempChannel=angular.copy($scope.deviceChannelsSelected);
-      $scope.selectedChannelString=tempChannel.toString();
+
+      var stng2="";
+      for(var i=0;i<tempChannel.length;++i){
+        if(i==0){
+          stng2=tempChannel[i]+",";
+        }
+        if(i!=0 && (i!=tempChannel.length-1)){
+          stng2=stng2.concat(" "+tempChannel[i]+",");
+        }
+        if(i==tempChannel.length-1){
+          stng2=stng2.concat(" "+tempChannel[i]);
+        }       
+      }
+
+      $scope.selectedChannelString=stng2;
 
       //Count Audience Size
       countDeviceByQuery();
@@ -267,7 +302,9 @@ cloudBoostApiService){
   function loadProject(id){
     
     if($rootScope.currentProject){
-      initCB();      
+      initCB();
+      $rootScope.pageHeaderDisplay=$rootScope.currentProject.name;           
+      countDevices();    
     }else{
       projectService.getProject(id)
       .then(function(currentProject){
@@ -284,22 +321,32 @@ cloudBoostApiService){
   }
 
   function countDevices() {
+    $scope.audienceSizeSpinner=true;
     cloudBoostApiService.queryCountByTableName("Device").then(function(number){
       $scope.audienceSize=number;
+      $scope.audienceSizeSpinner=false;
     },function(error){
       errorNotify(error);
+      $scope.audienceSizeSpinner=false;
     });
   }
 
   function countDeviceByQuery(){    
 
+    $scope.audienceSizeSpinner=true;
+
     //DeviceOS
     if(!$scope.deviceOSChecked.all && $scope.deviceOsSelected.length>0){      
     
+      var selectedOS=angular.copy($scope.deviceOsSelected);
+      selectedOS=selectedOS.map(function(currentValue,index,arr){
+        return currentValue.toLowerCase(); 
+      });
+
       var queryArray=[];
       for(var i=0;i<$scope.deviceOsSelected.length;++i){
         var query = new CB.CloudQuery("Device"); 
-        query.equalTo('deviceOS',$scope.deviceOsSelected[i]);
+        query.equalTo('deviceOS',selectedOS[i]);
         queryArray.push(query);        
       } 
       if(queryArray.length>0){
@@ -325,9 +372,11 @@ cloudBoostApiService){
     currentQuery.limit=9999;
     currentQuery.count({
       success : function(number){
+        $scope.audienceSizeSpinner=false;
         $scope.audienceSize=number;
         $scope.$digest();
       }, error : function(error){
+        $scope.audienceSizeSpinner=false;
         errorNotify(error);
       }
     });
