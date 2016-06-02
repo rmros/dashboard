@@ -1176,7 +1176,16 @@ CB._isJsonString = function(str) {
         return false;
     }
     return true;
-}
+};
+
+CB._isJsonObject= function(obj) {
+    try {
+        JSON.stringify(obj);
+    } catch (e) {
+        return false;
+    }
+    return true;
+};
 
 //Description : This fucntion get the content of the cookie .
 //Params : @name : Name of the cookie.
@@ -9275,10 +9284,11 @@ CB.CloudObject.prototype.delete = function(callback) { //delete an object matchi
     var url = CB.apiUrl + "/data/" + CB.appId +'/'+thisObj.document._tableName;
 
     CB._request('PUT',url,params).then(function(response){
+        thisObj = CB.fromJSON(JSON.parse(response),thisObj);
         if (callback) {
-            callback.success(response);
+            callback.success(thisObj);
         } else {
-            def.resolve(response);
+            def.resolve(thisObj);
         }
     },function(err){
         if(callback){
@@ -9467,7 +9477,7 @@ CB.CloudQuery.or = function(obj1, obj2) {
     if(typeof obj2 !== 'undefined' && typeof obj1 !== 'undefined' && Object.prototype.toString.call(obj1)!=="[object Array]"){
 
         if(Object.prototype.toString.call(obj2)==="[object Array]"){
-            throw "Passed two params should be instanceof of CloudQuery";
+            throw "First and second parameter should be an instance of CloudQuery object";
         }
         if (!obj1.tableName === obj2.tableName) {
             throw "Table names are not same";
@@ -13520,7 +13530,11 @@ CB.CloudPush.send = function(data,query,callback) {
     var url = CB.apiUrl + "/push/" + CB.appId + '/send';
 
     CB._request('POST',url,params).then(function(response){
-        var object = JSON.parse(response);
+        var object=response;
+        if(CB._isJsonString(response)){
+            object = JSON.parse(response);
+        }
+        
         if (callback) {
             callback.success(object);
         } else {
@@ -13528,10 +13542,9 @@ CB.CloudPush.send = function(data,query,callback) {
         }
     },function(err){
 
-        try{
+        if(CB._isJsonString(err)){
             err = JSON.parse(err);
-        }catch(e){
-        }
+        }    
         
         if(callback){
             callback.error(err);

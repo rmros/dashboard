@@ -519,12 +519,12 @@
           </div>
           <!--/Common Saved Tick-->
 
-          <!--Number of rows in table-->
-          <div class="data-info-div row-info">
-            <p ng-if="totalRecords==1" >{{totalRecords}} row</p>
-            <p ng-if="totalRecords!=1" >{{totalRecords}} rows</p>             
+          <!--Total number of items in table-->
+          <div ng-if="!commonSpinner" class="data-info-div row-info">
+            <p ng-if="countItemsInTable==1" >{{countItemsInTable}} item</p>
+            <p ng-if="countItemsInTable!=1" >{{countItemsInTable}} items</p>             
           </div>
-          <!--Number of rows in table-->
+          <!--Total number of items in table-->
 
         </div>     
       </div>  

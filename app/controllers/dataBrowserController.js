@@ -87,6 +87,7 @@ $scope.orderByType="desc";
 $scope.docsLimit=50;
 $scope.hiddenColumnCount=0;
 $scope.editableFile=[];
+$scope.countItemsInTable=0;
 
 $scope.init = function() { 
   id = $stateParams.appId;
@@ -1086,6 +1087,7 @@ function saveWrapper(row,rowIndex){
     }else{
       $scope.totalRecords=0;
     }
+    $scope.updateCountItems();
 
   }, function(error){ 
     var respObj={
@@ -1160,6 +1162,7 @@ function getProjectTables(){
     };
     $scope.filtersList.push(defaultFilterColumn);
 
+    $scope.updateCountItems();
     return cloudBoostApiService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,$scope.docsLimit,0);
 
   }).then(function(cbObjects){ 
@@ -1197,6 +1200,7 @@ $scope.refreshRows=function(){
       $scope.totalRecords=0;
     }
     
+    $scope.updateCountItems();
     $scope.refreshingRows=false;   
 
     $scope.rowInfo=null;
@@ -1213,7 +1217,7 @@ $scope.refreshRows=function(){
 
   },function(err){
     $scope.refreshingRows=false;       
-  });
+  });  
 };
 
 function getProjectTableByName(tableDefName){
@@ -1252,7 +1256,8 @@ $scope.addMoreRecords=function(){
           $scope.currentTableData=list;
         }
         $scope.totalRecords=$scope.totalRecords+list.length;
-      } 
+      }
+      $scope.updateCountItems(); 
       $scope.loadingRecords=false; 
 
       //Final Length
@@ -1273,7 +1278,7 @@ $scope.addMoreRecords=function(){
     function(error){ 
     $scope.loadingRecords=false;      
     });
-    //end of load more data
+    //end of load more data    
   }     
  
 };
@@ -1544,7 +1549,10 @@ $scope.deleteSelectedRows=function(){
       $scope.totalRecords=$scope.currentTableData.length;
     }else{
       $scope.totalRecords=0;
-    }                           
+    } 
+
+    $scope.updateCountItems();
+
   }, function(err){    
     $scope.areSelectAllRows=false;
     $scope.commonSpinner=false;
@@ -1646,6 +1654,7 @@ $scope.saveNewlyCreatedRow=function(){
         }else{
           $scope.totalRecords=0;
         }
+        $scope.updateCountItems();
 
         showSaveIconInSecond(resp.rowIndex);
       }, function(errorResp){                         
@@ -1812,6 +1821,12 @@ $scope.isDate = function(x) {
   return x instanceof Date;
 };
 
+$scope.updateCountItems=function(){
+  cloudBoostApiService.queryCountByTableName($rootScope.currentProject.currentTable.name).then(function(number){
+    $scope.countItemsInTable=number;
+  },function(error){
+  });
+};
 
 //Row focused functions
 function rowInitMode(index){
