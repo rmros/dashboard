@@ -1326,7 +1326,8 @@ $scope.initiateColumnSettings = function() {
       isRenamable         : true,
       isEditable          : true,
       isDeletable         : true,
-      editableByMasterKey : false
+      editableByMasterKey : false,
+      isSearchable        : true
   }; 
 
   $scope.newColumnObj=newcol; 
@@ -1339,6 +1340,7 @@ $scope.initiateColumnSettings = function() {
 $scope.addColumn = function(valid) {
   if(valid){
     $scope.showAddColPopUp=false; 
+    $scope.enableColAdvance=false;
     nullifyCommonErrorInfo();
     $scope.commonSpinner=true;
 
@@ -1348,6 +1350,9 @@ $scope.addColumn = function(valid) {
     }
     if($scope.newColumnObj.editableByMasterKey){
       column.editableByMasterKey=$scope.newColumnObj.editableByMasterKey;
+    }
+    if($scope.newColumnObj.dataType=="Text"){
+      column.isSearchable=$scope.newColumnObj.isSearchable;
     }
     
     $rootScope.currentProject.currentTable.addColumn(column);

@@ -980,6 +980,24 @@
                         </div>                       
                         
                       </div>
+
+                      <!--Column Text type searchable-->
+                      <div  ng-if="enableColAdvance && newColumnObj.dataType=='Text'" class="flex-add-Bx" style="margin-top:5.5px;width: 285px;">                       
+                        
+                        <div class="add-Bx">
+
+                            <div  class="flex-add-Bx">
+                                <div class="add-Bx">
+                                  <label class="addcollabel">Index for search</label>              
+                                </div>
+                                <div class="add-Bx">                                   
+                                  <checkbox class="btn-default checkBxDflt chckbx-fix" ng-model="newColumnObj.isSearchable" style="border: 1px solid #DBDCDD;"></checkbox>
+                                </div>         
+                            </div>
+
+                        </div>                       
+                        
+                      </div>
                       <!---->
 
                       <div style="margin-top:8px;" data-ng-show="columnErrorForCreate">

@@ -9453,6 +9453,47 @@ CB.CloudQuery = function(tableName) { //constructor for the class CloudQuery
     this.limit = 10; //default limit is 10
 };
 
+CB.CloudQuery.prototype.search = function(search, language, caseSensitive, diacriticSensitive) {
+
+    this.query["$text"]={};
+
+    //Validations
+    if(Object.prototype.toString.call(search)!=="[object String]"){
+        throw "First parameter is required and it should be a string.";
+    }
+
+    if(language && (typeof language !="undefined") && Object.prototype.toString.call(language)!=="[object String]"){
+        throw "Second parameter should be a string.";
+    }
+
+    if(Object.prototype.toString.call(caseSensitive)!=="[object Undefined]" && Object.prototype.toString.call(caseSensitive)!=="[object Null]" && Object.prototype.toString.call(caseSensitive)!=="[object Boolean]"){
+        throw "Third parameter should be a boolean.";
+    }
+
+    if(Object.prototype.toString.call(diacriticSensitive)!=="[object Undefined]" && Object.prototype.toString.call(diacriticSensitive)!=="[object Null]" && Object.prototype.toString.call(diacriticSensitive)!=="[object Boolean]"){
+        throw "Fourth parameter should be a boolean.";
+    }
+
+    //Set the fields
+    if(Object.prototype.toString.call(search)==="[object String]"){
+        this.query["$text"]["$search"]=search; 
+    }
+
+    if(language && (typeof language !="undefined") && Object.prototype.toString.call(search)==="[object String]"){
+        this.query["$text"]["$language"]=language;
+    }
+
+    if(Object.prototype.toString.call(caseSensitive)!=="[object Undefined]" && Object.prototype.toString.call(caseSensitive)!=="[object Null]" && Object.prototype.toString.call(caseSensitive)==="[object Boolean]"){
+        this.query["$text"]["$caseSensitive"]=caseSensitive; 
+    }
+
+    if(Object.prototype.toString.call(diacriticSensitive)!=="[object Undefined]" && Object.prototype.toString.call(diacriticSensitive)!=="[object Null]" && Object.prototype.toString.call(diacriticSensitive)==="[object Boolean]"){
+        this.query["$text"]["$diacriticSensitive"]=diacriticSensitive;
+    }
+    
+    return this;
+};
+
 // Logical operations
 CB.CloudQuery.or = function(obj1, obj2) {
 
@@ -12048,6 +12089,10 @@ CB.Column = function(columnName, dataType, required, unique){
    }
    else{
      this.document.unique = false;
+   }
+
+   if(dataType==="Text"){
+     this.document.isSearchable = true;
    }  
 
    this.document.relatedTo = null;
@@ -12056,8 +12101,7 @@ CB.Column = function(columnName, dataType, required, unique){
    this.document.isDeletable = true;
    this.document.isEditable = true;
    this.document.isRenamable = false;
-   this.document.editableByMasterKey = false;
-
+   this.document.editableByMasterKey = false; 
 };
 
 Object.defineProperty(CB.Column.prototype,'name',{
@@ -12113,6 +12157,15 @@ Object.defineProperty(CB.Column.prototype,'editableByMasterKey',{
     },
     set: function(editableByMasterKey) {
         this.document.editableByMasterKey = editableByMasterKey;
+    }
+});
+
+Object.defineProperty(CB.Column.prototype,'isSearchable',{
+    get: function() {
+        return this.document.isSearchable;
+    },
+    set: function(isSearchable) {
+        this.document.isSearchable = isSearchable;
     }
 });
 
