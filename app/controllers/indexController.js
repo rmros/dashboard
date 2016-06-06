@@ -112,7 +112,7 @@ app.controller('indexController',
             $rootScope.storageUsed[list.storage[i].appId]=storagePercentageObj;
             $rootScope.storageLoading[list.storage[i].appId]=false;
           }
-        }
+        }       
         
 
       },function(error){

@@ -43,6 +43,7 @@ app.controller('appsController',
   $scope.requestInviteEmail;
   $scope.developers=[];
   $scope.invitees=[]; 
+  $scope.developerRolesList=["Admin","User"];
   
   $scope.init=function(){
     //Hiding the Menu
@@ -248,8 +249,8 @@ app.controller('appsController',
       updateBeacon();   
     }
 
-     //Redirect to Table designer
-     window.location.href="/#/"+projectObj.appId+"/table";     
+    //Redirect to Table designer
+    window.location.href="/#/"+projectObj.appId+"/table";     
   };
 
 
@@ -266,16 +267,7 @@ app.controller('appsController',
       promises.push(userService.getUserListByIds(devArray));      
 
       $q.all(promises).then(function(promiseList){ 
-        var devs=promiseList[0];
-        for(var i=0;i<devArray.length;++i){
-
-          for(var j=0;j<devs.length;++j){
-            if(devs[j]._id==list.developers[i].userId){
-              devs[j].role=list.developers[i].role;
-            } 
-          }
-                   
-        } 
+        var devs=promiseList[0];  
 
         $scope.developers=devs;        
         $('#developersModal').modal('show');                        
@@ -290,11 +282,11 @@ app.controller('appsController',
     $scope.removeDevIndex=index;
     $scope.removeDevUser=requestedUser;
 
-    if(requestedUser._id==$rootScope.user._id){
+    if(requestedUser.userId==$rootScope.user._id){
       var tempDevArray=angular.copy($scope.selectedProject.developers);
       var index;
       for(var i=0;i<$scope.selectedProject.developers.length;++i){
-        if($scope.selectedProject.developers[i].userId=requestedUser._id){
+        if($scope.selectedProject.developers[i].userId==requestedUser.userId){
           index=i;
         }
       }
@@ -317,23 +309,30 @@ app.controller('appsController',
       $("#removedevconform").modal("hide");
       
       $scope.appDevSpinner[index]=true;
-      projectService.removeDeveloperFromProject($scope.selectedProject.appId,requestedUser._id)
+      projectService.removeDeveloperFromProject($scope.selectedProject.appId,requestedUser.userId)
       .then(function(data){     
         $scope.confirmAppName=null;
-        if(requestedUser._id==$rootScope.user._id){
+        if(requestedUser.userId==$rootScope.user._id){
           var appIndex=$rootScope.projectListObj.indexOf($scope.selectedProject); 
           if(appIndex==0 || appIndex>0){
             $rootScope.projectListObj.splice(appIndex,1);
           }
         }                  
 
-        var devIndex=$scope.developers.indexOf(requestedUser); 
+        var devIndex=-1;
+        for(var i=0;i<$scope.developers.length;++i){
+          if(requestedUser.userId==$scope.developers[i]._id){
+            devIndex=i;
+            break;
+          }
+        }
+
         if(devIndex==0 || devIndex>0){
           $scope.developers.splice(devIndex,1);
 
           var userIndexInApp;
           for(var i=0;i<$scope.selectedProject.developers.length;++i){
-            if($scope.selectedProject.developers[i].userId==requestedUser._id){
+            if($scope.selectedProject.developers[i].userId==requestedUser.userId){
               userIndexInApp=i;
             }
           }
@@ -364,7 +363,7 @@ app.controller('appsController',
       });
 
     }else{
-      warningNotify("confirm App Name doesn't match.");
+      WarningNotify("confirm App Name doesn't match.");
     }
   };
 
@@ -418,6 +417,49 @@ app.controller('appsController',
     
   };
  
+  $scope.changeDeveloperRole=function(index,requestedUser){
+    //1.User->Admin: Only Admin can change. 
+    //2.Admin->User: Only Admin can change, Atleast One Admin should be there for an app.     
+
+    var requestedUserIndex=-1;
+    for(var i=0;i<$scope.selectedProject.developers.length;++i){
+      if($scope.selectedProject.developers[i].userId==requestedUser.userId){
+        requestedUserIndex=i;
+      }
+    }
+    //Check atleast one admin will be there
+    var atleastOneAdmin=_.find($scope.selectedProject.developers, function(eachObj){ 
+      if(eachObj.role=="Admin"){ 
+        return true;          
+      }
+    });
+    
+    if(atleastOneAdmin){
+
+      $scope.appDevSpinner[index]=true; 
+      projectService.changeRole($scope.selectedProject.appId,requestedUser.userId,requestedUser.role)
+      .then(function(){
+
+        $scope.appDevSpinner[index]=false; 
+      },function(error){
+        if(requestedUser.role=="User"){
+          $scope.selectedProject.developers[requestedUserIndex]="Admin";
+        }else{
+          $scope.selectedProject.developers[requestedUserIndex]="User";
+        }
+        $scope.appDevSpinner[index]=false; 
+      });
+
+    }else{        
+      if(requestedUser.role=="User"){
+        $scope.selectedProject.developers[requestedUserIndex]="Admin";
+      }else{
+        $scope.selectedProject.developers[requestedUserIndex]="User";
+      }
+      WarningNotify("Atleast one admin should be there for an app.");
+    }
+   
+  };
 
   $scope.changeAppKeysInit=function(index,list){    
     $scope.appOptions[index]=false;

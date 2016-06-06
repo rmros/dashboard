@@ -261,7 +261,7 @@ app.controller('tableDesignerController',
           $rootScope.currentProject.tables=[];                       
         }else if(data){                        
           $rootScope.currentProject.tables=data;     
-        }         
+        } 
        
     }, function(error){  
       $rootScope.dataLoading=false;     

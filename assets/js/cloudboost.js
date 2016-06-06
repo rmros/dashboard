@@ -555,7 +555,7 @@ CB.toJSON = function(thisObj) {
      if(thisObj instanceof CB.CloudCache)
         tableName=thisObj.document.name;
 
-    var obj= CB._clone(thisObj,id,latitude,longitude,tableName,columnName);
+    var obj= CB._clone(thisObj,id,longitude,latitude,tableName,columnName);
 
     if (!obj instanceof CB.CloudObject || !obj instanceof CB.CloudFile || !obj instanceof CB.CloudGeoPoint
         || !obj instanceof CB.CloudTable || !obj instanceof CB.Column || !obj instanceof CB.QueueMessage || !obj instanceof CB.CloudQueue || !obj instanceof CB.CloudCache) {
@@ -673,7 +673,7 @@ CB.fromJSON = function(data, thisObj) {
             if(document._type === "cache"){
                 name = document.name;
             }
-            var obj = CB._getObjectByType(document._type,id,latitude,longitude,name);
+            var obj = CB._getObjectByType(document._type,id,longitude,latitude,name);
             obj.document = document;
 
             thisObj = obj;
@@ -695,7 +695,7 @@ CB.fromJSON = function(data, thisObj) {
     }
 };
 
-CB._getObjectByType = function(type,id,latitude,longitude,name){
+CB._getObjectByType = function(type,id,longitude,latitude,name){
 
     var obj = null;
 
@@ -729,7 +729,9 @@ CB._getObjectByType = function(type,id,latitude,longitude,name){
     }
 
     if(type === 'point'){
-        obj = new CB.CloudGeoPoint(latitude,longitude);
+        obj = new CB.CloudGeoPoint(0,0);
+        obj.document.latitude=Number(latitude);
+        obj.document.longitude=Number(longitude);
     }
 
     if(type === 'table'){
@@ -776,10 +778,10 @@ if(CB._isNode){
 }
 
 
-CB._clone=function(obj,id,latitude,longitude,tableName,columnName){
+CB._clone=function(obj,id,longitude,latitude,tableName,columnName){
     var n_obj = {};
     if(obj.document._type && obj.document._type != 'point') {
-        n_obj = CB._getObjectByType(obj.document._type,id,latitude,longitude,tableName,columnName);
+        n_obj = CB._getObjectByType(obj.document._type,id,longitude,latitude,tableName,columnName);
         var doc=obj.document;
         var doc2={};
         for (var key in doc) {
@@ -9453,41 +9455,40 @@ CB.CloudQuery = function(tableName) { //constructor for the class CloudQuery
     this.limit = 10; //default limit is 10
 };
 
-CB.CloudQuery.prototype.search = function(search, language, caseSensitive, diacriticSensitive) {
-
-    this.query["$text"]={};
+CB.CloudQuery.prototype.search = function(search, language, caseSensitive, diacriticSensitive) {    
 
     //Validations
-    if(Object.prototype.toString.call(search)!=="[object String]"){
+    if(typeof search !=="string"){
         throw "First parameter is required and it should be a string.";
     }
 
-    if(language && (typeof language !="undefined") && Object.prototype.toString.call(language)!=="[object String]"){
+    if((language !==null) && (typeof language !=="undefined") && (typeof language !=="string")){
         throw "Second parameter should be a string.";
     }
 
-    if(Object.prototype.toString.call(caseSensitive)!=="[object Undefined]" && Object.prototype.toString.call(caseSensitive)!=="[object Null]" && Object.prototype.toString.call(caseSensitive)!=="[object Boolean]"){
-        throw "Third parameter should be a boolean.";
+    if((caseSensitive!==null) && (typeof caseSensitive !=="undefined") && (typeof caseSensitive !=="boolean")){
+        throw "Third parameter should be a boolean."
     }
 
-    if(Object.prototype.toString.call(diacriticSensitive)!=="[object Undefined]" && Object.prototype.toString.call(diacriticSensitive)!=="[object Null]" && Object.prototype.toString.call(diacriticSensitive)!=="[object Boolean]"){
+    if((diacriticSensitive!==null) && (typeof diacriticSensitive !=="undefined") && (typeof diacriticSensitive !=="boolean")){
         throw "Fourth parameter should be a boolean.";
     }
 
     //Set the fields
-    if(Object.prototype.toString.call(search)==="[object String]"){
+    this.query["$text"]={};
+    if(typeof search ==="string"){
         this.query["$text"]["$search"]=search; 
     }
 
-    if(language && (typeof language !="undefined") && Object.prototype.toString.call(search)==="[object String]"){
+    if((language !==null) && (typeof language !=="undefined") && (typeof language ==="string")){
         this.query["$text"]["$language"]=language;
     }
 
-    if(Object.prototype.toString.call(caseSensitive)!=="[object Undefined]" && Object.prototype.toString.call(caseSensitive)!=="[object Null]" && Object.prototype.toString.call(caseSensitive)==="[object Boolean]"){
+    if((caseSensitive!==null) && (typeof caseSensitive !=="undefined") && (typeof caseSensitive ==="boolean")){
         this.query["$text"]["$caseSensitive"]=caseSensitive; 
     }
 
-    if(Object.prototype.toString.call(diacriticSensitive)!=="[object Undefined]" && Object.prototype.toString.call(diacriticSensitive)!=="[object Null]" && Object.prototype.toString.call(diacriticSensitive)==="[object Boolean]"){
+    if((diacriticSensitive!==null) && (typeof diacriticSensitive !=="undefined") && (typeof diacriticSensitive ==="boolean")){
         this.query["$text"]["$diacriticSensitive"]=diacriticSensitive;
     }
     
