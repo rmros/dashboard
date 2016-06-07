@@ -184,7 +184,7 @@
                          <div class="msg-content-wrapper">
 
                           <div class="queue-msgs-just-display" style="font-size:12px;">
-                            {{eachMsg.message | characters:70}}                   
+                            {{eachMsg.message | stringifyjson | characters:70}}                   
                           </div>
 
                         </div>
@@ -449,10 +449,26 @@
               <p class="pull-left" style="font-size:14px;color:gray;font-weight:bold;">MESSAGE</p>              
             </div> 
 
-            <div class="" style="width:100%;">           
-              <div class="" style="width:100%;border:2px solid #D6D6D6;border-radius:4px;">
-                <textarea rows="4" cols="50" ng-model="newMessage.msg" class="defaultInput-txt" style="width:100%;height:100%;resize: none;"></textarea>
+            <div class="" style="width:20%;height:29px;height:25px;">
+              <div class="pull-left q-msgtabs" ng-class="{'q-msgtabs-active':queueActiveTabs.text}" style="height:100%;padding:3px 7px 2px 7px;cursor:pointer;" ng-click="activateTab('text')">
+                Text
               </div>
+              <div class="pull-left q-msgtabs" ng-class="{'q-msgtabs-active':queueActiveTabs.json}" style="height:100%;padding:3px 7px 2px 7px;cursor:pointer;" ng-click="activateTab('json')">
+                Json
+              </div>               
+            </div>
+
+            <div class="" style="width:100%;margin-top:3.5px;"> 
+              
+              <div ng-show="queueActiveTabs.text" class="" style="width:100%;border:2px solid #D6D6D6;border-radius:4px;">
+                <textarea rows="4" cols="50" ng-model="newMessage.msg" class="defaultInput-txt" style="width:100%;height:120px;resize: none;"></textarea>                  
+              </div>
+
+              <div ng-show="queueActiveTabs.json" class="" style="width:100%;border:2px solid #D6D6D6;border-radius:4px;">               
+                <div ui-ace="{ mode: 'json', theme: 'chrome' }" ng-model="newMessage.msg"  style="width:100%;margin-top:-1px !important;">
+                </div>
+              </div>             
+
             </div>
           </div>
 
@@ -578,17 +594,34 @@
           <div class="" style="width:80%;">
             <div class="" style="width:13.5%;height:29px;">
               <p class="pull-left" style="font-size:14px;color:gray;font-weight:bold;">MESSAGE</p>              
-            </div> 
+            </div>            
 
-            <div class="" style="width:100%;">           
-              <div class="" style="width:100%;border:2px solid #D6D6D6;border-radius:4px;">
-                <textarea rows="4" cols="50" class="defaultInput-txt" ng-model="requestedMessage.message" style="width:100%;height:100%;resize: none;"></textarea>
+            <div class="" style="width:20%;height:29px;height:25px;">
+              <div class="pull-left q-msgtabs" ng-class="{'q-msgtabs-active':queueActiveTabs.text}" style="height:100%;padding:3px 7px 2px 7px;cursor:pointer;" ng-click="activateTab('text')">
+                Text
               </div>
+              <div class="pull-left q-msgtabs" ng-class="{'q-msgtabs-active':queueActiveTabs.json}" style="height:100%;padding:3px 7px 2px 7px;cursor:pointer;" ng-click="activateTab('json')">
+                Json
+              </div>               
             </div>
+
+            <div class="" style="width:100%;margin-top:3.5px;"> 
+              
+              <div ng-show="queueActiveTabs.text" class="" style="width:100%;border:2px solid #D6D6D6;border-radius:4px;">
+                <textarea rows="4" cols="50" ng-model="requestedMessage.message" class="defaultInput-txt" style="width:100%;height:120px;resize: none;"></textarea>                  
+              </div>
+
+              <div ng-show="queueActiveTabs.json" class="" style="width:100%;border:2px solid #D6D6D6;border-radius:4px;">              
+                <div ui-ace="{ mode: 'json', theme: 'chrome' }" ng-model="requestedMessage.message"  style="width:100%;margin-top:-1px !important;">
+                </div>
+              </div>             
+
+            </div>
+
           </div>          
 
           <!--Advance Options-->
-          <div style="width:100%;" class="flex-general-column-wrapper-center">
+          <div style="width:100%;margin-top:3px;" class="flex-general-column-wrapper-center">
             <div class="" style="width:80%;margin-top:5px;">
               <div class="" style="width:13.5%;height:29px;">
                 <p class="pull-left" style="font-size:14px;color:gray;font-weight:bold;">TIMEOUT</p>              

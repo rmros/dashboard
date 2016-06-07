@@ -37,6 +37,11 @@ tableService){
   $scope.editableQueue=[];  
   $scope.queueSizes=[];
 
+  $scope.queueActiveTabs={
+    "text":true,
+    "json":false
+  };
+
   $scope.init= function() {            
     id = $stateParams.appId;
 
@@ -193,6 +198,8 @@ tableService){
   };
 
   $scope.initAddNewMessage=function(){
+    $scope.queueActiveTabs.text=true;
+    $scope.queueActiveTabs.json=false; 
     $scope.newMessage={
       msg:null,
       timeout:null,
@@ -211,7 +218,11 @@ tableService){
 
         if($scope.newMessage.expires){
           $scope.newMessage.expires=new Date($scope.newMessage.expires);
-        } 
+        }        
+
+        if(_isJsonString($scope.newMessage.msg)){
+          $scope.newMessage.msg=JSON.parse($scope.newMessage.msg);
+        }
 
         $scope.queueModalError=null; 
         $scope.addMsgSpinner=true;
@@ -248,8 +259,23 @@ tableService){
   };  
 
   $scope.initEditMessage=function(msgObj){
+    $scope.queueActiveTabs.text=true;
+    $scope.queueActiveTabs.json=false; 
+
     $scope.requestedIndex=$scope.queueMessagesList.indexOf(msgObj);
-    $scope.requestedMessage=angular.copy(msgObj);
+    $scope.requestedMessage=angular.copy(msgObj);    
+
+    if(_isJsonString($scope.requestedMessage.message)){
+      $scope.requestedMessage.message=JSON.parse($scope.requestedMessage.message);      
+    }
+
+    if(Object.prototype.toString.call($scope.requestedMessage.message)=="[object Object]" || Object.prototype.toString.call($scope.requestedMessage.message)=="[object Array]"){
+      $scope.queueActiveTabs.text=false;
+      $scope.queueActiveTabs.json=true;
+      
+      $scope.requestedMessage.message=JSON.stringify($scope.requestedMessage.message,null,2);
+    }   
+    
     $scope.requestedSplDelay=$scope.requestedMessage.delay;
     $("#md-editmsg").modal();
   };
@@ -263,6 +289,10 @@ tableService){
     if(!validate){
      
       if($scope.requestedMessage.message){
+
+        if(_isJsonString($scope.requestedMessage.message)){
+          $scope.requestedMessage.message=JSON.parse($scope.requestedMessage.message);
+        }
 
         if($scope.requestedMessage.expires){
           $scope.requestedMessage.expires=new Date($scope.requestedMessage.expires);
@@ -332,6 +362,17 @@ tableService){
       $scope.openMsgAdvanceOptions=false;
     }else{
       $scope.openMsgAdvanceOptions=true;
+    }
+  };
+
+  $scope.activateTab=function(tabType){
+    if(tabType=="text"){
+      $scope.queueActiveTabs.text=true;
+      $scope.queueActiveTabs.json=false;  
+    }
+    if(tabType=="json"){
+      $scope.queueActiveTabs.text=false;
+      $scope.queueActiveTabs.json=true;  
     }
   };
 

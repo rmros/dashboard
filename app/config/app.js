@@ -76,6 +76,25 @@ if(window.location.hostname=="localhost"){
   twoCheckoutCredentials.mode="sandbox";
 }
 
+
+function _isJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+};
+
+function _isJsonObject(obj) {
+    try {
+        JSON.stringify(obj);
+    } catch (e) {
+        return false;
+    }
+    return true;
+};
+
 var pricingPlans=[{
   id:1,
   label:"Free Plan",
