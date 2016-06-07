@@ -8728,3 +8728,12 @@ ul.timeline li > .date {
   border-right: 9px solid #495B70; 
   border-bottom: 6px solid transparent; 
 }
+
+.starus-github{
+  position:absolute;
+  width:99.99vw;
+  height:99.99vh;
+  left:1px;
+  background-color: rgba(200, 200, 207, 0.46);
+}
+

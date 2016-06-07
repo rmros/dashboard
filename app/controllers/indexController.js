@@ -84,6 +84,8 @@ app.controller('indexController',
     $scope.pricingPlans=pricingPlans;
     $scope.cardCountries=paymentCountries;
 
+    $scope.starusGithubModel=true;    
+
     $rootScope.getAppUsageDetails=function(appIdArray){
       //Load and errors
       for(var i=0;i<appIdArray.length;++i){
@@ -545,7 +547,9 @@ app.controller('indexController',
     });
   };
 
-     
+  $scope.hideStarusGithubModel=function(){
+    $scope.starusGithubModel=false;
+  };   
 
   $scope.updateNotificationsSeen=function(){
     notificationService.updateNotificationsSeen()
