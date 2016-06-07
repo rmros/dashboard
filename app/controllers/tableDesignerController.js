@@ -26,6 +26,8 @@ app.controller('tableDesignerController',
 
     $scope.openTableOptions=[];
     $scope.closeTableOptions=[];
+
+    $scope.tableTypes=["Custom","Role","User","Device"];
       
     $scope.initialize = function() {
         $rootScope.page='tableDesigner';
@@ -95,9 +97,9 @@ app.controller('tableDesignerController',
     };
 
     $scope.initiateTableSettings=function(){
-        $scope.tableTypes = tableTypeService.getTableTypes();
-        $scope.newTableType = "custom";
-        $scope.selectedTableType=_.first(_.where($scope.tableTypes, {type:'custom'}));
+        //$scope.tableTypes = tableTypeService.getTableTypes();
+        $scope.newTableType = "Custom";
+        //$scope.selectedTableType=_.first(_.where($scope.tableTypes, {type:'custom'}));
         $scope.tableError=null;
         
         $scope.addTablePopup=true;
@@ -112,23 +114,37 @@ app.controller('tableDesignerController',
             autoAdjust:false,
             content: "#add-new-table-popup",
             autoScroll:true
-        });
+        });        
     };
 
     $scope.cancelAddtable=function(){
-     $scope.tableErrorForCreate=null; 
-     $scope.addTablePopup=false;  
-     $scope.newTableName=null;   
+      $scope.tableErrorForCreate=null; 
+      $scope.addTablePopup=false;  
+      $scope.newTableName=null;   
     };
 
     $scope.selectType=function(newTableType){
-      $scope.selectedTableType=_.first(_.where($scope.tableTypes, {type:newTableType}));
-      $scope.newTableName = angular.copy($scope.selectedTableType.name);
+      //$scope.selectedTableType=_.first(_.where($scope.tableTypes, {type:newTableType}));
+      //$scope.newTableName = angular.copy($scope.selectedTableType.name);    
+      if(newTableType!="Custom"){
+        $scope.newTableName=angular.copy(newTableType);
+      }
+      var tableAdded=_.find($scope.currentProject.tables, function(eachObj){ 
+        if(eachObj.name==newTableType){ 
+          return true;          
+        }
+      });
+      $scope.tableErrorForCreate=null;
+      if(tableAdded){
+        $scope.tableErrorForCreate="This table already exists.";
+        $scope.newTableName=null;
+      }
+
     };
 
     $scope.addNewTable = function() {
-      $scope.tableErrorForCreate=null;
-     
+      $scope.tableErrorForCreate=null;     
+
       if($scope.newTableName){
         $scope.isCreatingTable=true;
         $scope.addTablePopup=false;      
@@ -142,22 +158,30 @@ app.controller('tableDesignerController',
 
         tableService.saveTable(table)
         .then(function(respTable){
+
+          var tTypeIndex=$scope.tableTypes.indexOf($scope.newTableName);
+          if(tTypeIndex>-1){
+            $scope.tableTypes.splice(tTypeIndex,1);
+          }
+
           $rootScope.currentProject.tables[index]=respTable;          
           //$scope.goToDataBrowser(respTable);           
           $scope.newTableName =null; 
+          $scope.newTableType = "Custom";
           $scope.isCreatingTable=false;
 
           //Stop Spinner and Show Tickmark for sec
           $scope.tableCreateSpinner[index]=false;
           $scope.tableCreatedTick[index]=true;
           $scope.newTableAdded=true;
+
           $timeout(function(){ 
             $scope.tableCreatedTick[index]=false;
           }, 1300);
 
           $timeout(function(){ 
             $scope.newTableAdded=false;
-          }, 2000);
+          }, 2000);                   
         },
         function(error){            
           //Remove              
@@ -260,9 +284,18 @@ app.controller('tableDesignerController',
         if(!data){                    
           $rootScope.currentProject.tables=[];                       
         }else if(data){                        
-          $rootScope.currentProject.tables=data;     
+          $rootScope.currentProject.tables=data;          
+
+          for(var i=0;i<data.length;++i){
+            for(var j=0;j<$scope.tableTypes.length;++j){
+              if($scope.tableTypes[j]==data[i].name){
+                $scope.tableTypes.splice(j,1);
+              }
+            }
+          }    
         } 
        
+
     }, function(error){  
       $rootScope.dataLoading=false;     
       $scope.loadingError="We cannot load your tables at this point of time. Please try again later";

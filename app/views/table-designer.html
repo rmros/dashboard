@@ -153,9 +153,20 @@
                         <!--Add new table Pop up-->
                         <div id="add-new-table-popup" class="popup-div effect1" >
                           <div class="innerpop">
+
                             <div class="new-table-name">
-                              <span>Enter new table name</span>
-                              <input class="newtable" type="text" ng-disabled="!selectedTableType.isRenamable" ng-keyup="checkErrorsForCreate(newTableName,currentProject.tables,'table')" ng-model="$parent.newTableName" placeholder="New Table Name" required style="margin-top:6px;">
+                              <span>What type of table do you need?</span>
+
+                              <select class="default-inputfield" ng-model="$parent.newTableType" ng-change="selectType($parent.newTableType)" style="margin-top:6px;width:100%;border:1px solid #B2B2B2;padding:2px;height:25px;">
+                                <option ng-repeat="ttype in tableTypes" ng-selected="$parent.newTableType==ttype" value="{{ttype}}">{{ttype}}</option>                               
+                              </select>                              
+                              
+                            </div>
+
+                            <div  class="new-table-name" style="margin-top:10px;">
+                              <span ng-if="newTableType=='Custom'">Enter new table name</span>
+                              <span ng-if="newTableType!='Custom'" style="color:#B2B2B2;">Enter new table name</span>
+                              <input class="newtable" type="text" ng-disabled="newTableType!='Custom'" ng-keyup="checkErrorsForCreate(newTableName,currentProject.tables,'table')" ng-model="$parent.newTableName" placeholder="New Table Name" required style="margin-top:6px;">
                             </div>                            
 
                             <div style="margin-top:10px;" data-ng-show="!tableErrorForCreate">
