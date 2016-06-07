@@ -564,7 +564,7 @@ app.controller('indexController',
       $rootScope.notifications.splice(notificationIndex,1);
 
       if($rootScope.notifications.length==0){
-        //$(".notify-menu-anchor").click();
+        //$(".notify-menu-anchor").hide();
       }
 
       if(project && project.appId){       
