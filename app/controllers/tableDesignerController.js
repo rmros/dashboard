@@ -171,10 +171,13 @@ app.controller('tableDesignerController',
         tableService.saveTable(table)
         .then(function(respTable){
 
-          var tTypeIndex=$scope.tableTypes.indexOf($scope.newTableName);
-          if(tTypeIndex>-1){
-            $scope.tableTypes.splice(tTypeIndex,1);
-          }         
+          if($scope.newTableName.toLowerCase()!="custom"){
+            var tTypeIndex=$scope.tableTypes.indexOf($scope.newTableName);
+            if(tTypeIndex>-1){
+              $scope.tableTypes.splice(tTypeIndex,1);
+            }
+          }
+                  
 
           $rootScope.currentProject.tables[index]=respTable;          
           //$scope.goToDataBrowser(respTable);           
@@ -301,7 +304,7 @@ app.controller('tableDesignerController',
 
           for(var i=0;i<data.length;++i){
             for(var j=0;j<$scope.tableTypes.length;++j){
-              if($scope.tableTypes[j]==data[i].name){
+              if($scope.tableTypes[j]==data[i].name && (data[i].name.toLowerCase()!="custom")){
                 $scope.tableTypes.splice(j,1);
               }
             }
