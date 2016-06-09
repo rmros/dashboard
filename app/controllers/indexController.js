@@ -84,6 +84,8 @@ app.controller('indexController',
     $scope.pricingPlans=pricingPlans;
     $scope.cardCountries=paymentCountries;
 
+    $scope.starusGithubModel=true;    
+
     $rootScope.getAppUsageDetails=function(appIdArray){
       //Load and errors
       for(var i=0;i<appIdArray.length;++i){
@@ -112,7 +114,7 @@ app.controller('indexController',
             $rootScope.storageUsed[list.storage[i].appId]=storagePercentageObj;
             $rootScope.storageLoading[list.storage[i].appId]=false;
           }
-        }
+        }       
         
 
       },function(error){
@@ -545,7 +547,9 @@ app.controller('indexController',
     });
   };
 
-     
+  $scope.hideStarusGithubModel=function(){
+    $scope.starusGithubModel=false;
+  };   
 
   $scope.updateNotificationsSeen=function(){
     notificationService.updateNotificationsSeen()
@@ -564,7 +568,7 @@ app.controller('indexController',
       $rootScope.notifications.splice(notificationIndex,1);
 
       if($rootScope.notifications.length==0){
-        //$(".notify-menu-anchor").click();
+        //$(".notify-menu-anchor").hide();
       }
 
       if(project && project.appId){       
@@ -649,7 +653,11 @@ app.controller('indexController',
 
   $rootScope.goToProfile=function(){
     window.location.href="#/profile";
-  };  
+  };
+
+  $rootScope.goToPage=function(appId,pageName){
+    window.location.href="#/"+appId+"/"+pageName;
+  };   
 
   $scope.renderHtml = function (htmlCode) {
     return $sce.trustAsHtml(htmlCode);

@@ -205,6 +205,21 @@ app.factory('projectService', ['$q','$http','$rootScope',function ($q,$http,$roo
         return  q.promise;
       };
 
+      global.changeRole = function(appId,userId,role){
+        var q=$q.defer();
+        $http.get(frontendServerURL+'/app/'+appId+'/changerole/'+userId+'/'+role).
+        success(function(data, status, headers, config) {
+          q.resolve(data);
+        }).
+        error(function(data, status, headers, config) {
+          q.reject(data);
+          if(status===401){
+            $rootScope.logOut();
+          }
+        });        
+        return  q.promise;
+      };
+
     return global;
 
 }]);

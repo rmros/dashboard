@@ -555,7 +555,7 @@ CB.toJSON = function(thisObj) {
      if(thisObj instanceof CB.CloudCache)
         tableName=thisObj.document.name;
 
-    var obj= CB._clone(thisObj,id,latitude,longitude,tableName,columnName);
+    var obj= CB._clone(thisObj,id,longitude,latitude,tableName,columnName);
 
     if (!obj instanceof CB.CloudObject || !obj instanceof CB.CloudFile || !obj instanceof CB.CloudGeoPoint
         || !obj instanceof CB.CloudTable || !obj instanceof CB.Column || !obj instanceof CB.QueueMessage || !obj instanceof CB.CloudQueue || !obj instanceof CB.CloudCache) {
@@ -673,7 +673,7 @@ CB.fromJSON = function(data, thisObj) {
             if(document._type === "cache"){
                 name = document.name;
             }
-            var obj = CB._getObjectByType(document._type,id,latitude,longitude,name);
+            var obj = CB._getObjectByType(document._type,id,longitude,latitude,name);
             obj.document = document;
 
             thisObj = obj;
@@ -695,7 +695,7 @@ CB.fromJSON = function(data, thisObj) {
     }
 };
 
-CB._getObjectByType = function(type,id,latitude,longitude,name){
+CB._getObjectByType = function(type,id,longitude,latitude,name){
 
     var obj = null;
 
@@ -729,7 +729,9 @@ CB._getObjectByType = function(type,id,latitude,longitude,name){
     }
 
     if(type === 'point'){
-        obj = new CB.CloudGeoPoint(latitude,longitude);
+        obj = new CB.CloudGeoPoint(0,0);
+        obj.document.latitude=Number(latitude);
+        obj.document.longitude=Number(longitude);
     }
 
     if(type === 'table'){
@@ -776,10 +778,10 @@ if(CB._isNode){
 }
 
 
-CB._clone=function(obj,id,latitude,longitude,tableName,columnName){
+CB._clone=function(obj,id,longitude,latitude,tableName,columnName){
     var n_obj = {};
     if(obj.document._type && obj.document._type != 'point') {
-        n_obj = CB._getObjectByType(obj.document._type,id,latitude,longitude,tableName,columnName);
+        n_obj = CB._getObjectByType(obj.document._type,id,longitude,latitude,tableName,columnName);
         var doc=obj.document;
         var doc2={};
         for (var key in doc) {
@@ -1041,11 +1043,18 @@ CB._defaultColumns = function(type) {
         socialAuth.document.isDeletable = false;
         socialAuth.document.isEditable = false;
 
+        var verified = new CB.Column('verified');
+        verified.dataType = 'Boolean';        
+        verified.required = false;
+        verified.document.isDeletable = false;
+        verified.document.isEditable = false;         
+
         col.push(username);
         col.push(roles);
         col.push(password);
         col.push(email);
         col.push(socialAuth);
+        col.push(verified);
         return col;
     }else if(type === "role") {
         var name = new CB.Column('name');
@@ -1169,7 +1178,16 @@ CB._isJsonString = function(str) {
         return false;
     }
     return true;
-}
+};
+
+CB._isJsonObject= function(obj) {
+    try {
+        JSON.stringify(obj);
+    } catch (e) {
+        return false;
+    }
+    return true;
+};
 
 //Description : This fucntion get the content of the cookie .
 //Params : @name : Name of the cookie.
@@ -1254,6 +1272,88 @@ if(typeof(location) !== 'undefined' && location.search){
     if(cbtoken && cbtoken!==""){
         localStorage.setItem('sessionID', cbtoken);
     }    
+}
+
+//Description : returns browser name 
+//Params : null       
+//Returns : browser name. 
+CB._getThisBrowserName= function(){
+
+  // check if library is used as a Node.js module
+  if(typeof window !== 'undefined') {
+
+      // store navigator properties to use later
+      var userAgent = 'navigator' in window && 'userAgent' in navigator && navigator.userAgent.toLowerCase() || '';
+      var vendor = 'navigator' in window && 'vendor' in navigator && navigator.vendor.toLowerCase() || '';
+      var appVersion = 'navigator' in window && 'appVersion' in navigator && navigator.appVersion.toLowerCase() || '';
+
+      var is={};
+
+      // is current browser chrome?
+      is.chrome = function() {
+          return /chrome|chromium/i.test(userAgent) && /google inc/.test(vendor);
+      };
+     
+      // is current browser firefox?
+      is.firefox = function() {
+          return /firefox/i.test(userAgent);
+      };
+     
+      // is current browser edge?
+      is.edge = function() {
+          return /edge/i.test(userAgent);
+      };
+      
+      // is current browser internet explorer?
+      // parameter is optional
+      is.ie = function(version) {
+          if(!version) {
+              return /msie/i.test(userAgent) || "ActiveXObject" in window;
+          }
+          if(version >= 11) {
+              return "ActiveXObject" in window;
+          }
+          return new RegExp('msie ' + version).test(userAgent);
+      };
+      
+      // is current browser opera?
+      is.opera = function() {
+          return /^Opera\//.test(userAgent) || // Opera 12 and older versions
+              /\x20OPR\//.test(userAgent); // Opera 15+
+      };
+     
+      // is current browser safari?
+      is.safari = function() {
+          return /safari/i.test(userAgent) && /apple computer/i.test(vendor);
+      };
+
+      if(is.chrome()){
+        return "chrome";
+      }
+
+      if(is.firefox()){
+        return "firefox";
+      }
+
+      if(is.edge()){
+        return "edge";
+      }
+
+      if(is.ie()){
+        return "ie";
+      }
+
+      if(is.opera()){
+        return "opera";
+      }
+
+      if(is.safari()){
+        return "safari";
+      }
+
+      return "unidentified";
+
+  } 
 }
 
 if(!CB._isNode) {
@@ -9186,10 +9286,11 @@ CB.CloudObject.prototype.delete = function(callback) { //delete an object matchi
     var url = CB.apiUrl + "/data/" + CB.appId +'/'+thisObj.document._tableName;
 
     CB._request('PUT',url,params).then(function(response){
+        thisObj = CB.fromJSON(JSON.parse(response),thisObj);
         if (callback) {
-            callback.success(response);
+            callback.success(thisObj);
         } else {
-            def.resolve(response);
+            def.resolve(thisObj);
         }
     },function(err){
         if(callback){
@@ -9354,13 +9455,90 @@ CB.CloudQuery = function(tableName) { //constructor for the class CloudQuery
     this.limit = 10; //default limit is 10
 };
 
+CB.CloudQuery.prototype.search = function(search, language, caseSensitive, diacriticSensitive) {    
+
+    //Validations
+    if(typeof search !=="string"){
+        throw "First parameter is required and it should be a string.";
+    }
+
+    if((language !==null) && (typeof language !=="undefined") && (typeof language !=="string")){
+        throw "Second parameter should be a string.";
+    }
+
+    if((caseSensitive!==null) && (typeof caseSensitive !=="undefined") && (typeof caseSensitive !=="boolean")){
+        throw "Third parameter should be a boolean."
+    }
+
+    if((diacriticSensitive!==null) && (typeof diacriticSensitive !=="undefined") && (typeof diacriticSensitive !=="boolean")){
+        throw "Fourth parameter should be a boolean.";
+    }
+
+    //Set the fields
+    this.query["$text"]={};
+    if(typeof search ==="string"){
+        this.query["$text"]["$search"]=search; 
+    }
+
+    if((language !==null) && (typeof language !=="undefined") && (typeof language ==="string")){
+        this.query["$text"]["$language"]=language;
+    }
+
+    if((caseSensitive!==null) && (typeof caseSensitive !=="undefined") && (typeof caseSensitive ==="boolean")){
+        this.query["$text"]["$caseSensitive"]=caseSensitive; 
+    }
+
+    if((diacriticSensitive!==null) && (typeof diacriticSensitive !=="undefined") && (typeof diacriticSensitive ==="boolean")){
+        this.query["$text"]["$diacriticSensitive"]=diacriticSensitive;
+    }
+    
+    return this;
+};
+
 // Logical operations
 CB.CloudQuery.or = function(obj1, obj2) {
-    if (!obj1.tableName === obj2.tableName) {
-        throw "Table names are not same";
+
+    var tableName;
+    var queryArray=[];
+
+    if(Object.prototype.toString.call(obj1)==="[object Array]"){
+        tableName=obj1[0].tableName;
+        for(var i=0;i<obj1.length;++i){
+            if(obj1[i].tableName!=tableName){
+                throw "Table names are not same";
+                break;
+            }
+            if(!obj1[i] instanceof CB.CloudQuery){
+                throw "Array items are not instanceof of CloudQuery";
+                break;
+            }
+            queryArray.push(obj1[i].query);
+        }
     }
-    var obj = new CB.CloudQuery(obj1.tableName);
-    obj.query["$or"] = [obj1.query, obj2.query];
+
+    if(typeof obj2 !== 'undefined' && typeof obj1 !== 'undefined' && Object.prototype.toString.call(obj1)!=="[object Array]"){
+
+        if(Object.prototype.toString.call(obj2)==="[object Array]"){
+            throw "First and second parameter should be an instance of CloudQuery object";
+        }
+        if (!obj1.tableName === obj2.tableName) {
+            throw "Table names are not same";
+        }        
+        if(!obj1 instanceof CB.CloudQuery){
+            throw "Data passed is not an instance of CloudQuery";
+        }
+        if(!obj2 instanceof CB.CloudQuery){
+            throw "Data passed is not an instance of CloudQuery";
+        }
+        tableName=obj1.tableName;
+        queryArray.push(obj1.query);
+        queryArray.push(obj2.query);
+    }
+    if(typeof tableName === 'undefined'){
+        throw "Invalid operation";
+    }     
+    var obj = new CB.CloudQuery(tableName);   
+    obj.query["$or"] = queryArray;
     return obj;
 }
 
@@ -9939,7 +10117,7 @@ CB.CloudQuery.prototype.startsWith = function(columnName, value) {
 }
 
 
-CB.CloudQuery.prototype.regex = function(columnName, value) {
+CB.CloudQuery.prototype.regex = function(columnName, value, isCaseInsensitive) {
     if (columnName === 'id' )
         columnName = '_' + columnName;
 
@@ -9948,11 +10126,15 @@ CB.CloudQuery.prototype.regex = function(columnName, value) {
     } 
 
     this.query[columnName]["$regex"] = value;
+
+    if(isCaseInsensitive){
+        this.query[columnName]["$options"] = "i";
+    }
     
     return this;
 }
 
-CB.CloudQuery.prototype.substring = function(columnName, value) {
+CB.CloudQuery.prototype.substring = function(columnName, value, isCaseInsensitive) {
 
       if(typeof columnName === "string"){
         columnName = [columnName];
@@ -9966,17 +10148,27 @@ CB.CloudQuery.prototype.substring = function(columnName, value) {
                 var obj = {};
                 obj[columnName[j]] = {};
                 obj[columnName[j]]["$regex"] = ".*"+value[i]+".*";
+
+                if(isCaseInsensitive){
+                    obj[columnName[j]]["$options"] = "i";                   
+                }
+
                 this.query["$or"].push(obj);
             }
           }else{
-             if(columnName.length===1){
-                this.regex(columnName[j],".*"+value+".*");
+            if(columnName.length===1){
+                this.regex(columnName[j],".*"+value+".*",isCaseInsensitive);
             }else{
                 if(!this.query["$or"])
                     this.query["$or"] = [];
                 var obj = {};
                 obj[columnName[j]] = {};
                 obj[columnName[j]]["$regex"] = ".*"+value+".*";
+
+                if(isCaseInsensitive){                    
+                    obj[columnName[j]]["$options"] = "i";
+                }
+
                 this.query["$or"].push(obj);
             }
           }
@@ -11871,7 +12063,7 @@ CB.CloudTable.prototype.save = function(callback){
  Column.js
  */
 
- CB.Column = function(columnName, dataType, required, unique){
+CB.Column = function(columnName, dataType, required, unique){
    this.document = {};
    if(columnName){
      CB._columnNameValidation(columnName);
@@ -11886,22 +12078,31 @@ CB.CloudTable.prototype.save = function(callback){
      this.document.dataType = "Text";
    }
 
-   if(typeof(required) === 'boolean')
+   if(typeof(required) === 'boolean'){
      this.document.required = required;
-   else
+   }
+   else{
      this.document.required = false;
+   }
 
-   if(typeof(unique) === 'boolean')
+   if(typeof(unique) === 'boolean'){
      this.document.unique = unique;
-   else
+   }
+   else{
      this.document.unique = false;
+   }
+
+   if(dataType==="Text"){
+     this.document.isSearchable = true;
+   }  
+
    this.document.relatedTo = null;
    this.document.relationType = null;
 
    this.document.isDeletable = true;
    this.document.isEditable = true;
    this.document.isRenamable = false;
-
+   this.document.editableByMasterKey = false; 
 };
 
 Object.defineProperty(CB.Column.prototype,'name',{
@@ -11948,6 +12149,24 @@ Object.defineProperty(CB.Column.prototype,'required',{
     },
     set: function(required) {
         this.document.required = required;
+    }
+});
+
+Object.defineProperty(CB.Column.prototype,'editableByMasterKey',{
+    get: function() {
+        return this.document.editableByMasterKey;
+    },
+    set: function(editableByMasterKey) {
+        this.document.editableByMasterKey = editableByMasterKey;
+    }
+});
+
+Object.defineProperty(CB.Column.prototype,'isSearchable',{
+    get: function() {
+        return this.document.isSearchable;
+    },
+    set: function(isSearchable) {
+        this.document.isSearchable = isSearchable;
     }
 });
 
@@ -13352,20 +13571,24 @@ CB.CloudPush.send = function(data,query,callback) {
     if(!query){
         var pushQuery = new CB.CloudQuery(tableName);
     }
-	
+
     var params=JSON.stringify({
-        query    : pushQuery.query,        
-        sort     : pushQuery.sort,
-        limit    : pushQuery.limit,
-        skip     : pushQuery.skip,
-        key      : CB.appKey,        
-        data     : data,
+        query      : pushQuery.query,        
+        sort       : pushQuery.sort,
+        limit      : pushQuery.limit,
+        skip       : pushQuery.skip,
+        key        : CB.appKey,        
+        data       : data
     });  
 
-    url = CB.apiUrl + "/push/" + CB.appId + '/send';
+    var url = CB.apiUrl + "/push/" + CB.appId + '/send';
 
     CB._request('POST',url,params).then(function(response){
-        var object = JSON.parse(response);
+        var object=response;
+        if(CB._isJsonString(response)){
+            object = JSON.parse(response);
+        }
+        
         if (callback) {
             callback.success(object);
         } else {
@@ -13373,10 +13596,9 @@ CB.CloudPush.send = function(data,query,callback) {
         }
     },function(err){
 
-        try{
+        if(CB._isJsonString(err)){
             err = JSON.parse(err);
-        }catch(e){
-        }
+        }    
         
         if(callback){
             callback.error(err);
@@ -13389,6 +13611,331 @@ CB.CloudPush.send = function(data,query,callback) {
         return def;
     }
 };    
+
+
+
+CB.CloudPush.enableWebNotifications = function(callback) {
+
+    var def;
+    if (!callback) {
+        def = new CB.Promise();
+    }
+
+    //Check document
+    if(typeof(document) !== 'undefined'){
+
+        CB.CloudPush._requestBrowserNotifications().then(function(response){
+
+            if('serviceWorker' in navigator) {
+                return navigator.serviceWorker.register('serviceWorker.js',{scope: './'});
+            }else { 
+                var noServerDef = new CB.Promise(); 
+                noServerDef.reject('Service workers aren\'t supported in this browser.');  
+                return noServerDef;
+            }
+
+        }).then(function(registration){
+
+            if (!(registration.showNotification)) { 
+                var noServerDef = new CB.Promise(); 
+                noServerDef.reject('Notifications aren\'t supported on service workers.');  
+                return noServerDef;                   
+            }else{
+                return CB.CloudPush._subscribe();
+            }
+
+        }).then(function(subscription){
+
+            //PublicKey for secure connection with server
+            var browserKey = subscription.getKey ? subscription.getKey('p256dh') : '';
+            browserKey=browserKey ? btoa(String.fromCharCode.apply(null, new Uint8Array(browserKey))) : '';  
+
+            //AuthKey for secure connection with server
+            var authKey = subscription.getKey ? subscription.getKey('auth') : '';
+            authKey=authKey ? btoa(String.fromCharCode.apply(null, new Uint8Array(authKey))) : '';
+                     
+
+            CB.CloudPush._addDevice(CB._getThisBrowserName(), subscription.endpoint, browserKey, authKey, {
+                success : function(obj){
+                    if (callback) {
+                        callback.success();
+                    } else {
+                        def.resolve();
+                    }
+                },error : function(error){
+                    if(callback){
+                        callback.error(error);
+                    }else {
+                        def.reject(error);
+                    }
+                }
+            });        
+
+        },function(error){
+            if(callback){
+                callback.error(error);
+            }else {
+                def.reject(error);
+            }
+        });
+
+    }else{
+        if(callback){
+            callback.error("Browser document not found");
+        }else {
+            def.reject("Browser document not found");
+        }
+    } 
+
+    if (!callback) {
+        return def;
+    }   
+};
+
+
+CB.CloudPush.disableWebNotifications = function(callback) {
+
+    var def;
+    if (!callback) {
+        def = new CB.Promise();
+    }
+
+    //Check document
+    if(typeof(document) !== 'undefined'){
+
+        CB.CloudPush._getSubscription().then(function(subscription){   
+
+            //No subscription 
+            if(!subscription){
+                if (callback) {
+                    callback.success();
+                } else {
+                    def.resolve();
+                } 
+            }
+
+            if(subscription){
+                var promises=[];
+
+                //We have a subcription, so call unsubscribe on it
+                promises.push(subscription.unsubscribe());
+                //Remove Device Objects
+                promises.push(CB.CloudPush._deleteDevice(CB._getThisBrowserName(), subscription.endpoint));        
+
+                CB.Promise.all(promises).then(function(successful) {
+                    if (callback) {
+                        callback.success();
+                    } else {
+                        def.resolve();
+                    }
+                },function(error) {                     
+                    if (callback) {
+                        callback.error(error);
+                    } else {
+                        def.reject(error);
+                    }                  
+                });
+            }
+
+        },function(error){
+            if(callback){
+                callback.error(error);
+            }else {
+                def.reject(error);
+            }
+        });
+
+    }else{
+        if(callback){
+            callback.error("Browser document not found");
+        }else {
+            def.reject("Browser document not found");
+        }
+    } 
+
+    if (!callback) {
+        return def;
+    }   
+};
+
+
+CB.CloudPush._subscribe = function (){
+
+    var def = new CB.Promise();
+
+    // Check if push messaging is supported  
+    if (!('PushManager' in window)) {  
+        return def.reject('Push messaging isn\'t supported.');         
+    }
+
+    navigator.serviceWorker.ready.then(function(reg) {
+
+        reg.pushManager.getSubscription().then(function(subscription) { 
+
+            if (!subscription) {  
+                reg.pushManager.subscribe({userVisibleOnly: true}).then(function(subscription) {                
+                    def.resolve(subscription);
+                }).catch(function(err) {                                
+                    def.reject(err);               
+                });
+            }else{
+                def.resolve(subscription);
+            }     
+      
+        }).catch(function(err) {  
+            def.reject(err);  
+        });   
+
+    },function(error){
+        def.reject(error);
+    });
+
+    return def;
+};
+
+
+CB.CloudPush._getSubscription = function(){
+
+    var def = new CB.Promise();
+    
+    navigator.serviceWorker.ready.then(function(reg) {
+
+        reg.pushManager.getSubscription().then(function(subscription) { 
+
+            if (!subscription) {  
+                def.resolve(null);
+            }else{
+                def.resolve(subscription);
+            }     
+      
+        }).catch(function(err) {  
+            def.reject(err);  
+        });   
+
+    },function(error){
+        def.reject(error);
+    });
+
+    return def;
+};
+ 
+
+CB.CloudPush._requestBrowserNotifications = function() {
+
+    var def = new CB.Promise();
+
+    if (!("Notification" in window)) {        
+        def.reject("This browser does not support system notifications");
+    }else if (Notification.permission === "granted") {  
+
+        def.resolve("Permission granted");
+
+    }else if (Notification.permission !== 'denied') { 
+
+        Notification.requestPermission(function (permission) {   
+
+          if(permission === "granted") {  
+            def.resolve("Permission granted");      
+          }
+
+          if(permission === "denied"){
+            def.reject("Permission denied");
+          }
+
+        });
+    }
+
+    return def;
+};
+
+//save the device document to the db
+CB.CloudPush._addDevice = function(deviceOS, endPoint, browserKey, authKey, callback) { 
+    
+    var def;
+    CB._validate();
+
+    //Set Fields
+    var thisObj = new CB.CloudObject('Device');
+    thisObj.set('deviceOS', deviceOS);
+    thisObj.set('deviceToken', endPoint);
+    thisObj.set('metadata', {browserKey:browserKey,authKey:authKey});
+    
+    if (!callback) {
+        def = new CB.Promise();
+    }    
+   
+    var xmlhttp = CB._loadXml();
+    var params=JSON.stringify({
+        document: CB.toJSON(thisObj),
+        key: CB.appKey
+    });
+
+    var url = CB.apiUrl + "/push/" + CB.appId;
+    CB._request('PUT',url,params).then(function(response){
+        thisObj = CB.fromJSON(JSON.parse(response),thisObj);
+        if (callback) {
+            callback.success(thisObj);
+        } else {
+            def.resolve(thisObj);
+        }
+    },function(err){
+        if(callback){
+            callback.error(err);
+        }else {
+            def.reject(err);
+        }
+    });
+  
+    if (!callback) {
+        return def;
+    }
+};
+
+
+CB.CloudPush._deleteDevice = function(deviceOS, endPoint, callback) { //delete an object matching the objectId
+    if (!CB.appId) {
+        throw "CB.appId is null.";
+    }     
+   
+    var def;
+    if (!callback) {
+        def = new CB.Promise();
+    }
+
+    var data={
+        deviceOS:deviceOS,
+        deviceToken:endPoint
+    };
+
+    var params=JSON.stringify({
+        key: CB.appKey,
+        document: data,
+        method:"DELETE"
+    });
+    
+    var url = CB.apiUrl + "/push/" + CB.appId;
+
+    CB._request('PUT',url,params).then(function(response){
+        if (callback) {
+            callback.success(response);
+        } else {
+            def.resolve(response);
+        }
+    },function(err){
+        if(callback){
+            callback.error(err);
+        }else {
+            def.reject(err);
+        }
+    });
+
+    if (!callback) {
+        return def;
+    }
+};
+
+
+
 /*
  CloudUser
  */
@@ -13584,15 +14131,22 @@ CB.CloudUser.prototype.signUp = function(callback) {
     });
     url = CB.apiUrl + "/user/" + CB.appId + "/signup" ;
 
-    CB._request('POST',url,params).then(function(response){
-        CB.fromJSON(JSON.parse(response),thisObj);
-        CB.CloudUser.current = thisObj;
-        if (callback) {
-            callback.success(thisObj);
-        } else {
-            def.resolve(thisObj);
+    CB._request('POST',url,params).then(function(user){
+
+        var response=null;
+        if(user && user!=""){
+            CB.fromJSON(JSON.parse(user),thisObj);
+            CB.CloudUser.current = thisObj;       
+            CB.CloudUser._setCurrentUser(thisObj);
+            response=thisObj;
         }
-        CB.CloudUser._setCurrentUser(thisObj);
+        
+        if (callback) {
+            callback.success(response);
+        } else {
+            def.resolve(response);
+        }
+
     },function(err){
         if(callback){
             callback.error(err);
@@ -13715,17 +14269,12 @@ CB.CloudUser.authenticateWithProvider = function(dataJson, callback) {
 
     if(dataJson.provider.toLowerCase()==="twiter" && !dataJson.accessSecret) {
         throw "accessSecret is required for provider twitter.";
-    }
-
-    //if(dataJson.provider.toLowerCase()==="google" && !dataJson.refreshToken) {
-    //throw "refreshToken is required for provider google.";
-    //}      
+    }         
   
     var params=JSON.stringify({ 
         provider: dataJson.provider,
         accessToken: dataJson.accessToken, 
-        accessSecret: dataJson.accessSecret, 
-        refreshToken: dataJson.refreshToken,    
+        accessSecret: dataJson.accessSecret,           
         key: CB.appKey
     });
 

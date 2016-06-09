@@ -477,7 +477,7 @@
 
       </div>
       <div class="table-strip-info flex-general-row-wrapper pull-right cf">          
-        <div class="pull-right;" style="width:99.99%;">       
+        <div class="pull-right;" style="width:99.99%;">           
 
           <!--Row selection info-->
           <div class="data-info-div row-info"  ng-if="selectedRowsCount>0 && !commonSpinner && !commonSaved">
@@ -518,6 +518,13 @@
             </p>
           </div>
           <!--/Common Saved Tick-->
+
+          <!--Total number of items in table-->
+          <div ng-if="!commonSpinner" class="data-info-div row-info">
+            <p ng-if="countItemsInTable==1" >{{countItemsInTable}} item</p>
+            <p ng-if="countItemsInTable!=1" >{{countItemsInTable}} items</p>             
+          </div>
+          <!--Total number of items in table-->
 
         </div>     
       </div>  
@@ -940,8 +947,59 @@
                             </div>
 
                         </div> 
-                        <!---->        
+                        <!---->
                       </div>
+
+                      <!---->
+                      <!--Toggler::Column editable by master key-->
+                      <div  class="flex-add-Bx" style="margin-top:8.5px;">
+                        
+                        <div class="add-Bx">
+                            <div  class="flex-add-Bx">
+                                <div class="add-Bx">
+                                  <label ng-click="toggleColAdvance()" class="addcollabel" style="color:#B7B7B7;cursor: pointer;">Advanced</label>              
+                                </div>                                        
+                            </div>
+                        </div>
+                      </div>
+
+                      <!--Column editable by master key-->
+                      <div  ng-if="enableColAdvance" class="flex-add-Bx" style="margin-top:8.5px;width: 285px;">                       
+                        
+                        <div class="add-Bx">
+
+                            <div  class="flex-add-Bx">
+                                <div class="add-Bx">
+                                  <label class="addcollabel">Editable by MasterKey</label>              
+                                </div>
+                                <div class="add-Bx">                                   
+                                  <checkbox class="btn-default checkBxDflt chckbx-fix" ng-model="newColumnObj.editableByMasterKey" style="border: 1px solid #DBDCDD;"></checkbox>
+                                </div>         
+                            </div>
+
+                        </div>                       
+                        
+                      </div>
+
+                      <!--Column Text type searchable-->
+                      <div  ng-if="enableColAdvance && newColumnObj.dataType=='Text'" class="flex-add-Bx" style="margin-top:5.5px;width: 285px;">                       
+                        
+                        <div class="add-Bx">
+
+                            <div  class="flex-add-Bx">
+                                <div class="add-Bx">
+                                  <label class="addcollabel">Index for search</label>              
+                                </div>
+                                <div class="add-Bx">                                   
+                                  <checkbox class="btn-default checkBxDflt chckbx-fix" ng-model="newColumnObj.isSearchable" style="border: 1px solid #DBDCDD;"></checkbox>
+                                </div>         
+                            </div>
+
+                        </div>                       
+                        
+                      </div>
+                      <!---->
+
                       <div style="margin-top:8px;" data-ng-show="columnErrorForCreate">
                         <span style="color:red;font-size:13px; word-break:all;">{{columnErrorForCreate}}</span>
                       </div>  

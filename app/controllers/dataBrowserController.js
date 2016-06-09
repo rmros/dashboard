@@ -34,6 +34,7 @@ $scope.showColOptions=[];
 $scope.showHiddenColList=false;
 $scope.showFilterList=false;
 $scope.showAddColPopUp=false;
+$scope.enableColAdvance=false;
 $scope.hideColumn=[];
 $scope.editColumn=[];
 $scope.filtersList=[];
@@ -86,6 +87,7 @@ $scope.orderByType="desc";
 $scope.docsLimit=50;
 $scope.hiddenColumnCount=0;
 $scope.editableFile=[];
+$scope.countItemsInTable=0;
 
 $scope.init = function() { 
   id = $stateParams.appId;
@@ -349,7 +351,7 @@ $scope.deleteData=function(row,column){
       $scope.setAndSaveFields();
     }
   } 
-}
+};
  
 $scope.setAndSaveJsonObject=function(modifiedJson){  
   $("#md-objectviewer").modal("hide");  
@@ -992,9 +994,9 @@ $scope.setAndSaveFields=function(){
 
     if($scope.editableColumn.dataType=="Number"){
       var data=$scope.editableField[$scope.editableIndex][$scope.editableColumn.name];
-      var tempData=data;
+      var tempData=angular.copy(data);
       if(data){
-        data=parseInt(data);
+        data=Number(data);        
         if(data.toString()!=tempData){
           validFields=false;
           message="Column "+$scope.editableColumn.name+" is of number type.";
@@ -1035,7 +1037,7 @@ function processSaving(){
       //Number
       if($scope.editableColumn.dataType=="Number"){
         var tempValue=angular.copy($scope.editableField[$scope.editableIndex][$scope.editableColumn.name]);
-        $scope.editableField[$scope.editableIndex][$scope.editableColumn.name]=parseInt($scope.editableField[$scope.editableIndex][$scope.editableColumn.name]);
+        $scope.editableField[$scope.editableIndex][$scope.editableColumn.name]=Number($scope.editableField[$scope.editableIndex][$scope.editableColumn.name]);
         if(isNaN($scope.editableField[$scope.editableIndex][$scope.editableColumn.name])){
           $scope.editableField[$scope.editableIndex][$scope.editableColumn.name]=tempValue;
         }
@@ -1085,6 +1087,7 @@ function saveWrapper(row,rowIndex){
     }else{
       $scope.totalRecords=0;
     }
+    $scope.updateCountItems();
 
   }, function(error){ 
     var respObj={
@@ -1159,6 +1162,7 @@ function getProjectTables(){
     };
     $scope.filtersList.push(defaultFilterColumn);
 
+    $scope.updateCountItems();
     return cloudBoostApiService.loadTableData($rootScope.currentProject.currentTable,$scope.orderBy,$scope.orderByType,$scope.docsLimit,0);
 
   }).then(function(cbObjects){ 
@@ -1196,6 +1200,7 @@ $scope.refreshRows=function(){
       $scope.totalRecords=0;
     }
     
+    $scope.updateCountItems();
     $scope.refreshingRows=false;   
 
     $scope.rowInfo=null;
@@ -1212,7 +1217,7 @@ $scope.refreshRows=function(){
 
   },function(err){
     $scope.refreshingRows=false;       
-  });
+  });  
 };
 
 function getProjectTableByName(tableDefName){
@@ -1251,7 +1256,8 @@ $scope.addMoreRecords=function(){
           $scope.currentTableData=list;
         }
         $scope.totalRecords=$scope.totalRecords+list.length;
-      } 
+      }
+      $scope.updateCountItems(); 
       $scope.loadingRecords=false; 
 
       //Final Length
@@ -1272,7 +1278,7 @@ $scope.addMoreRecords=function(){
     function(error){ 
     $scope.loadingRecords=false;      
     });
-    //end of load more data
+    //end of load more data    
   }     
  
 };
@@ -1310,16 +1316,18 @@ $scope.initiateColumnSettings = function() {
   var uniqueId=utilityService.makeId(); 
 
   var newcol = {
-      id:uniqueId,
-      name: newColName,
-      dataType: 'Text',
-      relatedTo: null,
-      relationType: null,
-      required: false,
-      unique: false,
-      isRenamable: true,
-      isEditable: true,
-      isDeletable: true,
+      id                  : uniqueId,
+      name                : newColName,
+      dataType            : 'Text',
+      relatedTo           : null,
+      relationType        : null,
+      required            : false,
+      unique              : false,
+      isRenamable         : true,
+      isEditable          : true,
+      isDeletable         : true,
+      editableByMasterKey : false,
+      isSearchable        : true
   }; 
 
   $scope.newColumnObj=newcol; 
@@ -1332,6 +1340,7 @@ $scope.initiateColumnSettings = function() {
 $scope.addColumn = function(valid) {
   if(valid){
     $scope.showAddColPopUp=false; 
+    $scope.enableColAdvance=false;
     nullifyCommonErrorInfo();
     $scope.commonSpinner=true;
 
@@ -1339,6 +1348,13 @@ $scope.addColumn = function(valid) {
     if($scope.newColumnObj.relatedTo){
       column.relatedTo=$scope.newColumnObj.relatedTo;
     }
+    if($scope.newColumnObj.editableByMasterKey){
+      column.editableByMasterKey=$scope.newColumnObj.editableByMasterKey;
+    }
+    if($scope.newColumnObj.dataType=="Text"){
+      column.isSearchable=$scope.newColumnObj.isSearchable;
+    }
+    
     $rootScope.currentProject.currentTable.addColumn(column);
     var index=$rootScope.currentProject.currentTable.columns.indexOf(column);
     //Column visible
@@ -1390,6 +1406,14 @@ $scope.addColumn = function(valid) {
 
 $scope.cancelAddNewCol=function(){
   $scope.showAddColPopUp=false;   
+};
+
+$scope.toggleColAdvance=function(){
+  if($scope.enableColAdvance){
+    $scope.enableColAdvance=false;
+  }else{
+    $scope.enableColAdvance=true;
+  }
 };
 
 $scope.toggleColOptions=function(index){
@@ -1523,11 +1547,27 @@ $scope.deleteSelectedRows=function(){
     $scope.commonSaved=true;
     $timeout(function(){ 
       $scope.commonSaved=false; 
-    }, 800);                            
+    }, 800);
+
+    //Update Total
+    if($scope.currentTableData && $scope.currentTableData.length>0){
+      $scope.totalRecords=$scope.currentTableData.length;
+    }else{
+      $scope.totalRecords=0;
+    } 
+
+    $scope.updateCountItems();
+
   }, function(err){    
     $scope.areSelectAllRows=false;
     $scope.commonSpinner=false;
-    $scope.commonError="Unable to add the column right now"; 
+    $scope.commonError="Unable to add the column right now";
+    //Update Total
+    if($scope.currentTableData && $scope.currentTableData.length>0){
+      $scope.totalRecords=$scope.currentTableData.length;
+    }else{
+      $scope.totalRecords=0;
+    } 
   });
  
 };
@@ -1619,6 +1659,7 @@ $scope.saveNewlyCreatedRow=function(){
         }else{
           $scope.totalRecords=0;
         }
+        $scope.updateCountItems();
 
         showSaveIconInSecond(resp.rowIndex);
       }, function(errorResp){                         
@@ -1785,6 +1826,12 @@ $scope.isDate = function(x) {
   return x instanceof Date;
 };
 
+$scope.updateCountItems=function(){
+  cloudBoostApiService.queryCountByTableName($rootScope.currentProject.currentTable.name).then(function(number){
+    $scope.countItemsInTable=number;
+  },function(error){
+  });
+};
 
 //Row focused functions
 function rowInitMode(index){
@@ -2104,69 +2151,19 @@ $scope.closeSearchBox=function(){
   }
 };
 
-$scope.updatedCloudSearch=function(){
-  if($scope.cloudSearchText){
-    $scope.filtersList=[];
-    //var allColumnNames=_.pluck($scope.currentProject.currentTable.columns, 'name');
+$scope.updatedCloudSearch=function(){      
     
-    var includeNumberType=false;
-    var includeDateType=false; 
-    var isOriginal=false;   
-
-    var tempData=angular.copy($scope.cloudSearchText);
-    tempData=parseInt(tempData);
-
-    if(tempData.toString()==$scope.cloudSearchText){
-      isOriginal=true;
-    }
-
-    if(!isNaN(tempData) && typeof tempData=="number" && isOriginal){
-      includeNumberType=true;
-    }
-
-    var tempData=angular.copy($scope.cloudSearchText);
-    tempData=new Date(tempData);    
-    Date.prototype.isValid = function () {      
-      return this.getTime() === this.getTime();
-    };
-
-    if(tempData.isValid() && !includeNumberType){
-      includeDateType=true;
-    }    
-            
-    var tempData=angular.copy($scope.cloudSearchText);
-
-    var allColumnNames=[];
-    for(var i=0;i<$scope.currentProject.currentTable.columns.length;++i){
-
-      if(includeNumberType && ($scope.currentProject.currentTable.columns[i].dataType=="Number" || $scope.currentProject.currentTable.columns[i].relatedTo=="Number")){
-        allColumnNames.push($scope.currentProject.currentTable.columns[i].name);
-        tempData=parseInt(tempData);
-      }
-
-      if(includeDateType && ($scope.currentProject.currentTable.columns[i].dataType=="DateTime" || $scope.currentProject.currentTable.columns[i].relatedTo=="DateTime")){
-        allColumnNames.push($scope.currentProject.currentTable.columns[i].name);
-        tempData=new Date(tempData);
-      }
-
-      if($scope.currentProject.currentTable.columns[i].dataType!="Number" && $scope.currentProject.currentTable.columns[i].relatedTo!="Number" && $scope.currentProject.currentTable.columns[i].dataType!="DateTime" && $scope.currentProject.currentTable.columns[i].relatedTo!="DateTime"){
-        allColumnNames.push($scope.currentProject.currentTable.columns[i].name);
-      }
-
-    }
-    
-    $scope.cloudSearchSpinner=true;
-    //CloudSearch
-    cloudBoostApiService.cloudSearch($rootScope.currentProject.currentTable,allColumnNames,tempData)
-    .then(function(cbObjects){   
-      $scope.currentTableData=cbObjects;
-      $scope.cloudSearchSpinner=false;                                              
-    },
-    function(error){ 
-      $scope.cloudSearchSpinner=false;               
-    });
-    //CloudSearch    
-  }
+  $scope.cloudSearchSpinner=true;
+  //Search
+  cloudBoostApiService.search($rootScope.currentProject.currentTable,$scope.cloudSearchText)
+  .then(function(cbObjects){   
+    $scope.currentTableData=cbObjects;
+    $scope.cloudSearchSpinner=false;                                              
+  },
+  function(error){ 
+    $scope.cloudSearchSpinner=false;               
+  });
+  //Search  
 };
 
 $scope.goToDocumentation=function(){

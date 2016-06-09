@@ -134,8 +134,17 @@ app.filter('countUnseenNotifications', function($rootScope) {
       return count;
     }else {
       return 0;
-    }
-    
+    }    
+  }
+});
+
+app.filter('stringifyjson', function($rootScope) {
+  return function(json) {
+    if(Object.prototype.toString.call(json)=="[object Object]" || Object.prototype.toString.call(json)=="[object Array]"){
+      return JSON.stringify(json);
+    }else{
+      return json;
+    }       
   }
 });
 

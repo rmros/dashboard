@@ -2,11 +2,11 @@ app.factory('pushService', ['$q','$http','$rootScope',function ($q,$http,$rootSc
 
     var global = {};
 
-    global.sendPush = function(pushData){
+    global.sendPush = function(pushData,query){
 
       var q=$q.defer();
 
-      CB.CloudPush.send(pushData,{
+      CB.CloudPush.send(pushData,query,{
           success:function(data){
             q.resolve(data);
           },

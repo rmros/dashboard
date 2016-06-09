@@ -628,23 +628,18 @@
             </thead>
             <tbody class="appdev-tbody">
               <!--Developers-->
-              <tr ng-repeat="eachDev in developers">                
+              <tr ng-repeat="selProj in selectedProject.developers">                
                 <td width="47%">
-                  <div>
-                    <p style="padding: 0 !important;margin: 0 !important;">{{eachDev.name}}</p>
-                    <p style="padding: 0 !important;margin-top: -4px !important;margin-bottom:0 !important;">{{eachDev.email}}</p>
+                  <div ng-repeat="eachDev in developers">
+                    <p ng-if="eachDev._id==selProj.userId" style="padding: 0 !important;margin: 0 !important;">{{eachDev.name}}</p>
+                    <p ng-if="eachDev._id==selProj.userId" style="padding: 0 !important;margin-top: -4px !important;margin-bottom:0 !important;">{{eachDev.email}}</p>
                   </div>
                 </td>
                 <td width="20%">
                   <div>
-                    <!--<select class="users-bodytd-select" ng-model="eachDev.role" ng-change="changeDeveloperRole($index,eachDev)">
-                      <option  ng-selected="eachDev.role=='Admin'" value="Admin">Admin</option>
-                      <option  ng-selected="eachDev.role=='User'" value="User">User</option>
-                    </select>-->
-                    <div>
-                      {{eachDev.role}}
-                    </div>
-
+                    <select class="users-bodytd-select"  ng-model="selProj.role" ng-change="changeDeveloperRole($index,selProj)">
+                      <option  ng-repeat="roleslist in developerRolesList"  ng-selected="selProj.role==roleslist" value="{{roleslist}}">{{roleslist}}</option> 
+                    </select>
                   </div>
                 </td>
                 <td width="20%">
@@ -654,7 +649,7 @@
                 </td>
                 <td class="table-TxtAlign-center" width="13%">
                   <div>
-                    <i ng-show="!appDevSpinner[$index]"  ng-click="removeDeveloperFromProject($index,eachDev)" class="icon ion-close" style="font-size:12px;"></i>
+                    <i ng-show="!appDevSpinner[$index]"  ng-click="removeDeveloperFromProject($index,selProj)" class="icon ion-close" style="font-size:12px;"></i>
                     <i ng-show="appDevSpinner[$index]" class="fa fa-spinner fa-spin" style="font-size:12px;"></i>
                   </div>
                 </td>

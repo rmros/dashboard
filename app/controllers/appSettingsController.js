@@ -36,10 +36,18 @@ appSettingsService){
   $scope.emailSettings={
     category:"email",
     settings:{
-      mandrillApiKey:null,
-      email:null,
-      from:null,
-      template:""
+      mandrill:{
+        apiKey:null,
+        enabled:true
+      },
+      mailgun:{
+        apiKey:null,
+        domain:null,
+        enabled:false
+      },
+      fromEmail:null,
+      fromName:null
+
     }
   };
 
@@ -69,6 +77,19 @@ appSettingsService){
       custom:{
         enabled:true
       },
+      sessions:{
+        enabled:true,
+        sessionLength: 30
+      },
+      signupEmail:{
+        enabled:false,
+        allowOnlyVerifiedLogins:false,        
+        template:""        
+      },
+      resetPasswordEmail:{
+        enabled:false,       
+        template:""        
+      },     
       facebook:{
         enabled:false,
         appId:null,
@@ -136,6 +157,41 @@ appSettingsService){
     morePermissions:false
   };
 
+  $scope.signupHtml={
+    htmlMode:{
+       css:{
+        cursor: "pointer",
+        "border-bottom": "1px solid #488ff9",
+        color: "#488ff9"
+      },
+      enabled:true
+    },
+    previewMode:{
+       css:{
+        cursor: "pointer"
+      },
+      enabled:false
+    }   
+  };
+
+  $scope.resetPswdHtml={
+    htmlMode:{
+       css:{
+        cursor: "pointer",
+        "border-bottom": "1px solid #488ff9",
+        color: "#488ff9"
+      },
+      enabled:true
+    },
+    previewMode:{
+       css:{
+        cursor: "pointer"
+      },
+      enabled:false
+    }   
+  };
+
+
   $scope.fileAllowedTypes="*";//Files
 
   $scope.settingsMenu={
@@ -151,6 +207,22 @@ appSettingsService){
     push:false,
     auth:false
   }; 
+
+  $scope.templateEditorOptions = {
+      lineWrapping : false,
+      lineNumbers: true,  
+      theme:'monokai',     
+      mode : "text/html"             
+  };
+
+  $scope.authPageSimilate={
+    authenticateSpinner:false,
+    authenticateError:null,
+    isLogin:true,
+    forgotPasswordPage:false,
+    forgotPasswordSpinner:false,
+    forgotPwdError:null
+  };
   
   $scope.init= function() {  
 
@@ -158,9 +230,14 @@ appSettingsService){
 
     $rootScope.pageHeaderDisplay="App Settings";
 
-    _setDefaultTemplate().then(function(defTemplate){
+    var promises=[];
+    promises.push(_getDefaultTemplate("reset-password"));
+    promises.push(_getDefaultTemplate("sign-up"));    
 
-      $scope.emailSettings.settings.template =defTemplate;
+    $q.all(promises).then(function(list){
+
+      $scope.authSettings.settings.resetPasswordEmail.template=list[0];
+      $scope.authSettings.settings.signupEmail.template=list[1];      
 
       if($rootScope.currentProject && $rootScope.currentProject.appId === id){
         //if the same project is already in the rootScope, then dont load it.
@@ -204,8 +281,16 @@ appSettingsService){
     }
     if(categoryName=="email"){
       settingsObj=$scope.emailSettings.settings;
-      if(settingsObj.mandrillApiKey && settingsObj.email && settingsObj.from){
+      if(((settingsObj.mailgun.domain && settingsObj.mailgun.apiKey) || settingsObj.mandrill.apiKey) && settingsObj.fromEmail){
         validate=true;
+
+        if(settingsObj.mailgun.enabled){
+          settingsObj.mandrill.apiKey=null;
+        }
+        if(settingsObj.mandrill.enabled){
+          settingsObj.mailgun.apiKey=null;
+          settingsObj.mailgun.domain=null;
+        }
 
         if(!__isDevelopment){
           /****Tracking*********/            
@@ -279,7 +364,7 @@ appSettingsService){
 
       //App Icon
       if($scope.settingsMenu.general){
-        if(names[1]!="png"){
+        if(names[1]=="png"){
           $("#md-appsettingsfileviewer").modal("hide");
 
           appSettingsService.upsertAppSettingFile($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,file,"general")
@@ -290,7 +375,7 @@ appSettingsService){
           });
           
         }else{
-          errorNotify("only .png are allowed.");
+          errorNotify("Only .PNG is allowed");
         }
       }
 
@@ -313,7 +398,7 @@ appSettingsService){
           });
           
         }else{
-          errorNotify("Invalid .p12 file");
+          errorNotify("Only .P12 is allowed");
         }
       }
 
@@ -386,6 +471,77 @@ appSettingsService){
     }
   }; 
 
+  $scope.toggleSignupEmail=function(mode){    
+    if(mode=="html"){
+      $scope.signupHtml.htmlMode.enabled=true;
+      $scope.signupHtml.htmlMode.css={
+        cursor: "pointer",
+        "border-bottom": "1px solid #488ff9",
+        color: "#488ff9"
+      };
+      $scope.signupHtml.previewMode.enabled=false;
+      $scope.signupHtml.previewMode.css={
+        cursor: "pointer"        
+      };
+    }
+
+    if(mode=="preview"){
+      $scope.signupHtml.previewMode.enabled=true;
+      $scope.signupHtml.previewMode.css={
+        cursor: "pointer",
+        "border-bottom": "1px solid #488ff9",
+        color: "#488ff9"
+      };
+
+      $scope.signupHtml.htmlMode.enabled=false;
+      $scope.signupHtml.htmlMode.css={
+        cursor: "pointer"        
+      };
+    }
+
+  };
+
+  $scope.toggleResetPswdEmail=function(mode){    
+    if(mode=="html"){
+      $scope.resetPswdHtml.htmlMode.enabled=true;
+      $scope.resetPswdHtml.htmlMode.css={
+        cursor: "pointer",
+        "border-bottom": "1px solid #488ff9",
+        color: "#488ff9"
+      };
+      $scope.resetPswdHtml.previewMode.enabled=false;
+      $scope.resetPswdHtml.previewMode.css={
+        cursor: "pointer"        
+      };
+    }
+
+    if(mode=="preview"){
+      $scope.resetPswdHtml.previewMode.enabled=true;
+      $scope.resetPswdHtml.previewMode.css={
+        cursor: "pointer",
+        "border-bottom": "1px solid #488ff9",
+        color: "#488ff9"
+      };
+
+      $scope.resetPswdHtml.htmlMode.enabled=false;
+      $scope.resetPswdHtml.htmlMode.css={
+        cursor: "pointer"        
+      };
+    }
+
+  };
+  
+  $scope.toggleEmailConfig=function(option){    
+    if(option=="mandrill"){
+      $scope.emailSettings.settings.mandrill.enabled=true;
+      $scope.emailSettings.settings.mailgun.enabled=false;      
+    }
+    if(option=="mailgun"){
+      $scope.emailSettings.settings.mandrill.enabled=false;
+      $scope.emailSettings.settings.mailgun.enabled=true;       
+    }
+  };
+
   $scope.toggleFbAttributes=function(bool){    
     $scope.facebook.moreAttributes=bool;
   };
@@ -401,6 +557,28 @@ appSettingsService){
   $scope.toggleGithubPermissions=function(bool){    
     $scope.github.morePermissions=bool;
   };
+
+  $scope.authSimilateAuth=function(authPage){
+    if(authPage=="login"){
+      $scope.authPageSimilate.isLogin=true;
+    }
+    if(authPage=="signup"){
+      $scope.authPageSimilate.isLogin=false;
+    }
+  };
+
+  $scope.similateToForgotPwd=function(bool){
+    $scope.authPageSimilate.forgotPasswordPage=bool;
+  }; 
+
+  $scope.loginUrlClick=function(){
+    $scope.loginUrlClippr=true;
+  };
+  $scope.loginUrlOutsideClick=function(){
+    $scope.loginUrlClippr=false;
+  };
+  
+
 
 /********************************Private fuctions****************************/
   function loadProject(id){ 
@@ -444,62 +622,75 @@ appSettingsService){
           $scope.authSettings=auth[0];
         }
 
-      }      
-      
-      $scope.settingsLoading=false;                               
+        $scope.settingsLoading=false;        
+
+      }else{
+        var promises=[];
+        promises.push(appSettingsService.putSettings($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,"general",$scope.generalSettings.settings));
+        promises.push(appSettingsService.putSettings($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,"email",$scope.emailSettings.settings));
+        promises.push(appSettingsService.putSettings($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,"push",$scope.pushSettings.settings));
+        promises.push(appSettingsService.putSettings($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,"auth",$scope.authSettings.settings));
+
+        $q.all(promises).then(function(settings){
+             $scope.settingsLoading=false;                                               
+        }, function(error){ 
+             $scope.settingsLoading=false;            
+        });
+      }       
+                                    
     }, function(error){ 
       $scope.settingsLoading=false;           
     });
  
-  } 
+  }   
+
 
   function _validateSocialFields(settings){
 
     
     if(!settings.custom.enabled && !settings.facebook.enabled && !settings.google.enabled && !settings.twitter.enabled && !settings.linkedIn.enabled && !settings.github.enable){
-      return "Enable atleast one authentication.";
-    }
-
-    if(!settings.general.callbackURL){
-      return "Your App callbackURL is required.";
-    }  
+      return "You need to enable atleast one authentication provider.";
+    }   
 
     if(settings.general.callbackURL && !_validateUrl(settings.general.callbackURL)){
-      return "App callbackURL is Invalid.";
-    } 
-
-
-    if(!_validateUrl(settings.general.callbackURL)){
       return "App callbackURL is invalid.";
+    }
+
+    if(!_validateNumber(settings.sessions.sessionLength)){
+      return "Invalid Session Length, should be a number.";
+    }
+
+    if(Number(settings.sessions.sessionLength)<1 || Number(settings.sessions.sessionLength)>365){
+      return "Session Length should be in between 1 to 365";
     }
 
     if(settings.facebook.enabled){
       if(!settings.facebook.appId || !settings.facebook.appSecret){
-        return "Facebook app Id and app Secret are required.";
+        return "Facebook App ID and App Secret is required.";
       }
     }
 
     if(settings.google.enabled){
       if(!settings.google.appId || !settings.google.appSecret){
-        return "Google app Id and app Secret are required.";
+        return "Google App ID and App Secret is required.";
       }
     }
 
     if(settings.twitter.enabled){
       if(!settings.twitter.appId || !settings.twitter.appSecret){
-        return "Twitter consumer Key and consumer Secret are required.";
+        return "Twitter Consumer Key and Consumer Secret is required.";
       }
     }
 
     if(settings.linkedIn.enabled){
       if(!settings.linkedIn.appId || !settings.linkedIn.appSecret){
-        return "LinkedIN consumer Key and consumer Secret are required.";
+        return "LinkedIn Consumer Key and Consumer Secret is required.";
       }
     }
 
     if(settings.github.enabled){
       if(!settings.github.appId || !settings.github.appSecret){
-        return "GitHub app Id and app Secret are required.";
+        return "GitHub App ID and App Secret is required.";
       }
     }
 
@@ -514,7 +705,20 @@ appSettingsService){
 
   }
 
-  function _setDefaultTemplate(){ 
+  function _validateNumber(num){
+    if(num && num!=""){
+        var tempData=angular.copy(num);     
+        num=Number(num);        
+        if(num.toString()!=tempData){
+          return false;          
+        }      
+    }else{
+      return false;
+    }     
+    return true;
+  }
+
+  function _getDefaultTemplate(templateName){ 
     var q=$q.defer();
 
     var xmlhttp = new XMLHttpRequest();
@@ -526,7 +730,7 @@ appSettingsService){
         q.reject("Failed to load default email template");
       }
     };
-    xmlhttp.open("GET","assets/files/reset-password.html",true);
+    xmlhttp.open("GET","assets/files/"+templateName+".html",true);
     xmlhttp.send();
 
     return  q.promise;

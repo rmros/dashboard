@@ -3,13 +3,11 @@
 	height: 89vh;
 	width: 99.9%;
 	overflow-y: scroll;
-	background-color: white;
+	background-color: #FDFAFB;
 }
 
 .push-box{
-	width: 500px;
-	height: auto;
-	border:1px solid #C4C2C2;	
-	border-radius: 4px;
-	background-color: #F7F7F7;
+	width: 45%;
+	height: auto;	
 }
+

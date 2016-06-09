@@ -16,9 +16,10 @@ var app=angular.module('CloudBoostDashboard',
     'truncate',
     'ngContextMenu', 
     'ngSanitize', 
-    'nvd3',     
-    'textAngular',
-    'color.picker'  
+    'nvd3',    
+    'color.picker',
+    'hljs',
+    'ui.codemirror'  
     ]);
 
 app.value('THROTTLE_MILLISECONDS', 1250);
@@ -27,17 +28,12 @@ app.config(['ngClipProvider', function(ngClipProvider) {
     ngClipProvider.setPath("bower_components/zeroclipboard/dist/ZeroClipboard.swf");
 }]);
 
-app.config(function($provide) {
-  // this demonstrates how to register a new tool and add it to the default toolbar
-  $provide.decorator('taOptions', ['taRegisterTool', '$delegate', function(taRegisterTool, taOptions) { 
-    taOptions.toolbar = [
-      ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'],
-      ['bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo', 'clear'],    
-      ['insertImage','insertLink','html']
-    ];
-    return taOptions;
-  }]);
-})
+app.config(function (hljsServiceProvider) {
+  hljsServiceProvider.setOptions({
+    // replace tab with 2 spaces
+    tabReplace: '  '
+  });
+});
 
 /***************************************************Connecting URLs*********************************************************/
 var __isDevelopment = false;
@@ -79,6 +75,25 @@ if(window.location.hostname=="localhost"){
   twoCheckoutCredentials.publishableKey="5DB21AAF-317D-4FCB-A985-DD296ECDF71A";
   twoCheckoutCredentials.mode="sandbox";
 }
+
+
+function _isJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+};
+
+function _isJsonObject(obj) {
+    try {
+        JSON.stringify(obj);
+    } catch (e) {
+        return false;
+    }
+    return true;
+};
 
 var pricingPlans=[{
   id:1,

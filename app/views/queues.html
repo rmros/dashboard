@@ -245,7 +245,7 @@
                          <div class="msg-content-wrapper">
 
                           <div class="queue-msgs-just-display" style="font-size:12px;">
-                            {{eachMsg.message | characters:70}}                   
+                            {{eachMsg.message | stringifyjson | characters:70}}                   
                           </div>
 
                         </div>
@@ -506,14 +506,32 @@
         <div class="flex-general-column-wrapper-center" style="width:100%;">
           
           <div class="" style="width:80%;">
-            <div class="" style="width:13.5%;height:29px;">
-              <p class="pull-left" style="font-size:14px;color:gray;font-weight:bold;">MESSAGE</p>              
-            </div> 
 
-            <div class="" style="width:100%;">           
-              <div class="" style="width:100%;border:2px solid #D6D6D6;border-radius:4px;">
-                <textarea rows="4" cols="50" ng-model="newMessage.msg" class="defaultInput-txt" style="width:100%;height:100%;resize: none;"></textarea>
+            <div class="" style="width:100%;height:24px;">
+              <p class="pull-left" style="font-size:14px;color:gray;font-weight:bold;">MESSAGE DATATYPE</p>              
+            </div>
+
+            <div class="" style="width:100%;height:29px;">
+              <select class="default-inputfield" style="margin-left:-138.5px; width:160px; height: 25px; border:1px solid #CECECE;" ng-model="queueActiveTab">
+                <option ng-repeat="dType in queueDataTypes" ng-selected="dType==queueActiveTab">{{dType}}</option>
+              </select>                          
+            </div>
+
+            <div class="" style="width:100%;height:29px;margin-top:10px;">
+              <p class="pull-left" style="font-size:14px;color:gray;font-weight:bold;">MESSAGE</p>              
+            </div>           
+
+            <div class="" style="width:100%;margin-top:3.5px;"> 
+              
+              <div ng-show="queueActiveTab=='Text'" class="" style="width:100%;border:2px solid #D6D6D6;border-radius:4px;">
+                <textarea rows="4" cols="50" ng-model="newMessage.msg" class="defaultInput-txt" style="width:100%;height:120px;resize: none;"></textarea>                  
               </div>
+
+              <div ng-show="queueActiveTab=='JSON'" class="" style="width:100%;border:2px solid #D6D6D6;border-radius:4px;">               
+                <div ui-ace="{ mode: 'json', theme: 'chrome' }" ng-model="newMessage.msg"  style="width:100%;margin-top:-1px !important;">
+                </div>
+              </div>             
+
             </div>
           </div>
 
@@ -637,19 +655,38 @@
         <div class="flex-general-column-wrapper-center" style="width:100%;">
           
           <div class="" style="width:80%;">
-            <div class="" style="width:13.5%;height:29px;">
-              <p class="pull-left" style="font-size:14px;color:gray;font-weight:bold;">MESSAGE</p>              
-            </div> 
 
-            <div class="" style="width:100%;">           
-              <div class="" style="width:100%;border:2px solid #D6D6D6;border-radius:4px;">
-                <textarea rows="4" cols="50" class="defaultInput-txt" ng-model="requestedMessage.message" style="width:100%;height:100%;resize: none;"></textarea>
-              </div>
+            <div class="" style="width:100%;height:24px;">
+              <p class="pull-left" style="font-size:14px;color:gray;font-weight:bold;">MESSAGE DATATYPE</p>              
             </div>
+
+            <div class="" style="width:100%;height:29px;">
+              <select class="default-inputfield" style="margin-left:-138.5px; width:160px; height: 25px; border:1px solid #CECECE;" ng-model="queueActiveTab">
+                <option ng-repeat="dType in queueDataTypes" ng-selected="dType==queueActiveTab">{{dType}}</option>
+              </select>                          
+            </div>
+
+            <div class="" style="width:100%;height:29px;margin-top:10px;">
+              <p class="pull-left" style="font-size:14px;color:gray;font-weight:bold;">MESSAGE</p>              
+            </div>            
+
+            <div class="" style="width:100%;margin-top:3.5px;"> 
+              
+              <div ng-show="queueActiveTab=='Text'" class="" style="width:100%;border:2px solid #D6D6D6;border-radius:4px;">
+                <textarea rows="4" cols="50" ng-model="requestedMessage.message" class="defaultInput-txt" style="width:100%;height:120px;resize: none;"></textarea>                  
+              </div>
+
+              <div ng-show="queueActiveTab=='JSON'" class="" style="width:100%;border:2px solid #D6D6D6;border-radius:4px;">              
+                <div ui-ace="{ mode: 'json', theme: 'chrome' }" ng-model="requestedMessage.message"  style="width:100%;margin-top:-1px !important;">
+                </div>
+              </div>             
+
+            </div>
+
           </div>          
 
           <!--Advance Options-->
-          <div style="width:100%;" class="flex-general-column-wrapper-center">
+          <div style="width:100%;margin-top:3px;" class="flex-general-column-wrapper-center">
             <div class="" style="width:80%;margin-top:5px;">
               <div class="" style="width:13.5%;height:29px;">
                 <p class="pull-left" style="font-size:14px;color:gray;font-weight:bold;">TIMEOUT</p>              

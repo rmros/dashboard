@@ -8672,7 +8672,6 @@ ul.timeline li > .date {
     -webkit-transform-origin: 50% calc(50% - .5px);
     transform-origin: 50% calc(50% - .5px);
 }
-
 .newsidebar-menu{
   background-color: #394757;
 }
@@ -8694,6 +8693,9 @@ ul.timeline li > .date {
 .menusettings-active{
   background-color:#5399fc;
 }
+.menupush-active{
+  background-color:#5399fc;
+}
 
 .newsidebar-splmenu{
   opacity: 0.6;
@@ -8711,6 +8713,13 @@ ul.timeline li > .date {
 .eachsplmenu-profile:hover{
   background-color: #3F4E61;
 }
+.eachxtramenu-profile{
+  cursor: pointer;  
+  padding-top: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 3px;  
+}
 
 #triangle-left {
   width: 0; 
@@ -8719,3 +8728,12 @@ ul.timeline li > .date {
   border-right: 9px solid #495B70; 
   border-bottom: 6px solid transparent; 
 }
+
+.starus-github{
+  position:absolute;
+  width:99.99vw;
+  height:99.99vh;
+  left:1px;
+  background-color: rgba(200, 200, 207, 0.46);
+}
+
