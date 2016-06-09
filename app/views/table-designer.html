@@ -178,7 +178,7 @@
 
                             <div class="popup-buttons-div flex-general-row-wrapper">
 
-                              <button ng-disabled="isCreatingTable" type="button" ng-click="cancelAddtable()" data-close-stackbox="true" class="custmBtn tableCancelBtn">Cancel</button>
+                              <button ng-disabled="isCreatingTable" type="button" ng-click="cancelAddtable()" data-close-stackbox="true" class="custmBtn tableCancelBtn" id="closepopup">Cancel</button>
 
                               <button ng-show="!isCreatingTable && !tableErrorForCreate" type="button" class="custmBtn tableCreateBtn db-color-bg" ng-disabled="tableErrorForCreate" data-close-stackbox="{{!addTablePopup}}" ng-click="addNewTable()">Create</button>
 

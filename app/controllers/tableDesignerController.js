@@ -14,7 +14,9 @@ app.controller('tableDesignerController',
      tableService,
      $timeout,
      $state,
-     beaconService) {
+     beaconService,
+     $document,
+     $compile) {
     
     var id;      
     $scope.newtables=[];
@@ -101,7 +103,7 @@ app.controller('tableDesignerController',
         $scope.newTableType = "Custom";
         //$scope.selectedTableType=_.first(_.where($scope.tableTypes, {type:'custom'}));
         $scope.tableError=null;
-        
+        $scope.tableErrorForCreate=null;
         $scope.addTablePopup=true;
         $scope.newTableName=null;
 
@@ -125,7 +127,9 @@ app.controller('tableDesignerController',
 
     $scope.selectType=function(newTableType){
       //$scope.selectedTableType=_.first(_.where($scope.tableTypes, {type:newTableType}));
-      //$scope.newTableName = angular.copy($scope.selectedTableType.name);    
+      //$scope.newTableName = angular.copy($scope.selectedTableType.name);
+      $scope.tableErrorForCreate=null;
+      $scope.newTableName=newTableType;    
       if(newTableType!="Custom"){
         $scope.newTableName=angular.copy(newTableType);
       }
@@ -136,18 +140,26 @@ app.controller('tableDesignerController',
       });
       $scope.tableErrorForCreate=null;
       if(tableAdded){
-        $scope.tableErrorForCreate="This table already exists.";
-        $scope.newTableName=null;
+        $scope.tableErrorForCreate="This table already exists.";       
       }
 
     };
+
+    $document.on("keydown",function($event) {
+      if($event && $event.keyCode==13 && $scope.addTablePopup && $scope.newTableName && !$scope.tableErrorForCreate){
+        $scope.addNewTable();  
+        //angular.element('#add-new-table-popup').css({
+        //"display":"none"
+        //});
+      }      
+    });
 
     $scope.addNewTable = function() {
       $scope.tableErrorForCreate=null;     
 
       if($scope.newTableName){
         $scope.isCreatingTable=true;
-        $scope.addTablePopup=false;      
+        $scope.addTablePopup=false;              
         
         var table = new CB.CloudTable($scope.newTableName);       
         $rootScope.currentProject.tables.push(table);
@@ -162,7 +174,7 @@ app.controller('tableDesignerController',
           var tTypeIndex=$scope.tableTypes.indexOf($scope.newTableName);
           if(tTypeIndex>-1){
             $scope.tableTypes.splice(tTypeIndex,1);
-          }
+          }         
 
           $rootScope.currentProject.tables[index]=respTable;          
           //$scope.goToDataBrowser(respTable);           
@@ -218,21 +230,22 @@ app.controller('tableDesignerController',
   };
 
   //Table Errors
-  $scope.checkErrorsForCreate=function(name,arrayList,type){
-    var result=tableErrorService.checkErrorsForCreate(name,arrayList,type);
-    if(result){
-          if(type=="table"){
-              $scope.tableErrorForCreate=result;
-          }
-          if(type=="column"){
-            $scope.columnErrorForCreate=result;
-          }
+  $scope.checkErrorsForCreate=function(name,arrayList,type,$event){
+    if($event && $event.keyCode!=13){
+      var result=tableErrorService.checkErrorsForCreate(name,arrayList,type);
+      if(result){
+            if(type=="table"){
+                $scope.tableErrorForCreate=result;
+            }
+            if(type=="column"){
+              $scope.columnErrorForCreate=result;
+            }
 
-    }else{
-      $scope.tableErrorForCreate=null;
-      $scope.columnErrorForCreate=null;
+      }else{
+        $scope.tableErrorForCreate=null;
+        $scope.columnErrorForCreate=null;
+      }
     }
-
   }
  
   

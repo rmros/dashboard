@@ -107,7 +107,8 @@ app.factory('cloudBoostApiService', ['$q','$http','$rootScope',function ($q,$htt
   global.queryCountByTableName = function(tableName) {          
     var q=$q.defer();
       
-      var query = new CB.CloudQuery(tableName);       
+      var query = new CB.CloudQuery(tableName);
+      query.limit=9999;      
       query.count({
         success : function(number){
           q.resolve(number);
