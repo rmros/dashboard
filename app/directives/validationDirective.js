@@ -6,10 +6,14 @@ app.directive('appNameValidation', function(){
             $(element).keyup(function(){
               var error=scope.newApp.name.indexOf(".");               
               if(error>-1){
-                $(element)[0].setCustomValidity("App Name Shoudn't have dots(.)");
+                $(element)[0].setCustomValidity("App Name shoudn't have dots(.)");
               }else{
                 $(element)[0].setCustomValidity("");
-              }                
+              } 
+
+              if(scope.newApp.name && scope.newApp.name.length>13){
+                $(element)[0].setCustomValidity("App Name shoudn't exceed 13 characters.");
+              }               
                                 
             });
         }
