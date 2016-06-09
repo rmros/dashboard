@@ -261,7 +261,7 @@
 	border-top:1px solid #DEE0E0;
 	position: fixed;
 	bottom:0;	
-	z-index: 2;		
+	z-index: 1;		
 }
 .cache-list-wrapper{
 	width: 100%;
@@ -575,14 +575,15 @@
   left: 0;
   height: 89.5vh;   
 
-  background-image: url('../images/bg-index.jpg');
+  background-image: url('../images/rocket-bg.jpg');
   background-position:  0px 0px;
-  background-size: cover;
+  
   background-repeat: repeat;
   background-origin: padding-box;
   background-clip: border-box;
   background-attachment: scroll;
   background-color: #253340;
+  z-index: 1;
 }
 
 .first-cache-create-btn{
@@ -608,7 +609,7 @@
 	position: fixed;
 	bottom:0;
 	margin-left: 15px;	
-	z-index: 2;		
+	z-index: 1;		
 }
 
 .queue-app-buttons{

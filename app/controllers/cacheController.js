@@ -238,6 +238,11 @@ $timeout){
         $scope.confirmSpinner=false; 
         $scope.confirmCacheName=null;
         $scope.deletableCache=null;
+
+        if($scope.cacheList.length==0){
+          $scope.firstVisit=true;
+        }
+
       }, function(error){  
         $scope.cacheModalError=error; 
         $scope.confirmSpinner=false;       

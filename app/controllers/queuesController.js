@@ -184,6 +184,9 @@ tableService){
         $scope.deletableQueue=null;
 
         $scope.queueSizes.splice(index,1);
+        if($scope.queueList.length==0){
+          $scope.firstVisit=true;
+        }
 
       }, function(error){       
         $scope.queueModalError=error; 
