@@ -567,8 +567,12 @@ app.controller('indexController',
       var notificationIndex=$rootScope.notifications.indexOf(notifyObject);
       $rootScope.notifications.splice(notificationIndex,1);
 
-      if($rootScope.notifications.length==0){
-        //$(".notify-menu-anchor").hide();
+      if($rootScope.notifications && $rootScope.notifications.length==0){
+        //$(".notify-menu-anchor").click();
+        //angular.element(".notify-menu-anchor").triggerHandler("click");
+        $timeout(function() {
+        //angular.element(".notify-menu-anchor").triggerHandler("click");
+        }, 1);
       }
 
       if(project && project.appId){       
@@ -594,7 +598,7 @@ app.controller('indexController',
     .then(function(data){ 
       var notificationIndex=$rootScope.notifications.indexOf(notifyObject);
       $rootScope.notifications.splice(notificationIndex,1); 
-      if($rootScope.notifications.length==0){
+      if($rootScope.notifications && $rootScope.notifications.length==0){
         //$(".notify-menu-anchor").click();
       }  
       $scope.declineInvitationSpinner[index]=false;                        
@@ -612,7 +616,7 @@ app.controller('indexController',
 
       var notificationIndex=$rootScope.notifications.indexOf(notifyObject);
       $rootScope.notifications.splice(notificationIndex,1); 
-      if($rootScope.notifications.length==0){
+      if($rootScope.notifications && $rootScope.notifications.length==0){
         //$(".notify-menu-anchor").click();
       }  
       $scope.okGotItSpinner[index]=false;                        
