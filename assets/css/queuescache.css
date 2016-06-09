@@ -868,3 +868,12 @@
 	height:60vh;
 	width: 100%;	
 }
+.q-msgtabs{
+	background-color: #253340;
+	color:white;
+}
+
+.q-msgtabs-active{
+	background-color: #000000;
+	color:white;
+}

@@ -158,23 +158,24 @@ app.factory('cloudBoostApiService', ['$q','$http','$rootScope',function ($q,$htt
     //return  q.promise;
   }; 
 
-  global.cloudSearch = function(table,columnArray,searchValue) {          
-    var q=$q.defer();    
+  global.search = function(table,searchValue) {          
+    var q=$q.defer(); 
 
-      var cs = new CB.CloudSearch(table.name);
-      cs.searchQuery = new CB.SearchQuery();
+    var query = new CB.CloudQuery(table.name);
 
-      cs.searchQuery.searchOn(columnArray, searchValue);
-      cs.search({
-        success : function(list){
-          q.resolve(list); 
-        },error : function(error){
-          q.reject(error);
-        }
-      }); 
+    if(searchValue){
+      query.search(searchValue);
+    }   
+
+    query.find({
+    success : function(records){ 
+      q.resolve(records); 
+    }, error : function(error){                
+      q.reject(error);
+    }});     
 
     return  q.promise;           
-  };
+  };  
 
   global.filterQuery = function(table,filterList) {          
     var q=$q.defer();    

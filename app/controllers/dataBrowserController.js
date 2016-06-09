@@ -2151,69 +2151,19 @@ $scope.closeSearchBox=function(){
   }
 };
 
-$scope.updatedCloudSearch=function(){
-  if($scope.cloudSearchText){
-    $scope.filtersList=[];
-    //var allColumnNames=_.pluck($scope.currentProject.currentTable.columns, 'name');
+$scope.updatedCloudSearch=function(){      
     
-    var includeNumberType=false;
-    var includeDateType=false; 
-    var isOriginal=false;   
-
-    var tempData=angular.copy($scope.cloudSearchText);
-    tempData=parseInt(tempData);
-
-    if(tempData.toString()==$scope.cloudSearchText){
-      isOriginal=true;
-    }
-
-    if(!isNaN(tempData) && typeof tempData=="number" && isOriginal){
-      includeNumberType=true;
-    }
-
-    var tempData=angular.copy($scope.cloudSearchText);
-    tempData=new Date(tempData);    
-    Date.prototype.isValid = function () {      
-      return this.getTime() === this.getTime();
-    };
-
-    if(tempData.isValid() && !includeNumberType){
-      includeDateType=true;
-    }    
-            
-    var tempData=angular.copy($scope.cloudSearchText);
-
-    var allColumnNames=[];
-    for(var i=0;i<$scope.currentProject.currentTable.columns.length;++i){
-
-      if(includeNumberType && ($scope.currentProject.currentTable.columns[i].dataType=="Number" || $scope.currentProject.currentTable.columns[i].relatedTo=="Number")){
-        allColumnNames.push($scope.currentProject.currentTable.columns[i].name);
-        tempData=parseInt(tempData);
-      }
-
-      if(includeDateType && ($scope.currentProject.currentTable.columns[i].dataType=="DateTime" || $scope.currentProject.currentTable.columns[i].relatedTo=="DateTime")){
-        allColumnNames.push($scope.currentProject.currentTable.columns[i].name);
-        tempData=new Date(tempData);
-      }
-
-      if($scope.currentProject.currentTable.columns[i].dataType!="Number" && $scope.currentProject.currentTable.columns[i].relatedTo!="Number" && $scope.currentProject.currentTable.columns[i].dataType!="DateTime" && $scope.currentProject.currentTable.columns[i].relatedTo!="DateTime"){
-        allColumnNames.push($scope.currentProject.currentTable.columns[i].name);
-      }
-
-    }
-    
-    $scope.cloudSearchSpinner=true;
-    //CloudSearch
-    cloudBoostApiService.cloudSearch($rootScope.currentProject.currentTable,allColumnNames,tempData)
-    .then(function(cbObjects){   
-      $scope.currentTableData=cbObjects;
-      $scope.cloudSearchSpinner=false;                                              
-    },
-    function(error){ 
-      $scope.cloudSearchSpinner=false;               
-    });
-    //CloudSearch    
-  }
+  $scope.cloudSearchSpinner=true;
+  //Search
+  cloudBoostApiService.search($rootScope.currentProject.currentTable,$scope.cloudSearchText)
+  .then(function(cbObjects){   
+    $scope.currentTableData=cbObjects;
+    $scope.cloudSearchSpinner=false;                                              
+  },
+  function(error){ 
+    $scope.cloudSearchSpinner=false;               
+  });
+  //Search  
 };
 
 $scope.goToDocumentation=function(){
