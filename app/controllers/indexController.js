@@ -84,7 +84,7 @@ app.controller('indexController',
     $scope.pricingPlans=pricingPlans;
     $scope.cardCountries=paymentCountries;
 
-    $scope.starusGithubModel=true;    
+    $rootScope.starusGithubModel=false;    
 
     $rootScope.getAppUsageDetails=function(appIdArray){
       //Load and errors
@@ -548,7 +548,7 @@ app.controller('indexController',
   };
 
   $scope.hideStarusGithubModel=function(){
-    $scope.starusGithubModel=false;
+    $rootScope.starusGithubModel=false;
   };   
 
   $scope.updateNotificationsSeen=function(){

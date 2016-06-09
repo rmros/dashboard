@@ -597,6 +597,7 @@ app.controller('appsController',
       if($rootScope.projectListObj && $rootScope.projectListObj.length>0){
         var appIdArray=_.pluck($rootScope.projectListObj, 'appId');
         $rootScope.getAppUsageDetails(appIdArray);
+        $rootScope.starusGithubModel=true;
       }      
 
       //getBeacon
