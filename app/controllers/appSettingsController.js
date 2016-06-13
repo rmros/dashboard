@@ -632,9 +632,9 @@ appSettingsService){
         promises.push(appSettingsService.putSettings($rootScope.currentProject.appId,$rootScope.currentProject.keys.master,"auth",$scope.authSettings.settings));
 
         $q.all(promises).then(function(settings){
-             $scope.settingsLoading=false;                                               
+          $scope.settingsLoading=false;                                               
         }, function(error){ 
-             $scope.settingsLoading=false;            
+          $scope.settingsLoading=false;            
         });
       }       
                                     
