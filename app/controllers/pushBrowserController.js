@@ -107,10 +107,10 @@ cloudBoostApiService){
 
       pushService.sendPush($scope.pushData,currentQuery).then(function(data){
 
-        if(data && data.response!=="No Device objects found."){
-          successNotify("Successfully sent!");
-        }else{
+        if(data && (data.response=="No Device objects found." || data=="No Device objects found.")){
           errorNotify("Your audience size is 0");
+        }else{
+          successNotify("Successfully sent!");
         }
         
         $scope.sendPushSpinner=false;
