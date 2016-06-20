@@ -4,54 +4,35 @@
 	width: 97.9%;
 	background-color: white;
 	margin-left: 15.5px;
-	border-bottom: 1px solid #E5E3E3;
+	border-bottom: 1px solid #E5E3E3;	
 }
 
 .grande-file-browser{
-	height: 79.5vh;
-	width: 100%;
+	height: auto;
+	width: 97.5%;
 	background-color: white;
 	margin-left: 15px;
+	overflow-y:scroll;	
 }
 
-.folder-mainmenu-wrap{
-	width: 210px;
-	height: auto;	
-	padding-top: 20px;
-	padding-left: 22px;
-	padding-right: 10px;
-	padding-bottom: 10px;	
-}
-
-.each-filemenu-item{
-	margin-top: 5px;	
-	height: 25px;
-}
-.each-filemenu-item:first-child{
-	margin-top:0px;
-}
-
-.folder-mainmenu-containr{
-	width: 100%;
-	height: 100%;	
-}
-
-.files-content-wrap{
-	width: 79.1vw;
-	height: 79.9vh;
-	overflow-y:scroll;
-	
-	padding-top: 10px;
-	padding-right: 10px;
-	padding-bottom: 10px;		
-}
-
-@media screen and (max-device-width : 1023px)
+@media (min-device-width : 1026px) and (max-device-width : 3000px)
 {
     .files-content-wrap{
-		width:70.9vw;
-		height: 79.9vh;
-		overflow-y:scroll;		
+		width: 925px;		
+		height: 79.5vh;	
+		padding-top: 10px;
+		padding-right: 10px;
+		padding-bottom: 10px;			
+	} 
+}
+
+@media screen and (max-device-width : 1025px)
+{
+    .files-content-wrap{
+		width:100vw;	
+		min-width: 590px;	
+		height: 79.9vh;	
+		padding-top: 10px;			
 		padding-right: 10px;
 		padding-bottom: 10px;		
 	} 
@@ -59,7 +40,7 @@
 .file-horiz-menubar{
 	width: 100%;
 	height: 61px;	
-	padding-right: 21px;
+	padding-right: 30px;
 }
 .files-content-container{
 	width: 100%;
@@ -69,7 +50,7 @@
 	width: 900px;
 	height: 100%;
 	float: right;	
-	position: relative;			
+	position: relative;				
 }
 
 .file-horiz-menubar .float-strip .file-searcher{
@@ -131,17 +112,21 @@
 
 .file-actual-tbody tr{
 	border:none !important;
-	border-bottom: 1px solid #E5E3E3 !important;
-	cursor: pointer;
+	border-bottom: 1px solid #E5E3E3 !important;	
 }
 .file-actual-tbody tr:hover{
 	background-color: #EAF4FC;
 }
+
+.tr-active{
+	background-color: #EAF4FC;
+}
+
 .file-actual-tbody tr td{
 	border:none !important;
 }
 .item-view-wrapper{
-	height: 35px;	
+	height: 35px;
 }
 .activefile-feature{
 	height: 100%;
@@ -189,4 +174,12 @@
 .fileBrows-contextmenu .contextmenu-label{
 	height: 22px;		
 	margin-left: 2.5px;
+}
+
+.wyl-load-more-folder{
+	position: absolute !important;
+    z-index: 9999; 
+    bottom: 0;   
+    width:92vw;
+    height:81vh;    
 }

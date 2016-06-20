@@ -6,6 +6,7 @@ app.directive('cbFile', function(){
         scope: {
           'allowedFileTypes': '=filetype',
           'editableFile': '=edit', 
+          'metaData': '=metadata', 
           'deleteFile': '&delete', 
           'save': '&save'
         },   
@@ -28,6 +29,11 @@ app.directive('cbFile', function(){
 
             $scope.saveFile=function(){
 
+                var path=null;
+                if($scope.metaData && $scope.metaData.path){
+                    path=$scope.metaData.path;
+                }
+
                 $scope.fileInfo.spinner=true;
                 $scope.fileInfo.error=null;
                 $scope.fileInfo.progress=0;
@@ -47,7 +53,7 @@ app.directive('cbFile', function(){
 
                     $scope.fileInfo.progress=uploadProgress;
                     $scope.$digest();   
-                });              
+                },path);              
                 
             };           
 

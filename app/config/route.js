@@ -223,3 +223,13 @@ app.filter('getTextFromArray', function() {
     
   }
 });
+
+app.filter('getFileNameFromURL', function() {
+  return function(url) {
+    if(url){
+      return url.split("/").reverse()[0];
+    }else{
+      return url;
+    }
+  }
+});
