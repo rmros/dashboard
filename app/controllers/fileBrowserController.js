@@ -74,7 +74,7 @@ fileService){
           }
         }
 
-        if(index && index>-1){
+        if(index>-1){
           $scope.foldersList.splice(index,1);
         }
         
@@ -92,6 +92,14 @@ fileService){
     };
     $scope.editFile=null;
     $("#md-fileviewer").modal();
+  };
+
+  $scope.createNewFolder=function(){
+    fileService.createFolder($scope.currentPath,"FolderA").then(function(resp){
+      $scope.foldersList.push(resp);
+    },function(error){
+      errorNotify(error);
+    });
   };
 
   $scope.setAndSaveFile=function(fileObj){

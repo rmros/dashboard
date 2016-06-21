@@ -46,8 +46,23 @@ app.factory('fileService', ['$q','$http','$rootScope',function ($q,$http,$rootSc
       return  q.promise;
 
     };
+
+   global.createFolder = function(path,folderName){
+
+      var q=$q.defer();
+
+        CB.CloudFile.createFolder(path,folderName,{
+          success: function(folder) {
+            q.resolve(folder);
+          }, error: function(error) {
+            q.reject(error);
+          }
+        });
+
+      return  q.promise;
+
+    };
     
     return global;
 
 }]);
-

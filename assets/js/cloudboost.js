@@ -10871,8 +10871,7 @@ Object.defineProperty(CB.CloudFile.prototype, 'path', {
         if(path && !CB._isValidPath(path)){
             throw "path shouldn't contain special chars";
         }       
-        this.document.path = path;
-        CB._modified(this,'path');
+        this.document.path = path;        
     }
 });
 
@@ -11033,6 +11032,65 @@ CB.CloudFile.prototype.getFileContent = function(callback){
             def.reject(err);
         }
     });
+
+    if (!callback) {
+        return def;
+    }
+};
+
+CB.CloudFile.createFolder = function(path, folderName, callback){
+
+    var def;
+    
+    if (!callback) {
+        def = new CB.Promise();
+    } 
+
+    if(path && !CB._isValidPath(path)){
+        throw "Path shouldn't contain special chars";
+    }
+
+    if(!folderName || folderName=="" || typeof folderName[0]=="undefined"){
+        throw "Folder name is required";
+    }
+
+    if(folderName && CB._isContainSpecialChars(folderName)){
+        throw "Folder name shouldn't contain special chars";
+    }
+
+    var params=JSON.stringify({
+        folderName : folderName,
+        path       : path,
+        key        : CB.appKey        
+    });
+
+    var url = CB.apiUrl+'/folder/' + CB.appId;
+
+    CB._request('POST',url,params).then(function(response){                
+        if(response){  
+            try{               
+                response=JSON.parse(response); 
+                response=CB.fromJSON(response);                
+            }catch(e){
+            }            
+        }
+
+        if (callback) {
+            callback.success(response);
+        } else {
+            def.resolve(response);
+        }
+    },function(err){        
+        if(CB._isJsonString(err)){
+            err = JSON.parse(err);
+        }
+        if(callback){
+            callback.error(err);
+        }else {
+            def.reject(err);
+        }
+    });
+
 
     if (!callback) {
         return def;
