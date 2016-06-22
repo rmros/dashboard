@@ -47,7 +47,23 @@ app.factory('fileService', ['$q','$http','$rootScope',function ($q,$http,$rootSc
 
     };
 
-   global.createFolder = function(path,folderName){
+    global.saveFolder = function(file){
+
+      var q=$q.defer();
+
+        file.save({
+          success: function(file) {
+            q.resolve(file);
+          }, error: function(error) {
+            q.reject(error);
+          }
+        });
+
+      return  q.promise;
+
+    };
+
+    global.createFolder = function(path,folderName){
 
       var q=$q.defer();
 

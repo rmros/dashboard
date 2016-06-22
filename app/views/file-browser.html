@@ -11,8 +11,8 @@
 
             <div style="height:100%;width:78px;margin-top:3px;" class="cf pull-right">         
 
-              <div class="create-folder pull-right">
-                <div ng-click="createNewFolder()" style="height:100%;">
+              <div class="create-folder pull-right new-folder-box">
+                <div ng-click="initCreateFolder()" style="height:100%;">
                   <i class="icon ion-folder" style="font-size:22px;color:#AAAAAA;"></i> 
                 </div>
               </div>
@@ -49,7 +49,7 @@
 
               <div class="activefile-feature pull-right flex-general-row-wrapper">
 
-                <div class="flex-general-row-wrapper" style="height:100%;">
+                <div ng-click="renameFolder()" class="flex-general-row-wrapper edit-folder-box" style="height:100%;">
                   <div style="height:100%;" class="flex-general-column-wrapper-center">                  
                     <i class="fa fa-pencil" style="font-size:15px;color:#AAAAAA;"></i>
                   </div>
@@ -149,7 +149,45 @@
           </thead>                
           <tbody class="file-actual-tbody">
 
-            <tr ng-repeat="folder in foldersList" ng-class="{'tr-active':selectedFolder.id==folder.id}" ng-click="selectFolder(folder)" data-context-menu="app/directives/templates/contextMenuTemplate.html" data-context-event="contextmenu" >
+            <!--Create New Folder-->
+            <tr  ng-if="isCreateNewFolder" class="tr-active">
+              <td  width="55%">
+                <div class="item-view-wrapper solo-vertical-center">
+                  <div class="flex-general-row-wrapper">
+
+                    <!--Folders-->
+                    <div class="flex-general-column-wrapper-center" style="height:31px;width:35px;">
+                      <i class="icon ion-ios-folder" style="font-size:30px;color:#AAAAAA;"></i>  
+                    </div>
+
+                    <div class="flex-general-column-wrapper-center" style="height:31px;margin-left:3px;">                  
+
+                      <!--ReName-->
+                      <div click-outside="createNewFolder()" outside-if-not="new-folder-box">
+                        <input type="text" class="file-rename-txtbx new-folder-box" ng-model="$parent.newFolderName">
+                      </div>
+                      <!--/ReName-->
+
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <td width="22.5%">
+                <div>
+                  sdsd
+                </div>
+              </td>
+              <td width="22.5%">
+                <div>
+                  sdsd
+                </div>
+              </td>                  
+            </tr>
+            <!--/Create New Folder-->
+
+            <!--List of folders and files-->
+            <tr ng-repeat="folder in foldersList" ng-class="{'tr-active':selectedFolder.id==folder.id}" ng-click="selectFolder(folder)" data-context-menu="app/directives/templates/contextMenuTemplate.html" data-context-event="contextmenu">
               <td  width="55%">
                 <div class="item-view-wrapper solo-vertical-center">
                   <div class="flex-general-row-wrapper">
@@ -166,15 +204,15 @@
 
                     <div class="flex-general-column-wrapper-center" style="height:31px;margin-left:3px;">
                       <!--Display Name-->
-                      <div>
+                      <div ng-if="!editFolder[folder.id]">
                         <span ng-click="openFolder(folder)">{{folder.name || folder.url | getFileNameFromURL}}</span>
                       </div>
                       <!--/Display Name-->
 
                       <!--ReName-->
-                      <!--<div>
-                        <input type="text" class="file-rename-txtbx" value="File Name">
-                      </div>-->
+                      <div ng-if="editFolder[folder.id]" click-outside="closeEditFolder(folder)" outside-if-not="edit-folder-box">
+                        <input type="text" class="file-rename-txtbx edit-folder-box" ng-model="reNameFolder[folder.id]">
+                      </div>
                       <!--/ReName-->
 
                     </div>
@@ -194,6 +232,7 @@
                 </div>
               </td>                  
             </tr>
+            <!--/List of folders and files-->
 
           </tbody>
         </table>

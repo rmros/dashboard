@@ -7,6 +7,7 @@ app.controller('fileBrowserController',
 'projectService',
 '$timeout',
 'fileService',
+'cloudBoostApiService',
 function($scope,
 $q,  
 $rootScope,
@@ -14,7 +15,8 @@ $stateParams,
 $location,
 projectService,
 $timeout,
-fileService){	
+fileService,
+cloudBoostApiService){	
   
   var id;
   $rootScope.showAppPanel=true;
@@ -32,6 +34,14 @@ fileService){
   $scope.rootFolder=null;
   $scope.currentPath=null;
   $scope.foldersList=[];
+
+  //New folder
+  $scope.newFolderName=null;
+  $scope.isCreateNewFolder=false;
+
+  //Rename folder/file
+  $scope.editFolder={}
+  $scope.reNameFolder={}
   
   $scope.init= function() {            
     id = $stateParams.appId;
@@ -62,10 +72,33 @@ fileService){
     $scope.selectedFolder=folder;
   };
 
+
+  $scope.renameFolder=function(){
+    if($scope.selectedFolder && $scope.selectedFolder.id){
+      $scope.editFolder[$scope.selectedFolder.id]=true;
+    }  
+  };
+
+  $scope.closeEditFolder=function(folder){
+    if(folder && folder.id){
+      $scope.editFolder[folder.id]=false;
+      if($scope.reNameFolder[folder.id] && $scope.reNameFolder[folder.id]!=folder.name){
+        
+        var cloneFolder=angular.copy(folder);
+        cloneFolder.name=$scope.reNameFolder[folder.id];
+
+        var obj = new CB.CloudObject('_File');
+        obj.document = cloneFolder.document;             
+        cloudBoostApiService.saveCloudObject(obj).then(function(resp){          
+        },function(error){
+        });
+      }
+    }
+  };
+
   $scope.deleteFolder=function(){
     if($scope.selectedFolder && $scope.selectedFolder.id){
       fileService.deleteFolder($scope.selectedFolder).then(function(resp){
-
         var index;
         for(var i=0;i<$scope.foldersList.length;++i){
           if($scope.foldersList[i].id==$scope.selectedFolder.id){
@@ -73,13 +106,10 @@ fileService){
             break;
           }
         }
-
         if(index>-1){
           $scope.foldersList.splice(index,1);
-        }
-        
+        }        
         $scope.selectedFolder=null;
-
       },function(error){
       });
     }
@@ -94,12 +124,19 @@ fileService){
     $("#md-fileviewer").modal();
   };
 
+  $scope.initCreateFolder=function(){
+    $scope.isCreateNewFolder=true;
+  };
+
   $scope.createNewFolder=function(){
-    fileService.createFolder($scope.currentPath,"FolderA").then(function(resp){
-      $scope.foldersList.push(resp);
-    },function(error){
-      errorNotify(error);
-    });
+    if($scope.newFolderName){
+      $scope.isCreateNewFolder=false;
+      fileService.createFolder($scope.currentPath,$scope.newFolderName).then(function(resp){
+        $scope.foldersList.unshift(resp);
+      },function(error){
+        errorNotify(error);
+      });
+    }    
   };
 
   $scope.setAndSaveFile=function(fileObj){
