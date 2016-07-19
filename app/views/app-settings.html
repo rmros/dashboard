@@ -1,4 +1,3 @@
-
 <div ng-init="init()">
 
   <div class="appSettings-wrap">
@@ -7,9 +6,10 @@
 
         <div class="col-sm-12 col-md-12 col-lg-12  app-settings-menusectionwrap" style="">
           <div class="app-settings-menusection">
-            
+
             <!--Menu Items-->
-            <div ng-click="selectSettings('general')" ng-class="{activeAppSettingsMenu:settingsMenu.general,hoverAppSettingsMenu:settingsMenuHover.general}" ng-mouseover="menuHover('general')" ng-mouseleave="menuLeave('general')" class="eachSetMenu flex-general-row-wrapper">
+            <div ng-click="selectSettings('general')" ng-class="{activeAppSettingsMenu:settingsMenu.general,hoverAppSettingsMenu:settingsMenuHover.general}"
+              ng-mouseover="menuHover('general')" ng-mouseleave="menuLeave('general')" class="eachSetMenu flex-general-row-wrapper">
               <div class="flex-general-column-wrapper-center" style="height: 100%;width:24px;">
                 <i class="icon ion-gear-b" style="font-size: 24px;"></i>
               </div>
@@ -18,8 +18,9 @@
               </div>
             </div>
 
-            <div ng-click="selectSettings('email')" ng-class="{activeAppSettingsMenu:settingsMenu.email,hoverAppSettingsMenu:settingsMenuHover.email}" class="eachSetMenu flex-general-row-wrapper" ng-mouseover="menuHover('email')" ng-mouseleave="menuLeave('email')">
-              <div class="flex-general-column-wrapper-center" style="height: 100%;width:24px;">                
+            <div ng-click="selectSettings('email')" ng-class="{activeAppSettingsMenu:settingsMenu.email,hoverAppSettingsMenu:settingsMenuHover.email}"
+              class="eachSetMenu flex-general-row-wrapper" ng-mouseover="menuHover('email')" ng-mouseleave="menuLeave('email')">
+              <div class="flex-general-column-wrapper-center" style="height: 100%;width:24px;">
                 <i class="icon ion-email" style="font-size: 24px;"></i>
               </div>
               <div class="solo-vertical-center" style="height: 100%;margin-left: 3px;">
@@ -27,8 +28,9 @@
               </div>
             </div>
 
-            <div ng-click="selectSettings('push')" ng-class="{activeAppSettingsMenu:settingsMenu.push,hoverAppSettingsMenu:settingsMenuHover.push}" ng-mouseover="menuHover('push')" ng-mouseleave="menuLeave('push')" class="eachSetMenu flex-general-row-wrapper">
-              <div class="flex-general-column-wrapper-center" style="height: 100%;width:24px;">                
+            <div ng-click="selectSettings('push')" ng-class="{activeAppSettingsMenu:settingsMenu.push,hoverAppSettingsMenu:settingsMenuHover.push}"
+              ng-mouseover="menuHover('push')" ng-mouseleave="menuLeave('push')" class="eachSetMenu flex-general-row-wrapper">
+              <div class="flex-general-column-wrapper-center" style="height: 100%;width:24px;">
                 <i class="icon ion-ios-bell" style="font-size: 24px;"></i>
               </div>
               <div class="solo-vertical-center" style="height: 100%;margin-left: 3px;">
@@ -36,26 +38,27 @@
               </div>
             </div>
 
-            <div ng-click="selectSettings('auth')" ng-class="{activeAppSettingsMenu:settingsMenu.auth,hoverAppSettingsMenu:settingsMenuHover.auth}" ng-mouseover="menuHover('auth')" ng-mouseleave="menuLeave('auth')" class="eachSetMenu flex-general-row-wrapper">
-              <div class="flex-general-column-wrapper-center" style="height: 100%;width:24px;">                
+            <div ng-click="selectSettings('auth')" ng-class="{activeAppSettingsMenu:settingsMenu.auth,hoverAppSettingsMenu:settingsMenuHover.auth}"
+              ng-mouseover="menuHover('auth')" ng-mouseleave="menuLeave('auth')" class="eachSetMenu flex-general-row-wrapper">
+              <div class="flex-general-column-wrapper-center" style="height: 100%;width:24px;">
                 <i class="icon ion-person" style="font-size: 24px;"></i>
               </div>
               <div class="solo-vertical-center" style="height: 100%;margin-left: 3px;">
                 <span style="font-size: 18px;">Authentication</span>
               </div>
             </div>
-            <!--/Menu Items-->            
+            <!--/Menu Items-->
 
-          </div>        
-        </div>        
+          </div>
+        </div>
 
-      </div> 
-    </div>   
+      </div>
+    </div>
 
     <!--Other section-->
     <div class="appSettings-maincontent pull-left solo-horizontal-center" style="">
       <div style="width:85%;">
-        <div class="row"> 
+        <div class="row">
 
           <div class="col-sm-12 col-md-12 col-lg-12 app-editing-sectionwrap">
 
@@ -70,7 +73,7 @@
               <div ng-if="settingsMenu.general" class="appeditablefields-general">
                 <div style="height:30px;" class="flex-general-column-wrapper-center">
                   <span style="color:#549afc;font-size:24px;font-weight:bold;font-family: 'Signika Negative', sans-serif;">General Settings</span>
-                </div>                
+                </div>
 
                 <div style="margin-top: 20px;height: auto;width: 100%;" class="flex-general-column-wrapper-center">
 
@@ -107,31 +110,32 @@
 
                     <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
 
-                        <!--Add Icon-->
-                        <div ng-if="!generalSettings.settings.appIcon"  style="width:100%;height: 100%;cursor: pointer;" ng-click="initAddAppIcon()" class="flex-general-column-wrapper-center">
+                      <!--Add Icon-->
+                      <div ng-if="!generalSettings.settings.appIcon" style="width:100%;height: 100%;cursor: pointer;" ng-click="initAddAppIcon()"
+                        class="flex-general-column-wrapper-center">
 
-                          <div class="flex-general-row-wrapper" style="">
-                            <p style="font-size: 18px;font-weight: 700;color:#9E9E9E;">+</p>
-                            <p style="font-size: 18px;font-weight: 500;color:#9E9E9E;">Add Icon</p>
-                          </div>                         
-
+                        <div class="flex-general-row-wrapper" style="">
+                          <p style="font-size: 18px;font-weight: 700;color:#9E9E9E;">+</p>
+                          <p style="font-size: 18px;font-weight: 500;color:#9E9E9E;">Add Icon</p>
                         </div>
-                        <!--Add Icon-->
 
-                        <!--Delete Icon-->
-                        <div ng-if="generalSettings.settings.appIcon" style="width:100%;height: 100%;" class="solo-vertical-center">                         
+                      </div>
+                      <!--Add Icon-->
 
-                          <div  class="flex-general-row-wrapper" style="">
-                            <div style="">
-                              <img ng-src="{{generalSettings.settings.appIcon}}" style="width:40px;height: 40px;">
-                            </div>
-                            <div class="solo-vertical-center" ng-click="removeAppIcon()" style="height: 44px;cursor: pointer;">                              
-                              <p style="font-size: 18px;font-weight: 500;color:#C41919;">&nbsp;Remove</p>
-                            </div>
+                      <!--Delete Icon-->
+                      <div ng-if="generalSettings.settings.appIcon" style="width:100%;height: 100%;" class="solo-vertical-center">
+
+                        <div class="flex-general-row-wrapper" style="">
+                          <div style="">
+                            <img ng-src="{{generalSettings.settings.appIcon}}" style="width:40px;height: 40px;">
                           </div>
-
+                          <div class="solo-vertical-center" ng-click="removeAppIcon()" style="height: 44px;cursor: pointer;">
+                            <p style="font-size: 18px;font-weight: 500;color:#C41919;">&nbsp;Remove</p>
+                          </div>
                         </div>
-                        <!--Delete Icon-->                     
+
+                      </div>
+                      <!--Delete Icon-->
 
                     </div>
 
@@ -154,20 +158,20 @@
                       <switch ng-model="generalSettings.settings.appInProduction" class="green appprod-switch"></switch>
                     </div>
                   </div>
-                              
-                  
-                  <div class="flex-general-column-wrapper-center" style="width: 94%;margin-top: 35px;">        
+
+
+                  <div class="flex-general-column-wrapper-center" style="width: 94%;margin-top: 35px;">
 
                     <!--Save-->
-                    <div ng-show="!spinners[generalSettings.category]" style="margin-left:3px;width: 140px;">                    
-                      <button  ng-click="updateSettings(generalSettings.category)" class="default-inputfield" style="width:100%;height: 37px;background: #549afc;color:white;font-size: 18px;border-radius: 3px;">
+                    <div ng-show="!spinners[generalSettings.category]" style="margin-left:3px;width: 140px;">
+                      <button ng-click="updateSettings(generalSettings.category)" class="default-inputfield" style="width:100%;height: 37px;background: #549afc;color:white;font-size: 18px;border-radius: 3px;">
                       Save
                       </button>
                     </div>
 
                     <!--While Saving..-->
-                    <div ng-show="spinners[generalSettings.category]" style="margin-left:3px;width: 170px;">               
-                      <button  class="default-inputfield" style="width:100%;height: 37px;background: #549afc;color:white;font-size: 18px;border-radius: 3px;">&nbsp;
+                    <div ng-show="spinners[generalSettings.category]" style="margin-left:3px;width: 170px;">
+                      <button class="default-inputfield" style="width:100%;height: 37px;background: #549afc;color:white;font-size: 18px;border-radius: 3px;">&nbsp;
                       <i class="fa fa-spinner fa-spin"></i>
                       Saving..
                       </button>
@@ -183,7 +187,7 @@
               <div ng-if="settingsMenu.email" class="appeditablefields-email">
                 <div style="height:30px;" class="flex-general-column-wrapper-center">
                   <span style="color:#549afc;font-size:24px;font-weight:bold;font-family: 'Signika Negative', sans-serif;">Email Settings</span>
-                </div>                
+                </div>
 
                 <div style="margin-top: 20px;height: auto;width: 100%;" class="flex-general-column-wrapper-center">
 
@@ -203,20 +207,22 @@
                     </div>
 
                     <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                       <div class="">
-                            <div class="flex-general-row-wrapper">
-                              <div>
-                                <input type="radio" ng-model="emailSettings.settings.mandrill.enabled" ng-value="true" ng-change="toggleEmailConfig('mandrill')" style="margin-top: -0.5px;height: 18px;width: 18px;cursor: pointer;background-color: white;" >
-                              </div>
-                              <div style="font-size: 14px;">Mandrill</div>
-                            </div>
-
-                            <div class="flex-general-row-wrapper" style="margin-top: 8px;">
-                              <div>
-                              <input type="radio" ng-model="emailSettings.settings.mailgun.enabled" ng-value="true" ng-change="toggleEmailConfig('mailgun')" style="margin-top: -0.5px;height: 18px;width: 18px;cursor: pointer;"></div>
-                              <div style="font-size: 14px;">Mailgun</div>
-                            </div>
+                      <div class="">
+                        <div class="flex-general-row-wrapper">
+                          <div>
+                            <input type="radio" ng-model="emailSettings.settings.mandrill.enabled" ng-value="true" ng-change="toggleEmailConfig('mandrill')"
+                              style="margin-top: -0.5px;height: 18px;width: 18px;cursor: pointer;background-color: white;">
+                          </div>
+                          <div style="font-size: 14px;">Mandrill</div>
                         </div>
+
+                        <div class="flex-general-row-wrapper" style="margin-top: 8px;">
+                          <div>
+                            <input type="radio" ng-model="emailSettings.settings.mailgun.enabled" ng-value="true" ng-change="toggleEmailConfig('mailgun')"
+                              style="margin-top: -0.5px;height: 18px;width: 18px;cursor: pointer;"></div>
+                          <div style="font-size: 14px;">Mailgun</div>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -237,11 +243,12 @@
                     </div>
 
                     <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                      <input type="text" ng-model="emailSettings.settings.mandrill.apiKey" class="default-inputfield" placeholder="Enter Mandrill API Key" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      <input type="text" ng-model="emailSettings.settings.mandrill.apiKey" class="default-inputfield" placeholder="Enter Mandrill API Key"
+                        style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                     </div>
-                  </div> 
+                  </div>
 
-                  
+
 
                   <!--Toggle Template-->
                   <div ng-if="emailSettings.settings.mailgun.enabled" style="width:94%;">
@@ -262,11 +269,12 @@
                       </div>
 
                       <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                        <input type="text" ng-model="emailSettings.settings.mailgun.apiKey" class="default-inputfield" placeholder="Enter Mailgun API Key" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                        <input type="text" ng-model="emailSettings.settings.mailgun.apiKey" class="default-inputfield" placeholder="Enter Mailgun API Key"
+                          style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                       </div>
                     </div>
                     <!--/Each section-->
-                   
+
 
                     <!--Each section-->
                     <div class="cf" style="border: 1px solid #EDEDED;">
@@ -283,14 +291,15 @@
                       </div>
 
                       <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                        <input type="text" ng-model="emailSettings.settings.mailgun.domain" class="default-inputfield" placeholder="Enter Mailgun Domain" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                        <input type="text" ng-model="emailSettings.settings.mailgun.domain" class="default-inputfield" placeholder="Enter Mailgun Domain"
+                          style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                       </div>
                     </div>
-                    <!--/Each section-->    
-                                         
+                    <!--/Each section-->
+
 
                   </div>
-                  <!--/Toggle Template-->  
+                  <!--/Toggle Template-->
 
                   <!--Default Fields-->
                   <div ng-show="emailSettings.settings.mailgun.enabled || emailSettings.settings.mandrill.enabled" style="width:94%;">
@@ -309,11 +318,12 @@
                       </div>
 
                       <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                        <input type="text" ng-model="emailSettings.settings.fromEmail" class="default-inputfield" placeholder="Enter From Email" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                        <input type="text" ng-model="emailSettings.settings.fromEmail" class="default-inputfield" placeholder="Enter From Email"
+                          style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                       </div>
                     </div>
                     <!--/Each section-->
-                   
+
 
                     <!--Each section-->
                     <div class="cf" style="border: 1px solid #EDEDED;">
@@ -333,13 +343,13 @@
                         <input type="text" ng-model="emailSettings.settings.fromName" class="default-inputfield" placeholder="Enter From Name" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                       </div>
                     </div>
-                    <!--/Each section-->    
-                                         
+                    <!--/Each section-->
+
 
                   </div>
-                  <!--/Default Fields Template-->                           
-                  
-                  <div class="flex-general-column-wrapper-center" style="width: 94%;margin-top: 35px;">     
+                  <!--/Default Fields Template-->
+
+                  <div class="flex-general-column-wrapper-center" style="width: 94%;margin-top: 35px;">
 
                     <!--Save-->
                     <div ng-show="!spinners[emailSettings.category]" style="margin-left:3px;width: 140px;">
@@ -349,14 +359,14 @@
                     </div>
 
                     <!--While Saving..-->
-                    <div ng-show="spinners[emailSettings.category]" style="margin-left:3px;width: 170px;">               
-                      <button  class="default-inputfield" style="width:100%;height: 37px;background: #549afc;color:white;font-size: 18px;border-radius: 3px;">&nbsp;
+                    <div ng-show="spinners[emailSettings.category]" style="margin-left:3px;width: 170px;">
+                      <button class="default-inputfield" style="width:100%;height: 37px;background: #549afc;color:white;font-size: 18px;border-radius: 3px;">&nbsp;
                       <i class="fa fa-spinner fa-spin"></i>
                       Saving..
                       </button>
                     </div>
 
-                  </div>                
+                  </div>
 
                 </div>
               </div>
@@ -366,7 +376,7 @@
               <div ng-if="settingsMenu.push" class="appeditablefields-push">
                 <div style="height:30px;" class="flex-general-column-wrapper-center">
                   <span style="color:#549afc;font-size:24px;font-weight:bold;font-family: 'Signika Negative', sans-serif;">Push Notifications Settings</span>
-                </div>               
+                </div>
 
                 <div style="margin-top: 30px;height: auto;width: 100%;" class="flex-general-column-wrapper-center">
 
@@ -379,7 +389,7 @@
                     </div>
                     <div class="width:100%;">
                       <span style="font-size: 14px;color:#576175;"></span>
-                    </div>                  
+                    </div>
                   </div>
 
                   <div class="actual-fields cf" style="border: 1px solid #EDEDED;margin-top: 15px;">
@@ -407,7 +417,7 @@
 
                         <div ng-if="pushSettings.settings.apple.certificates.length>0" class="flex-general-row-wrapper" style="">
                           <p style="font-size: 16px;font-weight: 700;color:#9E9E9E;">
-                          <i class="fa fa-refresh"></i></p>
+                            <i class="fa fa-refresh"></i></p>
                           <p style="font-size: 18px;font-weight: 500;color:#9E9E9E;">&nbsp;Change Certificate</p>
                         </div>
 
@@ -429,7 +439,7 @@
                         <i class="fa fa-android" style="margin-right: 4px;"></i>
                         Android Push Credentials
                       </span>
-                    </div>                                     
+                    </div>
                   </div>
 
 
@@ -447,7 +457,8 @@
                     </div>
 
                     <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                      <input type="text" ng-model="pushSettings.settings.android.credentials[0].senderId" class="default-inputfield" placeholder="Enter Sender ID" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      <input type="text" ng-model="pushSettings.settings.android.credentials[0].senderId" class="default-inputfield" placeholder="Enter Sender ID"
+                        style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                     </div>
                   </div>
 
@@ -465,17 +476,18 @@
                     </div>
 
                     <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                      <input type="text" ng-model="pushSettings.settings.android.credentials[0].apiKey" class="default-inputfield" placeholder="Enter API Key" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      <input type="text" ng-model="pushSettings.settings.android.credentials[0].apiKey" class="default-inputfield" placeholder="Enter API Key"
+                        style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                     </div>
                   </div>
-                
+
                   <div style="width:94%;margin-top: 65px;" class="flex-general-column-wrapper-center">
                     <div class="width:100%;">
                       <span style="font-size: 18px;font-weight: bold;color:#549afc;">
                         <i class="fa fa-windows" style="margin-right: 4px;"></i>
                         Windows Push Credentials
                       </span>
-                    </div>                                                      
+                    </div>
                   </div>
 
 
@@ -493,7 +505,8 @@
                     </div>
 
                     <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                      <input type="text" ng-model="pushSettings.settings.windows.credentials[0].securityId" class="default-inputfield" placeholder="Enter Security Identifier" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      <input type="text" ng-model="pushSettings.settings.windows.credentials[0].securityId" class="default-inputfield" placeholder="Enter Security Identifier"
+                        style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                     </div>
                   </div>
                   <div class="actual-fields cf" style="border: 1px solid #EDEDED;">
@@ -510,11 +523,12 @@
                     </div>
 
                     <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                      <input type="text" class="default-inputfield" ng-model="pushSettings.settings.windows.credentials[0].clientSecret" placeholder="Enter Client Secret" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      <input type="text" class="default-inputfield" ng-model="pushSettings.settings.windows.credentials[0].clientSecret" placeholder="Enter Client Secret"
+                        style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                     </div>
                   </div>
 
-                  <div class="flex-general-column-wrapper-center" style="width: 94%;margin-top: 45px;">     
+                  <div class="flex-general-column-wrapper-center" style="width: 94%;margin-top: 45px;">
 
                     <!--Save-->
                     <div ng-show="!spinners[pushSettings.category]" style="margin-left:3px;width: 140px;">
@@ -524,8 +538,8 @@
                     </div>
 
                     <!--While Saving..-->
-                    <div ng-show="spinners[pushSettings.category]" style="margin-left:3px;width: 170px;">               
-                      <button  class="default-inputfield" style="width:100%;height: 37px;background: #549afc;color:white;font-size: 18px;border-radius: 3px;">&nbsp;
+                    <div ng-show="spinners[pushSettings.category]" style="margin-left:3px;width: 170px;">
+                      <button class="default-inputfield" style="width:100%;height: 37px;background: #549afc;color:white;font-size: 18px;border-radius: 3px;">&nbsp;
                       <i class="fa fa-spinner fa-spin"></i>
                       Saving..
                       </button>
@@ -542,9 +556,9 @@
 
                 <div style="height:30px;" class="flex-general-column-wrapper-center">
                   <span style="color:#549afc;font-size:24px;font-weight:bold;font-family: 'Signika Negative', sans-serif;">Authentication Settings</span>
-                </div>                
+                </div>
 
-                <div class="flex-general-column-wrapper-center" style="width: 94%;margin-top: 35px;">        
+                <div class="flex-general-column-wrapper-center" style="width: 94%;margin-top: 35px;">
 
                   <div style="width:94%;" class="flex-general-column-wrapper-center">
                     <div class="width:100%;">
@@ -552,7 +566,7 @@
                         <i class="ion ion-gear-b" style="margin-right: 4px;font-size: 20px;"></i>
                         General Settings
                       </span>
-                    </div>                                                      
+                    </div>
                   </div>
 
                   <!--Callback URL-->
@@ -567,44 +581,47 @@
                       <div style="width: 100%;margin-top: 3px;">
                         <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is the login and sign up page that you can use for your app.</span>
 
-                      </div>                     
+                      </div>
 
                     </div>
-                    
-                  </div> 
+
+                  </div>
                   <!--Callback URL-->
 
                   <!--Toggle Template-->
-                  <div style="width:94%;">                   
+                  <div style="width:94%;">
 
                     <!--Html Template-->
                     <div class="cf" style="border-right: 1px solid #EDEDED; border-bottom: 1px solid #EDEDED;border-radius: 2px; background-color: #f9f9f9;">
 
-                      <div style="width: 100.2%;background-color:white;height:48px;border-width:0px 1px 1px 1px; border-color:#EDEDED; border-style:solid;" class="flex-general-row-wrapper">            
-                        <div  style="width:10%; margin-left: 10px;height:100%;font-size: 14px;" class="solo-vertical-center">
+                      <div style="width: 100.2%;background-color:white;height:48px;border-width:0px 1px 1px 1px; border-color:#EDEDED; border-style:solid;"
+                        class="flex-general-row-wrapper">
+                        <div style="width:10%; margin-left: 10px;height:100%;font-size: 14px;" class="solo-vertical-center">
                           Login URL
                         </div>
-                        <div  class="solo-vertical-center" style="width:80%;;margin-left: 6px;height:100%;font-size: 14px;padding:6px;">
-                          
-                          <div style="padding-left:7px; width:100%;height:100%;border-radius:2px; border:1px solid #EDEDED;background-color:#EDEAEA;" class="solo-vertical-center">
-                          {{::loginPageURL}}
+                        <div class="solo-vertical-center" style="width:80%;;margin-left: 6px;height:100%;font-size: 14px;padding:6px;">
+
+                          <div style="padding-left:7px; width:100%;height:100%;border-radius:2px; border:1px solid #EDEDED;background-color:#EDEAEA;"
+                            class="solo-vertical-center">
+                            {{::loginPageURL}}
                           </div>
 
                         </div>
 
-                        <div  class="flex-general-column-wrapper-center" style="width:7%;height:100%;cursor: pointer;font-size: 14px;padding:6px;">
-                          
-                          <div class="flex-general-column-wrapper-center cliplogin-url-btn" clip-copy="loginPageURL" click-outside="loginUrlOutsideClick()" ng-click="loginUrlClick()" outside-if-not="cliplogin-url-btn" ng-class="{'login-clipper-clicked':loginUrlClippr}">
+                        <div class="flex-general-column-wrapper-center" style="width:7%;height:100%;cursor: pointer;font-size: 14px;padding:6px;">
+
+                          <div class="flex-general-column-wrapper-center cliplogin-url-btn" clip-copy="loginPageURL" click-outside="loginUrlOutsideClick()"
+                            ng-click="loginUrlClick()" outside-if-not="cliplogin-url-btn" ng-class="{'login-clipper-clicked':loginUrlClippr}">
                             <i class="icon ion-ios-copy-outline" style="font-size:19px;"></i>
                           </div>
 
                         </div>
-                        
+
                       </div>
 
                       <div class="pull-left" style="height:auto;width:100%;padding:15px;">
 
-                        <div style="width: 100%;">                      
+                        <div style="width: 100%;">
 
                           <!--html && Preview-->
                           <div style="width: 100%;margin-top: 15px;height:540px;overflow-y:auto;">
@@ -612,295 +629,304 @@
 
                               <!--Login or Sing Up form-->
                               <div ng-if="!authPageSimilate.forgotPasswordPage" id="authenticate-card" class="" style=" width:300px;">
-                                  <div class="" style="height:auto;border-radius:2px; border:1px solid #BAB8B8;">
-                                      <!--Header-->
-                                      <div style="width:100%;height:117px;background-color:#dddddd;padding:15px;">               
+                                <div class="" style="height:auto;border-radius:2px; border:1px solid #BAB8B8;">
+                                  <!--Header-->
+                                  <div style="width:100%;height:117px;background-color:#dddddd;padding:15px;">
 
-                                          <div style="width:100%;" class="flex-general-column-wrapper-center">
-                                             
-                                            <div ng-if="generalSettings.settings.appIcon" style="width:50px;height:50px;border-radius: 10px;overflow: hidden;">
-                                                <img ng-src={{generalSettings.settings.appIcon}} style="width:50px;height:50px;">
-                                            </div>
-                                      
-                                            <div ng-if="!generalSettings.settings.appIcon" style="width:50px;height:50px;border-radius: 10px;overflow: hidden;">
-                                                <img src="assets/images/CbLogoIcon.png" style="width:50px;height:50px;">
-                                            </div>
-                                                 
-                                          </div>
+                                    <div style="width:100%;" class="flex-general-column-wrapper-center">
 
-                                          <div style="width:100%;margin-top: -5px;" class="flex-general-column-wrapper-center">  
-                                            <h3 style="font-weight:500;color:black;" ng-if="generalSettings.settings.appName">{{generalSettings.settings.appName}}</h3>                                      
-                                            <h3 style="font-weight:500;color:black;" ng-if="!generalSettings.settings.appName">App on CloudBoost</h3>                 
-                                          </div>
-
+                                      <div ng-if="generalSettings.settings.appIcon" style="width:50px;height:50px;border-radius: 10px;overflow: hidden;">
+                                        <img ng-src={{generalSettings.settings.appIcon}} style="width:50px;height:50px;">
                                       </div>
-                                      <!--Header-->
 
-                                      <!--Main Body Spinner-->
-                                      <div ng-show="authPageSimilate.authenticateSpinner" id="authenticate-spinner" style="width: 100%;height: 360px;background-color: white;" class="flex-general-column-wrapper-center">
-                                          <div style="width: 60px;height: 60px;" class="flex-general-column-wrapper-center">
-                                              <div style="" class="loader-circle advanced flex-general-column-wrapper-center">                        
-                                              </div>                        
-                                          </div>
+                                      <div ng-if="!generalSettings.settings.appIcon" style="width:50px;height:50px;border-radius: 10px;overflow: hidden;">
+                                        <img src="assets/images/CbLogoIcon.png" style="width:50px;height:50px;">
                                       </div>
-                                      <!--Main Body Spinner-->
 
-                                      <!--Main Body Content-->
-                                      <div id="authenticate-mainbody" style="">
-                                          <!--Error Block-->
-                                          <div ng-show="authPageSimilate.authenticateError" id="authenticate-error" style="background-color: #f04848;padding: 10px;" class="solo-horizontal-center">
-                                              <span style="color:white;">{{authPageSimilate.authenticateError}}</span>
+                                    </div>
+
+                                    <div style="width:100%;margin-top: -5px;" class="flex-general-column-wrapper-center">
+                                      <h3 style="font-weight:500;color:black;" ng-if="generalSettings.settings.appName">{{generalSettings.settings.appName}}</h3>
+                                      <h3 style="font-weight:500;color:black;" ng-if="!generalSettings.settings.appName">App on CloudBoost</h3>
+                                    </div>
+
+                                  </div>
+                                  <!--Header-->
+
+                                  <!--Main Body Spinner-->
+                                  <div ng-show="authPageSimilate.authenticateSpinner" id="authenticate-spinner" style="width: 100%;height: 360px;background-color: white;"
+                                    class="flex-general-column-wrapper-center">
+                                    <div style="width: 60px;height: 60px;" class="flex-general-column-wrapper-center">
+                                      <div style="" class="loader-circle advanced flex-general-column-wrapper-center">
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <!--Main Body Spinner-->
+
+                                  <!--Main Body Content-->
+                                  <div id="authenticate-mainbody" style="">
+                                    <!--Error Block-->
+                                    <div ng-show="authPageSimilate.authenticateError" id="authenticate-error" style="background-color: #f04848;padding: 10px;"
+                                      class="solo-horizontal-center">
+                                      <span style="color:white;">{{authPageSimilate.authenticateError}}</span>
+                                    </div>
+                                    <!--Error Block-->
+
+                                    <!--Body-->
+                                    <div style="background-color: white;padding-top: 5px;">
+                                      <!--Login and Sing Up buttons-->
+                                      <div ng-if="authSettings.settings.custom.enabled" class="flex-general-column-wrapper-center" style="margin-top: 20px;">
+                                        <div class="flex-general-row-wrapper">
+                                          <div class="width:100%;height:30px;">
+                                            <button ng-click="authSimilateAuth('login')" class="default-inputfield login-btn" ng-class="{'btn-active':authPageSimilate.isLogin}"
+                                              style="">LOG IN</button>
                                           </div>
-                                          <!--Error Block-->
+                                          <div class="width:100%;height:30px;">
+                                            <button ng-click="authSimilateAuth('signup')" class="default-inputfield sinup-btn" ng-class="{'btn-active':!authPageSimilate.isLogin}"
+                                              style="">SIGN UP</button>
+                                          </div>
 
-                                          <!--Body-->
-                                          <div style="background-color: white;padding-top: 5px;">
-                                              <!--Login and Sing Up buttons-->                                              
-                                              <div ng-if="authSettings.settings.custom.enabled" class="flex-general-column-wrapper-center" style="margin-top: 20px;">
-                                                  <div class="flex-general-row-wrapper">
-                                                     <div class="width:100%;height:30px;">
-                                                          <button ng-click="authSimilateAuth('login')" class="default-inputfield login-btn" ng-class="{'btn-active':authPageSimilate.isLogin}" style="">LOG IN</button>
-                                                     </div>
-                                                     <div class="width:100%;height:30px;">
-                                                          <button ng-click="authSimilateAuth('signup')" class="default-inputfield sinup-btn" ng-class="{'btn-active':!authPageSimilate.isLogin}" style="">SIGN UP</button>
-                                                     </div>
-                                                     
-                                                  </div>
+                                        </div>
+                                      </div>
+
+                                      <div style="background-color: white;padding-bottom: 24px;padding-left: 20px;padding-right: 20px;">
+
+                                        <!--Social Connection Buttons-->
+                                        <div class="flex-general-column-wrapper-center" style="margin-top: 5px;width: 100%;">
+                                          <div class="solo-horizontal-center" style="width: 98%;">
+                                            <!--facebook-->
+                                            <div ng-if="authSettings.settings.facebook.enabled" id="facebook-login-btn" class="social-btns facebook flex-general-column-wrapper-center">
+                                              <i class="fa fa-facebook"></i>
+                                            </div>
+
+                                            <!--twitter-->
+                                            <div ng-if="authSettings.settings.twitter.enabled" id="twittr-login-btn" class="social-btns twitter flex-general-column-wrapper-center">
+                                              <i class="fa fa-twitter"></i>
+                                            </div>
+
+                                            <!--google-->
+                                            <div ng-if="authSettings.settings.google.enabled" id="google-login-btn" class="social-btns google flex-general-column-wrapper-center">
+                                              <i class="fa fa-google"></i>
+                                            </div>
+
+                                            <!--linkedin-->
+                                            <div ng-if="authSettings.settings.linkedIn.enabled" id="linkedin-login-btn" class="social-btns linkedin flex-general-column-wrapper-center">
+                                              <i class="fa fa-linkedin" aria-hidden="true"></i>
+                                            </div>
+
+                                            <!--github-->
+                                            <div ng-if="authSettings.settings.github.enabled" id="github-login-btn" class="social-btns github flex-general-column-wrapper-center">
+                                              <i class="fa fa-github"></i>
+                                            </div>
+
+                                          </div>
+                                        </div>
+
+                                        <!---OR-->
+                                        <div style="width: 100%;margin-top: 20px;" class="solo-horizontal-center">
+                                          <p ng-if="(authSettings.settings.custom.enabled) && (authSettings.settings.facebook.enabled || authSettings.settings.twitter.enabled || authSettings.settings.google.enabled || authSettings.settings.linkedIn.enabled || authSettings.settings.github.enabled)"
+                                            id="authenticate-info" style="color:gray">Or</p>
+
+                                        </div>
+
+                                        <!--Login Input Fields-->
+                                        <div ng-if="(!authSettings && authPageSimilate.isLogin) || (authPageSimilate.isLogin && authSettings.settings.custom.enabled)"
+                                          id="login-inputfields" style="width: 100%;margin-top: 8px;" class="solo-horizontal-center">
+                                          <div style="width: 95%;">
+                                            <div id="login-username-wrap" class="flex-general-row-wrapper input-field" style="">
+                                              <div class="flex-general-column-wrapper-center" style="width:13%; height: 35px;background-color:#f1f1f1;">
+                                                <i class="icon ion-ios-person" style="color:gray;font-size: 22px;"></i>
                                               </div>
-                                              
-                                              <div style="background-color: white;padding-bottom: 24px;padding-left: 20px;padding-right: 20px;">                           
+                                              <div style="width:86.98%; height: 35px;">
+                                                <input id="login-username" type="text" placeholder="Username" class="default-inputfield" required style="width: 100%;height: 100%;padding-left: 12px;">
+                                              </div>
+                                            </div>
 
-                                                  <!--Social Connection Buttons-->
-                                                  <div class="flex-general-column-wrapper-center" style="margin-top: 5px;width: 100%;">
-                                                      <div class="solo-horizontal-center" style="width: 98%;">
-                                                          <!--facebook-->                                                        
-                                                          <div ng-if="authSettings.settings.facebook.enabled" id="facebook-login-btn" class="social-btns facebook flex-general-column-wrapper-center">
-                                                              <i class="fa fa-facebook"></i>
-                                                          </div>                                                     
-
-                                                          <!--twitter-->                                                         
-                                                          <div  ng-if="authSettings.settings.twitter.enabled" id="twittr-login-btn" class="social-btns twitter flex-general-column-wrapper-center">
-                                                              <i class="fa fa-twitter"></i>
-                                                          </div>                                                         
-
-                                                          <!--google-->                                                        
-                                                          <div  ng-if="authSettings.settings.google.enabled" id="google-login-btn" class="social-btns google flex-general-column-wrapper-center">
-                                                              <i class="fa fa-google"></i>
-                                                          </div>                                                        
-
-                                                          <!--linkedin-->                                                        
-                                                          <div  ng-if="authSettings.settings.linkedIn.enabled" id="linkedin-login-btn" class="social-btns linkedin flex-general-column-wrapper-center">
-                                                              <i class="fa fa-linkedin" aria-hidden="true"></i>
-                                                          </div>                                                     
-
-                                                          <!--github-->                                                         
-                                                          <div  ng-if="authSettings.settings.github.enabled" id="github-login-btn"  class="social-btns github flex-general-column-wrapper-center">
-                                                              <i class="fa fa-github"></i>
-                                                          </div>                                                     
-                                                       
-                                                      </div>
-                                                  </div>
-                                                  
-                                                  <!---OR-->
-                                                  <div style="width: 100%;margin-top: 20px;" class="solo-horizontal-center">          
-                                                      <p ng-if="(authSettings.settings.custom.enabled) && (authSettings.settings.facebook.enabled || authSettings.settings.twitter.enabled || authSettings.settings.google.enabled || authSettings.settings.linkedIn.enabled || authSettings.settings.github.enabled)" id="authenticate-info" style="color:gray">Or</p>
-                                                     
-                                                  </div> 
-
-                                                  <!--Login Input Fields-->                        
-                                                  <div ng-if="(!authSettings && authPageSimilate.isLogin) || (authPageSimilate.isLogin && authSettings.settings.custom.enabled)" id="login-inputfields" style="width: 100%;margin-top: 8px;" class="solo-horizontal-center">                                        
-                                                      <div style="width: 95%;">
-                                                          <div id="login-username-wrap" class="flex-general-row-wrapper input-field" style="">
-                                                              <div class="flex-general-column-wrapper-center" style="width:13%; height: 35px;background-color:#f1f1f1;">
-                                                                  <i class="icon ion-ios-person" style="color:gray;font-size: 22px;"></i>
-                                                              </div>
-                                                              <div style="width:86.98%; height: 35px;">
-                                                                  <input id="login-username" type="text" placeholder="Username" class="default-inputfield" required style="width: 100%;height: 100%;padding-left: 12px;">
-                                                              </div>
-                                                          </div>
-
-                                                          <div id="login-password-wrap" class="flex-general-row-wrapper input-field" style="">
-                                                              <div class="flex-general-column-wrapper-center" style="width:13%; height: 35px;background-color:#f1f1f1;">
-                                                                  <i class="icon ion-ios-locked-outline" style="color:gray;font-size: 22px;"></i>
-                                                              </div>
-                                                              <div style="width:86.98%; height: 35px;">
-                                                                  <input id="login-password" type="password" placeholder="Password" class="default-inputfield" required style="width: 100%;height: 100%;padding-left: 12px;">
-                                                              </div>
-                                                          </div>
-                                                      </div>                                        
-                                                  </div>
-                                                  <!--/Login Input Fields-->
-                                                 
-
-                                                  <!--Signup Input Fields-->
-                                                  
-                                                  <div ng-if="(!authSettings && !authPageSimilate.isLogin) || (!authPageSimilate.isLogin && authSettings.settings.custom.enabled)" id="signup-inputfields" style="width: 100%;margin-top: 8px;" class="solo-horizontal-center">                                        
-                                                      <div style="width: 95%;">
-                                                          <div id="signup-username-wrap" class="flex-general-row-wrapper input-field" style="">
-                                                              <div class="flex-general-column-wrapper-center" style="width:13%; height: 35px;background-color:#f1f1f1;">
-                                                                  <i class="icon ion-ios-person" style="color:gray;font-size: 22px;"></i>
-                                                              </div>
-                                                              <div style="width:86.98%; height: 35px;">
-                                                                  <input id="signup-username" type="text" placeholder="Enter Username" class="default-inputfield" required style="width: 100%;height: 100%;padding-left: 12px;">
-                                                              </div>
-                                                          </div>                                
-
-                                                          <div id="signup-password-wrap"  class="flex-general-row-wrapper input-field" style="">
-                                                              <div class="flex-general-column-wrapper-center" style="width:13%; height: 35px;background-color:#f1f1f1;">
-                                                                  <i class="icon ion-ios-locked-outline" style="color:gray;font-size: 22px;"></i>
-                                                              </div>
-                                                              <div style="width:86.98%; height: 35px;">
-                                                                  <input id="signup-password" type="password" placeholder="Create a Password" class="default-inputfield" required style="width: 100%;height: 100%;padding-left: 12px;">
-                                                              </div>
-                                                          </div>
-
-                                                          <div id="signup-email-wrap" class="flex-general-row-wrapper input-field" style="">
-                                                              <div class="flex-general-column-wrapper-center" style="width:13%; height: 35px;background-color:#f1f1f1;">
-                                                                  <i class="icon ion-ios-email-outline" style="color:gray;font-size: 22px;"></i>
-                                                              </div>
-                                                              <div style="width:86.98%; height: 35px;">
-                                                                  <input id="signup-email" type="text" placeholder="Enter Email" class="default-inputfield" required style="width: 100%;height: 100%;padding-left: 12px;">
-                                                              </div>
-                                                          </div>
-                                                      </div>                                        
-                                                  </div>
-
-                                                  <!--/Signup Input Fields-->
-
-                                                  <!--Forgot Password-->
-                                                  <div id="forget-password-block" style="width: 100%;margin-top: 15px;" class="solo-horizontal-center">
-                                                      <span ng-click="similateToForgotPwd(true)" id="forget-password" style="color:gray;cursor: pointer;">Don't remember your password?</span>
-                                                  </div>
-                                                 
-
-                                              </div>    
+                                            <div id="login-password-wrap" class="flex-general-row-wrapper input-field" style="">
+                                              <div class="flex-general-column-wrapper-center" style="width:13%; height: 35px;background-color:#f1f1f1;">
+                                                <i class="icon ion-ios-locked-outline" style="color:gray;font-size: 22px;"></i>
+                                              </div>
+                                              <div style="width:86.98%; height: 35px;">
+                                                <input id="login-password" type="password" placeholder="Password" class="default-inputfield" required style="width: 100%;height: 100%;padding-left: 12px;">
+                                              </div>
+                                            </div>
                                           </div>
-                                          <!--Body-->
-                                          
-                                          <!--Button-->
-                                          <div ng-if="!authSettings || (authSettings.settings.custom.enabled)" class="final-btn" ng-style="{'background-color':authSettings.settings.general.primaryColor}" colorhover>
-                                             <div style="width: 100%;height: 30px;" class="flex-general-column-wrapper-center">
-                                                  <span style="color:white;font-size: 34px;">
+                                        </div>
+                                        <!--/Login Input Fields-->
+
+
+                                        <!--Signup Input Fields-->
+
+                                        <div ng-if="(!authSettings && !authPageSimilate.isLogin) || (!authPageSimilate.isLogin && authSettings.settings.custom.enabled)"
+                                          id="signup-inputfields" style="width: 100%;margin-top: 8px;" class="solo-horizontal-center">
+                                          <div style="width: 95%;">
+                                            <div id="signup-username-wrap" class="flex-general-row-wrapper input-field" style="">
+                                              <div class="flex-general-column-wrapper-center" style="width:13%; height: 35px;background-color:#f1f1f1;">
+                                                <i class="icon ion-ios-person" style="color:gray;font-size: 22px;"></i>
+                                              </div>
+                                              <div style="width:86.98%; height: 35px;">
+                                                <input id="signup-username" type="text" placeholder="Enter Username" class="default-inputfield" required style="width: 100%;height: 100%;padding-left: 12px;">
+                                              </div>
+                                            </div>
+
+                                            <div id="signup-password-wrap" class="flex-general-row-wrapper input-field" style="">
+                                              <div class="flex-general-column-wrapper-center" style="width:13%; height: 35px;background-color:#f1f1f1;">
+                                                <i class="icon ion-ios-locked-outline" style="color:gray;font-size: 22px;"></i>
+                                              </div>
+                                              <div style="width:86.98%; height: 35px;">
+                                                <input id="signup-password" type="password" placeholder="Create a Password" class="default-inputfield" required style="width: 100%;height: 100%;padding-left: 12px;">
+                                              </div>
+                                            </div>
+
+                                            <div id="signup-email-wrap" class="flex-general-row-wrapper input-field" style="">
+                                              <div class="flex-general-column-wrapper-center" style="width:13%; height: 35px;background-color:#f1f1f1;">
+                                                <i class="icon ion-ios-email-outline" style="color:gray;font-size: 22px;"></i>
+                                              </div>
+                                              <div style="width:86.98%; height: 35px;">
+                                                <input id="signup-email" type="text" placeholder="Enter Email" class="default-inputfield" required style="width: 100%;height: 100%;padding-left: 12px;">
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <!--/Signup Input Fields-->
+
+                                        <!--Forgot Password-->
+                                        <div id="forget-password-block" style="width: 100%;margin-top: 15px;" class="solo-horizontal-center">
+                                          <span ng-click="similateToForgotPwd(true)" id="forget-password" style="color:gray;cursor: pointer;">Don't remember your password?</span>
+                                        </div>
+
+
+                                      </div>
+                                    </div>
+                                    <!--Body-->
+
+                                    <!--Button-->
+                                    <div ng-if="!authSettings || (authSettings.settings.custom.enabled)" class="final-btn" ng-style="{'background-color':authSettings.settings.general.primaryColor}"
+                                      colorhover>
+                                      <div style="width: 100%;height: 30px;" class="flex-general-column-wrapper-center">
+                                        <span style="color:white;font-size: 34px;">
                                                       <i class="icon ion-log-in"></i>
                                                   </span>
-                                             </div>
-                                          </div>
-                                          <!--Button-->                                          
-
                                       </div>
-                                      <!--/Main Body Content-->
+                                    </div>
+                                    <!--Button-->
+
                                   </div>
+                                  <!--/Main Body Content-->
+                                </div>
                               </div>
-                              <!--/Login or Sing Up form--> 
+                              <!--/Login or Sing Up form-->
 
                               <!--Forgot Password-->
                               <div ng-if="authPageSimilate.forgotPasswordPage" id="forgetpassword-card" class="" style="width:300px;">
-                                  <div class="" style="height:auto;border-radius:2px; border:1px solid #BAB8B8;">
-                                      <!--Header-->
-                                      <div style="width:100%;height:117px;background-color:#dddddd;padding:15px;">
+                                <div class="" style="height:auto;border-radius:2px; border:1px solid #BAB8B8;">
+                                  <!--Header-->
+                                  <div style="width:100%;height:117px;background-color:#dddddd;padding:15px;">
 
-                                          <div id="goback-btn" style="width: 30px;height: 30px;position: absolute;">
-                                              <div ng-click="similateToForgotPwd(false)" id="goback-to-authenticate-card" class="flex-general-column-wrapper-center" style="width:100%;height:100%; border-radius: 25px;background-color: white;cursor: pointer;">
-                                                  <i class="icon ion-ios-arrow-left" style="color:black;font-size:20px;"></i>
-                                                  
-                                              </div>
-                                          </div>
-
-                                          <div style="width:100%;" class="flex-general-column-wrapper-center">
-                                              <div ng-if="generalSettings.settings.appIcon" style="width:50px;height:50px;border-radius: 10px;overflow: hidden;">
-                                                  <img ng-src={{generalSettings.settings.appIcon}} style="width:50px;height:50px;">
-                                              </div>
-                                        
-                                              <div ng-if="!generalSettings.settings.appIcon" style="width:50px;height:50px;border-radius: 10px;overflow: hidden;">
-                                                  <img src="assets/images/CbLogoIcon.png" style="width:50px;height:50px;">
-                                              </div>   
-                                          </div>
-
-                                          <div style="width:100%;margin-top: -5px;" class="flex-general-column-wrapper-center">
-                                             <h3>Password Reset</h3>
-                                          </div>
+                                    <div id="goback-btn" style="width: 30px;height: 30px;position: absolute;">
+                                      <div ng-click="similateToForgotPwd(false)" id="goback-to-authenticate-card" class="flex-general-column-wrapper-center" style="width:100%;height:100%; border-radius: 25px;background-color: white;cursor: pointer;">
+                                        <i class="icon ion-ios-arrow-left" style="color:black;font-size:20px;"></i>
 
                                       </div>
-                                      <!--Header-->
+                                    </div>
 
-                                      <!--Main Body Spinner-->
-                                      <div ng-if="authPageSimilate.forgotPasswordSpinner" id="forgetpassword-spinner" style="width: 100%;height: 360px;background-color: white;" class="flex-general-column-wrapper-center">
-                                          <div style="width: 60px;height: 60px;" class="flex-general-column-wrapper-center">
-                                              <div id="req-spinner" style="" class="loader-circle advanced flex-general-column-wrapper-center">       
-                                              </div>
-                                              <div id="req-response" style="color:gray;" class="flex-general-column-wrapper-center">                   
-                                              </div>                       
-                                          </div>
+                                    <div style="width:100%;" class="flex-general-column-wrapper-center">
+                                      <div ng-if="generalSettings.settings.appIcon" style="width:50px;height:50px;border-radius: 10px;overflow: hidden;">
+                                        <img ng-src={{generalSettings.settings.appIcon}} style="width:50px;height:50px;">
                                       </div>
-                                      <!--Main Body Spinner-->
 
-                                      <!--Main Body Content-->
-                                      <div id="forgetpassword-mainbody">
-
-                                          <!--Error Block-->
-                                          <div ng-if="authPageSimilate.forgotPwdError" id="forgetpassword-error" style="background-color: #f04848;padding: 10px;" class="solo-horizontal-center">
-                                              <span style="color:white;">Unknow Error</span>
-                                          </div>
-                                          <!--Error Block-->
-
-                                          <!--Body-->
-                                          <div style="background-color: white;padding: 10px;">
-                                              
-                                              <!--Info-->
-                                              <div style="width: 100%;margin-top: 20px;" class="solo-horizontal-center">
-                                                  <p style="color:gray">
-                                                  Please enter your email address.
-                                                  </p>
-                                                  <p style="color:gray;margin-top: -7px;">
-                                                   We will send you an email to reset your password.
-                                                  </p>
-                                              </div>
-
-                                              <!--Input Fields-->
-                                              <div style="width: 100%;margin-top: 8px;" class="solo-horizontal-center">                                        
-                                                  <div style="width: 95%;">
-                                                      <div id="forgot-email-wrap" class="flex-general-row-wrapper input-field" style="">
-                                                          <div class="flex-general-column-wrapper-center" style="width:13%; height: 35px;background-color:#f1f1f1;">
-                                                              <i class="icon ion-ios-email-outline" style="color:gray;font-size: 22px;"></i>
-                                                          </div>
-                                                          <div style="width:86.98%; height: 35px;">
-                                                              <input id="forgot-email" type="text" placeholder="Enter Email" class="default-inputfield" required style="width: 100%;height: 100%;padding-left: 12px;">
-                                                          </div>
-                                                      </div>                                           
-                                                  </div>                                        
-                                              </div>                                    
-                                              
-                                          </div>
-                                          <!--Body-->
-
-                                          <!--Button-->
-                                          <div class="resetpwd-final-btn" ng-style="{'background-color':authSettings.settings.general.primaryColor}" colorhover style="margin-top: 2px;">
-                                             <div style="width: 100%;height: 30px;" class="flex-general-column-wrapper-center">
-                                                  <span style="color:white;font-size: 34px;">
-                                                      <i class="icon ion-log-in"></i>
-                                                  </span>
-                                             </div>
-                                          </div>
-                                          <!--Button-->
-
+                                      <div ng-if="!generalSettings.settings.appIcon" style="width:50px;height:50px;border-radius: 10px;overflow: hidden;">
+                                        <img src="assets/images/CbLogoIcon.png" style="width:50px;height:50px;">
                                       </div>
-                                      <!--/Main Body Content-->
+                                    </div>
+
+                                    <div style="width:100%;margin-top: -5px;" class="flex-general-column-wrapper-center">
+                                      <h3>Password Reset</h3>
+                                    </div>
 
                                   </div>
-                                  
+                                  <!--Header-->
+
+                                  <!--Main Body Spinner-->
+                                  <div ng-if="authPageSimilate.forgotPasswordSpinner" id="forgetpassword-spinner" style="width: 100%;height: 360px;background-color: white;"
+                                    class="flex-general-column-wrapper-center">
+                                    <div style="width: 60px;height: 60px;" class="flex-general-column-wrapper-center">
+                                      <div id="req-spinner" style="" class="loader-circle advanced flex-general-column-wrapper-center">
+                                      </div>
+                                      <div id="req-response" style="color:gray;" class="flex-general-column-wrapper-center">
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <!--Main Body Spinner-->
+
+                                  <!--Main Body Content-->
+                                  <div id="forgetpassword-mainbody">
+
+                                    <!--Error Block-->
+                                    <div ng-if="authPageSimilate.forgotPwdError" id="forgetpassword-error" style="background-color: #f04848;padding: 10px;" class="solo-horizontal-center">
+                                      <span style="color:white;">Unknow Error</span>
+                                    </div>
+                                    <!--Error Block-->
+
+                                    <!--Body-->
+                                    <div style="background-color: white;padding: 10px;">
+
+                                      <!--Info-->
+                                      <div style="width: 100%;margin-top: 20px;" class="solo-horizontal-center">
+                                        <p style="color:gray">
+                                          Please enter your email address.
+                                        </p>
+                                        <p style="color:gray;margin-top: -7px;">
+                                          We will send you an email to reset your password.
+                                        </p>
+                                      </div>
+
+                                      <!--Input Fields-->
+                                      <div style="width: 100%;margin-top: 8px;" class="solo-horizontal-center">
+                                        <div style="width: 95%;">
+                                          <div id="forgot-email-wrap" class="flex-general-row-wrapper input-field" style="">
+                                            <div class="flex-general-column-wrapper-center" style="width:13%; height: 35px;background-color:#f1f1f1;">
+                                              <i class="icon ion-ios-email-outline" style="color:gray;font-size: 22px;"></i>
+                                            </div>
+                                            <div style="width:86.98%; height: 35px;">
+                                              <input id="forgot-email" type="text" placeholder="Enter Email" class="default-inputfield" required style="width: 100%;height: 100%;padding-left: 12px;">
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                    </div>
+                                    <!--Body-->
+
+                                    <!--Button-->
+                                    <div class="resetpwd-final-btn" ng-style="{'background-color':authSettings.settings.general.primaryColor}" colorhover style="margin-top: 2px;">
+                                      <div style="width: 100%;height: 30px;" class="flex-general-column-wrapper-center">
+                                        <span style="color:white;font-size: 34px;">
+                                                      <i class="icon ion-log-in"></i>
+                                                  </span>
+                                      </div>
+                                    </div>
+                                    <!--Button-->
+
+                                  </div>
+                                  <!--/Main Body Content-->
+
+                                </div>
+
                               </div>
                               <!--/Forgot Password-->
 
-                          </div>
+                            </div>
                           </div>
                           <!--html && Preview-->
 
-                        </div>                                               
+                        </div>
 
                       </div>
-                      
+
                     </div>
-                    <!--/Html Template--> 
+                    <!--/Html Template-->
 
                   </div>
                   <!--/Toggle Template-->
@@ -922,10 +948,11 @@
 
                     <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
 
-                      <input type="text" ng-model="authSettings.settings.general.callbackURL" class="default-inputfield" placeholder="Enter App Callback URL" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      <input type="text" ng-model="authSettings.settings.general.callbackURL" class="default-inputfield" placeholder="Enter App Callback URL"
+                        style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
 
                     </div>
-                  </div> 
+                  </div>
 
 
                   <div class="actual-fields cf" style="border: 1px solid #EDEDED;">
@@ -947,7 +974,7 @@
                       <color-picker ng-model="authSettings.settings.general.primaryColor" color-picker-format="'hex'" style="margin-top: 10px;"></color-picker>
 
                     </div>
-                  </div>                
+                  </div>
 
 
                   <!---Custom settings-->
@@ -957,7 +984,7 @@
                         <i class="fa fa-bars" style="margin-right: 4px;"></i>
                         Custom Authentication
                       </span>
-                    </div>                                                      
+                    </div>
                   </div>
 
                   <div class="actual-fields cf" style="border: 1px solid #EDEDED;margin-top: 15px;">
@@ -978,7 +1005,7 @@
                     <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
                       <switch ng-model="authSettings.settings.custom.enabled" class="green appprod-switch"></switch>
                     </div>
-                  </div>                   
+                  </div>
 
                   <!--Each section-->
                   <div ng-if="authSettings.settings.custom.enabled" class="actual-fields cf" style="border: 1px solid #EDEDED; margin-top: 18px;">
@@ -1022,17 +1049,17 @@
                       </div>
 
                       <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                          <div style="width: 100%">
-                            <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
-                              <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                                <input ng-model="authSettings.settings.signupEmail.allowOnlyVerifiedLogins" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
-                              </div>                            
+                        <div style="width: 100%">
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                            <div style="width: 20px;height: 20px;" class="solo-vertical-center">
+                              <input ng-model="authSettings.settings.signupEmail.allowOnlyVerifiedLogins" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
-                          </div>  
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <!--/Each section-->                   
-                  
+                    <!--/Each section-->
+
                     <!--Each section-->
                     <div class="cf" style="border-top: 1px solid #EDEDED;border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED; border-bottom: 1px solid #EDEDED;border-radius: 2px">
                       <div class="pull-left" style="height:110px;width:100%;padding:15px;">
@@ -1053,25 +1080,26 @@
                           <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">                          
                           Insert &lt;a class="link"&gt;Activate&lt;/a&gt; for the activation link
                           </span>
-                        </div>                        
+                        </div>
 
                       </div>
-                      
+
                     </div>
-                    <!--/Each section-->  
+                    <!--/Each section-->
 
                     <!--Html Template-->
                     <div class="cf" style="border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED; border-bottom: 1px solid #EDEDED;border-radius: 2px; background-color: #f9f9f9">
 
                       <div class="pull-left" style="height:auto;width:100%;padding:15px;">
 
-                        <div style="width: 100%;">                          
+                        <div style="width: 100%;">
 
                           <div style="width: 100%;border-bottom:1px solid #EDEDED;" class="flex-general-row-wrapper">
                             <div ng-click="toggleSignupEmail('html')" style="font-size: 14px;padding-bottom: 11px;" ng-style="signupHtml.htmlMode.css">
                               HTML
                             </div>
-                            <div ng-click="toggleSignupEmail('preview')" style="margin-left: 10px;cursor: pointer;font-size: 14px;padding-bottom: 11px;" ng-style="signupHtml.previewMode.css">
+                            <div ng-click="toggleSignupEmail('preview')" style="margin-left: 10px;cursor: pointer;font-size: 14px;padding-bottom: 11px;"
+                              ng-style="signupHtml.previewMode.css">
                               Preview
                             </div>
                           </div>
@@ -1086,23 +1114,23 @@
 
                             <!--Html Code Preview-->
                             <div ng-show="signupHtml.previewMode.enabled">
-                              <iframe srcdoc="{{authSettings.settings.signupEmail.template | sanitize}}" frameborder="0" height="400" width="100%"  style="background-color: #eef0f3;padding:15px;"></iframe> 
+                              <iframe srcdoc="{{authSettings.settings.signupEmail.template | sanitize}}" frameborder="0" height="400" width="100%" style="background-color: #eef0f3;padding:15px;"></iframe>
                             </div>
                             <!--Html Code Preview-->
                           </div>
                           <!--html && Preview-->
 
-                        </div>                                               
+                        </div>
 
                       </div>
-                      
+
                     </div>
-                    <!--/Html Template--> 
+                    <!--/Html Template-->
 
                   </div>
                   <!--/Toggle Template-->
                   <!---/Sign up Email settings-->
-                  
+
 
                   <!--Each section-->
                   <div ng-if="authSettings.settings.custom.enabled" class="actual-fields cf" style="border: 1px solid #EDEDED;margin-top: 18px;">
@@ -1125,9 +1153,52 @@
                     </div>
                   </div>
                   <!--/Each section-->
+                  <!--Reset Password section-->
+                  <div ng-if="authSettings.settings.resetPasswordEmail.enabled" class="actual-fields cf" style="border: 1px solid #EDEDED; margin-top: 18px;">
+                    <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                      <div style="width: 100%;">
+
+                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Redirect to custom URL</span>
+                      </div>
+
+                      <div style="width: 100%;margin-top: 3px;">
+                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">Enable this option to redirect user to custom URL after successful password reset.</span>
+
+                      </div>
+
+                    </div>
+
+                    <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+                      <switch ng-model="authSettings.settings.resetPasswordEmail.redirectURL.enabled" class="green appprod-switch"></switch>
+                    </div>
+                  </div>
+
+                  <!--Redirect URL-->
+                  <div ng-if="authSettings.settings.resetPasswordEmail.redirectURL.enabled" class="actual-fields cf" style="border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
+                    <div class="pull-left" style="height:95px;width:60%;padding:15px;">
+
+                      <div style="width: 100%;">
+                        <span style="font-size: 16px;font-weight: bold;color:#7F7F7F">Redirect URL</span>
+                      </div>
+
+                      <div style="width: 100%;margin-top: 3px;">
+                        <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This is the URL we redirect to after successful password reset.</span>
+
+                      </div>
+
+                    </div>
+
+                    <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
+
+                      <input type="text" ng-model="authSettings.settings.resetPasswordEmail.redirectURL.URL" class="default-inputfield" placeholder="Enter Redirect URL"
+                        style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+
+                    </div>
+                  </div>
 
                   <!--Toggle Template-->
-                  <div ng-show="authSettings.settings.resetPasswordEmail.enabled" style="width:94%;">                   
+                  <div ng-show="authSettings.settings.resetPasswordEmail.enabled" style="width:94%;">
 
                     <!--Each section-->
                     <div class="cf" style="border-top: 1px solid #EDEDED;border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED; border-radius: 2px">
@@ -1139,7 +1210,7 @@
 
                         <div style="width: 100%;margin-top: 3px;">
                           <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">This email template will be sent after the user requests to reset the password.</span>
-                        </div> 
+                        </div>
                         <div style="width: 100%;margin-top: 3px;">
                           <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">
                           Insert &lt;span class="username"&gt;&lt;/span&gt; for username in your HTML template                        
@@ -1149,25 +1220,26 @@
                           <span style="font-size: 14px;line-height:12%;color:#B2B2B2;">                          
                           Insert &lt;a class="link"&gt;Reset Password&lt;/a&gt; for the Reset Password link
                           </span>
-                        </div>                     
+                        </div>
 
                       </div>
-                      
+
                     </div>
-                    <!--/Each section--> 
+                    <!--/Each section-->
 
                     <!--Html Template-->
                     <div class="cf" style="border-left: 1px solid #EDEDED;border-right: 1px solid #EDEDED; border-bottom: 1px solid #EDEDED;border-radius: 2px; background-color: #f9f9f9">
 
                       <div class="pull-left" style="height:auto;width:100%;padding:15px;">
 
-                        <div style="width: 100%;">                          
+                        <div style="width: 100%;">
 
                           <div style="width: 100%;border-bottom:1px solid #EDEDED;" class="flex-general-row-wrapper">
                             <div ng-click="toggleResetPswdEmail('html')" style="font-size: 14px;padding-bottom: 11px;" ng-style="resetPswdHtml.htmlMode.css">
                               HTML
                             </div>
-                            <div ng-click="toggleResetPswdEmail('preview')" style="margin-left: 10px;cursor: pointer;font-size: 14px;padding-bottom: 11px;" ng-style="resetPswdHtml.previewMode.css">
+                            <div ng-click="toggleResetPswdEmail('preview')" style="margin-left: 10px;cursor: pointer;font-size: 14px;padding-bottom: 11px;"
+                              ng-style="resetPswdHtml.previewMode.css">
                               Preview
                             </div>
                           </div>
@@ -1182,22 +1254,23 @@
 
                             <!--Html Code Preview-->
                             <div ng-show="resetPswdHtml.previewMode.enabled">
-                              <iframe srcdoc="{{authSettings.settings.resetPasswordEmail.template | sanitize}}" frameborder="0" height="400" width="100%"  style="background-color: #eef0f3;padding:15px;"></iframe> 
+                              <iframe srcdoc="{{authSettings.settings.resetPasswordEmail.template | sanitize}}" frameborder="0" height="400" width="100%"
+                                style="background-color: #eef0f3;padding:15px;"></iframe>
                             </div>
                             <!--Html Code Preview-->
                           </div>
                           <!--html && Preview-->
 
-                        </div>                                               
+                        </div>
 
                       </div>
-                      
+
                     </div>
                     <!--/Html Template-->
 
                   </div>
                   <!--/Toggle Template-->
-                  <!---/Sign up Email settings--> 
+                  <!---/Sign up Email settings-->
 
 
                   <div style="width:94%;margin-top: 70px;" class="flex-general-column-wrapper-center">
@@ -1206,7 +1279,7 @@
                         <i class="fa fa-clock-o"  style="margin-right: 4px;"></i>
                         User Sessions
                       </span>
-                    </div>                                                      
+                    </div>
                   </div>
 
                   <div class="actual-fields cf" style="border: 1px solid #EDEDED;margin-top: 15px;">
@@ -1225,7 +1298,8 @@
 
                     <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
 
-                      <input type="text" ng-model="authSettings.settings.sessions.sessionLength" class="default-inputfield" placeholder="Enter no. of days" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                      <input type="text" ng-model="authSettings.settings.sessions.sessionLength" class="default-inputfield" placeholder="Enter no. of days"
+                        style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
 
                     </div>
                   </div>
@@ -1237,12 +1311,12 @@
                         <i class="fa fa-users" style="margin-right: 4px;"></i>
                         Social Authentication
                       </span>
-                    </div>                                                      
-                  </div>   
+                    </div>
+                  </div>
 
                   <!--Facebook-->
                   <div class="actual-fields cf" style="border: 1px solid #EDEDED;margin-top: 25px;">
-                    <div class="pull-left solo-vertical-center" style="height:95px;width:60%;padding:15px;">                     
+                    <div class="pull-left solo-vertical-center" style="height:95px;width:60%;padding:15px;">
                       <img src="assets/images/facebook.png" style="height: 35px;">
                     </div>
 
@@ -1250,7 +1324,7 @@
                       <switch ng-model="authSettings.settings.facebook.enabled" class="green appprod-switch"></switch>
                     </div>
                   </div>
-                 
+
                   <div ng-if="authSettings.settings.facebook.enabled" style="width:94%">
                     <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
                       <div class="pull-left" style="height:95px;width:60%;padding:15px;">
@@ -1266,7 +1340,8 @@
                       </div>
 
                       <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                        <input type="text" ng-model="authSettings.settings.facebook.appId" class="default-inputfield" placeholder="Enter App ID" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                        <input type="text" ng-model="authSettings.settings.facebook.appId" class="default-inputfield" placeholder="Enter App ID"
+                          style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                       </div>
                     </div>
                     <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
@@ -1283,7 +1358,8 @@
                       </div>
 
                       <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                        <input type="text" ng-model="authSettings.settings.facebook.appSecret" class="default-inputfield" placeholder="Enter App Secret" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                        <input type="text" ng-model="authSettings.settings.facebook.appSecret" class="default-inputfield" placeholder="Enter App Secret"
+                          style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                       </div>
                     </div>
 
@@ -1480,7 +1556,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.attributes.favorite_athletes" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.attributes.favorite_athletes" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>favorite_athletes</span>
@@ -1507,7 +1584,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.attributes.inspirational_people" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.attributes.inspirational_people" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>inspirational_people</span>
@@ -1633,7 +1711,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.attributes.payment_pricepoint" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.attributes.payment_pricepoint" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>payment_pricepoints</span>
@@ -1669,7 +1748,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.attributes.relationship_status" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.attributes.relationship_status" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>relationship_status</span>
@@ -1687,7 +1767,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.attributes.security_settings" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.attributes.security_settings" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>security_settings</span>
@@ -1696,7 +1777,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.attributes.shared_login_upgrade_required_by" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.attributes.shared_login_upgrade_required_by" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>shared_login_upgrade_required_by</span>
@@ -1705,7 +1787,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.attributes.significant_other" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.attributes.significant_other" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>significant_other</span>
@@ -1750,13 +1833,14 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.attributes.token_for_business" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.attributes.token_for_business" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>token_for_business</span>
                             </div>
                           </div>
-                          
+
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
                               <input ng-model="authSettings.settings.facebook.attributes.updated_time" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
@@ -1774,10 +1858,11 @@
                               <span>verified</span>
                             </div>
                           </div>
-                          
+
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.attributes.video_upload_limits" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.attributes.video_upload_limits" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>video_upload_limits</span>
@@ -1786,13 +1871,14 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.attributes.viewer_can_send_gift" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.attributes.viewer_can_send_gift" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>viewer_can_send_gift</span>
                             </div>
-                          </div>                      
-                        
+                          </div>
+
 
                         </div>
 
@@ -1817,7 +1903,8 @@
                         <div style="width: 100%">
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input  ng-model="authSettings.settings.facebook.permissions.public_profile.enabled" disabled type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.public_profile.enabled" disabled type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>public_profile</span>
@@ -1826,7 +1913,7 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input  ng-model="authSettings.settings.facebook.permissions.email.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.email.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>email</span>
@@ -1835,7 +1922,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_friends.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_friends.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_friends</span>
@@ -1844,7 +1932,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_about_me.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_about_me.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_about_me</span>
@@ -1853,7 +1942,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_actions_books.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_actions_books.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_actions.books</span>
@@ -1862,7 +1952,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_actions.fitness.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_actions.fitness.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_actions.fitness</span>
@@ -1871,7 +1962,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_actions.music.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_actions.music.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_actions.music</span>
@@ -1880,7 +1972,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_actions.news.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_actions.news.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_actions.news</span>
@@ -1889,13 +1982,14 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_actions.video.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_actions.video.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_actions.video</span>
                             </div>
                           </div>
-                          
+
                         </div>
 
                         <!--Additional fields-->
@@ -1907,7 +2001,8 @@
                         <div ng-if="facebook.morePermissions">
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_birthday.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_birthday.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_birthday</span>
@@ -1916,14 +2011,17 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_education_history.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_education_history.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_education_history</span>
                             </div>
-                          </div><div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                          </div>
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_events.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_events.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_events</span>
@@ -1932,14 +2030,17 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_games_activity.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_games_activity.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_games_activity</span>
                             </div>
-                          </div><div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                          </div>
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_hometown.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_hometown.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_hometown</span>
@@ -1948,7 +2049,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_likes.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_likes.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_likes</span>
@@ -1957,7 +2059,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_location.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_location.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_location</span>
@@ -1966,7 +2069,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_managed_groups.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_managed_groups.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_managed_groups</span>
@@ -1975,7 +2079,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_photos.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_photos.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_photos</span>
@@ -1984,7 +2089,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_posts.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_posts.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_posts</span>
@@ -1993,7 +2099,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_relationships.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_relationships.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_relationships</span>
@@ -2002,7 +2109,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_relationship_details.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_relationship_details.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_relationship_details</span>
@@ -2011,7 +2119,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_religion_politics.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_religion_politics.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_religion_politics</span>
@@ -2020,7 +2129,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_tagged_places.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_tagged_places.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_tagged_places</span>
@@ -2029,7 +2139,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_videos.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_videos.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_videos</span>
@@ -2038,7 +2149,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_website.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_website.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_website</span>
@@ -2047,7 +2159,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.user_work_history.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.user_work_history.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>user_work_history</span>
@@ -2056,7 +2169,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.read_custom_friendlists.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.read_custom_friendlists.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>read_custom_friendlists</span>
@@ -2065,7 +2179,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.read_insights.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.read_insights.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>read_insights</span>
@@ -2074,7 +2189,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.read_audience_network_insights.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.read_audience_network_insights.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>read_audience_network_insights</span>
@@ -2083,7 +2199,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.read_page_mailboxes.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.read_page_mailboxes.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>read_page_mailboxes</span>
@@ -2092,7 +2209,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.manage_pages.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.manage_pages.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>manage_pages</span>
@@ -2101,7 +2219,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.publish_pages.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.publish_pages.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>publish_pages</span>
@@ -2110,7 +2229,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.publish_actions.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.publish_actions.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>publish_actions</span>
@@ -2119,7 +2239,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.rsvp_event.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.rsvp_event.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>rsvp_event</span>
@@ -2128,7 +2249,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.pages_show_list.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.pages_show_list.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>pages_show_list</span>
@@ -2137,7 +2259,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.pages_manage_cta.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.pages_manage_cta.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>pages_manage_cta</span>
@@ -2146,7 +2269,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.pages_manage_instant_articles.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.pages_manage_instant_articles.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>pages_manage_instant_articles</span>
@@ -2155,7 +2279,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.ads_read.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.ads_read.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>ads_read</span>
@@ -2164,7 +2289,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.ads_management.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.ads_management.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>ads_management</span>
@@ -2177,12 +2303,12 @@
                     </div>
 
                   </div>
-                  <!--/Facebook--> 
+                  <!--/Facebook-->
 
 
                   <!--Google-->
                   <div class="actual-fields cf" style="border: 1px solid #EDEDED;margin-top: 25px;">
-                    <div class="pull-left solo-vertical-center" style="height:95px;width:60%;padding:15px;">                     
+                    <div class="pull-left solo-vertical-center" style="height:95px;width:60%;padding:15px;">
                       <img src="assets/images/google.png" style="height: 45px;">
                     </div>
 
@@ -2190,7 +2316,7 @@
                       <switch ng-model="authSettings.settings.google.enabled" class="green appprod-switch"></switch>
                     </div>
                   </div>
-                 
+
                   <div ng-if="authSettings.settings.google.enabled" style="width:94%">
                     <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
                       <div class="pull-left" style="height:95px;width:60%;padding:15px;">
@@ -2224,7 +2350,8 @@
                       </div>
 
                       <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                        <input type="text" ng-model="authSettings.settings.google.appSecret" class="default-inputfield" placeholder="Enter App Secret" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                        <input type="text" ng-model="authSettings.settings.google.appSecret" class="default-inputfield" placeholder="Enter App Secret"
+                          style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                       </div>
                     </div>
 
@@ -2246,8 +2373,8 @@
                         </div>
 
                       </div>
-                      
-                    </div> 
+
+                    </div>
                     <!--Callback URL-->
 
                     <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
@@ -2269,7 +2396,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.google.attributes.userinfoEmail.enabled" disabled type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.google.attributes.userinfoEmail.enabled" disabled type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>Basic profile</span>
@@ -2278,14 +2406,15 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.google.attributes.userinfoProfile.enabled" disabled type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.google.attributes.userinfoProfile.enabled" disabled type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>Extended profile</span>
                             </div>
                           </div>
 
-                        </div>                        
+                        </div>
 
                       </div>
                     </div>
@@ -2308,7 +2437,7 @@
                         <div style="width: 100%">
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input  ng-model="authSettings.settings.google.permissions.contacts.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.google.permissions.contacts.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>Contacts</span>
@@ -2317,7 +2446,7 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input  ng-model="authSettings.settings.google.permissions.blogger.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.google.permissions.blogger.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>Blogger</span>
@@ -2344,12 +2473,13 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.google.permissions.googlePlus.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.google.permissions.googlePlus.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>Google+</span>
                             </div>
-                          </div>                          
+                          </div>
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
@@ -2380,13 +2510,14 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.google.permissions.coordinates.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.google.permissions.coordinates.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>Coordinates</span>
                             </div>
                           </div>
-                          
+
                         </div>
 
                         <!--Additional fields-->
@@ -2395,7 +2526,7 @@
                           <span ng-if="google.morePermissions" ng-click="toggleGooglePermissions(false)" style="color:gray;cursor: pointer;">Hide</span>
                         </div>
 
-                        <div ng-if="google.morePermissions">                          
+                        <div ng-if="google.morePermissions">
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
@@ -2408,7 +2539,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.google.permissions.spreadsheets.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.google.permissions.spreadsheets.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>Spreadsheets</span>
@@ -2417,12 +2549,14 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.google.permissions.webmasters.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.google.permissions.webmasters.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>Webmasters</span>
                             </div>
-                          </div><div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
+                          </div>
+                          <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
                               <input ng-model="authSettings.settings.google.permissions.tasks.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
@@ -2442,12 +2576,13 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.google.permissions.UrlShortener.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.google.permissions.UrlShortener.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>URL Shortener</span>
                             </div>
-                          </div>                          
+                          </div>
 
                         </div>
 
@@ -2458,7 +2593,7 @@
 
                   <!--Twitter-->
                   <div class="actual-fields cf" style="border: 1px solid #EDEDED;margin-top: 25px;">
-                    <div class="pull-left solo-vertical-center" style="height:95px;width:60%;padding:15px;">                     
+                    <div class="pull-left solo-vertical-center" style="height:95px;width:60%;padding:15px;">
                       <img src="assets/images/twitter.png" style="height: 30px;">
                     </div>
 
@@ -2466,7 +2601,7 @@
                       <switch ng-model="authSettings.settings.twitter.enabled" class="green appprod-switch"></switch>
                     </div>
                   </div>
-                 
+
                   <div ng-if="authSettings.settings.twitter.enabled" style="width:94%">
                     <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
                       <div class="pull-left" style="height:95px;width:60%;padding:15px;">
@@ -2482,7 +2617,8 @@
                       </div>
 
                       <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                        <input type="text" ng-model="authSettings.settings.twitter.appId" class="default-inputfield" placeholder="Enter Consumer Key" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                        <input type="text" ng-model="authSettings.settings.twitter.appId" class="default-inputfield" placeholder="Enter Consumer Key"
+                          style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                       </div>
                     </div>
                     <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
@@ -2499,7 +2635,8 @@
                       </div>
 
                       <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                        <input type="text" ng-model="authSettings.settings.twitter.appSecret" class="default-inputfield" placeholder="Enter Consumer Secret" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                        <input type="text" ng-model="authSettings.settings.twitter.appSecret" class="default-inputfield" placeholder="Enter Consumer Secret"
+                          style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                       </div>
                     </div>
 
@@ -2521,17 +2658,17 @@
                         </div>
 
                       </div>
-                      
-                    </div> 
+
+                    </div>
                     <!--Callback URL-->
 
                   </div>
-                  <!--/Twitter--> 
+                  <!--/Twitter-->
 
 
                   <!--LinkedIN-->
                   <div class="actual-fields cf" style="border: 1px solid #EDEDED;margin-top: 25px;">
-                    <div class="pull-left solo-vertical-center" style="height:95px;width:60%;padding:15px;">                     
+                    <div class="pull-left solo-vertical-center" style="height:95px;width:60%;padding:15px;">
                       <img src="assets/images/linkedin.png" style="height: 42px;">
                     </div>
 
@@ -2539,7 +2676,7 @@
                       <switch ng-model="authSettings.settings.linkedIn.enabled" class="green appprod-switch"></switch>
                     </div>
                   </div>
-                 
+
                   <div ng-if="authSettings.settings.linkedIn.enabled" style="width:94%">
                     <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
                       <div class="pull-left" style="height:95px;width:60%;padding:15px;">
@@ -2555,9 +2692,10 @@
                       </div>
 
                       <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                        <input type="text" ng-model="authSettings.settings.linkedIn.appId" class="default-inputfield" placeholder="Enter App ID" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                        <input type="text" ng-model="authSettings.settings.linkedIn.appId" class="default-inputfield" placeholder="Enter App ID"
+                          style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                       </div>
-                    </div> 
+                    </div>
 
                     <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
                       <div class="pull-left" style="height:95px;width:60%;padding:15px;">
@@ -2573,7 +2711,8 @@
                       </div>
 
                       <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                        <input type="text" ng-model="authSettings.settings.linkedIn.appSecret" class="default-inputfield" placeholder="Enter App Secret" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                        <input type="text" ng-model="authSettings.settings.linkedIn.appSecret" class="default-inputfield" placeholder="Enter App Secret"
+                          style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                       </div>
                     </div>
 
@@ -2595,8 +2734,8 @@
                         </div>
 
                       </div>
-                      
-                    </div> 
+
+                    </div>
                     <!--Callback URL-->
 
                     <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
@@ -2617,7 +2756,8 @@
                         <div style="width: 100%">
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.linkedIn.permissions.r_basicprofile" disabled type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.linkedIn.permissions.r_basicprofile" disabled type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>r_basicprofile</span>
@@ -2635,7 +2775,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.linkedIn.permissions.rw_company_admin" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.linkedIn.permissions.rw_company_admin" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>rw_company_admin</span>
@@ -2649,7 +2790,7 @@
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>w_share</span>
                             </div>
-                          </div>                          
+                          </div>
 
                         </div>
 
@@ -2662,7 +2803,7 @@
 
                   <!--Github-->
                   <div class="actual-fields cf" style="border: 1px solid #EDEDED;margin-top: 25px;">
-                    <div class="pull-left solo-vertical-center" style="height:95px;width:60%;padding:15px;">                     
+                    <div class="pull-left solo-vertical-center" style="height:95px;width:60%;padding:15px;">
                       <img src="assets/images/github.png" style="height: 32px;">
                     </div>
 
@@ -2670,7 +2811,7 @@
                       <switch ng-model="authSettings.settings.github.enabled" class="green appprod-switch"></switch>
                     </div>
                   </div>
-                 
+
                   <div ng-if="authSettings.settings.github.enabled" style="width:94%">
                     <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
                       <div class="pull-left" style="height:95px;width:60%;padding:15px;">
@@ -2688,7 +2829,7 @@
                       <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
                         <input type="text" ng-model="authSettings.settings.github.appId" class="default-inputfield" placeholder="Enter App ID" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                       </div>
-                    </div> 
+                    </div>
 
                     <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
                       <div class="pull-left" style="height:95px;width:60%;padding:15px;">
@@ -2704,7 +2845,8 @@
                       </div>
 
                       <div class="pull-right solo-vertical-center" style="height: 95px;width:39%;background-color: #F6FAFB;padding:15px;">
-                        <input type="text" ng-model="authSettings.settings.github.appSecret" class="default-inputfield" placeholder="Enter App Secret" style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
+                        <input type="text" ng-model="authSettings.settings.github.appSecret" class="default-inputfield" placeholder="Enter App Secret"
+                          style="width:90%;height:30px;background-color: transparent;font-size: 18px;color:black;">
                       </div>
                     </div>
 
@@ -2726,9 +2868,9 @@
                         </div>
 
                       </div>
-                      
-                    </div> 
-                    <!--Callback URL-->                   
+
+                    </div>
+                    <!--Callback URL-->
 
                     <div class=" cf" style="width:100%; border-bottom: 1px solid #EDEDED;border-right: 1px solid #EDEDED;border-left: 1px solid #EDEDED;">
                       <div class="pull-left" style="height:auto;width:60%;padding:15px;">
@@ -2748,7 +2890,8 @@
                         <div style="width: 100%">
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input  ng-model="authSettings.settings.github.permissions.userFollow.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.github.permissions.userFollow.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>follow</span>
@@ -2757,7 +2900,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input  ng-model="authSettings.settings.github.permissions.public_repo.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.github.permissions.public_repo.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>public_repo</span>
@@ -2766,7 +2910,7 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input  ng-model="authSettings.settings.github.permissions.repo.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.github.permissions.repo.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>repo</span>
@@ -2775,7 +2919,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.github.permissions.repo_deployment.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.github.permissions.repo_deployment.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>repo_deployment</span>
@@ -2784,7 +2929,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.github.permissions.repoStatus.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.github.permissions.repoStatus.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>repo:status</span>
@@ -2793,7 +2939,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.github.permissions.delete_repo.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.github.permissions.delete_repo.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>delete_repo</span>
@@ -2802,7 +2949,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.github.permissions.notifications.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.github.permissions.notifications.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>notifications</span>
@@ -2820,7 +2968,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.github.permissions.readRepoHook.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.github.permissions.readRepoHook.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>read:repo_hook</span>
@@ -2829,13 +2978,14 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.github.permissions.writeRepoHook.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.github.permissions.writeRepoHook.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>write:repo_hook</span>
                             </div>
                           </div>
-                          
+
                         </div>
 
                         <!--Additional fields-->
@@ -2847,7 +2997,8 @@
                         <div ng-if="github.morePermissions">
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.github.permissions.adminRepoHook.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.github.permissions.adminRepoHook.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>admin:repo_hook</span>
@@ -2856,7 +3007,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.github.permissions.adminOrgHook.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.github.permissions.adminOrgHook.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>admin:org_hook</span>
@@ -2892,7 +3044,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.github.permissions.readPublicKey.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.github.permissions.readPublicKey.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>read:public_key</span>
@@ -2901,7 +3054,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.github.permissions.writePublicKey.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.github.permissions.writePublicKey.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>write:public_key</span>
@@ -2910,7 +3064,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.github.permissions.adminPublicKey.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.github.permissions.adminPublicKey.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>admin:public_key</span>
@@ -2919,7 +3074,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.github.permissions.readGpgKey.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.github.permissions.readGpgKey.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>read:gpg_key</span>
@@ -2928,7 +3084,8 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.writeGpgKey.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.writeGpgKey.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>write:gpg_key</span>
@@ -2937,61 +3094,61 @@
 
                           <div class="flex-general-row-wrapper" style="width: 100%;margin-top:5px;">
                             <div style="width: 20px;height: 20px;" class="solo-vertical-center">
-                              <input ng-model="authSettings.settings.facebook.permissions.adminGpgKey.enabled" type="checkbox" class="default-inputfield" style="width: 18px;height: 18px;margin-top: -0.4px;">
+                              <input ng-model="authSettings.settings.facebook.permissions.adminGpgKey.enabled" type="checkbox" class="default-inputfield"
+                                style="width: 18px;height: 18px;margin-top: -0.4px;">
                             </div>
                             <div style="margin-left:5px;height: 20px;" class="solo-vertical-center">
                               <span>admin:gpg_key</span>
                             </div>
-                          </div>                     
+                          </div>
 
                         </div>
 
                       </div>
                     </div>
                   </div>
-                  <!--/Github-->        
+                  <!--/Github-->
 
                   <!--Save-->
-                  <div ng-show="!spinners[authSettings.category]" style="margin-left:3px;width: 140px;margin-top: 25px;">                    
-                    <button  ng-click="updateSettings(authSettings.category)" class="default-inputfield" style="width:100%;height: 37px;background: #549afc;color:white;font-size: 18px;border-radius: 3px;">
+                  <div ng-show="!spinners[authSettings.category]" style="margin-left:3px;width: 140px;margin-top: 25px;">
+                    <button ng-click="updateSettings(authSettings.category)" class="default-inputfield" style="width:100%;height: 37px;background: #549afc;color:white;font-size: 18px;border-radius: 3px;">
                     Save
                     </button>
                   </div>
 
                   <!--While Saving..-->
-                  <div ng-show="spinners[authSettings.category]" style="margin-left:3px;width: 170px;">               
-                    <button  class="default-inputfield" style="width:100%;height: 37px;background: #549afc;color:white;font-size: 18px;border-radius: 3px;">&nbsp;
+                  <div ng-show="spinners[authSettings.category]" style="margin-left:3px;width: 170px;">
+                    <button class="default-inputfield" style="width:100%;height: 37px;background: #549afc;color:white;font-size: 18px;border-radius: 3px;">&nbsp;
                     <i class="fa fa-spinner fa-spin"></i>
                     Saving..
                     </button>
                   </div>
 
                 </div>
-              
+
               </div>
               <!--Dynamically Authentication-->
 
             </div>
           </div>
-        </div> 
-      </div>        
+        </div>
+      </div>
     </div>
-    <!--Other section--> 
-  </div>  
-      
+    <!--Other section-->
+  </div>
+
 </div>
 
 <!--Slack chat-->
 <a href="http://slack.cloudboost.io" target="_blank">
-  <div class="intercomm flex-general-column-wrapper-center">    
+  <div class="intercomm flex-general-column-wrapper-center">
     <i class="icon ion-ios-chatboxes" style="font-size:26px !important; color:white;margin-top:3px;"></i>
-  </div> 
+  </div>
 </a>
 <!--/Slack chat-->
 
 <!--File Directive -->
 <div class="modal fade colored-header danger" id="md-appsettingsfileviewer" tabindex="-1" role="dialog">
   <dashboard-file filetype="fileAllowedTypes" edit="editableFile" delete="deleteFile()" save="saveFile(fileObj)"></dashboard-file>
-</div> 
+</div>
 <!--/File Directive -->
-
