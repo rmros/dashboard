@@ -126,14 +126,14 @@ var pricingPlans=[{
       type:"text",
       limit:{
         show:true,
-        label:"100",
-        value:100
+        label:"500",
+        value:500
       }
     }]
   },{
     category:"MISC",
     features:[{
-      name:"Boost",
+      name:"MongoDB Access",
       type:"boolean",
       limit:{
         show:false,
@@ -144,53 +144,6 @@ var pricingPlans=[{
   }]
 },{
   id:2,
-  label:"Prototype Plan",
-  price:10,
-  priceDescription:"per month",
-  usage:[{
-    category:"DATABASE",
-    features:[{
-      type:"text",
-      name:"API Calls",
-      limit:{
-        show:true,
-        label:"50,000",
-        value:50000
-      }
-    },{
-      type:"text",
-      name:"Storage",
-      limit:{
-        show:true,
-        label:"1GB",
-        value:1
-      }
-    }]
-  },{
-    category:"REALTIME",
-    features:[{
-      name:"Connections",
-      type:"text",
-      limit:{
-        show:true,
-        label:"100",
-        value:100
-      }
-    }]
-  },{
-    category:"MISC",
-    features:[{
-      name:"Boost",
-      type:"boolean",
-      limit:{
-        show:false,
-        label:"",
-        value:0
-      }
-    }]
-  }]
-},{
-  id:3,
   label:"Launch Plan",
   price:49,
   priceDescription:"per month",
@@ -201,8 +154,8 @@ var pricingPlans=[{
       name:"API Calls",
       limit:{
         show:true,
-        label:"150,000",
-        value:150000
+        label:"250,000",
+        value:250000
       }
     },{
       type:"text",
@@ -227,7 +180,7 @@ var pricingPlans=[{
   },{
     category:"MISC",
     features:[{
-      name:"Boost",
+      name:"MongoDB Access",
       type:"boolean",
       limit:{
         show:true,
@@ -237,7 +190,7 @@ var pricingPlans=[{
     }]
   }]
 },{
-  id:4,
+  id:3,
   label:"Bootstrap Plan",
   price:149,
   priceDescription:"per month",
@@ -248,8 +201,8 @@ var pricingPlans=[{
       name:"API Calls",
       limit:{
         show:true,
-        label:"500,000",
-        value:500000
+        label:"1 MILLION",
+        value:1000000
       }
     },{
       type:"text",
@@ -274,7 +227,7 @@ var pricingPlans=[{
   },{
     category:"MISC",
     features:[{
-      name:"Boost",
+      name:"MongoDB Access",
       type:"boolean",
       limit:{
         show:true,
@@ -284,7 +237,7 @@ var pricingPlans=[{
     }]
   }]
 },{
-  id:5,
+  id:4,
   label:"Scale Plan",
   price:449,
   priceDescription:"per month",
@@ -295,8 +248,8 @@ var pricingPlans=[{
       name:"API Calls",
       limit:{
         show:true,
-        label:"2 MILLION",
-        value:2000000
+        label:"5 MILLION",
+        value:5000000
       }
     },{
       type:"text",
@@ -321,7 +274,7 @@ var pricingPlans=[{
   },{
     category:"MISC",
     features:[{
-      name:"Boost",
+      name:"MongoDB Access",
       type:"boolean",
       limit:{
         show:true,
@@ -331,7 +284,7 @@ var pricingPlans=[{
     }]
   }]
 },{
-  id:6,
+  id:5,
   label:"Unicorn Plan",
   price:1449,
   priceDescription:"per month",
@@ -342,8 +295,8 @@ var pricingPlans=[{
       name:"API Calls",
       limit:{
         show:true,
-        label:"5 MILLION",
-        value:5000000
+        label:"10 MILLION",
+        value:10000000
       }
     },{
       type:"text",
@@ -368,7 +321,7 @@ var pricingPlans=[{
   },{
     category:"MISC",
     features:[{
-      name:"Boost",
+      name:"MongoDB Access",
       type:"boolean",
       limit:{
         show:true,
