@@ -1,5 +1,5 @@
   
-<div class="cl-mcont admin-users-page" ng-init="init()">
+<div ng-show="user.isAdmin" class="cl-mcont admin-users-page" ng-init="init()">
   <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
       <div class="" style="height:115px;width:100%;background-color:white;padding:5px;">
@@ -251,6 +251,23 @@
       </div>
     </div>  
   </div>   
+</div>
+
+
+<!-- **************************** If user is not ADMIN ********************************* -->
+<div ng-show="!user.isAdmin">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <div class="" style="height:100px;width:100%;background-color:white;padding:5px;"> 
+        <div class="cf" style="padding-top:7px;padding-left:10px;">
+          <div class="cf" style="margin-left:87px;">
+           <span style="font-weight:700;color:red;">NOTE:</span>
+           <h3 style="color:red;">Sorry, you do not have the permission to access this area.Please contact your app admin.<h3>          
+          </div>         
+        </div>
+      </div>  
+    </div>
+  </div>
 </div>
 
 <!--Slack chat-->

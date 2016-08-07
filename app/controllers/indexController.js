@@ -268,10 +268,10 @@ app.controller('indexController',
       $scope.cardNeedFreePlan=false;
 
       //Show Next Plan
-      if(projectObj.planId && projectObj.planId>1 && projectObj.planId<6){
+      if(projectObj.planId && projectObj.planId>1 && projectObj.planId<5){
         $scope.requestedPlan=getPlanById(projectObj.planId+1);
-      }else if(projectObj.planId==6){
-        $scope.requestedPlan=getPlanById(6);
+      }else if(projectObj.planId==5){
+        $scope.requestedPlan=getPlanById(5);
       }else if(!projectObj.planId || projectObj.planId==1){
         $scope.requestedPlan=getPlanById(3);
       }
