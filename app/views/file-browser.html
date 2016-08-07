@@ -11,20 +11,23 @@
 
             <div style="height:100%;width:78px;margin-top:3px;" class="cf pull-right">         
 
-              <div class="create-folder pull-right">
-                <i class="icon ion-folder" style="font-size:22px;color:#AAAAAA;"></i> 
+              <div class="create-folder pull-right new-folder-box">
+                <div ng-click="initCreateFolder()" style="height:100%;">
+                  <i class="icon ion-folder" style="font-size:22px;color:#AAAAAA;"></i> 
+                </div>
               </div>
 
               <div class="upload-file pull-right">
-                <i class="icon ion-ios-cloud-upload-outline" style="font-size:22px;color:#AAAAAA;"></i> 
-              </div>
-
-                           
+                <div ng-click="initUploadFile()" style="height:100%;">
+                  <i class="icon ion-ios-cloud-upload-outline" style="font-size:22px;color:#AAAAAA;"></i> 
+                </div>
+              </div>                           
 
             </div>
 
 
-            <div style="height:100%;width:500px;" class="cf pull-right">              
+            <!--selected Folder-->
+            <div ng-if="selectedFolder" style="height:100%;width:500px;" class="cf pull-right">              
 
               <div class="pull-right" style="padding-top: 12px;padding-bottom: 12px;margin-left:15px;margin-top:3px;">
                 <div style="font-size:22px;color:#C1C1C1;position:absolute;margin-top:-2px;">|</div> 
@@ -32,36 +35,42 @@
               
               <div class="activefile-feature pull-right flex-general-row-wrapper" style="height:100%;">
 
-                <div style="height:100%;" class="flex-general-column-wrapper-center">
-                  <i class="icon ion-ios-trash" style="font-size:18px;color:#AAAAAA;"></i> 
-                </div>
+                <div ng-click="deleteFolder()" class="flex-general-row-wrapper" style="height:100%;">
+                  <div style="height:100%;" class="flex-general-column-wrapper-center">
+                    <i class="icon ion-ios-trash" style="font-size:18px;color:#AAAAAA;"></i> 
+                  </div>
 
-                <div class="flex-general-column-wrapper-center" style="margin-left:5px;height:100%;">
-                  <div>Delete</div>
+                  <div class="flex-general-column-wrapper-center" style="margin-left:5px;height:100%;">
+                    <div>Delete</div>
+                  </div>
                 </div>
 
               </div>              
 
               <div class="activefile-feature pull-right flex-general-row-wrapper">
 
-                <div style="height:100%;" class="flex-general-column-wrapper-center">                  
-                  <i class="fa fa-pencil" style="font-size:15px;color:#AAAAAA;"></i>
-                </div>
+                <div ng-click="renameFolder()" class="flex-general-row-wrapper edit-folder-box" style="height:100%;">
+                  <div style="height:100%;" class="flex-general-column-wrapper-center">                  
+                    <i class="fa fa-pencil" style="font-size:15px;color:#AAAAAA;"></i>
+                  </div>
 
-                <div class="flex-general-column-wrapper-center" style="margin-left:5px;height:100%;">
-                  <div>Rename</div>
+                  <div class="flex-general-column-wrapper-center" style="margin-left:5px;height:100%;">
+                    <div>Rename</div>
+                  </div>
                 </div>
 
               </div>
 
               <div class="activefile-feature pull-right flex-general-row-wrapper">
 
-                <div style="height:100%;" class="flex-general-column-wrapper-center">
-                  <i class="fa fa-expand" style="font-size:15px;color:#AAAAAA;"></i>
-                </div>
+                <div class="flex-general-row-wrapper" style="height:100%;">
+                  <div style="height:100%;" class="flex-general-column-wrapper-center">
+                    <i class="fa fa-expand" style="font-size:15px;color:#AAAAAA;"></i>
+                  </div>
 
-                <div class="flex-general-column-wrapper-center" style="margin-left:5px;height:100%;">
-                  <div>Open</div>
+                  <div class="flex-general-column-wrapper-center" style="margin-left:5px;height:100%;">
+                    <div>Open</div>
+                  </div>
                 </div>
 
               </div>
@@ -88,11 +97,10 @@
                   <i class="icon ion-ios-trash" style="margin-left:5px;font-size:18px;color:#AAAAAA;"></i> 
                 </div>
 
-              </div> -->            
-
-              
+              </div> -->               
               
             </div>
+            <!--/selected Folder-->
 
             
           </div> 
@@ -116,516 +124,131 @@
   </div>
 
   <div class="row">
-    <div class="grande-file-browser flex-general-row-wrapper">
+    <div class="grande-file-browser flex-general-column-wrapper-center" lr-infinite-scroll="addMoreFolders"> 
+      <!--File Table-->
+      <div class="files-content-wrap">
+        <table class="file-actual-table">
+          <thead class="file-actual-thead">
+            <tr>
+              <th width="55%">
+                <div>
+                  Name
+                </div>
+              </th>
+              <th width="22.5%">
+                <div>
+                  Modified
+                </div>
+              </th>
+              <th width="22.5%">
+                <div>
+                  Share
+                </div>
+              </th>
+            </tr>
+          </thead>                
+          <tbody class="file-actual-tbody">
 
-      <div class="folder-mainmenu-wrap">
-        <div class="folder-mainmenu-containr">
+            <!--Create New Folder-->
+            <tr  ng-if="isCreateNewFolder" class="tr-active">
+              <td  width="55%">
+                <div class="item-view-wrapper solo-vertical-center">
+                  <div class="flex-general-row-wrapper">
 
-          <div class="each-filemenu-item flex-general-row-wrapper">
+                    <!--Folders-->
+                    <div class="flex-general-column-wrapper-center" style="height:31px;width:35px;">
+                      <i class="icon ion-ios-folder" style="font-size:30px;color:#AAAAAA;"></i>  
+                    </div>
 
-            <div class="flex-general-column-wrapper-center" style="width:27px;height:27px;">
-              <i class="icon ion-document" style="font-size:20px;color:#AAAAAA;"></i> 
-            </div>
+                    <div class="flex-general-column-wrapper-center" style="height:31px;margin-left:3px;">                  
 
-            <div class="flex-general-column-wrapper-center" style="height:27px;margin-left:4px;">
-              <span style="font-size:14px;">Files</span>
-            </div>
+                      <!--ReName-->
+                      <div click-outside="createNewFolder()" outside-if-not="new-folder-box">
+                        <input type="text" class="file-rename-txtbx new-folder-box" ng-model="$parent.newFolderName">
+                      </div>
+                      <!--/ReName-->
 
-          </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
 
-          <div class="each-filemenu-item flex-general-row-wrapper">
+              <td width="22.5%">
+                <div>
+                  sdsd
+                </div>
+              </td>
+              <td width="22.5%">
+                <div>
+                  sdsd
+                </div>
+              </td>                  
+            </tr>
+            <!--/Create New Folder-->
 
-            <div class="flex-general-column-wrapper-center" style="width:27px;height:27px;">
-              <i class="icon ion-document" style="font-size:20px;color:#AAAAAA;"></i> 
-            </div>
+            <!--List of folders and files-->
+            <tr ng-repeat="folder in foldersList" ng-class="{'tr-active':selectedFolder.id==folder.id}" ng-click="selectFolder(folder)" data-context-menu="app/directives/templates/contextMenuTemplate.html" data-context-event="contextmenu">
+              <td  width="55%">
+                <div class="item-view-wrapper solo-vertical-center">
+                  <div class="flex-general-row-wrapper">
 
-            <div class="flex-general-column-wrapper-center" style="height:27px;margin-left:4px;">
-              <span style="font-size:14px;">Files</span>
-            </div>
+                    <!--Folders-->
+                    <div ng-if="folder.document._type==='folder'" class="flex-general-column-wrapper-center" style="height:31px;width:35px;">
+                      <i ng-click="openFolder(folder)" class="icon ion-ios-folder" style="font-size:30px;color:#AAAAAA;"></i>  
+                    </div>
 
-          </div>
+                    <!--Files-->
+                    <div ng-if="folder.document._type==='file'" class="flex-general-column-wrapper-center" style="height:31px;width:35px;">
+                      <img ng-click="openFolder(folder)" ng-src="{{folder.url}}" style="width:29px;">  
+                    </div>
 
-          <div class="each-filemenu-item flex-general-row-wrapper">
+                    <div class="flex-general-column-wrapper-center" style="height:31px;margin-left:3px;">
+                      <!--Display Name-->
+                      <div ng-if="!editFolder[folder.id]">
+                        <span ng-click="openFolder(folder)">{{folder.name || folder.url | getFileNameFromURL}}</span>
+                      </div>
+                      <!--/Display Name-->
 
-            <div class="flex-general-column-wrapper-center" style="width:25px;height:25px;">
-              <i class="icon ion-document" style="font-size:20px;color:#AAAAAA;"></i> 
-            </div>
+                      <!--ReName-->
+                      <div ng-if="editFolder[folder.id]" click-outside="closeEditFolder(folder)" outside-if-not="edit-folder-box">
+                        <input type="text" class="file-rename-txtbx edit-folder-box" ng-model="reNameFolder[folder.id]">
+                      </div>
+                      <!--/ReName-->
 
-            <div class="flex-general-column-wrapper-center" style="height:25px;margin-left:4px;">
-              <span style="font-size:14px;">Files</span>
-            </div>
+                    </div>
 
-          </div>
+                  </div>
+                </div>
+              </td>
 
-          <div class="each-filemenu-item flex-general-row-wrapper">
+              <td width="22.5%">
+                <div>
+                  sdsd
+                </div>
+              </td>
+              <td width="22.5%">
+                <div>
+                  sdsd
+                </div>
+              </td>                  
+            </tr>
+            <!--/List of folders and files-->
 
-            <div class="flex-general-column-wrapper-center" style="width:27px;height:27px;">
-              <i class="icon ion-document" style="font-size:20px;color:#AAAAAA;"></i> 
-            </div>
+          </tbody>
+        </table>
+      </div>
+      <!--/File Table-->
 
-            <div class="flex-general-column-wrapper-center" style="height:27px;margin-left:4px;">
-              <span style="font-size:14px;">Files</span>
-            </div>
-
-          </div>
-
-          <div class="each-filemenu-item flex-general-row-wrapper">
-
-            <div class="flex-general-column-wrapper-center" style="width:27px;height:27px;">
-              <i class="icon ion-document" style="font-size:20px;color:#AAAAAA;"></i> 
-            </div>
-
-            <div class="flex-general-column-wrapper-center" style="height:27px;margin-left:4px;">
-              <span style="font-size:14px;">Files</span>
-            </div>
-
-          </div>
-
-          <div class="each-filemenu-item flex-general-row-wrapper">
-
-            <div class="flex-general-column-wrapper-center" style="width:27px;height:27px;">
-              <i class="icon ion-document" style="font-size:20px;color:#AAAAAA;"></i> 
-            </div>
-
-            <div class="flex-general-column-wrapper-center" style="height:27px;margin-left:4px;">
-              <span style="font-size:14px;">Files</span>
-            </div>
-
-          </div>
-
-
+      <!--Load more spinner-->
+      <div ng-if="loadingRecords" class="wyl-load-more-folder solo-horizontal-center">
+        <div style="position: absolute;bottom:6%;">
+          <img src="assets/images/ajax-loader.gif">
         </div>
       </div>
+      <!--/Load more spinner-->
 
-      <div class="files-content-wrap">      
-
-        <div class="files-content-container">            
-
-            <div class="file-treeview-table">             
-
-              <table class="file-actual-table">
-                <thead class="file-actual-thead">
-                  <tr>
-                    <th width="55%">
-                      <div>
-                        Name
-                      </div>
-                    </th>
-                    <th width="22.5%">
-                      <div>
-                        Modified
-                      </div>
-                    </th>
-                    <th width="22.5%">
-                      <div>
-                        Share
-                      </div>
-                    </th>
-                  </tr>
-                </thead>                
-                <tbody class="file-actual-tbody">
-
-                  <tr data-context-menu="app/directives/templates/contextMenuTemplate.html" data-context-event="contextmenu">
-                    <td  width="55%">
-                      <div class="item-view-wrapper solo-vertical-center">
-                        <div class="flex-general-row-wrapper">
-                          <div class="flex-general-column-wrapper-center" style="height:31px;width:35px;">
-                           <i class="icon ion-ios-folder" style="font-size:30px;color:#AAAAAA;"></i>  
-                          </div>
-
-                          <div class="flex-general-column-wrapper-center" style="height:31px;margin-left:3px;">
-                            <!--Display Name
-                            <div>
-                              <span>File Name goes here..</span>
-                            </div>
-                            Display Name-->
-
-                            <!--ReName-->
-                            <div>
-                              <input type="text" class="file-rename-txtbx" value="File Name">
-                            </div>
-                            <!--/ReName-->
-
-                          </div>
-
-                        </div>
-                      </div>
-                    </td>
-
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>                  
-                  </tr>
-
-                   <tr>
-                    <td  width="55%">
-                      <div class="item-view-wrapper solo-vertical-center">
-                        <div class="flex-general-row-wrapper">
-                          <div class="flex-general-column-wrapper-center" style="height:31px;width:35px;">
-                           <i class="icon ion-ios-folder" style="font-size:30px;color:#AAAAAA;"></i>  
-                          </div>
-
-                          <div class="flex-general-column-wrapper-center" style="height:31px;margin-left:3px;">
-                            <!--Display Name
-                            <div>
-                              <span>File Name goes here..</span>
-                            </div>
-                            Display Name-->
-
-                            <!--ReName-->
-                            <div>
-                              <input type="text" class="file-rename-txtbx" value="File Name">
-                            </div>
-                            <!--/ReName-->
-
-                          </div>
-
-                        </div>
-                      </div>
-                    </td>
-
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>                  
-                  </tr>
-
-                   <tr>
-                    <td  width="55%">
-                      <div class="item-view-wrapper solo-vertical-center">
-                        <div class="flex-general-row-wrapper">
-                          <div class="flex-general-column-wrapper-center" style="height:31px;width:35px;">
-                           <i class="icon ion-ios-folder" style="font-size:30px;color:#AAAAAA;"></i>  
-                          </div>
-
-                          <div class="flex-general-column-wrapper-center" style="height:31px;margin-left:3px;">
-                            <!--Display Name
-                            <div>
-                              <span>File Name goes here..</span>
-                            </div>
-                            Display Name-->
-
-                            <!--ReName-->
-                            <div>
-                              <input type="text" class="file-rename-txtbx" value="File Name">
-                            </div>
-                            <!--/ReName-->
-
-                          </div>
-
-                        </div>
-                      </div>
-                    </td>
-
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>                  
-                  </tr>
-
-
-                   <tr>
-                    <td  width="55%">
-                      <div class="item-view-wrapper solo-vertical-center">
-                        <div class="flex-general-row-wrapper">
-                          <div class="flex-general-column-wrapper-center" style="height:31px;width:35px;">
-                           <i class="icon ion-ios-folder" style="font-size:30px;color:#AAAAAA;"></i>  
-                          </div>
-
-                          <div class="flex-general-column-wrapper-center" style="height:31px;margin-left:3px;">
-                            <!--Display Name
-                            <div>
-                              <span>File Name goes here..</span>
-                            </div>
-                            Display Name-->
-
-                            <!--ReName-->
-                            <div>
-                              <input type="text" class="file-rename-txtbx" value="File Name">
-                            </div>
-                            <!--/ReName-->
-
-                          </div>
-
-                        </div>
-                      </div>
-                    </td>
-
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>                  
-                  </tr>
-
-
-                   <tr>
-                    <td  width="55%">
-                      <div class="item-view-wrapper solo-vertical-center">
-                        <div class="flex-general-row-wrapper">
-                          <div class="flex-general-column-wrapper-center" style="height:31px;width:35px;">
-                           <i class="icon ion-ios-folder" style="font-size:30px;color:#AAAAAA;"></i>  
-                          </div>
-
-                          <div class="flex-general-column-wrapper-center" style="height:31px;margin-left:3px;">
-                            <!--Display Name
-                            <div>
-                              <span>File Name goes here..</span>
-                            </div>
-                            Display Name-->
-
-                            <!--ReName-->
-                            <div>
-                              <input type="text" class="file-rename-txtbx" value="File Name">
-                            </div>
-                            <!--/ReName-->
-
-                          </div>
-
-                        </div>
-                      </div>
-                    </td>
-
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>                  
-                  </tr>
-
-                   <tr>
-                    <td  width="55%">
-                      <div class="item-view-wrapper solo-vertical-center">
-                        <div class="flex-general-row-wrapper">
-                          <div class="flex-general-column-wrapper-center" style="height:31px;width:35px;">
-                           <i class="icon ion-ios-folder" style="font-size:30px;color:#AAAAAA;"></i>  
-                          </div>
-
-                          <div class="flex-general-column-wrapper-center" style="height:31px;margin-left:3px;">
-                            <!--Display Name
-                            <div>
-                              <span>File Name goes here..</span>
-                            </div>
-                            Display Name-->
-
-                            <!--ReName-->
-                            <div>
-                              <input type="text" class="file-rename-txtbx" value="File Name">
-                            </div>
-                            <!--/ReName-->
-
-                          </div>
-
-                        </div>
-                      </div>
-                    </td>
-
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>                  
-                  </tr>
-
-                   <tr>
-                    <td  width="55%">
-                      <div class="item-view-wrapper solo-vertical-center">
-                        <div class="flex-general-row-wrapper">
-                          <div class="flex-general-column-wrapper-center" style="height:31px;width:35px;">
-                           <i class="icon ion-ios-folder" style="font-size:30px;color:#AAAAAA;"></i>  
-                          </div>
-
-                          <div class="flex-general-column-wrapper-center" style="height:31px;margin-left:3px;">
-                            <!--Display Name
-                            <div>
-                              <span>File Name goes here..</span>
-                            </div>
-                            Display Name-->
-
-                            <!--ReName-->
-                            <div>
-                              <input type="text" class="file-rename-txtbx" value="File Name">
-                            </div>
-                            <!--/ReName-->
-
-                          </div>
-
-                        </div>
-                      </div>
-                    </td>
-
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>                  
-                  </tr>
-
-                   <tr>
-                    <td  width="55%">
-                      <div class="item-view-wrapper solo-vertical-center">
-                        <div class="flex-general-row-wrapper">
-                          <div class="flex-general-column-wrapper-center" style="height:31px;width:35px;">
-                           <i class="icon ion-ios-folder" style="font-size:30px;color:#AAAAAA;"></i>  
-                          </div>
-
-                          <div class="flex-general-column-wrapper-center" style="height:31px;margin-left:3px;">
-                            <!--Display Name
-                            <div>
-                              <span>File Name goes here..</span>
-                            </div>
-                            Display Name-->
-
-                            <!--ReName-->
-                            <div>
-                              <input type="text" class="file-rename-txtbx" value="File Name">
-                            </div>
-                            <!--/ReName-->
-
-                          </div>
-
-                        </div>
-                      </div>
-                    </td>
-
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>                  
-                  </tr>
-
-                   <tr>
-                    <td  width="55%">
-                      <div class="item-view-wrapper solo-vertical-center">
-                        <div class="flex-general-row-wrapper">
-                          <div class="flex-general-column-wrapper-center" style="height:31px;width:35px;">
-                           <i class="icon ion-ios-folder" style="font-size:30px;color:#AAAAAA;"></i>  
-                          </div>
-
-                          <div class="flex-general-column-wrapper-center" style="height:31px;margin-left:3px;">
-                            <!--Display Name
-                            <div>
-                              <span>File Name goes here..</span>
-                            </div>
-                            Display Name-->
-
-                            <!--ReName-->
-                            <div>
-                              <input type="text" class="file-rename-txtbx" value="File Name">
-                            </div>
-                            <!--/ReName-->
-
-                          </div>
-
-                        </div>
-                      </div>
-                    </td>
-
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>                  
-                  </tr>
-
-                   <tr>
-                    <td  width="55%">
-                      <div class="item-view-wrapper solo-vertical-center">
-                        <div class="flex-general-row-wrapper">
-                          <div class="flex-general-column-wrapper-center" style="height:31px;width:35px;">
-                           <i class="icon ion-ios-folder" style="font-size:30px;color:#AAAAAA;"></i>  
-                          </div>
-
-                          <div class="flex-general-column-wrapper-center" style="height:31px;margin-left:3px;">
-                            <!--Display Name
-                            <div>
-                              <span>File Name goes here..</span>
-                            </div>
-                            Display Name-->
-
-                            <!--ReName-->
-                            <div>
-                              <input type="text" class="file-rename-txtbx" value="File Name">
-                            </div>
-                            <!--/ReName-->
-
-                          </div>
-
-                        </div>
-                      </div>
-                    </td>
-
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>
-                    <td width="22.5%">
-                      <div>
-                        sdsd
-                      </div>
-                    </td>                  
-                  </tr>
-
-
-                </tbody>
-              </table>
-            </div>
-        </div>
-
-      </div>
     </div>
-  </div>      
+  </div> 
 </div>
 
 <!--Slack chat-->
@@ -635,4 +258,11 @@
   </div> 
 </a>
 <!--/Slack chat-->
+
+
+<!--File Directive -->
+<div class="modal fade colored-header danger" id="md-fileviewer" tabindex="-1" role="dialog">
+  <cb-file filetype="fileAllowedTypes" metadata="metaData" edit="editFile" delete="deleteFile()" save="setAndSaveFile(fileObj)"></cb-file>
+</div> 
+<!--/File Directive -->
 
