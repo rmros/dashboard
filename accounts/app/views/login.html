@@ -1,5 +1,5 @@
 <div id="cl-wrapper" class="login-container" style="background-image: url('/assets/images/bg-header-2.jpg')">
-<div class="middle-login" ng-init="init()">
+<div class="middle-login col-md-6" ng-init="init()">
 		<div class="block-flat">
 			<div class="header">							
 				<h3 class="text-center">
@@ -9,75 +9,10 @@
 				</h3>
 			</div>
 			<div>
-				<div class="col-md-6">
-					<!--If Feed-->
-					<div ng-if="feed && !isBlogLoading" style="margin-top:80px;margin-left:20px; padding-bottom:100px;">
-						<div>
-							<span>WHAT'S NEW</span>
-						</div>
-						<div style="margin-top:3px;">
-							<a href="{{feed.link}}" target="_blank">
-							   <span style="color:#0275B3; font-weight:bold; font-size:16px;">{{feed.title}} &nbsp;<i class="fa fa-long-arrow-right"></i>
-							   </span>
-						    </a>
-						</div>
-						<div class="news-dashboard flex-general-row-wrapper" style="margin-top:5px;">
 
-							<div class="login-image-container">
-								<img src="http://bit.ly/cloudBoostBlogImage" >
-						    </div>
-
-						    <div class="login-descri-container">
-						    	<span>
-						    		{{feed.contentSnippet}}
-						    	</span>		
-						    </div>
-						</div>	
-					</div>	
-
-					<!--If Feed Doesn't ,Default-->	
-					<div ng-if="!feed && !isBlogLoading" style="margin-top:80px;margin-left:18px; padding-bottom:100px;">
-					<div>
-						<span>WHAT'S IN IT FOR YOU?</span>
-					</div>
-					<div style="margin-top:3px;">
-						<a href="https://www.cloudboost.io/pricing" target="_blank">
-						   <span style="color:#0275B3; font-weight:bold; font-size:16px;">
-						   	50$ Free credits, Every month for life &nbsp;
-							<i class="fa fa-long-arrow-right"></i>
-						   </span>
-					    </a>
-					</div>
-					<div class="news-dashboard flex-general-row-wrapper" style="margin-top:5px;">
-
-						<div class="login-image-container2">
-							<img src="../assets/images/50dol.png" >
-					    </div>
-
-					    <div class="login-descri-container">
-					    	<span>
-					    		CloudBoost offers 50 USD free credits every month to hack around and to build your apps. You don't pay us a cent unless you hit quite a good amount of users.
-					    	</span>		
-					    </div>
-					</div>	
-					</div>
-
-					<!--While Loading-->	
-					<div ng-if="isBlogLoading" style="margin-top:120px;margin-left:20px; height:50px;" class="blog-spinner flex-general-column-wrapper-center">
-					
-						<div style="margin-top:3px;">							
-							<i class="fa fa-spinner fa-pulse fa-3x"></i>
-						</div>
-						
-					</div>
-					<!--/While Loading-->
-
-				</div>	
-
-
-				<div class="col-md-6">
+				<div>
 					<!--Normal Login Form-->
-					<form ng-show="accountVerified" style="margin-bottom:20px !important; margin-top:40px !important; border-left:1px solid #E5E5E5;" class="form-horizontal" name="userForm" ng-submit="logIn(userForm.$valid)">
+					<form ng-show="accountVerified" style="margin-bottom:20px !important; margin-top:40px !important;" class="form-horizontal" name="userForm" ng-submit="logIn(userForm.$valid)">
 						<div class="content">						
 
 							<div ng-show="showSpinner" class="flex-general-column-wrapper-center" style="height:200px;">
