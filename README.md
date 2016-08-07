@@ -16,6 +16,10 @@ CloudBoost is the Complete NoSQL Database Service for your app. **Think of Cloud
 
 This is a CloudBoost Dashboard and can be used with [CloudBoost Engine](https://www.github.com/CloudBoost/cloudboost).
 
+#Running CloudBoost
+
+You can run CloudBoost with Docker (recommended). Check out the docker project [here](https://github.com/cloudboost/docker)
+
 #Contributing
 
 Pull requests are very welcome!
