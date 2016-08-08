@@ -273,7 +273,7 @@ app.controller('indexController',
       }else if(projectObj.planId==5){
         $scope.requestedPlan=getPlanById(5);
       }else if(!projectObj.planId || projectObj.planId==1){
-        $scope.requestedPlan=getPlanById(3);
+        $scope.requestedPlan=getPlanById(2);
       }
       
       if(!__isDevelopment){
