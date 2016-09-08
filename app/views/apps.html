@@ -1,7 +1,7 @@
 <div class="cl-mcont app-page" ng-init="init()">
     <div class="row" ng-if="!dataLoading && !loadingError">   
 
-        <div class="col-sm-12 col-md-6 col-lg-3">
+      <div ng-show="!provider" class="col-sm-12 col-md-6 col-lg-3">
           <div class="block block-color info" style="box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)" data-ng-class="{hostedapph:isHosted,nonhostedapph:!isHosted}">
             <div class="header">      
               <h3><i class="fa fa-plus-circle"></i>&nbsp;create an app</h3>
@@ -114,11 +114,10 @@
                   <div class="solo-vertical-center" style="height:100%;padding-left:10px;width:60%;">
 
                     <span ng-if="!list.planId || list.planId==1" style="font-weight:700;color:gray;">FREE PLAN</span>
-                    <span ng-if="list.planId==2" style="font-weight:700;color:gray;">PROTOTYPE PLAN</span>
-                    <span ng-if="list.planId==3" style="font-weight:700;color:gray;">LAUNCH PLAN</span>
-                    <span ng-if="list.planId==4" style="font-weight:700;color:gray;">BOOTSTRAP PLAN</span>
-                    <span ng-if="list.planId==5" style="font-weight:700;color:gray;">SCALE PLAN</span>
-                    <span ng-if="list.planId==6" style="font-weight:700;color:gray;">UNICORN PLAN</span>
+                    <span ng-if="list.planId==2" style="font-weight:700;color:gray;">LAUNCH PLAN</span>
+                    <span ng-if="list.planId==3" style="font-weight:700;color:gray;">BOOTSTRAP PLAN</span>
+                    <span ng-if="list.planId==4" style="font-weight:700;color:gray;">SCALE PLAN</span>
+                    <span ng-if="list.planId==5" style="font-weight:700;color:gray;">UNICORN PLAN</span>
 
                   </div>
 
