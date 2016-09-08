@@ -16,7 +16,6 @@ app.controller('indexController',
   'beaconService',
   'paymentService',
   'analyticsService',
-  '$cookies',
 	function($scope,
     $q,
     $http,
@@ -33,8 +32,7 @@ app.controller('indexController',
     tableService,
     beaconService,
     paymentService,
-    analyticsService,
-    $cookies){	
+    analyticsService){	
 
     //Index page variables
     $scope.isAdminLoggedIn=false;

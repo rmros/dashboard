@@ -19,8 +19,7 @@ var app=angular.module('CloudBoostDashboard',
     'nvd3',    
     'color.picker',
     'hljs',
-    'ui.codemirror',
-    'ngCookies'  
+    'ui.codemirror'
     ]);
 
 app.value('THROTTLE_MILLISECONDS', 1250);
