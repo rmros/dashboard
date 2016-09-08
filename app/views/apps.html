@@ -121,7 +121,7 @@
 
                   </div>
 
-                  <div ng-show="(list | validUser)" class="flex-general-column-wrapper-center" style="height:100%;width:40%; background-color:#EDEDED;color:#7C7C7C;cursor:pointer;border-left:1px solid #C9C9C9;" ng-click="initUpgradePlan(list);">
+                  <div ng-show="(list | validUser) && !provider" class="flex-general-column-wrapper-center" style="height:100%;width:40%; background-color:#EDEDED;color:#7C7C7C;cursor:pointer;border-left:1px solid #C9C9C9;" ng-click="initUpgradePlan(list);">
                     <span style="">Upgrade
                     &nbsp;
                     <i class="icon ion-arrow-graph-up-right" style="font-size:16px;"></i>
