@@ -16,6 +16,7 @@ app.controller('indexController',
   'beaconService',
   'paymentService',
   'analyticsService',
+  '$cookies'
 	function($scope,
     $q,
     $http,
@@ -32,7 +33,8 @@ app.controller('indexController',
     tableService,
     beaconService,
     paymentService,
-    analyticsService){	
+    analyticsService,
+    $cookies){	
 
     //Index page variables
     $scope.isAdminLoggedIn=false;
@@ -63,6 +65,12 @@ app.controller('indexController',
     $rootScope.openBillingPlan=false;
     $rootScope.cardDetailsStep1=true;
     $rootScope.cardDetailsStep2=false;
+
+    if($location.search().provider && $location.search().provider === "heroku"){
+      $rootScope.provider="heroku";
+      $rootScope.herokuAppName = $location.search().app;
+      Boomerang.init({app: $rootScope.herokuAppName, addon: 'CloudBoost'});
+    }
 
     $rootScope.cardDetails={    
       number:null,
