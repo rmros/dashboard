@@ -16,7 +16,7 @@ app.controller('indexController',
   'beaconService',
   'paymentService',
   'analyticsService',
-  '$cookies'
+  '$cookies',
 	function($scope,
     $q,
     $http,
