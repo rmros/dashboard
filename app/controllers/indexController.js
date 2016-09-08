@@ -34,6 +34,17 @@ app.controller('indexController',
     paymentService,
     analyticsService){	
 
+    //Get Querystring.
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
     //Index page variables
     $scope.isAdminLoggedIn=false;
     $scope.notifySpinner=false;
@@ -64,9 +75,9 @@ app.controller('indexController',
     $rootScope.cardDetailsStep1=true;
     $rootScope.cardDetailsStep2=false;
 
-    if($location.search().provider && $location.search().provider === "heroku"){
+    if(getParameterByName("provider") && getParameterByName("provider") === "heroku"){
       $rootScope.provider="heroku";
-      $rootScope.herokuAppName = $location.search().app;
+      $rootScope.herokuAppName = getParameterByName("app");
       Boomerang.init({app: $rootScope.herokuAppName, addon: 'CloudBoost'});
     }
 
