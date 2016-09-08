@@ -16,6 +16,7 @@ app.controller('indexController',
   'beaconService',
   'paymentService',
   'analyticsService',
+  "$cookies",
 	function($scope,
     $q,
     $http,
@@ -32,7 +33,8 @@ app.controller('indexController',
     tableService,
     beaconService,
     paymentService,
-    analyticsService){	
+    analyticsService,
+    $cookies){	
 
     //Get Querystring.
     function getParameterByName(name, url) {
@@ -75,9 +77,11 @@ app.controller('indexController',
     $rootScope.cardDetailsStep1=true;
     $rootScope.cardDetailsStep2=false;
 
-    if(getParameterByName("provider") && getParameterByName("provider") === "heroku"){
+    if((getParameterByName("provider") && getParameterByName("provider") === "heroku")|| ($cookies.get('provider') && $cookies.get('provider') === "heroku")){
       $rootScope.provider="heroku";
-      $rootScope.herokuAppName = getParameterByName("app");
+      $cookies.put('provider', 'heroku');
+      $cookies.put('herokuApp', $cookies.get('herokuApp') || getParameterByName("app"));
+      $rootScope.herokuAppName = $cookies.get('herokuApp');
       Boomerang.init({app: $rootScope.herokuAppName, addon: 'CloudBoost'});
     }
 
