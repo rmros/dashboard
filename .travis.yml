@@ -42,5 +42,5 @@ after_success:
 - docker push cloudboost/dashboard:2.0.$TRAVIS_BUILD_NUMBER
 - docker push cloudboost/dashboard:latest
 #Upload to Kubernetes for deployment.
-- kubectl rolling-update cloudboost-dashboard --image=cloudboost/dashboard:2.0.$TRAVIS_BUILD_NUMBER
+- kubectl rolling-update cloudboost-dashboard --image=cloudboost/dashboard:latest --image-pull-policy=Always
 
