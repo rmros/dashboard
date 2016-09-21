@@ -85,6 +85,10 @@ app.controller('indexController',
       Boomerang.init({app: $rootScope.herokuAppName, addon: 'CloudBoost'});
     }
 
+    if(getParameterByName("userId")){
+      $cookies.put('userId', getParameterByName("userId"));
+    }
+
     $rootScope.cardDetails={    
       number:null,
       expMonth:null,
