@@ -75,6 +75,49 @@ app.factory('appSettingsService', ['$q','$http','$rootScope',function ($q,$http,
       return  q.promise;
     };
 
+    global.exportDatabase = function(appId,masterKey){
+      var q=$q.defer();
+      var data = new FormData();     
+      data.append('key', masterKey);        
+
+      var xhttp = new XMLHttpRequest();
+      xhttp.onload  = function() {
+        if(xhttp.readyState == 4 && xhttp.status == 200) {
+          var blob = new Blob([xhttp.responseText], {type: "text/plain;charset=utf-8"});
+          saveAs(blob, "dump.json");
+          q.resolve(true);
+        }else if(xhttp.status != 200){
+          q.reject(xhttp.responseText);
+        }
+      };
+      xhttp.open("POST", SERVER_URL+"/backup/"+appId+"/exportdb", true);        
+      xhttp.send(data);
+      return  q.promise;
+    }
+
+    global.importDatabase = function(appId,masterKey,fileObj){
+      var q=$q.defer();
+      
+      var data = new FormData();        
+      data.append('file', fileObj);        
+      data.append('key', masterKey);        
+
+      var xhttp = new XMLHttpRequest();
+      xhttp.onload  = function() {
+        if(xhttp.readyState == 4 && xhttp.status == 200) {
+          if(xhttp.responseText){            
+            q.resolve(xhttp.responseText);
+          }            
+        }else if(xhttp.status != 200){
+          q.reject(xhttp.responseText);
+        }
+      };
+      xhttp.open("POST", SERVER_URL+"/backup/"+appId+"/importdb", true);        
+      xhttp.send(data);
+
+      return  q.promise;;
+    }
+
     return global;
 
 }]);

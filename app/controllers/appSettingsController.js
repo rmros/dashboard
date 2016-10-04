@@ -361,6 +361,10 @@ app.controller('appSettingsController',
         $scope.editableFile = null;
         $("#md-appsettingsfileviewer").modal();
       };
+      $scope.initImportDatabase = function () {
+        $scope.editableFile = null;
+        $("#md-appsettingsfileviewer").modal();
+      };
 
       $scope.saveFile = function (file) {
         if (file) {
@@ -405,36 +409,35 @@ app.controller('appSettingsController',
               errorNotify("Only .P12 is allowed");
             }
           }
+          //Import Database
+          if ($scope.settingsMenu.importExport) {
+            if(names[names.length -1] == "json"){
+              $("#md-appsettingsfileviewer").modal("hide");
+              appSettingsService.importDatabase($rootScope.currentProject.appId, $rootScope.currentProject.keys.master, file)
+                .then(function (resp) {
+                  console.log(resp)
+                  successNotify("Database Import Successful");
+                }, function (error) {
+                  errorNotify("Error on importing Database, try again.." + error);
+              });
+            } else {
+              errorNotify("Only .json file is allowed");
+            }
+          }
 
         }
       };
 
       //Toggler
       $scope.selectSettings = function (settingsName) {
-        if (settingsName == "general") {
-          $scope.settingsMenu.general = true;
-          $scope.settingsMenu.email = false;
-          $scope.settingsMenu.push = false;
-          $scope.settingsMenu.auth = false;
-        }
-        if (settingsName == "email") {
-          $scope.settingsMenu.general = false;
-          $scope.settingsMenu.email = true;
-          $scope.settingsMenu.push = false;
-          $scope.settingsMenu.auth = false;
-        }
-        if (settingsName == "push") {
-          $scope.settingsMenu.general = false;
-          $scope.settingsMenu.email = false;
-          $scope.settingsMenu.push = true;
-          $scope.settingsMenu.auth = false;
-        }
-        if (settingsName == "auth") {
-          $scope.settingsMenu.general = false;
-          $scope.settingsMenu.email = false;
-          $scope.settingsMenu.push = false;
-          $scope.settingsMenu.auth = true;
-        }
+        ["general","email","push","auth","importExport","native"].forEach(function(x){
+          if(settingsName == x){
+            $scope.settingsMenu[x] = true
+          } else {
+            $scope.settingsMenu[x] = false
+          }
+        })
+        console.log($scope.settingsMenu)
       };
 
       $scope.menuHover = function (settingsName) {
@@ -452,6 +455,12 @@ app.controller('appSettingsController',
 
         if (settingsName == "auth" && !$scope.settingsMenu.auth && !$scope.settingsMenuHover.auth) {
           $scope.settingsMenuHover.auth = true;
+        }
+        if (settingsName == "importExport" && !$scope.settingsMenu.importExport && !$scope.settingsMenuHover.importExport) {
+          $scope.settingsMenuHover.importExport = true;
+        }
+        if (settingsName == "native" && !$scope.settingsMenu.native && !$scope.settingsMenuHover.native) {
+          $scope.settingsMenuHover.native = true;
         }
 
       };
@@ -472,6 +481,13 @@ app.controller('appSettingsController',
 
         if (settingsName == "auth" && !$scope.settingsMenu.auth && $scope.settingsMenuHover.auth) {
           $scope.settingsMenuHover.auth = false;
+        }
+        if (settingsName == "importExport" && !$scope.settingsMenu.importExport && $scope.settingsMenuHover.importExport) {
+          $scope.settingsMenuHover.importExport = false;
+        }
+
+        if (settingsName == "native" && !$scope.settingsMenu.native && $scope.settingsMenuHover.native) {
+          $scope.settingsMenuHover.native = false;
         }
       };
 
@@ -582,7 +598,14 @@ app.controller('appSettingsController',
         $scope.loginUrlClippr = false;
       };
 
-
+      $scope.exportDatabase = function(){
+        appSettingsService.exportDatabase($rootScope.currentProject.appId,$rootScope.currentProject.keys.master)
+         .then(function (resp) {
+              successNotify("Database Export Successful");
+            }, function (error) {
+              errorNotify("Error on Exporting Database, try again.." + error);
+          });
+      };
 
       /********************************Private fuctions****************************/
       function loadProject(id) {
