@@ -8,7 +8,7 @@ app.get('/app/key.js',function(req,res){
 	var content= "";
 
 	/***************************************************Connecting URLs*********************************************************/
-	content+= "var __isDevelopment = "+process.env["CLOUDBOOST_DEVELOPMENT"] || "false"+";\n";
+	content+= "var __isDevelopment = "+(process.env["CLOUDBOOST_DEVELOPMENT"] || "false")+";\n";
 	
 
 	content+= "var frontendServerURL = null,\n";
