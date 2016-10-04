@@ -18,7 +18,6 @@ app.get('/app/key.js',function(req,res){
 
 	content+= "landingURL = 'https://www.cloudboost.io';\n";
 
-
 	content+= "if(window.location.hostname==='dashboard.cloudboost.io'){\n";
 	    content+= "frontendServerURL='https://service.cloudboost.io';\n";
 	    content+= "SERVER_URL='https://api.cloudboost.io';\n";
