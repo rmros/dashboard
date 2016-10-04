@@ -416,12 +416,12 @@ app.controller('appSettingsController',
               appSettingsService.importDatabase($rootScope.currentProject.appId, $rootScope.currentProject.keys.master, file)
                 .then(function (resp) {
                   console.log(resp)
-                  successNotify("Database Import Successful");
+                  successNotify("Your database has imported successfully.");
                 }, function (error) {
-                  errorNotify("Error on importing Database, try again.." + error);
+                  errorNotify("Oops, we failed to import your data. Try again.");
               });
             } else {
-              errorNotify("Only .json file is allowed");
+              errorNotify("Only .json file is allowed.");
             }
           }
 
@@ -601,9 +601,9 @@ app.controller('appSettingsController',
       $scope.exportDatabase = function(){
         appSettingsService.exportDatabase($rootScope.currentProject.appId,$rootScope.currentProject.keys.master)
          .then(function (resp) {
-              successNotify("Database Export Successful");
+              successNotify("Your data has been exported successfully.");
             }, function (error) {
-              errorNotify("Error on Exporting Database, try again.." + error);
+              errorNotify("Oops, we failed to export your data. Please try again.");
           });
       };
 
