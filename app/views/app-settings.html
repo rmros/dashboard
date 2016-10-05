@@ -3247,15 +3247,22 @@
                     <div class="solo-vertical-center" style="width:80%;;margin-left: 6px;height:100%;font-size: 14px;padding:6px;">
                       <div style="padding-left:7px; width:100%;height:100%;border-radius:2px; border:1px solid #EDEDED;background-color:#EDEAEA;"
                         class="solo-vertical-center">
-                        {{'Placeholer , this will contain the mongoDB connection string'}}
+                        {{accessUrlString == '' ? 'Placeholer , this will contain the mongoDB connection string' : accessUrlString}}
                       </div>
                     </div>
                     <div class="flex-general-column-wrapper-center" style="width:7%;height:100%;cursor: pointer;font-size: 14px;padding:6px;">
-                      <div class="flex-general-column-wrapper-center cliplogin-url-btn" clip-copy="loginPageURL" click-outside="loginUrlOutsideClick()"
+                      <div class="flex-general-column-wrapper-center cliplogin-url-btn" clip-copy="accessUrlString" click-outside="loginUrlOutsideClick()"
                         ng-click="loginUrlClick()" outside-if-not="cliplogin-url-btn" ng-class="{'login-clipper-clicked':loginUrlClippr}">
                         <i class="icon ion-ios-copy-outline" style="font-size:19px;"></i>
                       </div>
                     </div>
+
+                    <div ng-show="!accessUrlEnabled" style="margin:auto;margin-top:5%;width: 140px;">
+                      <button ng-click="enableAccess()" class="default-inputfield" style="width:100%;height: 37px;background: #549afc;color:white;font-size: 18px;border-radius: 3px;">
+                      Enable Access
+                      </button>
+                    </div>
+
                 </div>
 
               </div>

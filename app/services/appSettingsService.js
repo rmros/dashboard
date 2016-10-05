@@ -118,6 +118,14 @@ app.factory('appSettingsService', ['$q','$http','$rootScope',function ($q,$http,
       return  q.promise;;
     }
 
+    global.getAccessUrl = function(appId){
+      return $http.post(frontendServerURL+"/dbaccess/get/"+appId,{})
+    }
+
+    global.enableAccessUrl = function(appId){
+      return $http.post(frontendServerURL+"/dbaccess/enable/"+appId,{})
+    }
+
     return global;
 
 }]);

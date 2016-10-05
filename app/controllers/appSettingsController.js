@@ -23,6 +23,7 @@ app.controller('appSettingsController',
       $rootScope.page = 'appsettings';
 
       $scope.spinners = {};
+      $scope.accessUrlString = ''
 
       $scope.generalSettings = {
         category: "general",
@@ -437,7 +438,6 @@ app.controller('appSettingsController',
             $scope.settingsMenu[x] = false
           }
         })
-        console.log($scope.settingsMenu)
       };
 
       $scope.menuHover = function (settingsName) {
@@ -607,6 +607,20 @@ app.controller('appSettingsController',
           });
       };
 
+      $scope.enableAccess = function(){
+        appSettingsService.enableAccessUrl($rootScope.currentProject.appId)
+        .then(function(data){
+          return appSettingsService.getAccessUrl($rootScope.currentProject.appId)
+        })
+        .then(function(data){
+          successNotify("Access url generated successfully.");
+          $scope.accessUrlString = data.data.data;
+          $scope.accessUrlEnabled = true;
+        },function(err){
+          errorNotify("Oops, we failed to generate an access Url. Please try again.");
+        })
+      }
+
       /********************************Private fuctions****************************/
       function loadProject(id) {
         //$scope.settingsLoading=true;  
@@ -623,7 +637,7 @@ app.controller('appSettingsController',
       }
 
       function getSettings() {
-        //$scope.settingsLoading=true;  
+        //$scope.settingsLoading=true; 
         appSettingsService.getSettings($rootScope.currentProject.appId, $rootScope.currentProject.keys.master)
           .then(function (settings) {
 
@@ -664,6 +678,14 @@ app.controller('appSettingsController',
                 $scope.settingsLoading = false;
               });
             }
+
+            //check for accessUrl status
+            appSettingsService.getAccessUrl($rootScope.currentProject.appId).then(function(data){
+              $scope.accessUrlEnabled = true
+              $scope.accessUrlString = data.data.data
+            },function(err){
+              $scope.accessUrlEnabled = false
+            })
 
           }, function (error) {
             $scope.settingsLoading = false;
