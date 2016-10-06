@@ -23,6 +23,7 @@ app.controller('appSettingsController',
       $rootScope.page = 'appsettings';
 
       $scope.spinners = {};
+      $scope.accessUrlString = ''
 
       $scope.generalSettings = {
         category: "general",
@@ -361,6 +362,10 @@ app.controller('appSettingsController',
         $scope.editableFile = null;
         $("#md-appsettingsfileviewer").modal();
       };
+      $scope.initImportDatabase = function () {
+        $scope.editableFile = null;
+        $("#md-appsettingsfileviewer").modal();
+      };
 
       $scope.saveFile = function (file) {
         if (file) {
@@ -405,36 +410,34 @@ app.controller('appSettingsController',
               errorNotify("Only .P12 is allowed");
             }
           }
+          //Import Database
+          if ($scope.settingsMenu.importExport) {
+            if(names[names.length -1] == "json"){
+              $("#md-appsettingsfileviewer").modal("hide");
+              appSettingsService.importDatabase($rootScope.currentProject.appId, $rootScope.currentProject.keys.master, file)
+                .then(function (resp) {
+                  console.log(resp)
+                  successNotify("Your database has imported successfully.");
+                }, function (error) {
+                  errorNotify("Oops, we failed to import your data. Try again.");
+              });
+            } else {
+              errorNotify("Only .json file is allowed.");
+            }
+          }
 
         }
       };
 
       //Toggler
       $scope.selectSettings = function (settingsName) {
-        if (settingsName == "general") {
-          $scope.settingsMenu.general = true;
-          $scope.settingsMenu.email = false;
-          $scope.settingsMenu.push = false;
-          $scope.settingsMenu.auth = false;
-        }
-        if (settingsName == "email") {
-          $scope.settingsMenu.general = false;
-          $scope.settingsMenu.email = true;
-          $scope.settingsMenu.push = false;
-          $scope.settingsMenu.auth = false;
-        }
-        if (settingsName == "push") {
-          $scope.settingsMenu.general = false;
-          $scope.settingsMenu.email = false;
-          $scope.settingsMenu.push = true;
-          $scope.settingsMenu.auth = false;
-        }
-        if (settingsName == "auth") {
-          $scope.settingsMenu.general = false;
-          $scope.settingsMenu.email = false;
-          $scope.settingsMenu.push = false;
-          $scope.settingsMenu.auth = true;
-        }
+        ["general","email","push","auth","importExport","native"].forEach(function(x){
+          if(settingsName == x){
+            $scope.settingsMenu[x] = true
+          } else {
+            $scope.settingsMenu[x] = false
+          }
+        })
       };
 
       $scope.menuHover = function (settingsName) {
@@ -452,6 +455,12 @@ app.controller('appSettingsController',
 
         if (settingsName == "auth" && !$scope.settingsMenu.auth && !$scope.settingsMenuHover.auth) {
           $scope.settingsMenuHover.auth = true;
+        }
+        if (settingsName == "importExport" && !$scope.settingsMenu.importExport && !$scope.settingsMenuHover.importExport) {
+          $scope.settingsMenuHover.importExport = true;
+        }
+        if (settingsName == "native" && !$scope.settingsMenu.native && !$scope.settingsMenuHover.native) {
+          $scope.settingsMenuHover.native = true;
         }
 
       };
@@ -472,6 +481,13 @@ app.controller('appSettingsController',
 
         if (settingsName == "auth" && !$scope.settingsMenu.auth && $scope.settingsMenuHover.auth) {
           $scope.settingsMenuHover.auth = false;
+        }
+        if (settingsName == "importExport" && !$scope.settingsMenu.importExport && $scope.settingsMenuHover.importExport) {
+          $scope.settingsMenuHover.importExport = false;
+        }
+
+        if (settingsName == "native" && !$scope.settingsMenu.native && $scope.settingsMenuHover.native) {
+          $scope.settingsMenuHover.native = false;
         }
       };
 
@@ -582,7 +598,28 @@ app.controller('appSettingsController',
         $scope.loginUrlClippr = false;
       };
 
+      $scope.exportDatabase = function(){
+        appSettingsService.exportDatabase($rootScope.currentProject.appId,$rootScope.currentProject.keys.master)
+         .then(function (resp) {
+              successNotify("Your data has been exported successfully.");
+            }, function (error) {
+              errorNotify("Oops, we failed to export your data. Please try again.");
+          });
+      };
 
+      $scope.enableAccess = function(){
+        appSettingsService.enableAccessUrl($rootScope.currentProject.appId)
+        .then(function(data){
+          return appSettingsService.getAccessUrl($rootScope.currentProject.appId)
+        })
+        .then(function(data){
+          successNotify("Access url generated successfully.");
+          $scope.accessUrlString = data.data.data;
+          $scope.accessUrlEnabled = true;
+        },function(err){
+          errorNotify("Oops, we failed to generate an access Url. Please try again.");
+        })
+      }
 
       /********************************Private fuctions****************************/
       function loadProject(id) {
@@ -600,7 +637,7 @@ app.controller('appSettingsController',
       }
 
       function getSettings() {
-        //$scope.settingsLoading=true;  
+        //$scope.settingsLoading=true; 
         appSettingsService.getSettings($rootScope.currentProject.appId, $rootScope.currentProject.keys.master)
           .then(function (settings) {
 
@@ -641,6 +678,14 @@ app.controller('appSettingsController',
                 $scope.settingsLoading = false;
               });
             }
+
+            //check for accessUrl status
+            appSettingsService.getAccessUrl($rootScope.currentProject.appId).then(function(data){
+              $scope.accessUrlEnabled = true
+              $scope.accessUrlString = data.data.data
+            },function(err){
+              $scope.accessUrlEnabled = false
+            })
 
           }, function (error) {
             $scope.settingsLoading = false;
