@@ -614,7 +614,9 @@ app.controller('appSettingsController',
         })
         .then(function(data){
           successNotify("Access url generated successfully.");
-          $scope.accessUrlString = data.data.data;
+          $scope.accessUrlString = makeUrlFromData(data.data);
+          $scope.accessUsername = data.data.data.username
+          $scope.accessPassword = data.data.data.password
           $scope.accessUrlEnabled = true;
         },function(err){
           errorNotify("Oops, we failed to generate an access Url. Please try again.");
@@ -682,7 +684,9 @@ app.controller('appSettingsController',
             //check for accessUrl status
             appSettingsService.getAccessUrl($rootScope.currentProject.appId).then(function(data){
               $scope.accessUrlEnabled = true
-              $scope.accessUrlString = data.data.data
+              $scope.accessUrlString = makeUrlFromData(data.data);
+              $scope.accessUsername = data.data.data.username
+              $scope.accessPassword = data.data.data.password
             },function(err){
               $scope.accessUrlEnabled = false
             })
@@ -785,6 +789,10 @@ app.controller('appSettingsController',
         xmlhttp.send();
 
         return q.promise;
+      }
+
+      function makeUrlFromData(data){
+          return "mongo mongodb://"+data.data.username+":"+data.data.password+"@"+data.url+"/"+data.data.appId
       }
 
       function _getFbAttributesList() {

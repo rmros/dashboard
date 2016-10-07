@@ -3,15 +3,15 @@ app.controller('indexController',
 function($scope,$rootScope,$q,$cookies,userService,$location,serverSettingsService){	 
 
 
-	$scope.$watch(function(scope) {
-      return $location.path();
-    },function(newPath,oldPath) {
-        if(!$.cookie('userId') || $.cookie('userId')=="null" || $.cookie('userId')=="undefined"){ 
-        	checkValidation(newPath,oldPath);        	                
-        }else{
-          window.location.href=dashboardURL;
-        }            
-    });
+	// $scope.$watch(function(scope) {
+ //      return $location.path();
+ //    },function(newPath,oldPath) {
+ //        if(!$.cookie('userId') || $.cookie('userId')=="null" || $.cookie('userId')=="undefined"){ 
+ //        	checkValidation(newPath,oldPath);        	                
+ //        }else{
+ //          window.location.href=dashboardURL;
+ //        }            
+ //    });
 
 	function checkValidation(newPath,oldPath){
 		var promises=[];

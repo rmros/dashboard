@@ -3264,8 +3264,41 @@
                       </div>
                     </div>
                     <div class="flex-general-column-wrapper-center" style="width:7%;height:100%;cursor: pointer;font-size: 14px;padding:6px;">
-                      <div class="flex-general-column-wrapper-center cliplogin-url-btn" clip-copy="accessUrlString" click-outside="loginUrlOutsideClick()"
-                        ng-click="loginUrlClick()" outside-if-not="cliplogin-url-btn" ng-class="{'login-clipper-clicked':loginUrlClippr}">
+                      <div class="flex-general-column-wrapper-center cliplogin-url-btn" clip-copy="accessUrlString">
+                        <i class="icon ion-ios-copy-outline" style="font-size:19px;"></i>
+                      </div>
+                    </div>
+                </div>
+                <div ng-show="accessUrlEnabled" style="width: 94%;background-color:white;height:48px;border-width:0px 1px 1px 1px; border-color:#EDEDED; border-style:solid;"
+                        class="flex-general-row-wrapper">
+                    <div style="width:10%; margin-left: 10px;height:100%;font-size: 14px;" class="solo-vertical-center">
+                      Username
+                    </div>
+                    <div class="solo-vertical-center" style="width:80%;;margin-left: 6px;height:100%;font-size: 14px;padding:6px;">
+                      <div style="padding-left:7px; width:100%;height:100%;border-radius:2px; border:1px solid #EDEDED;background-color:#EDEAEA;"
+                        class="solo-vertical-center">
+                        {{accessUsername}}
+                      </div>
+                    </div>
+                    <div class="flex-general-column-wrapper-center" style="width:7%;height:100%;cursor: pointer;font-size: 14px;padding:6px;">
+                      <div class="flex-general-column-wrapper-center cliplogin-url-btn" clip-copy="accessUsername">
+                        <i class="icon ion-ios-copy-outline" style="font-size:19px;"></i>
+                      </div>
+                    </div>
+                </div>
+                <div ng-show="accessUrlEnabled" style="width: 94%;background-color:white;height:48px;border-width:0px 1px 1px 1px; border-color:#EDEDED; border-style:solid;"
+                        class="flex-general-row-wrapper">
+                    <div style="width:10%; margin-left: 10px;height:100%;font-size: 14px;" class="solo-vertical-center">
+                      Password
+                    </div>
+                    <div class="solo-vertical-center" style="width:80%;;margin-left: 6px;height:100%;font-size: 14px;padding:6px;">
+                      <div style="padding-left:7px; width:100%;height:100%;border-radius:2px; border:1px solid #EDEDED;background-color:#EDEAEA;"
+                        class="solo-vertical-center">
+                        {{accessPassword}}
+                      </div>
+                    </div>
+                    <div class="flex-general-column-wrapper-center" style="width:7%;height:100%;cursor: pointer;font-size: 14px;padding:6px;">
+                      <div class="flex-general-column-wrapper-center cliplogin-url-btn" clip-copy="accessPassword">
                         <i class="icon ion-ios-copy-outline" style="font-size:19px;"></i>
                       </div>
                     </div>
