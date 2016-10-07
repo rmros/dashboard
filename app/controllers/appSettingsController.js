@@ -417,7 +417,7 @@ app.controller('appSettingsController',
               appSettingsService.importDatabase($rootScope.currentProject.appId, $rootScope.currentProject.keys.master, file)
                 .then(function (resp) {
                   console.log(resp)
-                  successNotify("Your database has imported successfully.");
+                  successNotify("Your data has imported successfully.");
                 }, function (error) {
                   errorNotify("Oops, we failed to import your data. Try again.");
               });
@@ -601,7 +601,7 @@ app.controller('appSettingsController',
       $scope.exportDatabase = function(){
         appSettingsService.exportDatabase($rootScope.currentProject.appId,$rootScope.currentProject.keys.master)
          .then(function (resp) {
-              successNotify("Your data has been exported successfully.");
+              successNotify("We've made a request to export your data. You should soon be able to download the file.");
             }, function (error) {
               errorNotify("Oops, we failed to export your data. Please try again.");
           });
