@@ -615,6 +615,8 @@ app.controller('appSettingsController',
         .then(function(data){
           successNotify("Access url generated successfully.");
           $scope.accessUrlString = makeUrlFromData(data.data);
+          $scope.connectionString = makeConnectionStringFromData(data.data);
+          $scope.serverUrl = makeServerUrlFromData(data.data)
           $scope.accessUsername = data.data.data.username
           $scope.accessPassword = data.data.data.password
           $scope.accessUrlEnabled = true;
@@ -685,6 +687,8 @@ app.controller('appSettingsController',
             appSettingsService.getAccessUrl($rootScope.currentProject.appId).then(function(data){
               $scope.accessUrlEnabled = true
               $scope.accessUrlString = makeUrlFromData(data.data);
+              $scope.connectionString = makeConnectionStringFromData(data.data);
+              $scope.serverUrl = makeServerUrlFromData(data.data);
               $scope.accessUsername = data.data.data.username
               $scope.accessPassword = data.data.data.password
             },function(err){
@@ -792,7 +796,15 @@ app.controller('appSettingsController',
       }
 
       function makeUrlFromData(data){
-          return "mongo mongodb://"+data.data.username+":"+data.data.password+"@"+data.url+"/"+data.data.appId
+        return "mongo mongodb://"+data.data.username+":"+data.data.password+"@"+data.url+"/"+data.data.appId
+      }
+
+      function makeConnectionStringFromData(data){
+        return "mongodb://"+data.data.username+":"+data.data.password+"@"+data.url+"/"+data.data.appId
+      }
+
+      function makeServerUrlFromData(data){
+        return data.url
       }
 
       function _getFbAttributesList() {
