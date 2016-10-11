@@ -115,7 +115,7 @@ app.factory('appSettingsService', ['$q','$http','$rootScope',function ($q,$http,
       xhttp.open("POST", SERVER_URL+"/backup/"+appId+"/importdb", true);        
       xhttp.send(data);
 
-      return  q.promise;;
+      return  q.promise;
     }
 
     global.getAccessUrl = function(appId){

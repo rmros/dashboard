@@ -74,6 +74,12 @@ app.config([
         controller: 'pushBrowserController'
     });
 
+    $stateProvider.state('email', {
+        url: '/:appId/email',
+        templateUrl: 'app/views/email-campaign.html',
+        controller: 'emailCampaignController'
+    });
+
     $stateProvider.state('settings', {
         url: '/:appId/settings',
         templateUrl: 'app/views/app-settings.html',
