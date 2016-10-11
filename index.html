@@ -249,7 +249,7 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
                 </a>
 
                 <!--Extra Menu-->
-                <div ng-show="xtramenu" style="height: 170px;width: 280px; border-radius:4px; border:1px solid #495B70;background-color:#495B70;position: absolute;bottom:9px;left:99.6%;z-index:99999;">
+                <div ng-show="xtramenu" style="height: 230px;width: 280px; border-radius:4px; border:1px solid #495B70;background-color:#495B70;position: absolute;bottom:9px;left:99.6%;z-index:99999;">
                   <div style="width: 100%; height: 100%; position: relative;">
                     <!--Left arrow-->
                     <div id="triangle-left" style="position: absolute;bottom: 27px;left: -10px;">
@@ -316,6 +316,27 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
                               </div>
                               <div>
                                 <span style="color:#81909E;font-size: 12px;">Create a push compaign</span>
+                              </div> 
+                            </div> 
+                          </div>                        
+                                           
+                      </div>
+                      <!--Each Menu-->
+                      <!--Each Menu-->                   
+                      <div ng-click="goToPage(currentProject.appId,'email')" class="eachxtramenu-profile" style="margin-top: 10px;">                    
+                        
+                          <div class="flex-general-row-wrapper">
+                            <div style="height: 35px;width: 35px;border-radius: 25px;" class="flex-general-column-wrapper-center newsidebar-menu" ng-class="{'menupush-active':page=='email'}">
+                              <span>
+                                <i class="icon ion-ios-bell" style="color:#495b70;font-size: 20px !important;"></i>
+                              </span>
+                            </div>
+                            <div style="margin-left: 5px;margin-top: 2px;">
+                              <div>
+                              <span style="font-weight: 700;font-size: 14px;color:white">Email</span>
+                              </div>
+                              <div>
+                                <span style="color:#81909E;font-size: 12px;">Create an email campaign</span>
                               </div> 
                             </div> 
                           </div>                        
@@ -1130,7 +1151,8 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
 <script src="app/services/analyticsService.js"></script> 
 <script src="app/services/appSettingsService.js"></script> 
 <script src="app/services/pushService.js"></script> 
-<script src="app/services/fileService.js"></script>            
+<script src="app/services/fileService.js"></script>
+<script src="app/services/emailCampaignService.js"></script>             
 
 <!--Controllers-->
 <script type="text/javascript" src="app/controllers/indexController.js"></script>
@@ -1145,6 +1167,7 @@ window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){va
 <script type="text/javascript" src="app/controllers/fileBrowserController.js"></script>
 <script type="text/javascript" src="app/controllers/appSettingsController.js"></script>
 <script type="text/javascript" src="app/controllers/pushBrowserController.js"></script>
+<script type="text/javascript" src="app/controllers/emailCampaignController.js"></script>
 
 <!--Directives-->
 <script type="text/javascript" src="app/directives/randomDirectives.js"></script>

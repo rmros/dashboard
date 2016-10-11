@@ -1,0 +1,85 @@
+
+<div class="push-browser-parent" ng-init="init()">
+
+  <div class="flex-general-column-wrapper-center" style="width: 100%;margin-top:20px;">
+
+    <div style="width: 100%;" class="solo-horizontal-center">
+      <span style="color:#169CEE;font-size: 24px;font-weight: 700;">Create an email campaign</span>
+    </div>
+    <div style="width: 100%;" class="solo-horizontal-center">
+      <span style="color:#4F4F4F;font-size: 14px;">The best campaigns use short and precise emails.</span>
+    </div>
+
+    <div class="push-box" style="margin-top: 15px;">
+
+      <!--Each Field-->
+      <div style="width: 100%;height: 100px;background-color: #F7F7F7;border:1px solid #C4C2C2;">
+        
+        <div style="width: 100%;height: 100%;" class="flex-general-row-wrapper">
+
+          <div style="width: 40%;height: 100%;padding: 35px;">
+            <span style="color:#353446;font-size: 16px;font-weight: 700;">Subject</span>
+          </div>
+
+          <div class="solo-vertical-center" style="width: 60%;height: 100%;background-color: white;padding: 35px;">
+            <input ng-model="pushData.subject" type="text" class="default-inputfield" placeholder="Your email subject" style="width: 100%; height: 40px;font-size: 16px;padding-left: 4px;">
+          </div>
+
+        </div>
+
+      </div>  
+      <!--/Each Field-->
+
+      <!--Each Field-->
+      <div style="width: 100%;height: 100px; border-color:#C4C2C2;background-color: #F7F7F7; border-style: solid; border-width:0 1px 1px 1px;">
+        
+        <div style="width: 100%;height: 100%;" class="flex-general-row-wrapper">
+
+          <div style="width: 40%;height: 100%;padding: 35px;">
+            <span style="color:#353446;font-size: 16px;font-weight: 700;">Email Body</span>
+          </div>
+
+          <div class="solo-vertical-center" style="width: 60%;height: 100%;background-color: white;padding: 35px;">
+            <input ng-model="pushData.body" type="text" class="default-inputfield" placeholder="Your email body" style="width: 100%; height: 40px;font-size: 16px;padding-left: 4px;">
+          </div>
+
+        </div>
+                
+      </div>  
+      <!--/Each Field-->   
+
+      <!--Each Field:Send Button-->
+      <div style="width: 100%;height: 50px;margin-top:15px;margin-bottom:40px;"> 
+
+        <div style="width: 100%;height: 100%;" class="flex-general-column-wrapper-center">
+        
+          <div class="solo-vertical-center" style="height: 100%;background-color: white;">
+            <!--Send Btn-->
+            <button  ng-show="!sendPushSpinner" ng-click="sendCampaign()" class="default-inputfield" style="width: 170px;;height:37px;color:white;background-color:#549afc;border-radius: 3px;font-size:14px;">Send Compaign</button>
+
+            <!--While Sending-->
+            <div ng-show="sendPushSpinner" style="width:80px;" class="solo-horizontal-center">
+              <img src="assets/images/ajax-loader.gif" style="margin-top:2.5px;height:14px;">
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>  
+      <!--/Each Field-->   
+
+    </div>
+  </div>
+
+</div>
+
+<!--Slack chat-->
+<a href="http://slack.cloudboost.io" target="_blank">
+  <div class="intercomm flex-general-column-wrapper-center">    
+    <i class="icon ion-ios-chatboxes" style="font-size:26px !important; color:white;margin-top:3px;"></i>
+  </div> 
+</a>
+<!--/Slack chat-->
+
+
