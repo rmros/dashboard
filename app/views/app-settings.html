@@ -56,7 +56,7 @@
                 <span style="font-size: 18px;">Import / Export Data</span>
               </div>
             </div>
-            <div ng-click="selectSettings('native')" ng-class="{activeAppSettingsMenu:settingsMenu.native,hoverAppSettingsMenu:settingsMenuHover.native}"
+            <div ng-show="false" ng-click="selectSettings('native')" ng-class="{activeAppSettingsMenu:settingsMenu.native,hoverAppSettingsMenu:settingsMenuHover.native}"
               ng-mouseover="menuHover('native')" ng-mouseleave="menuLeave('native')" class="eachSetMenu flex-general-row-wrapper">
               <div class="flex-general-column-wrapper-center" style="height: 100%;width:24px;">
                 <i class="fa fa-database" aria-hidden="true" style="font-size: 24px;"></i>
@@ -3229,7 +3229,7 @@
               <!--Dynamically importExport-->
 
               <!--Dynamically native-->
-              <div ng-if="settingsMenu.native" class="appeditablefields-native">
+              <div ng-show="false" ng-if="settingsMenu.native" class="appeditablefields-native">
                <div style="height:30px;" class="flex-general-column-wrapper-center">
                   <span style="color:#549afc;font-size:24px;font-weight:bold;font-family: 'Signika Negative', sans-serif;">MongoDB Access</span>
                   <button ng-if="currentProject.planId == 1 && isHosted" ng-click="initUpgradePlan(currentProject)" class="default-inputfield" style="height: 30px;background: #549afc;color:white;font-size: 18px;border-radius: 3px;margin-left: 5px">
