@@ -7,7 +7,7 @@
       <span style="color:#169CEE;font-size: 24px;font-weight: 700;">Create an email campaign</span>
     </div>
     <div style="width: 100%;" class="solo-horizontal-center">
-      <span style="color:#4F4F4F;font-size: 14px;">The best campaigns use short and precise emails.</span>
+      <span style="color:#4F4F4F;font-size: 14px;">Email campaign is used to send email to all of your users. You can use it for announcements or anything else you like.</span>
     </div>
 
     <div class="push-box" style="margin-top: 15px;">
@@ -21,7 +21,7 @@
             <span style="color:#353446;font-size: 16px;font-weight: 700;">Subject</span>
           </div>
 
-          <div class="solo-vertical-center" style="width: 60%;height: 100%;background-color: white;padding: 35px;">
+          <div class="solo-vertical-center" style="width: 60%;height: 100%;background-color: white;padding: 10px;">
             <input ng-model="pushData.subject" type="text" class="default-inputfield" placeholder="Your email subject" style="width: 100%; height: 40px;font-size: 16px;padding-left: 4px;">
           </div>
 
@@ -31,16 +31,17 @@
       <!--/Each Field-->
 
       <!--Each Field-->
-      <div style="width: 100%;height: 100px; border-color:#C4C2C2;background-color: #F7F7F7; border-style: solid; border-width:0 1px 1px 1px;">
+      <div style="width: 100%;height: 200px; border-color:#C4C2C2;background-color: #F7F7F7; border-style: solid; border-width:0 1px 1px 1px;">
         
         <div style="width: 100%;height: 100%;" class="flex-general-row-wrapper">
 
           <div style="width: 40%;height: 100%;padding: 35px;">
-            <span style="color:#353446;font-size: 16px;font-weight: 700;">Email Body</span>
+            <span style="color:#353446;font-size: 16px;font-weight: 700;">Text</span>
           </div>
 
-          <div class="solo-vertical-center" style="width: 60%;height: 100%;background-color: white;padding: 35px;">
-            <input ng-model="pushData.body" type="text" class="default-inputfield" placeholder="Your email body" style="width: 100%; height: 40px;font-size: 16px;padding-left: 4px;">
+          <div class="solo-vertical-center" style="width: 60%;height: 100%;background-color: white;padding: 10px;">
+            <textarea ng-model="pushData.body" rows="10" cols="90" style="height: 100%;border: 0px;font-size: 16px;" placeholder="Your email text">
+            </textarea>
           </div>
 
         </div>
