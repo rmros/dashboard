@@ -43,4 +43,7 @@ after_success:
 - docker push cloudboost/dashboard:latest
 #Upload to Kubernetes for deployment.
 - kubectl rolling-update cloudboost-dashboard --image=cloudboost/dashboard:latest --image-pull-policy=Always
+#Notify Team on Slack
+notifications:
+  slack: cloudboost:gm7nWJDLDtBRyF75VKLKOoMW
 
