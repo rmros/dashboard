@@ -14,7 +14,7 @@ app.get('/app/key.js',function(req,res){
 	content+= "var frontendServerURL = null,\n";
 	           content+= "SERVER_URL = null,\n";
 	           content+= "landingURL = null,\n";
-	         content+= "analyticsURL = null,;\n";
+	         content+= "analyticsURL = null;\n";
 	         content+= "tablesURL = null;\n";
 
 	content+= "landingURL = 'https://www.cloudboost.io';\n";
