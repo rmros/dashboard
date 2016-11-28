@@ -51,7 +51,8 @@ app.controller('tableDesignerController',
     };
 
     $scope.goToDataBrowser=function(t){
-      window.location.href="#/"+id+"/table/"+t.name;        
+      //window.location.href="#/"+id+"/table/"+t.name;
+      window.location.href=tablesURL+"/#/"+id+"/"+t.name
     };
    
     $scope.deleteTableModal=function(t){
