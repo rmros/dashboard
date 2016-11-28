@@ -674,7 +674,7 @@ app.controller('indexController',
       $.removeCookie('email', { path: '/' });
       $.removeCookie('createdAt', { path: '/' });
 
-      window.location.href="/accounts";
+      window.location.href=ACCOUNTS_URL;
     },function(error){
       console.log(error);
     });      
@@ -777,7 +777,7 @@ app.controller('indexController',
       return $location.path();
     },function(newPath,oldPath) {
         if(!$.cookie('userId') || $.cookie('userId')=="null" || $.cookie('userId')=="undefined"){          
-          window.location.href="/accounts";
+          window.location.href=ACCOUNTS_URL;
         }else{
           $rootScope.userFullname=$.cookie('userFullname');
           /*if($rootScope.user && $rootScope.user.isAdmin && !$scope.isAdminLoggedIn){
