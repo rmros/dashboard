@@ -14,12 +14,14 @@ app.get('/app/key.js',function(req,res){
 	content+= "var frontendServerURL = null,\n";
 	           content+= "SERVER_URL = null,\n";
 	           content+= "landingURL = null,\n";
-	         content+= "analyticsURL = null;\n";
+	         content+= "analyticsURL = null,\n";
+	         content+= "ACCOUNTS_URL=null,";
 	         content+= "tablesURL = null;\n";
 
 	content+= "landingURL = 'https://www.cloudboost.io';\n";
 
 	content+= "if(window.location.hostname==='dashboard.cloudboost.io'){\n";
+		content+= "ACCOUNTS_URL='https://accounts.cloudboost.io';\n";
 	    content+= "frontendServerURL='https://service.cloudboost.io';\n";
 	    content+= "SERVER_URL='https://api.cloudboost.io';\n";
 	    content+= "tablesURL='https://tables.cloudboost.io';\n";
@@ -31,6 +33,7 @@ app.get('/app/key.js',function(req,res){
 	    content+= "frontendServerURL = window.location.protocol+'//'+window.location.hostname + ':3000';\n";
 	    content+= "SERVER_URL =  window.location.protocol+'//'+window.location.hostname + ':4730';\n";
 	    content+= "tablesURL =  window.location.protocol+'//'+window.location.hostname + ':3333';\n";
+	    content+= "ACCOUNTS_URL= window.location.protocol+'//'+window.location.hostname + ':1447';\n";
 	content+= "}\n";
 
 		res.write(content);
