@@ -146,11 +146,7 @@ app.controller('appsController',
           $scope.startCreatingApp=false;
           $scope.creatingDefaultTables=true;
 
-          //Add default tables
-          addDefaultTables(data)
-          .then(function(promiseList){ 
-
-            $scope.creatingDefaultTables=false;
+          $scope.creatingDefaultTables=false;
             $scope.yourAppIsReady=true;            
 
             $timeout(function(){ 
@@ -188,18 +184,7 @@ app.controller('appsController',
             if($scope.beacon && !$scope.beacon.firstApp){
               $scope.beacon.firstApp=true;
               updateBeacon();   
-            }
-
-          },function(error){  
-            $scope.showSaveBtn = true;
-            $scope.startCreatingApp=false;
-            $scope.creatingDefaultTables=false;          
-            errorNotify('Error in creating App. Try again');
-
-            //delete the app
-            //$rootScope.projectListObj.splice($rootScope.projectListObj.indexOf(project),1);
-            //projectService.deleteProject(project.appId);                
-          });                         
+            }                       
                        
         },function(error){
           $scope.startCreatingApp=false;
