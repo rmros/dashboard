@@ -84,8 +84,8 @@ var pricingPlans=[{
       name:"API Calls",
       limit:{
         show:true,
-        label:"10,000",
-        value:10000
+        label:"5,000",
+        value:5000
       }
     },{
       type:"text",
