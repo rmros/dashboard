@@ -685,7 +685,11 @@ app.controller('indexController',
   };
 
   $rootScope.goToPage=function(appId,pageName){
-    window.location.href="#/"+appId+"/"+pageName;
+    if(pageName == 'files'){
+      window.location.href = FILES_URL;
+    } else {
+      window.location.href="#/"+appId+"/"+pageName;
+    }
   };   
 
   $scope.renderHtml = function (htmlCode) {
