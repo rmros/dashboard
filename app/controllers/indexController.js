@@ -686,7 +686,7 @@ app.controller('indexController',
 
   $rootScope.goToPage=function(appId,pageName){
     if(pageName == 'files'){
-      window.location.href = FILES_URL;
+      window.location.href = FILES_URL + "/" + appId;
     } else {
       window.location.href="#/"+appId+"/"+pageName;
     }
