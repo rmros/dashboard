@@ -1,6 +1,7 @@
 
 var express = require('express');
 var app = express();
+var path = require('path');
 
 app.get('/app/key.js',function(req,res){
 	res.setHeader('Content-type', 'text/plain');
@@ -44,6 +45,10 @@ app.get('/app/key.js',function(req,res){
 	});
 
 app.use(express.static(__dirname));
+
+app.use(function(req,res,next){
+	res.status(404).sendFile(path.join(__dirname,'app','views','404.html'));
+});
 
 app.set('port', process.env.PORT || 1440);
 
